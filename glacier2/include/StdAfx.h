@@ -80,3 +80,6 @@
 #include <Plugins/PCZSceneManager/OgrePCZPlugin.h>
 #include <Plugins/PCZSceneManager/OgrePCZSceneManager.h>
 #include <Plugins/PCZSceneManager/OgrePCZSceneNode.h>
+
+// V8 Headers
+#include <v8.h>
