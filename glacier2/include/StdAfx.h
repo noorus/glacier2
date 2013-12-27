@@ -47,3 +47,36 @@
 #include <boost/tokenizer.hpp>
 #include <boost/variant.hpp>
 #include <boost/noncopyable.hpp>
+
+// FMOD Headers
+#include <fmod.hpp>                   // FMOD API
+#include <fmod_errors.h>              // FMOD API
+#include <fmod_event.hpp>             // FMOD Designer API
+#include <fmod_event_net.h>           // FMOD Designer Network API
+
+// Ogre3D Headers
+#include <Ogre.h>
+#include <OgreCamera.h>
+#include <OgreUTFString.h>
+#include <OgreHardwareBufferManager.h>
+#include <OgreResourceGroupManager.h>
+#include <OgreException.h>
+#include <OgreRenderWindow.h>
+#include <OgreStreamSerialiser.h>
+#include <OgreDeflate.h>
+#include <RenderSystems/Direct3D9/OgreD3D9RenderSystem.h>
+#include <Overlay/OgreOverlay.h>
+#include <Overlay/OgreOverlaySystem.h>
+#include <Overlay/OgreOverlayManager.h>
+#include <Overlay/OgreFont.h>
+#include <Overlay/OgreFontManager.h>
+#include <Paging/OgrePaging.h>
+#include <Terrain/OgreTerrain.h>
+#include <Terrain/OgreTerrainPaging.h>
+#include <Terrain/OgreTerrainPagedWorldSection.h>
+#include <Terrain/OgreTerrainGroup.h>
+#include <Terrain/OgreTerrainQuadTreeNode.h>
+#include <Terrain/OgreTerrainMaterialGeneratorA.h>
+#include <Plugins/PCZSceneManager/OgrePCZPlugin.h>
+#include <Plugins/PCZSceneManager/OgrePCZSceneManager.h>
+#include <Plugins/PCZSceneManager/OgrePCZSceneNode.h>
