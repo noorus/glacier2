@@ -1,4 +1,4 @@
-#include <windows.h>
+#include "StdAfx.h"
 
 int APIENTRY wWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 LPWSTR lpCmdLine, int nCmdShow )
@@ -7,7 +7,13 @@ LPWSTR lpCmdLine, int nCmdShow )
   UNREFERENCED_PARAMETER( lpCmdLine );
   UNREFERENCED_PARAMETER( nCmdShow );
 
-  MessageBoxW( 0, L"Placeholder", NULL, MB_OK );
+  // Enable leak checking in debug builds
+#if defined( _DEBUG ) | defined( DEBUG )
+  _CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
+#endif
+
+  // CRT memory allocation breakpoints can be set here
+  //_CrtSetBreakAlloc( x );
 
   return EXIT_SUCCESS;
 }
