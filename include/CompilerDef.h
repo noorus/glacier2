@@ -1,5 +1,13 @@
 #pragma once
 
+// _PROFILE
+// Identify the build profile.
+#ifdef _DEBUG
+# define _PROFILE L"Debug"
+#else
+# define _PROFILE L"Release"
+#endif
+
 // _COMPILER
 // Identify the compiler.
 #ifdef _MSC_VER

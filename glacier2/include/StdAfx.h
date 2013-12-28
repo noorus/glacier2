@@ -5,8 +5,6 @@
 #include "Defines.h"
 #include "Types.h"
 
-#define WIN32_LEAN_AND_MEAN
-
 // Platform Headers
 #include <windows.h>          // Windows
 #include <time.h>             // Time
@@ -64,7 +62,10 @@
 #include <OgreRenderWindow.h>
 #include <OgreStreamSerialiser.h>
 #include <OgreDeflate.h>
+#pragma warning( push )
+#pragma warning( disable: 4005 ) // warning C4005: 'SAFE_DELETE' : macro redefinition
 #include <RenderSystems/Direct3D9/OgreD3D9RenderSystem.h>
+#pragma warning( pop )
 #include <Overlay/OgreOverlay.h>
 #include <Overlay/OgreOverlaySystem.h>
 #include <Overlay/OgreOverlayManager.h>

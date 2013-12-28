@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Exception.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\StdAfx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -162,6 +163,7 @@
     <ClInclude Include="..\include\Defines.h" />
     <ClInclude Include="..\include\Types.h" />
     <ClInclude Include="..\include\Utilities.h" />
+    <ClInclude Include="include\Exception.h" />
     <ClInclude Include="include\StdAfx.h" />
     <ClInclude Include="include\TargetVer.h" />
   </ItemGroup>

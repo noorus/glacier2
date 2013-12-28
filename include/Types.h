@@ -4,7 +4,7 @@
 #include <vector>
 #include <cstdint>
 
-namespace glacier {
+namespace Glacier {
 
   using std::uint8_t;
   using std::uint16_t;

@@ -1,6 +1,6 @@
 #pragma once
 
-namespace glacier {
+namespace Glacier {
 
   //! \class Singleton
   //! Simple template for a Meyers singleton.
