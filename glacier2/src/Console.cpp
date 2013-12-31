@@ -4,9 +4,10 @@
 namespace Glacier {
 
   ConCmdBase::ConCmdBase( const wstring& name, const wstring& description ):
-  mName( name ), mDescription( description )
+  mName( name ), mDescription( description ), mRegistered( false )
   {
-    //
+    // Name and description are required
+    assert( !mName.empty() && !mDescription.empty() );
   }
 
   const wstring& ConCmdBase::getName()
@@ -55,6 +56,21 @@ namespace Glacier {
   const wstring& ConVar::getString()
   {
     return mValue.str;
+  }
+
+  void ConVar::set( int value )
+  {
+    //
+  }
+
+  void ConVar::set( float value )
+  {
+    //
+  }
+
+  void ConVar::set( const wstring& value )
+  {
+    //
   }
 
   Console::Console()

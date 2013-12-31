@@ -10,7 +10,8 @@ namespace Glacier {
   class ConCmdBase {
   protected:
     wstring mName; //!< Name of the command/variable
-    wstring mDescription; //! Short description for the command/variable
+    wstring mDescription; //!< Short description for the command/variable
+    bool mRegistered; //!< Is the command/variable registered
     ConCmdBase( const wstring& name, const wstring& description );
   public:
     virtual bool isCommand() = 0;
@@ -52,6 +53,9 @@ namespace Glacier {
     virtual int getInt();
     virtual float getFloat();
     virtual const wstring& getString();
+    virtual void set( int value );
+    virtual void set( float value );
+    virtual void set( const wstring& value );
   };
 
   //! \class Console

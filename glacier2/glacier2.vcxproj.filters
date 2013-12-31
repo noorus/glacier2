@@ -16,6 +16,9 @@
     <Filter Include="Header Files\Shared">
       <UniqueIdentifier>{7a4c40f9-b3c1-4f2d-aac3-b4974a4e1c43}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\EASTL">
+      <UniqueIdentifier>{ca53c6be-e9e7-441c-85e1-dc9f20925642}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Main.cpp">
@@ -35,6 +38,24 @@
     </ClCompile>
     <ClCompile Include="src\Console.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\EASTL\src\allocator.cpp">
+      <Filter>Source Files\EASTL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\EASTL\src\assert.cpp">
+      <Filter>Source Files\EASTL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\EASTL\src\fixed_pool.cpp">
+      <Filter>Source Files\EASTL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\EASTL\src\hashtable.cpp">
+      <Filter>Source Files\EASTL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\EASTL\src\red_black_tree.cpp">
+      <Filter>Source Files\EASTL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\EASTL\src\string.cpp">
+      <Filter>Source Files\EASTL</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -68,5 +89,10 @@
     <ClInclude Include="include\Console.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\README.md">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>
