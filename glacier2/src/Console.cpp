@@ -56,4 +56,9 @@ namespace Glacier {
   {
     return mValue.str;
   }
+
+  Console::Console()
+  {
+    //
+  }
 }

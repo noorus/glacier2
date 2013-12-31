@@ -3,7 +3,6 @@
 #include "TargetVer.h"
 #include "CompilerDef.h"
 #include "Defines.h"
-#include "Types.h"
 
 // Platform Headers
 #include <windows.h>          // Windows
@@ -36,6 +35,7 @@
 #include <queue>
 #include <regex>
 #include <stack>
+#include <cstdint>
 
 // Boost Headers
 #include <boost/shared_ptr.hpp>
@@ -84,3 +84,6 @@
 
 // V8 Headers
 #include <v8.h>
+
+// Glacier types
+#include "Types.h"

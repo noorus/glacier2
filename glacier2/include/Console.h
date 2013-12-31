@@ -3,18 +3,10 @@
 
 namespace Glacier {
 
-  class ConCmdBase;
-  class ConCmd;
-  class ConVar;
   class Console;
 
-  class ConVarValue {
-  public:
-    int i;
-    float f;
-    wstring str;
-  };
-
+  //! \class ConCmdBase
+  //! Base class for console commands & variables.
   class ConCmdBase {
   protected:
     wstring mName; //!< Name of the command/variable
@@ -26,26 +18,34 @@ namespace Glacier {
     virtual const wstring& getDescription();
   };
 
+  typedef std::list<ConCmdBase*> ConCmdBaseList;
+
+  //! \class ConCmd
+  //! A console command.
   class ConCmd: public ConCmdBase {
   public:
     typedef void ( *Callback )( StringVector& arguments, Console* console );
   protected:
-    Callback mCallback;
+    Callback mCallback; //!< Callback function on execution
   public:
     ConCmd( const wstring& name, const wstring& description, Callback callback );
     virtual bool isCommand();
   };
 
+  //! \class ConVar
+  //! A console variable.
   class ConVar: public ConCmdBase {
   public:
-    typedef bool ( *Callback )( ConVar* variable, ConVarValue oldValue, Console* console );
-  protected:
     struct Value {
-      int i;
-      float f;
-      wstring str;
-    } mValue;
-    Callback mCallback;
+      int i; //!< Integer representation
+      float f; //!< Floating point representation
+      wstring str; //!< String representation
+    };
+    typedef bool ( *Callback )( ConVar* variable, Value oldValue, Console* console );
+  protected:
+    Value mValue; //!< Value
+    Value mDefaultValue; //!< Default value
+    Callback mCallback; //!< Callback function on value change
   public:
     ConVar( const wstring& name, const wstring& description, Callback callback );
     virtual bool isCommand();
@@ -54,7 +54,23 @@ namespace Glacier {
     virtual const wstring& getString();
   };
 
+  //! \class Console
   class Console {
+  public:
+    enum Source: unsigned long {
+      srcEngine = 0,
+      srcGfx,
+      srcSound,
+      srcPhysics,
+      srcScripting,
+      srcInput,
+      srcGame
+    };
+  protected:
+    ConCmdBaseList mCommands; //!< Registered commands & variables
+    static ConCmdBaseList mPrecreated; //!< Pre-created commands & variables
+    StringList mLines; //!< Line buffer
+    StringQueue mCommandBuffer; //!< Command buffer for next execution
   public:
     Console();
   };
