@@ -4,3 +4,6 @@
 [submodule "EASTL"]
 	path = EASTL
 	url = https://github.com/paulhodge/EASTL.git
+[submodule "nedmalloc"]
+	path = nedmalloc
+	url = https://github.com/ned14/nedmalloc.git

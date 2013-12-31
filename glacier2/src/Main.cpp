@@ -62,6 +62,31 @@ void eastl_test_string()
   EASTL_ASSERT(str == "20");
 }
 
+const unsigned long g_nPrivileges = 1;
+
+void adjustPrivileges()
+{
+  HANDLE token;
+  HANDLE process = GetCurrentProcess();
+  if ( OpenProcessToken( process, TOKEN_ADJUST_PRIVILEGES, &token ) )
+  {
+    LPCWSTR wantedPrivileges[g_nPrivileges] = {
+      SE_LOCK_MEMORY_NAME
+    };
+    PTOKEN_PRIVILEGES privileges = (PTOKEN_PRIVILEGES)malloc(
+      FIELD_OFFSET( TOKEN_PRIVILEGES, Privileges[g_nPrivileges] ) );
+    privileges->PrivilegeCount = g_nPrivileges;
+    for ( int i = 0; i < g_nPrivileges; i++ )
+    {
+      if ( !LookupPrivilegeValueW( NULL, wantedPrivileges[i], &privileges->Privileges[i].Luid ) )
+        return;
+      privileges->Privileges[i].Attributes = SE_PRIVILEGE_ENABLED;
+    }
+    AdjustTokenPrivileges( token, FALSE, privileges, sizeof( privileges ), NULL, NULL );
+    free( privileges );
+  }
+}
+
 int APIENTRY wWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 LPWSTR lpCmdLine, int nCmdShow )
 {
@@ -76,6 +101,8 @@ LPWSTR lpCmdLine, int nCmdShow )
 
   // CRT memory allocation breakpoints can be set here
   // _CrtSetBreakAlloc( x );
+
+  adjustPrivileges();
 
   v8::V8::InitializeICU();
   v8_test();

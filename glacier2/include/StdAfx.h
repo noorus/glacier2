@@ -10,6 +10,10 @@
 #include <psapi.h>            // Process Status API       (psapi.lib)
 #include <dbghelp.h>          // Debug Help Library       (dbghelp.lib)
 
+// nedmalloc Headers
+#include <nedmalloc.h>
+#undef WIN32_LEAN_AND_MEAN
+
 // VC++ Runtime Headers
 #ifdef _DEBUG
 //# define _CRTDBG_MAP_ALLOC

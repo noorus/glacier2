@@ -19,6 +19,9 @@
     <Filter Include="Source Files\EASTL">
       <UniqueIdentifier>{ca53c6be-e9e7-441c-85e1-dc9f20925642}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\nedmalloc">
+      <UniqueIdentifier>{59261995-0e1a-47d5-8bb0-1503ee79d3dc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Main.cpp">
@@ -56,6 +59,9 @@
     </ClCompile>
     <ClCompile Include="..\EASTL\src\string.cpp">
       <Filter>Source Files\EASTL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\nedmalloc\nedmalloc.c">
+      <Filter>Source Files\nedmalloc</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
