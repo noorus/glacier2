@@ -63,6 +63,9 @@
     <ClCompile Include="..\nedmalloc\nedmalloc.c">
       <Filter>Source Files\nedmalloc</Filter>
     </ClCompile>
+    <ClCompile Include="src\Memory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\StdAfx.h">
@@ -93,6 +96,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Console.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GlacierMemory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

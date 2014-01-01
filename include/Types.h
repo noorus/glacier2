@@ -20,4 +20,38 @@ namespace Glacier {
   typedef std::list<std::wstring> StringList;
   typedef std::queue<std::wstring> StringQueue;
 
+  enum CharacterConstants
+  {
+    TAB = 9,
+    LF = 10,
+    CR = 13,
+    SPACE = 32,
+    QUOTE = 34,
+    COLON = 58,
+    SEMICOLON = 59,
+    BACKSLASH = 92
+  };
+
+  using Ogre::PCZSceneManager;
+  using Ogre::PCZone;
+  using Ogre::PCZCamera;
+  using Ogre::PCZSceneNode;
+  using Ogre::SceneManager;
+  using Ogre::SceneNode;
+  using Ogre::ColourValue;
+  using Ogre::Font;
+  using Ogre::Viewport;
+  using Ogre::Quaternion;
+  using Ogre::Vector2;
+  using Ogre::Vector3;
+  using Ogre::Vector4;
+  using Ogre::Matrix3;
+  using Ogre::Matrix4;
+  using Ogre::Real;
+  using Ogre::Radian;
+  using Ogre::Degree;
+  using Ogre::Ray;
+  using Ogre::AxisAlignedBox;
+  using Ogre::Sphere;
+
 }
