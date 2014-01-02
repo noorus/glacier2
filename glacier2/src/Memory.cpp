@@ -4,12 +4,14 @@
 // Operators used and required by EASTL
 void* operator new[]( size_t size, const char* name, int flags, unsigned debugFlags, const char* file, int line )
 {
-  return Glacier::Memory::instance().alloc( size );
+  return malloc( size );
+  //return Glacier::Memory::instance().alloc( size );
 }
 
 void* operator new[]( size_t size, size_t alignment, size_t alignmentOffset, const char* name, int flags, unsigned debugFlags, const char* file, int line )
 {
-  return Glacier::Memory::instance().alloc( size, alignment );
+  return malloc( size );
+  // return Glacier::Memory::instance().alloc( size, alignment );
 }
 
 namespace Glacier {
