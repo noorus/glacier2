@@ -32,7 +32,7 @@ namespace Glacier {
     virtual const char* what() const throw();
   };
 
-#if defined(ENGINE_EXCEPT) || defined(ENGINE_EXCEPT_W32)
+#if defined(ENGINE_EXCEPT) || defined(ENGINE_EXCEPT_W32) || defined(ENGINE_EXCEPT_NT)
 # error ENGINE_EXCEPT* macro already defined!
 #else
 # define ENGINE_EXCEPT(description) {throw Glacier::Exception(description,__FUNCTIONW__,Glacier::Exception::Generic);}

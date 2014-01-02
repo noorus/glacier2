@@ -1,7 +1,5 @@
 #include "StdAfx.h"
 #include "GlacierMemory.h"
-#include <EASTL/hash_map.h>
-#include <EASTL/string.h>
 
 int Vsnprintf8(char8_t* pDestination, size_t n, const char8_t* pFormat, va_list arguments)
 {

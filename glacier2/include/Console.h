@@ -16,14 +16,22 @@ namespace Glacier {
 # define ENGINE_EXTERN_CONVAR(name)\
   extern Glacier::ConVar g_CVar_##name
 
+  struct ConsoleSource
+  {
+    wstring name;
+    COLORREF color;
+  };
+
   //! \class ConCmdBase
   //! Base class for console commands & variables.
   class ConCmdBase {
+  friend class Console;
   protected:
     wstring mName; //!< Name of the command/variable
     wstring mDescription; //!< Short description for the command/variable
     bool mRegistered; //!< Is the command/variable registered
     ConCmdBase( const wstring& name, const wstring& description );
+    virtual void onRegister();
   public:
     virtual bool isCommand() = 0;
     virtual const wstring& getName();
@@ -77,6 +85,7 @@ namespace Glacier {
 
   //! \class Console
   class Console {
+  friend class ConCmdBase;
   public:
     enum Source: unsigned long {
       srcEngine = 0,
@@ -88,12 +97,19 @@ namespace Glacier {
       srcGame
     };
   protected:
+    SRWLOCK mLock; //!< Our execution lock
     ConCmdBaseList mCommands; //!< Registered commands & variables
     static ConCmdBaseList mPrecreated; //!< Pre-created commands & variables
     StringList mLines; //!< Line buffer
     StringQueue mCommandBuffer; //!< Command buffer for next execution
+    std::map<Source,ConsoleSource> mSources;
+    static bool cmpSortCmds( ConCmdBase* x, ConCmdBase* y );
   public:
     Console();
+    ~Console();
+    Source registerSource( const wstring& name, COLORREF color );
+    void unregisterSource( Source source );
+    void registerVariable( ConCmdBase* var );
   };
 
 }

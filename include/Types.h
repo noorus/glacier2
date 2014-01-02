@@ -11,14 +11,16 @@ namespace Glacier {
 
   typedef std::string string;
   typedef std::wstring wstring;
+  typedef std::stringstream stringstream;
+  typedef std::wstringstream wstringstream;
 
   typedef boost::char_separator<wchar_t> CharSeparator;
-  typedef boost::tokenizer<CharSeparator, wstring::const_iterator, std::wstring> StringTokenizer;
+  typedef boost::tokenizer<CharSeparator, wstring::const_iterator, wstring> StringTokenizer;
   typedef std::vector<uint8_t> ByteVector;
-  typedef std::vector<std::wstring> StringVector;
+  typedef std::vector<wstring> StringVector;
   typedef std::vector<void*> VoidVector;
-  typedef std::list<std::wstring> StringList;
-  typedef std::queue<std::wstring> StringQueue;
+  typedef std::list<wstring> StringList;
+  typedef std::queue<wstring> StringQueue;
 
   enum CharacterConstants
   {

@@ -42,11 +42,11 @@ namespace Glacier {
     }
   }
 
-  const std::wstring& Exception::getFullDescription() const
+  const wstring& Exception::getFullDescription() const
   {
     if ( mFullDescription.empty() )
     {
-      std::wstringstream stream;
+      wstringstream stream;
       stream << mDescription;
       if ( !mSource.empty() )
         stream << L"\r\nIn function " << mSource;

@@ -1,13 +1,23 @@
 #include "StdAfx.h"
 #include "Console.h"
+#include "Exception.h"
+#include "Utilities.h"
 
 namespace Glacier {
+
+  // ConCmdBase ===============================================================
 
   ConCmdBase::ConCmdBase( const wstring& name, const wstring& description ):
   mName( name ), mDescription( description ), mRegistered( false )
   {
     // Name and description are required
     assert( !mName.empty() && !mDescription.empty() );
+
+    auto it = std::find( Console::mPrecreated.begin(), Console::mPrecreated.end(), this );
+    if ( it != Console::mPrecreated.end() )
+      ENGINE_EXCEPT( L"CVAR was declared more than once" );
+
+    Console::mPrecreated.push_back( this );
   }
 
   const wstring& ConCmdBase::getName()
@@ -25,6 +35,13 @@ namespace Glacier {
     return mRegistered;
   }
 
+  void ConCmdBase::onRegister()
+  {
+    mRegistered = true;
+  }
+
+  // ConCmd ===================================================================
+
   ConCmd::ConCmd( const wstring& name, const wstring& description,
   ConCmd::Callback callback ):
   ConCmdBase( name, description ), mCallback( callback )
@@ -37,6 +54,8 @@ namespace Glacier {
   {
     return true;
   }
+
+  // ConVar ===================================================================
 
   ConVar::ConVar( const wstring& name, const wstring& description,
   int defaultValue, ConVar::Callback callback ):
@@ -120,8 +139,64 @@ namespace Glacier {
     mValue = oldValue;
   }
 
+  // Console ==================================================================
+
   Console::Console()
   {
+    InitializeSRWLock( &mLock );
+
+    registerSource( L"engine", RGB(60,64,76) );
+    registerSource( L"gfx", RGB(79,115,44) );
+    registerSource( L"sound", RGB(181,80,10) );
+    registerSource( L"physics", RGB(78,29,153) );
+    registerSource( L"scripts", RGB(34,70,197) );
+    registerSource( L"input", RGB(219,38,122) );
+    registerSource( L"game", RGB(4,127,77) );
+    // registerSource( L"net", RGB(219,38,122) );
+    // registerSource( L"crypto", RGB(4,127,77) );
+
+    for ( ConCmdBase* var : mPrecreated )
+      registerVariable( var );
+
+    mPrecreated.clear();
+
+    mCommands.sort( Console::cmpSortCmds );
+  }
+
+  Console::~Console()
+  {
     //
+  }
+
+  Console::Source Console::registerSource( const wstring& name, COLORREF color )
+  {
+    ScopedSRWLock lock( &mLock );
+    ConsoleSource tmp = { name, color };
+    mSources[(Console::Source)mSources.size()] = tmp;
+  }
+
+  void Console::unregisterSource( Source source )
+  {
+    ScopedSRWLock lock( &mLock );
+    mSources.erase( source );
+  }
+
+  bool Console::cmpSortCmds( ConCmdBase* x, ConCmdBase* y )
+  {
+    if ( _wcsicmp( x->getName().c_str(), y->getName().c_str() ) <= 0 )
+      return true;
+    return false;
+  }
+
+  void Console::registerVariable( ConCmdBase* var )
+  {
+    ScopedSRWLock lock( &mLock );
+
+    auto it = std::find( mCommands.begin(), mCommands.end(), var );
+    if ( it != mCommands.end() || var->isRegistered() )
+      ENGINE_EXCEPT( L"CVAR has already been registered" );
+
+    var->onRegister();
+    mCommands.push_back( var );
   }
 }
