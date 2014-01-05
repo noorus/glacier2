@@ -5,6 +5,8 @@
 
 namespace Glacier {
 
+  const unsigned long cMaxConsoleLine = 4096;
+
   // ConCmdBase ===============================================================
 
   ConCmdBase::ConCmdBase( const wstring& name, const wstring& description ):
@@ -172,7 +174,9 @@ namespace Glacier {
   {
     ScopedSRWLock lock( &mLock );
     ConsoleSource tmp = { name, color };
-    mSources[(Console::Source)mSources.size()] = tmp;
+    auto index = (Console::Source)mSources.size();
+    mSources[index] = tmp;
+    return index;
   }
 
   void Console::unregisterSource( Source source )
@@ -199,4 +203,28 @@ namespace Glacier {
     var->onRegister();
     mCommands.push_back( var );
   }
+
+  void Console::printf( Source source_, LPCWSTR line, ... )
+  {
+    ScopedSRWLock lock( &mLock );
+
+    va_list va_alist;
+    WCHAR buffer[cMaxConsoleLine];
+    va_start( va_alist, line );
+    _vsnwprintf_s( buffer, cMaxConsoleLine, line, va_alist );
+    va_end( va_alist );
+
+    ConsoleSource source = mSources[source_];
+
+    WCHAR out[cMaxConsoleLine];
+    SYSTEMTIME time;
+    GetLocalTime( &time );
+    swprintf_s( out, cMaxConsoleLine, L"[%02d:%02d:%02d] [%s] %s\r\n",
+      time.wHour, time.wMinute, time.wSecond, source.name.c_str(),
+      buffer );
+
+    mLines.push_back( out );
+    OutputDebugStringW( out );
+  }
+
 }

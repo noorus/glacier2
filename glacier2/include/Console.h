@@ -110,6 +110,7 @@ namespace Glacier {
     Source registerSource( const wstring& name, COLORREF color );
     void unregisterSource( Source source );
     void registerVariable( ConCmdBase* var );
+    void printf( Source source, LPCWSTR line, ... );
   };
 
 }

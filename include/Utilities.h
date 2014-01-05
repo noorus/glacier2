@@ -122,6 +122,18 @@ namespace Glacier {
       WideCharToMultiByte( CP_UTF8, 0, in.c_str(), -1, &conversion[0], length, 0, FALSE );
       return string( &conversion[0] );
     }
+
+    inline static int hammingWeight64( uint64_t x )
+    {
+      x = ( x & 0x5555555555555555ULL ) + ( ( x >> 1 ) & 0x5555555555555555ULL );
+      x = ( x & 0x3333333333333333ULL ) + ( ( x >> 2 ) & 0x3333333333333333ULL );
+      x = ( x + ( x >> 4 ) ) & 0x0F0F0F0F0F0F0F0FULL;
+      x = ( x + ( x >> 8 ) );
+      x = ( x + ( x >> 16 ) );
+      x = ( x + ( x >> 32 ) );
+      return x & 0xFF;
+    }
+
   }
 
 }

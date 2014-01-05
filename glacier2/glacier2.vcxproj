@@ -96,7 +96,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;ENABLE_LARGE_PAGES;ENABLE_USERMODEPAGEALLOCATOR;USE_LOCKS;USE_SPIN_LOCKS;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;ENABLE_LARGE_PAGES;ENABLE_USERMODEPAGEALLOCATOR;USE_LOCKS;USE_SPIN_LOCKS;DEBUG;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(SolutionDir)include;$(ProjectDir)include;$(SolutionDir)..\SDK\Ogre\include\OGRE;$(SolutionDir)..\SDK\Ogre\include\OGRE\Overlay;$(SolutionDir)..\SDK\Ogre\include\OGRE\Paging;$(SolutionDir)..\SDK\Ogre\include\OGRE\Plugins\PCZSceneManager;$(SolutionDir)..\SDK\Ogre\include\OGRE\RenderSystems\Direct3D9;$(SolutionDir)..\SDK\Ogre\include\OGRE\Terrain;$(SolutionDir)..\SDK\Ogre\include\OGRE\Threading;$(SolutionDir)..\SDK\FMOD SoundSystem\FMOD Programmers API Windows\api\inc;$(SolutionDir)..\SDK\FMOD SoundSystem\FMOD Programmers API Windows\fmoddesignerapi\api\inc;$(SolutionDir)..\v8\include;$(SolutionDir)EASTL\include;$(SolutionDir)nil\include;$(SolutionDir)nedmalloc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>StdAfx.h</PrecompiledHeaderFile>
       <AdditionalOptions>/Zm512 %(AdditionalOptions)</AdditionalOptions>
@@ -189,6 +189,7 @@
     <ClCompile Include="src\Graphics.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\Memory.cpp" />
+    <ClCompile Include="src\Scripting.cpp" />
     <ClCompile Include="src\StdAfx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
@@ -204,6 +205,7 @@
     <ClInclude Include="include\Exception.h" />
     <ClInclude Include="include\Graphics.h" />
     <ClInclude Include="include\GlacierMemory.h" />
+    <ClInclude Include="include\Scripting.h" />
     <ClInclude Include="include\StdAfx.h" />
     <ClInclude Include="include\TargetVer.h" />
   </ItemGroup>

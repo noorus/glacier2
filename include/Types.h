@@ -14,6 +14,9 @@ namespace Glacier {
   typedef std::stringstream stringstream;
   typedef std::wstringstream wstringstream;
 
+  typedef double GameTime;
+  typedef double LocalTime;
+
   typedef boost::char_separator<wchar_t> CharSeparator;
   typedef boost::tokenizer<CharSeparator, wstring::const_iterator, wstring> StringTokenizer;
   typedef std::vector<uint8_t> ByteVector;
