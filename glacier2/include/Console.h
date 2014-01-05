@@ -4,6 +4,7 @@
 namespace Glacier {
 
   class Console;
+  class TextFile;
 
 # define ENGINE_DECLARE_CONCMD(name,desc,cb)\
   Glacier::ConCmd g_CVar_##name( L#name, desc, cb )
@@ -103,6 +104,7 @@ namespace Glacier {
     StringList mLines; //!< Line buffer
     StringQueue mCommandBuffer; //!< Command buffer for next execution
     std::map<Source,ConsoleSource> mSources;
+    TextFile* mOutFile;
     static bool cmpSortCmds( ConCmdBase* x, ConCmdBase* y );
   public:
     Console();

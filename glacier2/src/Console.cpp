@@ -2,6 +2,7 @@
 #include "Console.h"
 #include "Exception.h"
 #include "Utilities.h"
+#include "TextFile.h"
 
 namespace Glacier {
 
@@ -143,7 +144,7 @@ namespace Glacier {
 
   // Console ==================================================================
 
-  Console::Console()
+  Console::Console(): mOutFile( nullptr )
   {
     InitializeSRWLock( &mLock );
 
@@ -154,8 +155,6 @@ namespace Glacier {
     registerSource( L"scripts", RGB(34,70,197) );
     registerSource( L"input", RGB(219,38,122) );
     registerSource( L"game", RGB(4,127,77) );
-    // registerSource( L"net", RGB(219,38,122) );
-    // registerSource( L"crypto", RGB(4,127,77) );
 
     for ( ConCmdBase* var : mPrecreated )
       registerVariable( var );
@@ -163,11 +162,13 @@ namespace Glacier {
     mPrecreated.clear();
 
     mCommands.sort( Console::cmpSortCmds );
+
+    mOutFile = new TextFile( L"console.log" );
   }
 
   Console::~Console()
   {
-    //
+    SAFE_DELETE( mOutFile );
   }
 
   Console::Source Console::registerSource( const wstring& name, COLORREF color )
@@ -224,7 +225,9 @@ namespace Glacier {
       buffer );
 
     mLines.push_back( out );
-    OutputDebugStringW( out );
+
+    if ( mOutFile )
+      mOutFile->write( out );
   }
 
 }
