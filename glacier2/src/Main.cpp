@@ -3,6 +3,7 @@
 #include "GlacierMemory.h"
 #include "Engine.h"
 #include "Console.h"
+#include "Win32.h"
 
 int Vsnprintf8(char8_t* pDestination, size_t n, const char8_t* pFormat, va_list arguments)
 {
@@ -24,9 +25,11 @@ LPWSTR lpCmdLine, int nCmdShow )
   // CRT memory allocation breakpoints can be set here
   // _CrtSetBreakAlloc( x );
 
+  Glacier::Win32::instance().initialize();
   gEngine = new Glacier::Engine( hInstance );
   gEngine->run();
   SAFE_DELETE( gEngine );
+  Glacier::Win32::instance().shutdown();
 
   return EXIT_SUCCESS;
 }

@@ -6,6 +6,10 @@
 
 // Platform Headers
 #include <windows.h>          // Windows
+#include <shellapi.h>         // ShellAPI
+#include <shlobj.h>           // ShellAPI OLE Objects
+#include <commctrl.h>         // Common Controls          (comctl32.lib)
+#include <richedit.h>         // RichEdit
 #include <time.h>             // Time
 #include <psapi.h>            // Process Status API       (psapi.lib)
 #include <dbghelp.h>          // Debug Help Library       (dbghelp.lib)

@@ -4,15 +4,42 @@
 #include "Scripting.h"
 #include "Graphics.h"
 #include "Utilities.h"
+#include "Exception.h"
 
 Glacier::Engine* gEngine = nullptr;
 
 namespace Glacier {
 
+  // Engine timing values
+
+  GameTime  Engine::fTime = 0.0;
+  LocalTime Engine::fTimeDelta = 0.0;
+  GameTime  Engine::fTimeAccumulator = 0.0;
+  LocalTime Engine::fLogicStep = 1.0 / 60.0;
+
+  // Engine version struct
+
+  Engine::Version::Version( uint32_t major_, uint32_t minor_, uint32_t build_ ):
+  compiler( _COMPILER ), profile( _PROFILE ),
+  major( major_ ), minor( minor_ ), build( build_ )
+  {
+    WCHAR temp[100];
+    swprintf_s( temp, 100, L"glacier² game engine v%d.%d.%d %s",
+      major, minor, build, profile.c_str() );
+    title = temp;
+    swprintf_s( temp, 100, L"%S %S", __DATE__, __TIME__ );
+    compiled = temp;
+    swprintf_s( temp, 100, L"compiled on %s (%s)",
+      compiled.c_str(), compiler.c_str() );
+    subtitle = temp;
+  }
+
+  // Engine class
+
   Engine::Engine( HINSTANCE instance ):
   mConsole( nullptr ), mScripting( nullptr ), mGraphics( nullptr ),
   mProcess( NULL ), mThread( NULL ), mInstance( instance ),
-  mSignal( Signal_None )
+  mSignal( Signal_None ), mVersion( 0, 1, 1 )
   {
     initialize();
   }
@@ -75,6 +102,14 @@ namespace Glacier {
     adjustPrivileges();
     fixupThreadAffinity();
 
+    // Print engine info
+    mConsole->printf( Console::srcEngine, getVersion().title.c_str() );
+    mConsole->printf( Console::srcEngine, getVersion().subtitle.c_str() );
+
+    // Fetch HPC frequency
+    if ( !QueryPerformanceFrequency( &qwiTimerFrequency ) )
+      ENGINE_EXCEPT_W32( L"Couldn't query HPC frequency" );
+
     mScripting = new Scripting();
     mGraphics = new Graphics();
   }
@@ -102,21 +137,6 @@ namespace Glacier {
   Engine::~Engine()
   {
     shutdown();
-  }
-
-  Console* Engine::getConsole()
-  {
-    return mConsole;
-  }
-
-  Scripting* Engine::getScripting()
-  {
-    return mScripting;
-  }
-
-  Graphics* Engine::getGraphics()
-  {
-    return mGraphics;
   }
 
 }

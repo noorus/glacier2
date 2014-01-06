@@ -1,4 +1,5 @@
 #pragma once
+#include "Types.h"
 
 namespace Glacier {
 
@@ -12,10 +13,34 @@ namespace Glacier {
       Signal_None = 0,
       Signal_Stop
     };
+    struct Version {
+    public:
+      uint32_t major;
+      uint32_t minor;
+      uint32_t build;
+      wstring compiler;
+      wstring compiled;
+      wstring profile;
+      wstring title;
+      wstring subtitle;
+      Version( uint32_t major, uint32_t minor, uint32_t build );
+    };
   protected:
+    Version mVersion;
+    // Subsystems
     Console* mConsole;
     Scripting* mScripting;
     Graphics* mGraphics;
+    // Timing
+    LARGE_INTEGER qwiTimerFrequency;      //!< HPC frequency
+    LARGE_INTEGER qwiTimeNew;             //!< Newest time
+    LARGE_INTEGER qwiTimeCurrent;         //!< Current time
+    LARGE_INTEGER qwiTickDelta;           //!< Time delta
+    static GameTime  fTime;               //!< Game time
+    static LocalTime fTimeDelta;          //!< Game frame delta
+    static GameTime  fTimeAccumulator;    //!< Game frametime accumulator
+    static LocalTime fLogicStep;          //!< Game logic step
+    // Handles
     HANDLE mProcess;
     HANDLE mThread;
     HINSTANCE mInstance;
@@ -28,9 +53,10 @@ namespace Glacier {
     void initialize();
     void run();
     void shutdown();
-    Console* getConsole();
-    Scripting* getScripting();
-    Graphics* getGraphics();
+    const Version& getVersion() { return mVersion; }
+    Console* getConsole() { return mConsole; }
+    Scripting* getScripting() { return mScripting; }
+    Graphics* getGraphics() { return mGraphics; }
   };
 
 }
