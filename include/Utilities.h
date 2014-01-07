@@ -20,14 +20,16 @@ namespace Glacier {
   class ScopedSRWLock: boost::noncopyable {
   protected:
     PSRWLOCK mLock;
+    bool mExclusive;
   public:
-    ScopedSRWLock( PSRWLOCK lock ): mLock( lock )
+    ScopedSRWLock( PSRWLOCK lock, bool exclusive = true ):
+    mLock( lock ), mExclusive( exclusive )
     {
-      AcquireSRWLockExclusive( mLock );
+      mExclusive ? AcquireSRWLockExclusive( mLock ) : AcquireSRWLockShared( mLock );
     }
     void unlock()
     {
-      ReleaseSRWLockExclusive( mLock );
+      mExclusive ? ReleaseSRWLockExclusive( mLock ) : ReleaseSRWLockShared( mLock );
     }
     ~ScopedSRWLock()
     {

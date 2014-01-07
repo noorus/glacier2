@@ -25,11 +25,15 @@ LPWSTR lpCmdLine, int nCmdShow )
   // CRT memory allocation breakpoints can be set here
   // _CrtSetBreakAlloc( x );
 
-  Glacier::Win32::instance().initialize();
+  Glacier::Win32::Win32::instance().initialize();
+
   gEngine = new Glacier::Engine( hInstance );
+  gEngine->initialize();
   gEngine->run();
+  gEngine->shutdown();
   SAFE_DELETE( gEngine );
-  Glacier::Win32::instance().shutdown();
+
+  Glacier::Win32::Win32::instance().shutdown();
 
   return EXIT_SUCCESS;
 }

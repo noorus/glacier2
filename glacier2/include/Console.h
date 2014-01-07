@@ -23,15 +23,15 @@ namespace Glacier {
     COLORREF color;
   };
 
-  //! \class ConCmdBase
+  //! \class ConBase
   //! Base class for console commands & variables.
-  class ConCmdBase {
+  class ConBase {
   friend class Console;
   protected:
     wstring mName; //!< Name of the command/variable
     wstring mDescription; //!< Short description for the command/variable
     bool mRegistered; //!< Is the command/variable registered
-    ConCmdBase( const wstring& name, const wstring& description );
+    ConBase( const wstring& name, const wstring& description );
     virtual void onRegister();
   public:
     virtual bool isCommand() = 0;
@@ -40,23 +40,24 @@ namespace Glacier {
     virtual const bool isRegistered();
   };
 
-  typedef std::list<ConCmdBase*> ConCmdBaseList;
+  typedef std::list<ConBase*> ConBaseList;
 
   //! \class ConCmd
   //! A console command.
-  class ConCmd: public ConCmdBase {
+  class ConCmd: public ConBase {
   public:
-    typedef void ( *Callback )( ConCmd* command, StringVector& arguments );
+    typedef void ( *Callback )( Console* console, ConCmd* command, StringVector& arguments );
   protected:
     Callback mCallback; //!< Callback function on execution
   public:
     ConCmd( const wstring& name, const wstring& description, Callback callback );
+    virtual void call( Console* console, StringVector& arguments );
     virtual bool isCommand();
   };
 
   //! \class ConVar
   //! A console variable.
-  class ConVar: public ConCmdBase {
+  class ConVar: public ConBase {
   public:
     struct Value {
       int i; //!< Integer representation
@@ -84,9 +85,16 @@ namespace Glacier {
     virtual void setValue( const wstring& value );
   };
 
+  class ConsoleListener {
+  public:
+    virtual void onAddLine( COLORREF color, const wstring& line ) = 0;
+  };
+
+  typedef std::list<ConsoleListener*> ConsoleListenerList;
+
   //! \class Console
   class Console {
-  friend class ConCmdBase;
+  friend class ConBase;
   public:
     enum Source: unsigned long {
       srcEngine = 0,
@@ -98,21 +106,41 @@ namespace Glacier {
       srcGame
     };
   protected:
-    SRWLOCK mLock; //!< Our execution lock
-    ConCmdBaseList mCommands; //!< Registered commands & variables
-    static ConCmdBaseList mPrecreated; //!< Pre-created commands & variables
+    SRWLOCK mLock; //!< Execution lock
+    SRWLOCK mBufferLock; //!< Command buffer lock
+    ConBaseList mCommands; //!< Registered commands & variables
+    static ConBaseList mPrecreated; //!< Pre-created commands & variables
     StringList mLines; //!< Line buffer
     StringQueue mCommandBuffer; //!< Command buffer for next execution
     std::map<Source,ConsoleSource> mSources;
     TextFile* mOutFile;
-    static bool cmpSortCmds( ConCmdBase* x, ConCmdBase* y );
+    ConsoleListenerList mListeners;
+    ConCmd* mCmdList; //!< "list" command
+    ConCmd* mCmdFind; //!< "find" command
+    ConCmd* mCmdExec; //!< "exec" command
+    ConCmd* mCmdHelp; //!< "help" command
+    static bool cmpSortCmds( ConBase* a, ConBase* b );
+    void processBuffered();
+    static StringVector tokenize( const wstring& commandLine );
   public:
     Console();
     ~Console();
     Source registerSource( const wstring& name, COLORREF color );
+    void addListener( ConsoleListener* listener );
+    void removeListener( ConsoleListener* listener );
     void unregisterSource( Source source );
-    void registerVariable( ConCmdBase* var );
-    void printf( Source source, LPCWSTR line, ... );
+    void registerVariable( ConBase* var );
+    void printf( Source source, const wchar_t* line, ... );
+    void errorPrintf( const wchar_t* line, ... );
+    void autoComplete( const wstring& line, ConBaseList& matches );
+    void execute( wstring commandLine );
+    void executeBuffered( const wstring& commandLine );
+    void executeFile( const wstring& filename );
+    void describe( ConBase* base );
+    static void callbackList( Console* console, ConCmd* command, StringVector& arguments );
+    static void callbackFind( Console* console, ConCmd* command, StringVector& arguments );
+    static void callbackExec( Console* console, ConCmd* command, StringVector& arguments );
+    static void callbackHelp( Console* console, ConCmd* command, StringVector& arguments );
   };
 
 }

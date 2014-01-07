@@ -4,6 +4,7 @@
 namespace Glacier {
 
   class Console;
+  class ConsoleWindow;
   class Scripting;
   class Graphics;
 
@@ -14,7 +15,6 @@ namespace Glacier {
       Signal_Stop
     };
     struct Version {
-    public:
       uint32_t major;
       uint32_t minor;
       uint32_t build;
@@ -29,6 +29,7 @@ namespace Glacier {
     Version mVersion;
     // Subsystems
     Console* mConsole;
+    ConsoleWindow* mConsoleWindow;
     Scripting* mScripting;
     Graphics* mGraphics;
     // Timing
@@ -41,10 +42,10 @@ namespace Glacier {
     static GameTime  fTimeAccumulator;    //!< Game frametime accumulator
     static LocalTime fLogicStep;          //!< Game logic step
     // Handles
-    HANDLE mProcess;
-    HANDLE mThread;
-    HINSTANCE mInstance;
-    volatile Signal mSignal;
+    HANDLE mProcess; //!< Process handle
+    HANDLE mThread; //!< Main thread handle
+    HINSTANCE mInstance; //!< Instance handle
+    volatile Signal mSignal; //!< Engine signal
     void adjustPrivileges();
     void fixupThreadAffinity();
   public:

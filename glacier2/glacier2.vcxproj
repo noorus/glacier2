@@ -105,7 +105,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)..\SDK\Ogre\lib\$(Configuration);$(SolutionDir)..\SDK\Ogre\lib\$(Configuration)\opt;$(SolutionDir)..\SDK\FMOD SoundSystem\FMOD Programmers API Windows\api\lib;$(SolutionDir)..\SDK\FMOD SoundSystem\FMOD Programmers API Windows\fmoddesignerapi\api\lib;$(SolutionDir)..\v8\build\$(Configuration)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>OgreMain_d.lib;RenderSystem_Direct3D9_d.lib;Plugin_PCZSceneManager_d.lib;fmodexL64_vc.lib;fmod_eventL64.lib;icui18n.lib;icuuc.lib;v8_base.x64.lib;v8_snapshot.lib;ws2_32.lib;winmm.lib;comctl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>OgreMain_d.lib;RenderSystem_Direct3D9_d.lib;Plugin_PCZSceneManager_d.lib;fmodexL64_vc.lib;fmod_eventL64.lib;icui18n.lib;icuuc.lib;v8_base.x64.lib;v8_snapshot.lib;ws2_32.lib;winmm.lib;comctl32.lib;gdiplus.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Manifest>
       <AdditionalManifestFiles>CommonControls.manifest</AdditionalManifestFiles>
@@ -151,7 +151,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(SolutionDir)..\SDK\Ogre\lib\$(Configuration);$(SolutionDir)..\SDK\Ogre\lib\$(Configuration)\opt;$(SolutionDir)..\SDK\FMOD SoundSystem\FMOD Programmers API Windows\api\lib;$(SolutionDir)..\SDK\FMOD SoundSystem\FMOD Programmers API Windows\fmoddesignerapi\api\lib;$(SolutionDir)..\v8\build\$(Configuration)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>OgreMain.lib;RenderSystem_Direct3D9.lib;Plugin_PCZSceneManager.lib;fmodex64_vc.lib;fmod_event64.lib;icui18n.lib;icuuc.lib;v8_base.x64.lib;v8_snapshot.lib;ws2_32.lib;winmm.lib;comctl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>OgreMain.lib;RenderSystem_Direct3D9.lib;Plugin_PCZSceneManager.lib;fmodex64_vc.lib;fmod_event64.lib;icui18n.lib;icuuc.lib;v8_base.x64.lib;v8_snapshot.lib;ws2_32.lib;winmm.lib;comctl32.lib;gdiplus.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ShowProgress>NotSet</ShowProgress>
     </Link>
     <Manifest>
@@ -190,6 +190,7 @@
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCpp</CompileAs>
     </ClCompile>
     <ClCompile Include="src\Console.cpp" />
+    <ClCompile Include="src\ConsoleWindow.cpp" />
     <ClCompile Include="src\Engine.cpp" />
     <ClCompile Include="src\Exception.cpp" />
     <ClCompile Include="src\Graphics.cpp" />
@@ -209,6 +210,7 @@
     <ClInclude Include="..\include\Types.h" />
     <ClInclude Include="..\include\Utilities.h" />
     <ClInclude Include="include\Console.h" />
+    <ClInclude Include="include\ConsoleWindow.h" />
     <ClInclude Include="include\Engine.h" />
     <ClInclude Include="include\Exception.h" />
     <ClInclude Include="include\Graphics.h" />
@@ -218,9 +220,13 @@
     <ClInclude Include="include\TargetVer.h" />
     <ClInclude Include="include\TextFile.h" />
     <ClInclude Include="include\Win32.h" />
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\README.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="glacier2.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

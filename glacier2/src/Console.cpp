@@ -6,11 +6,15 @@
 
 namespace Glacier {
 
-  const unsigned long cMaxConsoleLine = 4096;
+  const long     cMaxConsoleLine  = 4096;
+  const wchar_t* cConsoleEcho     = L"> %s";
+  const wchar_t* cConsolePrint    = L"[%02d:%02d:%02d] [%s] %s\r\n";
+  const wchar_t* cConsoleVarOut   = L"%s is \"%s\"";
+  const wchar_t* cConsoleUnknown  = L"Unknown command \"%s\"";
 
-  // ConCmdBase ===============================================================
+  // ConBase ===============================================================
 
-  ConCmdBase::ConCmdBase( const wstring& name, const wstring& description ):
+  ConBase::ConBase( const wstring& name, const wstring& description ):
   mName( name ), mDescription( description ), mRegistered( false )
   {
     // Name and description are required
@@ -23,22 +27,22 @@ namespace Glacier {
     Console::mPrecreated.push_back( this );
   }
 
-  const wstring& ConCmdBase::getName()
+  const wstring& ConBase::getName()
   {
     return mName;
   }
 
-  const wstring& ConCmdBase::getDescription()
+  const wstring& ConBase::getDescription()
   {
     return mDescription;
   }
 
-  const bool ConCmdBase::isRegistered()
+  const bool ConBase::isRegistered()
   {
     return mRegistered;
   }
 
-  void ConCmdBase::onRegister()
+  void ConBase::onRegister()
   {
     mRegistered = true;
   }
@@ -47,10 +51,15 @@ namespace Glacier {
 
   ConCmd::ConCmd( const wstring& name, const wstring& description,
   ConCmd::Callback callback ):
-  ConCmdBase( name, description ), mCallback( callback )
+  ConBase( name, description ), mCallback( callback )
   {
     // Callback is required for a command
     assert( mCallback );
+  }
+
+  void ConCmd::call( Console* console, StringVector& arguments )
+  {
+    mCallback( console, this, arguments );
   }
 
   bool ConCmd::isCommand()
@@ -62,7 +71,7 @@ namespace Glacier {
 
   ConVar::ConVar( const wstring& name, const wstring& description,
   int defaultValue, ConVar::Callback callback ):
-  ConCmdBase( name, description ), mCallback( callback )
+  ConBase( name, description ), mCallback( callback )
   {
     setValue( defaultValue );
     mDefaultValue = mValue;
@@ -70,7 +79,7 @@ namespace Glacier {
 
   ConVar::ConVar( const wstring& name, const wstring& description,
   double defaultValue, ConVar::Callback callback ):
-  ConCmdBase( name, description ), mCallback( callback )
+  ConBase( name, description ), mCallback( callback )
   {
     setValue( defaultValue );
     mDefaultValue = mValue;
@@ -78,7 +87,7 @@ namespace Glacier {
 
   ConVar::ConVar( const wstring& name, const wstring& description,
   const wstring& defaultValue, ConVar::Callback callback ):
-  ConCmdBase( name, description ), mCallback( callback )
+  ConBase( name, description ), mCallback( callback )
   {
     setValue( defaultValue );
     mDefaultValue = mValue;
@@ -144,9 +153,11 @@ namespace Glacier {
 
   // Console ==================================================================
 
-  Console::Console(): mOutFile( nullptr )
+  Console::Console(): mOutFile( nullptr ), mCmdList( nullptr ),
+  mCmdHelp( nullptr ), mCmdFind( nullptr ), mCmdExec( nullptr )
   {
     InitializeSRWLock( &mLock );
+    InitializeSRWLock( &mBufferLock );
 
     registerSource( L"engine", RGB(60,64,76) );
     registerSource( L"gfx", RGB(79,115,44) );
@@ -156,7 +167,13 @@ namespace Glacier {
     registerSource( L"input", RGB(219,38,122) );
     registerSource( L"game", RGB(4,127,77) );
 
-    for ( ConCmdBase* var : mPrecreated )
+    // Register core commands
+    mCmdList = new ConCmd( L"list", L"List all cvars.", callbackList );
+    mCmdFind = new ConCmd( L"find", L"Perform a cvar lookup using regexp.", callbackFind );
+    mCmdExec = new ConCmd( L"exec", L"Execute a configuration file.", callbackExec );
+    mCmdHelp = new ConCmd( L"help", L"Get help on a variable/command.", callbackHelp );
+
+    for ( ConBase* var : mPrecreated )
       registerVariable( var );
 
     mPrecreated.clear();
@@ -169,6 +186,105 @@ namespace Glacier {
   Console::~Console()
   {
     SAFE_DELETE( mOutFile );
+  }
+
+  StringVector Console::tokenize( const wstring& str )
+  {
+    bool quoted = false;
+    bool escaped = false;
+    wstring buffer;
+    StringVector v;
+    for ( size_t i = 0; i < str.length(); i++ )
+    {
+      if ( str[i] == BACKSLASH ) {
+        if ( escaped )
+          buffer.append( str.substr( i, 1 ) );
+        escaped = !escaped;
+      } else if ( str[i] == SPACE ) {
+        if ( !quoted ) {
+          if ( !buffer.empty() ) {
+            v.push_back( buffer );
+            buffer.clear();
+          }
+        } else
+          buffer.append( str.substr( i, 1 ) );
+        escaped = false;
+      } else if ( str[i] == QUOTE ) {
+        if ( escaped ) {
+          buffer.append( str.substr( i, 1 ) );
+          escaped = false;
+        } else {
+          if ( quoted ) {
+            if ( !buffer.empty() ) {
+              v.push_back( buffer );
+              buffer.clear();
+            }
+          }
+          quoted = !quoted;
+        }
+      } else {
+        buffer.append( str.substr( i, 1 ) );
+        escaped = false;
+      }
+    }
+    if ( !buffer.empty() )
+      v.push_back( buffer );
+    return v;
+  }
+
+  void Console::describe( ConBase* base )
+  {
+    printf( srcEngine,
+      L"%s: (%s) - %s",
+      base->getName().c_str(),
+      base->isCommand() ? L"command" : L"variable",
+      base->getDescription().c_str() );
+  }
+
+  void Console::callbackList( Console* console, ConCmd* command, StringVector& arguments )
+  {
+    for ( ConBase* base : console->mCommands )
+      console->describe( base );
+  }
+
+  void Console::callbackFind( Console* console, ConCmd* command, StringVector& arguments )
+  {
+    if ( arguments.size() != 2 ) {
+      console->printf( srcEngine, L"Format: %s <regexp>", arguments[0].c_str() );
+      return;
+    }
+
+    const std::tr1::wregex pattern( arguments[1] );
+
+    for ( ConBase* base : console->mCommands )
+      if ( std::tr1::regex_match( base->getName(), pattern ) )
+        console->describe( base );
+  }
+
+  void Console::callbackExec( Console* console, ConCmd* command, StringVector& arguments )
+  {
+    if ( arguments.size() != 2 ) {
+      console->printf( srcEngine, L"Format: %s <filename>", arguments[0].c_str() );
+      return;
+    }
+
+    console->executeFile( arguments[1] );
+  }
+
+  void Console::callbackHelp( Console* console, ConCmd* command, StringVector& arguments )
+  {
+    if ( arguments.size() != 2 ) {
+      console->printf( srcEngine, L"Format: %s <variable/command>", arguments[0].c_str() );
+      return;
+    }
+
+    for ( ConBase* base : console->mCommands )
+      if ( boost::iequals( base->getName(), arguments[1] ) ) {
+        console->describe( base );
+        return;
+      }
+
+    console->errorPrintf( L"Unknown command \"%s\"", arguments[1].c_str() );
   }
 
   Console::Source Console::registerSource( const wstring& name, COLORREF color )
@@ -186,14 +302,14 @@ namespace Glacier {
     mSources.erase( source );
   }
 
-  bool Console::cmpSortCmds( ConCmdBase* x, ConCmdBase* y )
+  bool Console::cmpSortCmds( ConBase* a, ConBase* b )
   {
-    if ( _wcsicmp( x->getName().c_str(), y->getName().c_str() ) <= 0 )
+    if ( _wcsicmp( a->getName().c_str(), b->getName().c_str() ) <= 0 )
       return true;
     return false;
   }
 
-  void Console::registerVariable( ConCmdBase* var )
+  void Console::registerVariable( ConBase* var )
   {
     ScopedSRWLock lock( &mLock );
 
@@ -205,7 +321,7 @@ namespace Glacier {
     mCommands.push_back( var );
   }
 
-  void Console::printf( Source source_, LPCWSTR line, ... )
+  void Console::printf( Source source_, const wchar_t* line, ... )
   {
     ScopedSRWLock lock( &mLock );
 
@@ -220,14 +336,141 @@ namespace Glacier {
     WCHAR out[cMaxConsoleLine];
     SYSTEMTIME time;
     GetLocalTime( &time );
-    swprintf_s( out, cMaxConsoleLine, L"[%02d:%02d:%02d] [%s] %s\r\n",
+    swprintf_s( out, cMaxConsoleLine, cConsolePrint,
       time.wHour, time.wMinute, time.wSecond, source.name.c_str(),
       buffer );
 
     mLines.push_back( out );
 
+    for ( ConsoleListener* listener : mListeners )
+      listener->onAddLine( source.color, out );
+
     if ( mOutFile )
       mOutFile->write( out );
+  }
+
+  void Console::addListener( ConsoleListener* listener )
+  {
+    // Don't bother checking for dupes
+    mListeners.push_back( listener );
+  }
+
+  void Console::removeListener( ConsoleListener* listener )
+  {
+    mListeners.remove( listener );
+  }
+
+  void Console::errorPrintf( const wchar_t* line, ... )
+  {
+    ScopedSRWLock lock( &mLock );
+
+    va_list va_alist;
+    WCHAR buffer[cMaxConsoleLine];
+    va_start( va_alist, line );
+    _vsnwprintf_s( buffer, cMaxConsoleLine, line, va_alist );
+    va_end( va_alist );
+
+    ConsoleSource source = mSources[srcEngine];
+
+    WCHAR out[cMaxConsoleLine];
+    SYSTEMTIME time;
+    GetLocalTime( &time );
+    swprintf_s( out, cMaxConsoleLine, cConsolePrint,
+      time.wHour, time.wMinute, time.wSecond, source.name.c_str(),
+      buffer );
+
+    mLines.push_back( out );
+
+    for ( ConsoleListener* listener : mListeners )
+      listener->onAddLine( source.color, out );
+
+    if ( mOutFile )
+      mOutFile->write( out );
+  }
+
+  void Console::processBuffered()
+  {
+    ScopedSRWLock lock( &mBufferLock );
+
+    while ( !mCommandBuffer.empty() )
+    {
+      wstring cmd = mCommandBuffer.front();
+      execute( cmd.c_str() );
+      mCommandBuffer.pop();
+    }
+  }
+
+  void Console::autoComplete( const wstring& line, ConBaseList& matches )
+  {
+    ScopedSRWLock lock( &mLock, false );
+
+    matches.clear();
+    wstring trimmed = boost::trim_copy( line );
+    for ( auto it = mCommands.begin(); it != mCommands.end(); ++it )
+    {
+      wstring comparison = (*it)->getName().substr( 0, trimmed.length() );
+      if ( !_wcsicmp( trimmed.c_str(), comparison.c_str() ) ) {
+        matches.push_back( (*it) );
+      }
+    }
+  }
+
+  void Console::execute( wstring commandLine )
+  {
+    ScopedSRWLock lock( &mLock );
+
+    boost::trim( commandLine );
+    if ( commandLine.empty() )
+      return;
+
+    StringVector arguments = tokenize( commandLine );
+    if ( arguments.empty() )
+      return;
+
+    printf( srcEngine, cConsoleEcho, commandLine.c_str() );
+
+    wstring command = arguments[0];
+    for ( ConBase* base : mCommands )
+    {
+      if ( !base->isRegistered() )
+        continue;
+      if ( boost::iequals( base->getName(), command ) )
+      {
+        if ( base->isCommand() )
+        {
+          ConCmd* cmd = static_cast<ConCmd*>( base );
+          cmd->call( this, arguments );
+        }
+        else
+        {
+          ConVar* var = static_cast<ConVar*>( base );
+          if ( arguments.size() > 1 )
+          {
+            var->setValue( arguments[1] );
+          }
+          else
+          {
+            printf( srcEngine, cConsoleVarOut,
+              var->getName().c_str(),
+              var->getString().c_str() );
+          }
+        }
+        return;
+      }
+    }
+    errorPrintf( cConsoleUnknown, command.c_str() );
+  }
+
+  void Console::executeBuffered( const wstring& commandLine )
+  {
+    ScopedSRWLock lock( &mBufferLock );
+
+    mCommandBuffer.push( commandLine );
+  }
+
+  void Console::executeFile( const wstring& filename )
+  {
+    //
   }
 
 }

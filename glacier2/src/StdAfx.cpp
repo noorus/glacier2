@@ -3,6 +3,6 @@
 
 namespace Glacier {
 
-  ConCmdBaseList Console::mPrecreated;
+  ConBaseList Console::mPrecreated;
 
 }
