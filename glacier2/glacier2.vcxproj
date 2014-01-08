@@ -202,6 +202,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\TextFile.cpp" />
+    <ClCompile Include="src\ThreadController.cpp" />
     <ClCompile Include="src\Win32.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -219,6 +220,7 @@
     <ClInclude Include="include\StdAfx.h" />
     <ClInclude Include="include\TargetVer.h" />
     <ClInclude Include="include\TextFile.h" />
+    <ClInclude Include="include\ThreadController.h" />
     <ClInclude Include="include\Win32.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>

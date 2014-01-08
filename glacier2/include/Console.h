@@ -113,8 +113,8 @@ namespace Glacier {
     StringList mLines; //!< Line buffer
     StringQueue mCommandBuffer; //!< Command buffer for next execution
     std::map<Source,ConsoleSource> mSources;
-    TextFile* mOutFile;
-    ConsoleListenerList mListeners;
+    TextFile* mOutFile; //!< Output log file
+    ConsoleListenerList mListeners; //!< Console event listeners
     ConCmd* mCmdList; //!< "list" command
     ConCmd* mCmdFind; //!< "find" command
     ConCmd* mCmdExec; //!< "exec" command
@@ -122,6 +122,12 @@ namespace Glacier {
     static bool cmpSortCmds( ConBase* a, ConBase* b );
     void processBuffered();
     static StringVector tokenize( const wstring& commandLine );
+  protected:
+    // Core command callbacks
+    static void callbackList( Console* console, ConCmd* command, StringVector& arguments );
+    static void callbackFind( Console* console, ConCmd* command, StringVector& arguments );
+    static void callbackExec( Console* console, ConCmd* command, StringVector& arguments );
+    static void callbackHelp( Console* console, ConCmd* command, StringVector& arguments );
   public:
     Console();
     ~Console();
@@ -137,10 +143,6 @@ namespace Glacier {
     void executeBuffered( const wstring& commandLine );
     void executeFile( const wstring& filename );
     void describe( ConBase* base );
-    static void callbackList( Console* console, ConCmd* command, StringVector& arguments );
-    static void callbackFind( Console* console, ConCmd* command, StringVector& arguments );
-    static void callbackExec( Console* console, ConCmd* command, StringVector& arguments );
-    static void callbackHelp( Console* console, ConCmd* command, StringVector& arguments );
   };
 
 }

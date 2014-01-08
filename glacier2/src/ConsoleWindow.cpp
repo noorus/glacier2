@@ -4,17 +4,11 @@
 #include "Exception.h"
 #include "Engine.h"
 
-#define GLACIER_RICHEDIT_CONTROL L"RichEdit50W"
-#define GLACIER_CONSOLE_FONT L"Trebuchet MS"
-#define GLACIER_GFX_RENDER_CLASS "GCR_RENDER"
-#define GLACIER_CONSOLE_CLASS L"GCR_CONSOLE"
-#define GLACIER_EDITOR_TOOLWINDOW_CLASS L"GCR_ED_TOOLBOX"
-#define GLACIER_UI_FONT L"Segoe UI"
-#define GLACIER_CONCOLOR_FOREGROUND RGB(10,13,20)
-#define GLACIER_CONCOLOR_BACKGROUND RGB(255,255,255)
-#define GLACIER_CONCOLOR_ERROR RGB(255,0,0)
-
 namespace Glacier {
+
+  const wchar_t* cConsoleWindowFont = L"Trebuchet MS";
+  const COLORREF cConsoleWindowBackground = RGB( 255, 255, 255 );
+  const COLORREF cConsoleWindowForeground = RGB( 10, 13, 20 );
 
   ConsoleWindow::ConsoleWindow( HINSTANCE instance, Console* console ):
   mConsole( console ), mWindow( nullptr )
@@ -48,15 +42,14 @@ namespace Glacier {
 
   void ConsoleWindow::print( COLORREF color, const wstring& line )
   {
-    ucrLog.cpMin = -1;
-    ucrLog.cpMax = -1;
-    SendMessage( hCtrlLog, EM_EXSETSEL, 0, (LPARAM)&ucrLog );
-    ucfLog.dwMask = CFM_COLOR;
-    ucfLog.crTextColor = color;
-    SendMessage( hCtrlLog, EM_SETCHARFORMAT, SCF_SELECTION, (LPARAM)&ucfLog );
-    ustLog.codepage = 1200;
-    ustLog.flags = ST_SELECTION;
-    SendMessage( hCtrlLog, EM_SETTEXTEX, (WPARAM)&ustLog, (LPARAM)line.c_str() );
+    CHARRANGE range = { -1, -1 };
+    SendMessage( mLog, EM_EXSETSEL, 0, (LPARAM)&range );
+    CHARFORMAT2W format;
+    format.dwMask = CFM_COLOR;
+    format.crTextColor = color;
+    SendMessage( mLog, EM_SETCHARFORMAT, SCF_SELECTION, (LPARAM)&format );
+    SETTEXTEX textex = { ST_SELECTION | ST_UNICODE, 1200 };
+    SendMessage( mLog, EM_SETTEXTEX, (WPARAM)&textex, (LPARAM)line.c_str() );
   }
 
   bool ConsoleWindow::step()
@@ -73,30 +66,29 @@ namespace Glacier {
 
   void ConsoleWindow::clearCmdline()
   {
-    SendMessageW( hCtrlCmdLine, EM_SETEVENTMASK, NULL, ENM_NONE );
-    ustLog.codepage = 1200;
-    ustLog.flags = ST_DEFAULT;
-    SendMessageW( hCtrlCmdLine, EM_SETTEXTEX, (WPARAM)&ustLog, (LPARAM)NULL );
-    SendMessageW( hCtrlCmdLine, EM_SETEVENTMASK, NULL, ENM_CHANGE );
+    SETTEXTEX textex = { ST_DEFAULT, 1200 };
+    SendMessageW( mCmdline, EM_SETEVENTMASK, NULL, ENM_NONE );
+    SendMessageW( mCmdline, EM_SETTEXTEX, (WPARAM)&textex, (LPARAM)NULL );
+    SendMessageW( mCmdline, EM_SETEVENTMASK, NULL, ENM_CHANGE );
   }
 
-  void ConsoleWindow::setCmdline( const wstring& sLine )
+  void ConsoleWindow::setCmdline( const wstring& line )
   {
-    SendMessageW( hCtrlCmdLine, EM_SETEVENTMASK, NULL, ENM_NONE );
-    ustLog.codepage = 1200;
-    ustLog.flags = ST_DEFAULT;
-    SendMessageW( hCtrlCmdLine, EM_SETTEXTEX, (WPARAM)&ustLog, (LPARAM)sLine.c_str() );
-    SendMessageW( hCtrlCmdLine, EM_SETEVENTMASK, NULL, ENM_CHANGE );
+    SETTEXTEX textex = { ST_DEFAULT, 1200 };
+    SendMessageW( mCmdline, EM_SETEVENTMASK, NULL, ENM_NONE );
+    SendMessageW( mCmdline, EM_SETTEXTEX, (WPARAM)&textex, (LPARAM)line.c_str() );
+    SendMessageW( mCmdline, EM_SETEVENTMASK, NULL, ENM_CHANGE );
   }
 
   LRESULT CALLBACK ConsoleWindow::cmdLineProc( HWND hWnd, UINT uiMessage,
   WPARAM wParam, LPARAM lParam )
   {
-    ConsoleWindow* pW = (ConsoleWindow*)GetWindowLongPtrW( hWnd, GWLP_USERDATA );
+    auto pW = (ConsoleWindow*)GetWindowLongPtrW( hWnd, GWLP_USERDATA );
     Console* pC = pW->mConsole;
     DWORD dwLength;
     LPWSTR pwsLine;
     wstring sBackLine;
+    CHARRANGE range = { 0, -1 };
     switch ( uiMessage )
     {
       case WM_CHAR:
@@ -107,7 +99,7 @@ namespace Glacier {
         switch ( wParam )
         {
           case VK_TAB:
-            dwLength = (DWORD)SendMessageW( pW->hCtrlCmdLine, WM_GETTEXTLENGTH, NULL, NULL );
+            dwLength = (DWORD)SendMessageW( pW->mCmdline, WM_GETTEXTLENGTH, NULL, NULL );
             if ( dwLength < 1 )
             {
               pW->mAutocomplete.suggestion = nullptr;
@@ -121,7 +113,7 @@ namespace Glacier {
             else
             {
               pwsLine = new WCHAR[dwLength];
-              GetWindowTextW( pW->hCtrlCmdLine, pwsLine, dwLength );
+              GetWindowTextW( pW->mCmdline, pwsLine, dwLength );
               pW->mAutocomplete.base = pwsLine;
               pC->autoComplete( pwsLine, pW->mAutocomplete.matches );
               delete pwsLine;
@@ -143,9 +135,7 @@ namespace Glacier {
                     break;
                   pW->mAutocomplete.suggestion = (*itCmd);
                   pW->setCmdline( pW->mAutocomplete.suggestion->getName() );
-                  pW->ucrLog.cpMin = 0;
-                  pW->ucrLog.cpMax = -1;
-                  SendMessageW( pW->hCtrlCmdLine, EM_EXSETSEL, 0, (LPARAM)&pW->ucrLog );
+                  SendMessageW( pW->mCmdline, EM_EXSETSEL, 0, (LPARAM)&range );
                   return 0;
                 }
                 ++itCmd;
@@ -153,9 +143,7 @@ namespace Glacier {
             }
             pW->mAutocomplete.suggestion = pW->mAutocomplete.matches.front();
             pW->setCmdline( pW->mAutocomplete.suggestion->getName() );
-            pW->ucrLog.cpMin = 0;
-            pW->ucrLog.cpMax = -1;
-            SendMessageW( pW->hCtrlCmdLine, EM_EXSETSEL, 0, (LPARAM)&pW->ucrLog );
+            SendMessageW( pW->mCmdline, EM_EXSETSEL, 0, (LPARAM)&range );
             return 0;
         break;
       case VK_UP:
@@ -166,17 +154,13 @@ namespace Glacier {
           if ( pW->mHistory.position <= 0 )
           {
             pW->mHistory.position = 0;
-            pW->ucrLog.cpMin = 0;
-            pW->ucrLog.cpMax = -1;
-            SendMessageW( pW->hCtrlCmdLine, EM_EXSETSEL, 0, (LPARAM)&pW->ucrLog );
+            SendMessageW( pW->mCmdline, EM_EXSETSEL, 0, (LPARAM)&range );
             break;
           }
           pW->mHistory.position--;
           wstring sBackLine = pW->mHistory.stack[pW->mHistory.position];
           pW->setCmdline( sBackLine.c_str() );
-          pW->ucrLog.cpMin = 0;
-          pW->ucrLog.cpMax = -1;
-          SendMessageW( pW->hCtrlCmdLine, EM_EXSETSEL, 0, (LPARAM)&pW->ucrLog );
+          SendMessageW( pW->mCmdline, EM_EXSETSEL, 0, (LPARAM)&range );
         }
         else
         {
@@ -184,12 +168,12 @@ namespace Glacier {
           pW->mHistory.position = pW->mHistory.stack.size() - 1;
           sBackLine = pW->mHistory.stack.back();
           // get current
-          dwLength = (DWORD)SendMessageW( pW->hCtrlCmdLine, WM_GETTEXTLENGTH, NULL, NULL );
+          dwLength = (DWORD)SendMessageW( pW->mCmdline, WM_GETTEXTLENGTH, NULL, NULL );
           if ( dwLength > 0 )
           {
             dwLength++;
             pwsLine = new WCHAR[dwLength];
-            GetWindowTextW( pW->hCtrlCmdLine, pwsLine, dwLength );
+            GetWindowTextW( pW->mCmdline, pwsLine, dwLength );
             pW->mHistory.stack.push_back( pwsLine );
             delete pwsLine;
           }
@@ -198,9 +182,7 @@ namespace Glacier {
             pW->mHistory.stack.push_back( L"" );
           }
           pW->setCmdline( sBackLine );
-          pW->ucrLog.cpMin = 0;
-          pW->ucrLog.cpMax = -1;
-          SendMessageW( pW->hCtrlCmdLine, EM_EXSETSEL, 0, (LPARAM)&pW->ucrLog );
+          SendMessageW( pW->mCmdline, EM_EXSETSEL, 0, (LPARAM)&range );
         }
         return 0;
         break;
@@ -211,19 +193,13 @@ namespace Glacier {
         if ( pW->mHistory.position >= pW->mHistory.stack.size() )
         {
           pW->mHistory.position = pW->mHistory.stack.size() - 1;
-          pW->ucrLog.cpMin = 0;
-          pW->ucrLog.cpMax = -1;
-          SendMessageW( pW->hCtrlCmdLine, EM_EXSETSEL, 0, (LPARAM)&pW->ucrLog );
-          pW->ucrLog.cpMin = -1;
+          SendMessageW( pW->mCmdline, EM_EXSETSEL, 0, (LPARAM)&range );
           pW->mHistory.browsing = false;
           break;
         }
         sBackLine = pW->mHistory.stack[pW->mHistory.position];
         pW->setCmdline( sBackLine );
-        pW->ucrLog.cpMin = 0;
-        pW->ucrLog.cpMax = -1;
-        SendMessageW( pW->hCtrlCmdLine, EM_EXSETSEL, 0, (LPARAM)&pW->ucrLog );
-        pW->ucrLog.cpMin = -1;
+        SendMessageW( pW->mCmdline, EM_EXSETSEL, 0, (LPARAM)&range );
         if ( pW->mHistory.position >= pW->mHistory.stack.size() - 1 )
         {
           pW->mHistory.stack.pop_back();
@@ -240,12 +216,12 @@ namespace Glacier {
           pW->mHistory.browsing = false;
         }
         pW->mAutocomplete.reset();
-        dwLength = (DWORD)SendMessageW( pW->hCtrlCmdLine, WM_GETTEXTLENGTH, NULL, NULL );
+        dwLength = (DWORD)SendMessageW( pW->mCmdline, WM_GETTEXTLENGTH, NULL, NULL );
         if ( dwLength > 0 )
         {
           dwLength++;
           pwsLine = new WCHAR[dwLength];
-          GetWindowTextW( pW->hCtrlCmdLine, pwsLine, dwLength );
+          GetWindowTextW( pW->mCmdline, pwsLine, dwLength );
           pC = pW->mConsole;
           if ( pC ) {
             pC->executeBuffered( pwsLine );
@@ -253,9 +229,8 @@ namespace Glacier {
           pW->mHistory.stack.push_back( pwsLine );
           pW->mHistory.position = pW->mHistory.stack.size() - 1;
           pW->clearCmdline();
-          pW->ucrLog.cpMin = -1;
-          pW->ucrLog.cpMax = -1;
-          SendMessageW( pW->hCtrlCmdLine, EM_EXSETSEL, 0, (LPARAM)&pW->ucrLog );
+          range.cpMin = -1;
+          SendMessageW( pW->mCmdline, EM_EXSETSEL, 0, (LPARAM)&range );
           delete pwsLine;
         }
         return 0;
@@ -266,10 +241,10 @@ namespace Glacier {
     return CallWindowProcW( pW->lpfnOrigCmdLineProc, hWnd, uiMessage, wParam, lParam );
   }
 
-  void ConsoleWindow::paint( HWND wnd, HDC dc )
+  void ConsoleWindow::paint( HWND window, HDC dc )
   {
     RECT area;
-    GetClientRect( wnd, &area );
+    GetClientRect( window, &area );
 
     Win32::Gdiplus::Graphics gfx( dc );
 
@@ -282,18 +257,21 @@ namespace Glacier {
   LRESULT CALLBACK ConsoleWindow::wndProc( HWND hWnd, UINT uiMessage,
   WPARAM wParam, LPARAM lParam )
   {
-    ConsoleWindow* pW = (ConsoleWindow*)GetWindowLongPtrW( hWnd, GWLP_USERDATA );
+    auto pW = (ConsoleWindow*)GetWindowLongPtrW( hWnd, GWLP_USERDATA );
+    LPCREATESTRUCTW cs;
+    PAINTSTRUCT paintdata;
+    CHARRANGE range = { -1, -1 };
+    SETTEXTEX textex = { ST_DEFAULT, 1200 };
+    CHARFORMAT2W format;
     RECT rect;
     HDC dc;
-    LPCREATESTRUCTW cs;
-    PAINTSTRUCT psDlg;
     switch ( uiMessage )
     {
       case WM_COMMAND:
         switch ( HIWORD( wParam ) )
         {
           case EN_CHANGE:
-            if ( (HANDLE)lParam != pW->hCtrlCmdLine )
+            if ( (HANDLE)lParam != pW->mCmdline )
               break;
             pW->mAutocomplete.reset();
           break;
@@ -305,6 +283,7 @@ namespace Glacier {
       break;
       case WM_ERASEBKGND:
         return 1;
+      break;
       case WM_CREATE:
         // Get/set ownerships
         cs = (LPCREATESTRUCTW)lParam;
@@ -315,85 +294,76 @@ namespace Glacier {
         GetClientRect( hWnd, &rect );
 
         // Create the log box
-        pW->hCtrlLog = CreateWindowExW( WS_EX_LEFT,
-          GLACIER_RICHEDIT_CONTROL, L"",
+        pW->mLog = CreateWindowExW( WS_EX_LEFT, L"RichEdit50W", L"",
           WS_VISIBLE | WS_CHILD | WS_VSCROLL | ES_LEFT | ES_MULTILINE | ES_WANTRETURN | ES_READONLY,
           0, 30, rect.right, rect.bottom-18-32, hWnd, NULL, pW->mWindow->getInstance(), (LPVOID)pW );
 
-        if ( !pW->hCtrlLog )
-          ENGINE_EXCEPT( L"Could not create the RichEdit5 log control" );
+        if ( !pW->mLog )
+          ENGINE_EXCEPT( L"Could not create RichEdit5 log window control" );
 
         // Create the command line
-        pW->hCtrlCmdLine = CreateWindowExW( WS_EX_LEFT | WS_EX_STATICEDGE,
-          GLACIER_RICHEDIT_CONTROL, L"", WS_VISIBLE | WS_CHILD | ES_LEFT,
+        pW->mCmdline = CreateWindowExW( WS_EX_LEFT | WS_EX_STATICEDGE,
+          L"RichEdit50W", L"", WS_VISIBLE | WS_CHILD | ES_LEFT,
           0, rect.bottom-18, rect.right, 18, hWnd, NULL, pW->mWindow->getInstance(), (LPVOID)pW );
 
-        if ( !pW->hCtrlCmdLine )
-          ENGINE_EXCEPT( L"Could not create the RichEdit5 command line control" );
+        if ( !pW->mCmdline )
+          ENGINE_EXCEPT( L"Could not create RichEdit5 command line control" );
 
         // Set the command line proc
-        SetWindowLongPtrW( pW->hCtrlCmdLine, GWLP_USERDATA, (LONG)pW );
+        SetWindowLongPtrW( pW->mCmdline, GWLP_USERDATA, (LONG)pW );
         pW->lpfnOrigCmdLineProc = (WNDPROC)SetWindowLongPtrW(
-          pW->hCtrlCmdLine, GWLP_WNDPROC,
+          pW->mCmdline, GWLP_WNDPROC,
           (LONG_PTR)(WNDPROC)cmdLineProc );
 
         // Setup
-        SendMessageW( pW->hCtrlLog, EM_LIMITTEXT, -1, 0 );
-        SendMessageW( pW->hCtrlCmdLine, EM_LIMITTEXT, 100, 0 );
-        SendMessageW( pW->hCtrlLog, EM_AUTOURLDETECT, TRUE, 0 );
-        SendMessageW( pW->hCtrlLog, EM_SETEVENTMASK, NULL, ENM_SELCHANGE | ENM_LINK );
-        SendMessageW( pW->hCtrlLog, EM_SETOPTIONS, ECOOP_OR,
+        SendMessageW( pW->mLog, EM_LIMITTEXT, -1, 0 );
+        SendMessageW( pW->mCmdline, EM_LIMITTEXT, 100, 0 );
+        SendMessageW( pW->mLog, EM_AUTOURLDETECT, TRUE, 0 );
+        SendMessageW( pW->mLog, EM_SETEVENTMASK, NULL, ENM_SELCHANGE | ENM_LINK );
+        SendMessageW( pW->mLog, EM_SETOPTIONS, ECOOP_OR,
           ECO_AUTOVSCROLL | ECO_NOHIDESEL | ECO_SAVESEL | ECO_SELECTIONBAR );
 
         // Create character format
-        pW->ucfLog.cbSize = sizeof( CHARFORMAT2W );
-        pW->ucfLog.dwMask = CFM_SIZE | CFM_OFFSET | CFM_EFFECTS | CFM_COLOR | CFM_BACKCOLOR | CFM_CHARSET | CFM_UNDERLINETYPE | CFM_FACE;
-        pW->ucfLog.yHeight = 160;
-        pW->ucfLog.yOffset = NULL;
-        pW->ucfLog.dwEffects = NULL;
-        pW->ucfLog.crTextColor = GLACIER_CONCOLOR_FOREGROUND;
-        pW->ucfLog.crBackColor = GLACIER_CONCOLOR_BACKGROUND;
-        pW->ucfLog.bCharSet = DEFAULT_CHARSET;
-        pW->ucfLog.bUnderlineType = CFU_UNDERLINENONE;
-        wcscpy_s( pW->ucfLog.szFaceName, LF_FACESIZE, GLACIER_CONSOLE_FONT );
+        format.cbSize = sizeof( CHARFORMAT2W );
+        format.dwMask = CFM_SIZE | CFM_OFFSET | CFM_EFFECTS | CFM_COLOR | CFM_BACKCOLOR | CFM_CHARSET | CFM_UNDERLINETYPE | CFM_FACE;
+        format.yHeight = 160;
+        format.yOffset = NULL;
+        format.dwEffects = NULL;
+        format.crTextColor = cConsoleWindowForeground;
+        format.crBackColor = cConsoleWindowBackground;
+        format.bCharSet = DEFAULT_CHARSET;
+        format.bUnderlineType = CFU_UNDERLINENONE;
+        wcscpy_s( format.szFaceName, LF_FACESIZE, cConsoleWindowFont );
 
         // Set character format
-        SendMessageW( pW->hCtrlLog, EM_SETCHARFORMAT,
-          SCF_ALL, (LPARAM)&pW->ucfLog );
-        SendMessageW( pW->hCtrlCmdLine, EM_SETCHARFORMAT,
-          SCF_ALL, (LPARAM)&pW->ucfLog );
-        SendMessageW( pW->hCtrlLog, EM_SETMARGINS,
-          EC_LEFTMARGIN | EC_RIGHTMARGIN | EC_USEFONTINFO, NULL );
-        SendMessageW( pW->hCtrlCmdLine, EM_SETMARGINS,
-          EC_LEFTMARGIN | EC_RIGHTMARGIN | EC_USEFONTINFO, NULL );
+        SendMessageW( pW->mLog, EM_SETCHARFORMAT, SCF_ALL, (LPARAM)&format );
+        SendMessageW( pW->mCmdline, EM_SETCHARFORMAT, SCF_ALL, (LPARAM)&format );
+
+        // Set margins
+        SendMessageW( pW->mLog, EM_SETMARGINS, EC_LEFTMARGIN | EC_RIGHTMARGIN | EC_USEFONTINFO, NULL );
+        SendMessageW( pW->mCmdline, EM_SETMARGINS, EC_LEFTMARGIN | EC_RIGHTMARGIN | EC_USEFONTINFO, NULL );
 
         // Reset selection
-        pW->ucrLog.cpMin = -1;
-        pW->ucrLog.cpMax = -1;
-        SendMessageW( pW->hCtrlLog, EM_EXSETSEL, 0,
-          (LPARAM)&pW->ucrLog );
-        SendMessageW( pW->hCtrlCmdLine, EM_EXSETSEL, 0,
-          (LPARAM)&pW->ucrLog );
+        SendMessageW( pW->mLog, EM_EXSETSEL, 0, (LPARAM)&range );
+        SendMessageW( pW->mCmdline, EM_EXSETSEL, 0, (LPARAM)&range );
 
         // Setup codepage (UCS-2) & text
-        pW->ustLog.codepage = 1200;
-        pW->ustLog.flags = ST_DEFAULT;
-        SendMessageW( pW->hCtrlLog, EM_SETTEXTEX, (WPARAM)&pW->ustLog, NULL );
-        SendMessageW( pW->hCtrlCmdLine, EM_SETTEXTEX, (WPARAM)&pW->ustLog, NULL );
+        SendMessageW( pW->mLog, EM_SETTEXTEX, (WPARAM)&textex, NULL );
+        SendMessageW( pW->mCmdline, EM_SETTEXTEX, (WPARAM)&textex, NULL );
 
         // Enable change notifications for the cmdline
-        SendMessageW( pW->hCtrlCmdLine, EM_SETEVENTMASK, NULL, ENM_CHANGE );
+        SendMessageW( pW->mCmdline, EM_SETEVENTMASK, NULL, ENM_CHANGE );
         return 0;
       break;
       case WM_PAINT:
-        dc = BeginPaint( hWnd, &psDlg );
+        dc = BeginPaint( hWnd, &paintdata );
         pW->paint( hWnd, dc );
-        EndPaint( hWnd, &psDlg );
+        EndPaint( hWnd, &paintdata );
         return 0;
       break;
       case WM_SIZE:
-        MoveWindow( pW->hCtrlLog, 0, 32, LOWORD(lParam), HIWORD(lParam) - 18 - 32, TRUE );
-        MoveWindow( pW->hCtrlCmdLine, 0, HIWORD(lParam) - 16, LOWORD(lParam), 18, TRUE );
+        MoveWindow( pW->mLog, 0, 32, LOWORD(lParam), HIWORD(lParam) - 18 - 32, TRUE );
+        MoveWindow( pW->mCmdline, 0, HIWORD(lParam) - 16, LOWORD(lParam), 18, TRUE );
         return 0;
       break;
       case WM_DESTROY:
