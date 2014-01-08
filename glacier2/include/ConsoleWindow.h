@@ -10,7 +10,7 @@ namespace Glacier {
     Console* mConsole;        //!< Console I'm hooked up to
     HWND mLog;                //!< The log box
     HWND mCmdline;            //!< The command line
-    WNDPROC lpfnOrigCmdLineProc; //!< Original wndproc for the command line
+    WNDPROC mCmdlineProc;     //!< Original wndproc for the command line
     struct History {
       StringVector stack;     //!< Command history stack
       bool browsing;          //!< Is the user browsing through the history?

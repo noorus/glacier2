@@ -12,7 +12,7 @@ namespace Glacier {
   const wchar_t* cConsoleVarOut   = L"%s is \"%s\"";
   const wchar_t* cConsoleUnknown  = L"Unknown command \"%s\"";
 
-  // ConBase ===============================================================
+  // ConBase class ============================================================
 
   ConBase::ConBase( const wstring& name, const wstring& description ):
   mName( name ), mDescription( description ), mRegistered( false )
@@ -47,7 +47,7 @@ namespace Glacier {
     mRegistered = true;
   }
 
-  // ConCmd ===================================================================
+  // ConCmd class =============================================================
 
   ConCmd::ConCmd( const wstring& name, const wstring& description,
   ConCmd::Callback callback ):
@@ -67,7 +67,7 @@ namespace Glacier {
     return true;
   }
 
-  // ConVar ===================================================================
+  // ConVar class =============================================================
 
   ConVar::ConVar( const wstring& name, const wstring& description,
   int defaultValue, ConVar::Callback callback ):
@@ -151,7 +151,7 @@ namespace Glacier {
     mValue = oldValue;
   }
 
-  // Console ==================================================================
+  // Console class ============================================================
 
   Console::Console(): mOutFile( nullptr ), mCmdList( nullptr ),
   mCmdHelp( nullptr ), mCmdFind( nullptr ), mCmdExec( nullptr )
@@ -159,6 +159,7 @@ namespace Glacier {
     InitializeSRWLock( &mLock );
     InitializeSRWLock( &mBufferLock );
 
+    // Register console sources
     registerSource( L"engine", RGB(60,64,76) );
     registerSource( L"gfx", RGB(79,115,44) );
     registerSource( L"sound", RGB(181,80,10) );
@@ -167,12 +168,13 @@ namespace Glacier {
     registerSource( L"input", RGB(219,38,122) );
     registerSource( L"game", RGB(4,127,77) );
 
-    // Register core commands
+    // Create core commands
     mCmdList = new ConCmd( L"list", L"List all cvars.", callbackList );
     mCmdFind = new ConCmd( L"find", L"Perform a cvar lookup using regexp.", callbackFind );
     mCmdExec = new ConCmd( L"exec", L"Execute a configuration file.", callbackExec );
     mCmdHelp = new ConCmd( L"help", L"Get help on a variable/command.", callbackHelp );
 
+    // Register everything in the precreated list
     for ( ConBase* var : mPrecreated )
       registerVariable( var );
 
@@ -190,6 +192,7 @@ namespace Glacier {
 
   StringVector Console::tokenize( const wstring& str )
   {
+    // OPTIMIZE:LOW This implementation is naïve, but hardly critical so far
     bool quoted = false;
     bool escaped = false;
     wstring buffer;
@@ -284,7 +287,7 @@ namespace Glacier {
         return;
       }
 
-    console->errorPrintf( L"Unknown command \"%s\"", arguments[1].c_str() );
+    console->errorPrintf( cConsoleUnknown, arguments[1].c_str() );
   }
 
   Console::Source Console::registerSource( const wstring& name, COLORREF color )
@@ -351,12 +354,16 @@ namespace Glacier {
 
   void Console::addListener( ConsoleListener* listener )
   {
-    // Don't bother checking for dupes
+    ScopedSRWLock lock( &mLock );
+
+    // Not checking for dupes
     mListeners.push_back( listener );
   }
 
   void Console::removeListener( ConsoleListener* listener )
   {
+    ScopedSRWLock lock( &mLock );
+
     mListeners.remove( listener );
   }
 
@@ -406,12 +413,11 @@ namespace Glacier {
 
     matches.clear();
     wstring trimmed = boost::trim_copy( line );
-    for ( auto it = mCommands.begin(); it != mCommands.end(); ++it )
+    for ( ConBase* base : mCommands )
     {
-      wstring comparison = (*it)->getName().substr( 0, trimmed.length() );
-      if ( !_wcsicmp( trimmed.c_str(), comparison.c_str() ) ) {
-        matches.push_back( (*it) );
-      }
+      wstring comparison = base->getName().substr( 0, trimmed.length() );
+      if ( !_wcsicmp( trimmed.c_str(), comparison.c_str() ) )
+        matches.push_back( base );
     }
   }
 
@@ -445,9 +451,7 @@ namespace Glacier {
         {
           ConVar* var = static_cast<ConVar*>( base );
           if ( arguments.size() > 1 )
-          {
             var->setValue( arguments[1] );
-          }
           else
           {
             printf( srcEngine, cConsoleVarOut,
@@ -470,7 +474,7 @@ namespace Glacier {
 
   void Console::executeFile( const wstring& filename )
   {
-    //
+    // TODO
   }
 
 }
