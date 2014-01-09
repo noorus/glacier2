@@ -9,7 +9,10 @@ namespace Glacier {
   class Scripting;
   class Graphics;
   class ConCmd;
+  class Game;
 
+  //! \class Engine
+  //! The main engine class that makes the world go round
   class Engine {
   public:
     enum Signal {
@@ -34,6 +37,7 @@ namespace Glacier {
     ConsoleWindowThread* mConsoleWindow;
     Scripting* mScripting;
     Graphics* mGraphics;
+    Game* mGame;
     // Timing
     LARGE_INTEGER mHPCFrequency;        //!< HPC frequency
     static GameTime fTime;              //!< Game time
@@ -48,21 +52,25 @@ namespace Glacier {
     void adjustPrivileges();
     void fixupThreadAffinity();
   public:
-    static void callbackVersion( Console* console, ConCmd* command, StringVector& arguments );
-  public:
-    Engine( HINSTANCE instance );
-    ~Engine();
-    void operationSuspendVideo(); //!< shutdown state for gfx restart
-    void operationContinueVideo(); //!< continues state after gfx restart
-    void operationSuspendAudio(); //!< shutdown state for audio restart
-    void operationContinueAudio(); //!< continues state after audio restart
-    void initialize();
-    void run();
-    void shutdown();
+    // Getters
     const Version& getVersion() { return mVersion; }
     Console* getConsole() { return mConsole; }
     Scripting* getScripting() { return mScripting; }
     Graphics* getGraphics() { return mGraphics; }
+    Game* getGame() { return mGame; }
+    inline GameTime getTime() { return fTime; }
+    // Callbacks
+    static void callbackVersion( Console* console, ConCmd* command, StringVector& arguments );
+  public:
+    Engine( HINSTANCE instance );
+    ~Engine();
+    void operationSuspendVideo();       //!< Shutdown state for gfx restart
+    void operationContinueVideo();      //!< Continue state after gfx restart
+    void operationSuspendAudio();       //!< Shutdown state for audio restart
+    void operationContinueAudio();      //!< Continue state after audio restart
+    void initialize();
+    void run();
+    void shutdown();
   };
 
 }

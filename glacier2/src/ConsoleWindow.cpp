@@ -6,11 +6,15 @@
 
 namespace Glacier {
 
-  const wchar_t* cConsoleWindowClass = L"gcr2_console";
-  const wchar_t* cConsoleWindowTitle = L"glacier² » console";
-  const wchar_t* cConsoleWindowFont = L"Trebuchet MS";
+  // ConsoleWindow constants ==================================================
+
+  const wchar_t* cConsoleWindowClass  = L"gcr2_console";
+  const wchar_t* cConsoleWindowTitle  = L"glacier² » console";
   const COLORREF cConsoleWindowBackground = RGB( 255, 255, 255 );
   const COLORREF cConsoleWindowForeground = RGB( 10, 13, 20 );
+  const wchar_t* cConsoleWindowFont   = L"Trebuchet MS";
+
+  // ConsoleWindowThread class ================================================
 
   ConsoleWindowThread::ConsoleWindowThread( HINSTANCE instance,
   Console* console ): mWindow( nullptr ), mInstance( instance ),
@@ -39,6 +43,8 @@ namespace Glacier {
   {
     SAFE_DELETE( mWindow );
   }
+
+  // ConsoleWindow class ======================================================
 
   void ConsoleWindow::Autocomplete::reset()
   {

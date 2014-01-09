@@ -6,6 +6,7 @@
 #include "Graphics.h"
 #include "Utilities.h"
 #include "Exception.h"
+#include "Game.h"
 
 Glacier::Engine* gEngine = nullptr;
 
@@ -40,15 +41,9 @@ namespace Glacier {
   Engine::Engine( HINSTANCE instance ):
   mConsole( nullptr ), mScripting( nullptr ), mGraphics( nullptr ),
   mProcess( NULL ), mThread( NULL ), mInstance( instance ),
-  mSignal( Signal_None ), mVersion( 0, 1, 1 ), mConsoleWindow( nullptr )
+  mSignal( Signal_None ), mVersion( 0, 1, 1 ), mConsoleWindow( nullptr ),
+  mGame( nullptr )
   {
-  }
-
-  void Engine::callbackVersion( Console* console, ConCmd* command, StringVector& arguments )
-  {
-    if ( !gEngine )
-      return;
-    console->printf( Console::srcEngine, gEngine->getVersion().title.c_str() );
   }
 
   const unsigned long cPrivileges = 1;
@@ -102,22 +97,26 @@ namespace Glacier {
 
   void Engine::operationSuspendVideo()
   {
-    //
+    if ( mGame )
+      mGame->suspendState();
   }
 
   void Engine::operationContinueVideo()
   {
-    //
+    if ( mGame )
+      mGame->resumeState();
   }
 
   void Engine::operationSuspendAudio()
   {
-    //
+    if ( mGame )
+      mGame->suspendState();
   }
 
   void Engine::operationContinueAudio()
   {
-    //
+    if ( mGame )
+      mGame->resumeState();
   }
 
   void Engine::initialize()
@@ -144,6 +143,7 @@ namespace Glacier {
     // Create subsystems
     mScripting = new Scripting( this );
     mGraphics = new Graphics( this );
+    mGame = new Game( this );
   }
 
   void Engine::run()
@@ -173,7 +173,7 @@ namespace Glacier {
       fTimeAccumulator += fTimeDelta;
       while ( fTimeAccumulator >= fLogicStep )
       {
-        // logic stepping here
+        mGame->componentTick( fLogicStep, fTime );
         fTime += fLogicStep;
         fTimeAccumulator -= fLogicStep;
       }
@@ -185,8 +185,18 @@ namespace Glacier {
     }
   }
 
+  void Engine::callbackVersion( Console* console, ConCmd* command,
+  StringVector& arguments )
+  {
+    if ( !gEngine )
+      return;
+
+    console->printf( Console::srcEngine, gEngine->getVersion().title.c_str() );
+  }
+
   void Engine::shutdown()
   {
+    SAFE_DELETE( mGame );
     SAFE_DELETE( mGraphics );
     SAFE_DELETE( mScripting );
     SAFE_DELETE( mConsoleWindow );

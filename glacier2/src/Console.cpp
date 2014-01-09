@@ -9,6 +9,8 @@
 
 namespace Glacier {
 
+  // Console constants ========================================================
+
   const long     cMaxConsoleLine  = 4096;
   const wchar_t* cConsoleEcho     = L"> %s";
   const wchar_t* cConsolePrint    = L"[%02d:%02d:%02d] [%s] %s\r\n";
