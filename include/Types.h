@@ -40,6 +40,9 @@ namespace Glacier {
   using Ogre::PCZone;
   using Ogre::PCZCamera;
   using Ogre::PCZSceneNode;
+  using Ogre::ResourceManager;
+  using Ogre::ResourceGroupManager;
+  using Ogre::ResourceGroupListener;
   using Ogre::SceneManager;
   using Ogre::SceneNode;
   using Ogre::ColourValue;

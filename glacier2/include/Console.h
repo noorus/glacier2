@@ -81,6 +81,7 @@ namespace Glacier {
     virtual int getInt();
     virtual double getFloat();
     virtual const wstring& getString();
+    virtual bool getBool() { return ( getInt() > 0 ); }
     virtual void setValue( int value );
     virtual void setValue( double value );
     virtual void setValue( const wstring& value );

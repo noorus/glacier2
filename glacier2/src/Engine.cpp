@@ -100,6 +100,26 @@ namespace Glacier {
       getConsole()->printf( Console::srcEngine, L"Failed to set thread affinity mask" );
   }
 
+  void Engine::operationSuspendVideo()
+  {
+    //
+  }
+
+  void Engine::operationContinueVideo()
+  {
+    //
+  }
+
+  void Engine::operationSuspendAudio()
+  {
+    //
+  }
+
+  void Engine::operationContinueAudio()
+  {
+    //
+  }
+
   void Engine::initialize()
   {
     // Get process & thread handles

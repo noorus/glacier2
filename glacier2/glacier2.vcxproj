@@ -105,7 +105,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)..\SDK\Ogre\lib\$(Configuration);$(SolutionDir)..\SDK\Ogre\lib\$(Configuration)\opt;$(SolutionDir)..\SDK\FMOD SoundSystem\FMOD Programmers API Windows\api\lib;$(SolutionDir)..\SDK\FMOD SoundSystem\FMOD Programmers API Windows\fmoddesignerapi\api\lib;$(SolutionDir)..\v8\build\$(Configuration)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>OgreMain_d.lib;RenderSystem_Direct3D9_d.lib;Plugin_PCZSceneManager_d.lib;fmodexL64_vc.lib;fmod_eventL64.lib;icui18n.lib;icuuc.lib;v8_base.x64.lib;v8_snapshot.lib;ws2_32.lib;winmm.lib;comctl32.lib;gdiplus.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>OgreMain_d.lib;OgreOverlay_d.lib;RenderSystem_Direct3D9_d.lib;Plugin_PCZSceneManager_d.lib;fmodexL64_vc.lib;fmod_eventL64.lib;icui18n.lib;icuuc.lib;v8_base.x64.lib;v8_snapshot.lib;ws2_32.lib;winmm.lib;comctl32.lib;gdiplus.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Manifest>
       <AdditionalManifestFiles>CommonControls.manifest</AdditionalManifestFiles>
@@ -151,7 +151,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(SolutionDir)..\SDK\Ogre\lib\$(Configuration);$(SolutionDir)..\SDK\Ogre\lib\$(Configuration)\opt;$(SolutionDir)..\SDK\FMOD SoundSystem\FMOD Programmers API Windows\api\lib;$(SolutionDir)..\SDK\FMOD SoundSystem\FMOD Programmers API Windows\fmoddesignerapi\api\lib;$(SolutionDir)..\v8\build\$(Configuration)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>OgreMain.lib;RenderSystem_Direct3D9.lib;Plugin_PCZSceneManager.lib;fmodex64_vc.lib;fmod_event64.lib;icui18n.lib;icuuc.lib;v8_base.x64.lib;v8_snapshot.lib;ws2_32.lib;winmm.lib;comctl32.lib;gdiplus.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>OgreMain.lib;OgreOverlay.lib;RenderSystem_Direct3D9.lib;Plugin_PCZSceneManager.lib;fmodex64_vc.lib;fmod_event64.lib;icui18n.lib;icuuc.lib;v8_base.x64.lib;v8_snapshot.lib;ws2_32.lib;winmm.lib;comctl32.lib;gdiplus.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ShowProgress>NotSet</ShowProgress>
     </Link>
     <Manifest>

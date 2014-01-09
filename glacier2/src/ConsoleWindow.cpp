@@ -6,6 +6,8 @@
 
 namespace Glacier {
 
+  const wchar_t* cConsoleWindowClass = L"gcr2_console";
+  const wchar_t* cConsoleWindowTitle = L"glacier² » console";
   const wchar_t* cConsoleWindowFont = L"Trebuchet MS";
   const COLORREF cConsoleWindowBackground = RGB( 255, 255, 255 );
   const COLORREF cConsoleWindowForeground = RGB( 10, 13, 20 );
@@ -57,11 +59,12 @@ namespace Glacier {
   {
     mConsole->addListener( this );
     mWindow = new Win32::Window( instance, wndProc,
-      Win32::Window::Settings::toolWindow( 320, 240, L"gcr_console", L"console" ),
+      Win32::Window::Settings::toolWindow( 420, 280,
+      cConsoleWindowClass, cConsoleWindowTitle ),
       this );
     POINT pos = { 0, 0 };
-    POINT size = { 400, 260 };
-    mWindow->create( pos, size, L"console" );
+    POINT size = { 420, 280 };
+    mWindow->create( pos, size, cConsoleWindowTitle );
     mWindow->setVisible( true );
   }
 

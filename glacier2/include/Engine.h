@@ -52,6 +52,10 @@ namespace Glacier {
   public:
     Engine( HINSTANCE instance );
     ~Engine();
+    void operationSuspendVideo(); //!< shutdown state for gfx restart
+    void operationContinueVideo(); //!< continues state after gfx restart
+    void operationSuspendAudio(); //!< shutdown state for audio restart
+    void operationContinueAudio(); //!< continues state after audio restart
     void initialize();
     void run();
     void shutdown();
