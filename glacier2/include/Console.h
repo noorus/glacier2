@@ -120,7 +120,6 @@ namespace Glacier {
     ConCmd* mCmdExec; //!< "exec" command
     ConCmd* mCmdHelp; //!< "help" command
     static bool cmpSortCmds( ConBase* a, ConBase* b );
-    void processBuffered();
     static StringVector tokenize( const wstring& commandLine );
   protected:
     // Core command callbacks
@@ -132,6 +131,7 @@ namespace Glacier {
     Console();
     ~Console();
     Source registerSource( const wstring& name, COLORREF color );
+    void processBuffered();
     void addListener( ConsoleListener* listener );
     void removeListener( ConsoleListener* listener );
     void unregisterSource( Source source );

@@ -21,15 +21,18 @@ namespace Glacier {
   protected:
     PSRWLOCK mLock;
     bool mExclusive;
+    bool mLocked;
   public:
     ScopedSRWLock( PSRWLOCK lock, bool exclusive = true ):
-    mLock( lock ), mExclusive( exclusive )
+    mLock( lock ), mExclusive( exclusive ), mLocked( true )
     {
       mExclusive ? AcquireSRWLockExclusive( mLock ) : AcquireSRWLockShared( mLock );
     }
     void unlock()
     {
-      mExclusive ? ReleaseSRWLockExclusive( mLock ) : ReleaseSRWLockShared( mLock );
+      if ( mLocked )
+        mExclusive ? ReleaseSRWLockExclusive( mLock ) : ReleaseSRWLockShared( mLock );
+      mLocked = false;
     }
     ~ScopedSRWLock()
     {
@@ -105,7 +108,7 @@ namespace Glacier {
 
   namespace Utilities
   {
-    inline static wstring utf8ToWide( const string& in ) throw()
+    inline wstring utf8ToWide( const string& in ) throw()
     {
       int length = MultiByteToWideChar( CP_UTF8, 0, in.c_str(), -1, nullptr, 0 );
       if ( length == 0 )
@@ -115,7 +118,7 @@ namespace Glacier {
       return wstring( &conversion[0] );
     }
 
-    inline static string wideToUtf8( const wstring& in ) throw()
+    inline string wideToUtf8( const wstring& in ) throw()
     {
       int length = WideCharToMultiByte( CP_UTF8, 0, in.c_str(), -1, nullptr, 0, 0, FALSE );
       if ( length == 0 )
@@ -125,7 +128,7 @@ namespace Glacier {
       return string( &conversion[0] );
     }
 
-    inline static int hammingWeight64( uint64_t x )
+    inline int hammingWeight64( uint64_t x ) throw()
     {
       x = ( x & 0x5555555555555555ULL ) + ( ( x >> 1 ) & 0x5555555555555555ULL );
       x = ( x & 0x3333333333333333ULL ) + ( ( x >> 2 ) & 0x3333333333333333ULL );
@@ -134,6 +137,20 @@ namespace Glacier {
       x = ( x + ( x >> 16 ) );
       x = ( x + ( x >> 32 ) );
       return x & 0xFF;
+    }
+
+    inline wstring getWindowText( HWND wnd )
+    {
+      wstring str;
+      int length = GetWindowTextLengthW( wnd );
+      if ( !length )
+        return str;
+      // technically, str isn't promised to be contiguous earlier
+      // than in C++11, but in practice it is anyway in VC++.
+      str.resize( length + 1, '\0' );
+      GetWindowTextW( wnd, &str[0], length + 1 );
+      str.resize( length );
+      return str;
     }
 
   }

@@ -355,9 +355,8 @@ namespace Glacier {
   void Console::addListener( ConsoleListener* listener )
   {
     ScopedSRWLock lock( &mLock );
-
-    // Not checking for dupes
-    mListeners.push_back( listener );
+    
+    mListeners.push_back( listener ); // Not checking for dupes
   }
 
   void Console::removeListener( ConsoleListener* listener )
@@ -395,27 +394,18 @@ namespace Glacier {
       mOutFile->write( out );
   }
 
-  void Console::processBuffered()
-  {
-    ScopedSRWLock lock( &mBufferLock );
-
-    while ( !mCommandBuffer.empty() )
-    {
-      wstring cmd = mCommandBuffer.front();
-      execute( cmd.c_str() );
-      mCommandBuffer.pop();
-    }
-  }
-
   void Console::autoComplete( const wstring& line, ConBaseList& matches )
   {
-    ScopedSRWLock lock( &mLock, false );
+    // ScopedSRWLock lock( &mLock, false );
 
     matches.clear();
     wstring trimmed = boost::trim_copy( line );
     for ( ConBase* base : mCommands )
     {
       wstring comparison = base->getName().substr( 0, trimmed.length() );
+      WCHAR str[100];
+      swprintf_s( str, 100, L"Comparing %s to %s\r\n", trimmed.c_str(), comparison.c_str() );
+      OutputDebugStringW( str );
       if ( !_wcsicmp( trimmed.c_str(), comparison.c_str() ) )
         matches.push_back( base );
     }
@@ -423,8 +413,6 @@ namespace Glacier {
 
   void Console::execute( wstring commandLine )
   {
-    ScopedSRWLock lock( &mLock );
-
     boost::trim( commandLine );
     if ( commandLine.empty() )
       return;
@@ -434,6 +422,8 @@ namespace Glacier {
       return;
 
     printf( srcEngine, cConsoleEcho, commandLine.c_str() );
+
+    ScopedSRWLock lock( &mLock );
 
     wstring command = arguments[0];
     for ( ConBase* base : mCommands )
@@ -445,6 +435,7 @@ namespace Glacier {
         if ( base->isCommand() )
         {
           ConCmd* cmd = static_cast<ConCmd*>( base );
+          lock.unlock();
           cmd->call( this, arguments );
         }
         else
@@ -454,6 +445,7 @@ namespace Glacier {
             var->setValue( arguments[1] );
           else
           {
+            lock.unlock();
             printf( srcEngine, cConsoleVarOut,
               var->getName().c_str(),
               var->getString().c_str() );
@@ -462,6 +454,7 @@ namespace Glacier {
         return;
       }
     }
+    lock.unlock();
     errorPrintf( cConsoleUnknown, command.c_str() );
   }
 
@@ -470,6 +463,18 @@ namespace Glacier {
     ScopedSRWLock lock( &mBufferLock );
 
     mCommandBuffer.push( commandLine );
+  }
+
+  void Console::processBuffered()
+  {
+    ScopedSRWLock lock( &mBufferLock );
+
+    while ( !mCommandBuffer.empty() )
+    {
+      wstring cmd = mCommandBuffer.front();
+      execute( cmd.c_str() );
+      mCommandBuffer.pop();
+    }
   }
 
   void Console::executeFile( const wstring& filename )

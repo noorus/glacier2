@@ -60,9 +60,6 @@
     <ClCompile Include="..\EASTL\src\string.cpp">
       <Filter>Source Files\EASTL</Filter>
     </ClCompile>
-    <ClCompile Include="..\nedmalloc\nedmalloc.c">
-      <Filter>Source Files\nedmalloc</Filter>
-    </ClCompile>
     <ClCompile Include="src\Memory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -80,6 +77,9 @@
     </ClCompile>
     <ClCompile Include="src\ThreadController.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\nedmalloc\nedmalloc.c">
+      <Filter>Source Files\nedmalloc</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

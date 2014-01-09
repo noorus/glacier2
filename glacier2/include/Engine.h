@@ -5,6 +5,7 @@ namespace Glacier {
 
   class Console;
   class ConsoleWindow;
+  class ConsoleWindowThread;
   class Scripting;
   class Graphics;
 
@@ -29,7 +30,7 @@ namespace Glacier {
     Version mVersion;
     // Subsystems
     Console* mConsole;
-    ConsoleWindow* mConsoleWindow;
+    ConsoleWindowThread* mConsoleWindow;
     Scripting* mScripting;
     Graphics* mGraphics;
     // Timing

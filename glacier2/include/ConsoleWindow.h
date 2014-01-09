@@ -1,6 +1,7 @@
 #pragma once
 #include "Win32.h"
 #include "Console.h"
+#include "ThreadController.h"
 
 namespace Glacier {
 
@@ -15,19 +16,15 @@ namespace Glacier {
       StringVector stack;     //!< Command history stack
       bool browsing;          //!< Is the user browsing through the history?
       size_t position;        //!< Position of currently located command
-      History(): browsing( false ), position( 0 ) {}
+      History() { reset(); }
+      void reset();
     } mHistory;
     struct Autocomplete {
       ConBaseList matches;    //!< Autocomplete matches vector
       ConBase* suggestion;    //!< Autocomplete last suggestion
       wstring base;           //!< Search string for autocomplete
       Autocomplete() { reset(); }
-      void reset()
-      {
-        matches.clear();
-        base.clear();
-        suggestion = nullptr;
-      }
+      void reset();
     } mAutocomplete;
   protected:
     void clearCmdline();
@@ -41,7 +38,20 @@ namespace Glacier {
     ~ConsoleWindow();
     void kill();
     void print( COLORREF color, const wstring& line );
-    bool step();
+    void step();
+  };
+
+  class ConsoleWindowThread: public ThreadController {
+  protected:
+    ConsoleWindow* mWindow;
+    HINSTANCE mInstance;
+    Console* mConsole;
+  public:
+    ConsoleWindowThread( HINSTANCE instance, Console* console );
+    virtual void onStart();
+    virtual void onStep();
+    virtual void onPreStop();
+    virtual void onStop();
   };
 
 }

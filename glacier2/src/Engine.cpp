@@ -97,7 +97,8 @@ namespace Glacier {
     mThread = GetCurrentThread();
 
     mConsole = new Console();
-    mConsoleWindow = new ConsoleWindow( mInstance, mConsole );
+    mConsoleWindow = new ConsoleWindowThread( mInstance, mConsole );
+    mConsoleWindow->start();
 
     // Print engine info
     mConsole->printf( Console::srcEngine, getVersion().title.c_str() );
@@ -118,7 +119,7 @@ namespace Glacier {
   {
     while ( mSignal != Signal_Stop )
     {
-      mConsoleWindow->step();
+      mConsole->processBuffered();
     }
   }
 

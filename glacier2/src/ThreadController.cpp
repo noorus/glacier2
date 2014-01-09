@@ -1,16 +1,20 @@
 #include "StdAfx.h"
 #include "ThreadController.h"
-#include "Exception.h"
 
 namespace Glacier {
 
-  ThreadController::ThreadController(): mThread( NULL ), mThreadID( 0 ),
-  mRunEvent( NULL ), mStopEvent( NULL )
+  ThreadController::ThreadController():
+  mThread( NULL ), mThreadID( 0 ), mRunEvent( NULL ), mStopEvent( NULL )
   {
     mRunEvent  = CreateEventW( NULL, TRUE, FALSE, NULL );
     mStopEvent = CreateEventW( NULL, TRUE, FALSE, NULL );
     if ( !mRunEvent || !mStopEvent )
       ENGINE_EXCEPT_W32( L"Could not create control events" );
+  }
+
+  void ThreadController::start()
+  {
+    stop();
 
     mThread = CreateThread( NULL, NULL, threadProc, this, CREATE_SUSPENDED, &mThreadID );
     if ( !mThread )
@@ -41,34 +45,44 @@ namespace Glacier {
 
   DWORD WINAPI ThreadController::threadProc( void* argument )
   {
-    auto controller = static_cast<ThreadController*>( argument );
+    auto controller = (ThreadController*)argument;
     try
     {
-      controller->start();
+      controller->onStart();
       SetEvent( controller->mRunEvent );
       while ( WaitForSingleObject( controller->mStopEvent, 0 ) != WAIT_OBJECT_0 )
       {
-        controller->step();
+        controller->onStep();
       }
-      controller->stop();
+      controller->onStop();
     }
     catch ( ... )
     {
+      controller->onStop();
       return EXIT_FAILURE;
     }
     return EXIT_SUCCESS;
   }
 
-  ThreadController::~ThreadController()
+  void ThreadController::stop()
   {
-    if ( mRunEvent )
-      CloseHandle( mRunEvent );
     if ( mStopEvent )
     {
       SetEvent( mStopEvent );
+      onPreStop();
       WaitForSingleObject( mThread, INFINITE );
-      CloseHandle( mStopEvent );
     }
+    ResetEvent( mRunEvent );
+    ResetEvent( mStopEvent );
+  }
+
+  ThreadController::~ThreadController()
+  {
+    stop();
+    if ( mRunEvent )
+      CloseHandle( mRunEvent );
+    if ( mStopEvent )
+      CloseHandle( mStopEvent );
   }
 
 }

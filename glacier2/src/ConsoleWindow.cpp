@@ -10,6 +10,48 @@ namespace Glacier {
   const COLORREF cConsoleWindowBackground = RGB( 255, 255, 255 );
   const COLORREF cConsoleWindowForeground = RGB( 10, 13, 20 );
 
+  ConsoleWindowThread::ConsoleWindowThread( HINSTANCE instance,
+  Console* console ): mWindow( nullptr ), mInstance( instance ),
+  mConsole( console ), ThreadController()
+  {
+    //
+  }
+
+  void ConsoleWindowThread::onStart()
+  {
+    mWindow = new ConsoleWindow( mInstance, mConsole );
+  }
+
+  void ConsoleWindowThread::onStep()
+  {
+    mWindow->step();
+  }
+
+  void ConsoleWindowThread::onPreStop()
+  {
+    if ( mWindow )
+      mWindow->kill();
+  }
+
+  void ConsoleWindowThread::onStop()
+  {
+    SAFE_DELETE( mWindow );
+  }
+
+  void ConsoleWindow::Autocomplete::reset()
+  {
+    matches.clear();
+    base.clear();
+    suggestion = nullptr;
+  }
+
+  void ConsoleWindow::History::reset()
+  {
+    stack.clear();
+    browsing = false;
+    position = 0;
+  }
+
   ConsoleWindow::ConsoleWindow( HINSTANCE instance, Console* console ):
   mConsole( console ), mWindow( nullptr )
   {
@@ -52,16 +94,14 @@ namespace Glacier {
     SendMessage( mLog, EM_SETTEXTEX, (WPARAM)&textex, (LPARAM)line.c_str() );
   }
 
-  bool ConsoleWindow::step()
+  void ConsoleWindow::step()
   {
-    MSG msgWnd;
-    bool bRet = ( GetMessageW( &msgWnd, NULL, 0, 0 ) != FALSE );
-    if ( bRet )
+    MSG msg;
+    if ( GetMessageW( &msg, NULL, 0, 0 ) != FALSE )
     {
-      TranslateMessage( &msgWnd );
-      DispatchMessage( &msgWnd );
+      TranslateMessage( &msg );
+      DispatchMessage( &msg );
     }
-    return bRet;
   }
 
   void ConsoleWindow::clearCmdline()
@@ -80,14 +120,13 @@ namespace Glacier {
     SendMessageW( mCmdline, EM_SETEVENTMASK, NULL, ENM_CHANGE );
   }
 
-  LRESULT CALLBACK ConsoleWindow::cmdLineProc( HWND hWnd, UINT msg,
+  LRESULT CALLBACK ConsoleWindow::cmdLineProc( HWND wnd, UINT msg,
   WPARAM wParam, LPARAM lParam )
   {
-    auto pW = (ConsoleWindow*)GetWindowLongPtrW( hWnd, GWLP_USERDATA );
-    Console* pC = pW->mConsole;
-    DWORD dwLength;
-    LPWSTR pwsLine;
-    wstring sBackLine;
+    auto window = (ConsoleWindow*)GetWindowLongPtrW( wnd, GWLP_USERDATA );
+    auto console = window->mConsole;
+    wstring strtemp;
+    wstring backline;
     CHARRANGE range = { 0, -1 };
     if ( msg == WM_CHAR && wParam == TAB )
       return 0;
@@ -96,146 +135,127 @@ namespace Glacier {
       switch ( wParam )
       {
         case VK_TAB:
-          dwLength = (DWORD)SendMessageW( pW->mCmdline, WM_GETTEXTLENGTH, NULL, NULL );
-          if ( dwLength < 1 )
+          strtemp = Utilities::getWindowText( window->mCmdline );
+          if ( strtemp.length() < 1 )
           {
-            pW->mAutocomplete.suggestion = nullptr;
+            window->mAutocomplete.suggestion = nullptr;
             break;
           }
-          dwLength++;
-          if ( pW->mAutocomplete.suggestion )
-            pC->autoComplete( pW->mAutocomplete.base, pW->mAutocomplete.matches );
+          if ( window->mAutocomplete.suggestion )
+            console->autoComplete( window->mAutocomplete.base, window->mAutocomplete.matches );
           else
           {
-            pwsLine = new WCHAR[dwLength];
-            GetWindowTextW( pW->mCmdline, pwsLine, dwLength );
-            pW->mAutocomplete.base = pwsLine;
-            pC->autoComplete( pwsLine, pW->mAutocomplete.matches );
-            delete pwsLine;
+            window->mAutocomplete.base = strtemp;
+            console->autoComplete( strtemp, window->mAutocomplete.matches );
           }
-          if ( pW->mAutocomplete.matches.empty() )
+          if ( window->mAutocomplete.matches.empty() )
           {
-            pW->mAutocomplete.suggestion = nullptr;
+            window->mAutocomplete.suggestion = nullptr;
             break;
           }
-          if ( pW->mAutocomplete.suggestion )
+          if ( window->mAutocomplete.suggestion )
           {
-            ConBaseList::iterator itCmd = pW->mAutocomplete.matches.begin();
-            while ( itCmd != pW->mAutocomplete.matches.end() )
+            ConBaseList::iterator itCmd = window->mAutocomplete.matches.begin();
+            while ( itCmd != window->mAutocomplete.matches.end() )
             {
-              if ( (*itCmd) == pW->mAutocomplete.suggestion )
+              if ( (*itCmd) == window->mAutocomplete.suggestion )
               {
                 ++itCmd;
-                if ( itCmd == pW->mAutocomplete.matches.end() )
+                if ( itCmd == window->mAutocomplete.matches.end() )
                   break;
-                pW->mAutocomplete.suggestion = (*itCmd);
-                pW->setCmdline( pW->mAutocomplete.suggestion->getName() );
-                SendMessageW( pW->mCmdline, EM_EXSETSEL, 0, (LPARAM)&range );
+                window->mAutocomplete.suggestion = (*itCmd);
+                window->setCmdline( window->mAutocomplete.suggestion->getName() );
+                SendMessageW( window->mCmdline, EM_EXSETSEL, 0, (LPARAM)&range );
                 return 0;
               }
               ++itCmd;
             }
           }
-          pW->mAutocomplete.suggestion = pW->mAutocomplete.matches.front();
-          pW->setCmdline( pW->mAutocomplete.suggestion->getName() );
-          SendMessageW( pW->mCmdline, EM_EXSETSEL, 0, (LPARAM)&range );
+          window->mAutocomplete.suggestion = window->mAutocomplete.matches.front();
+          window->setCmdline( window->mAutocomplete.suggestion->getName() );
+          SendMessageW( window->mCmdline, EM_EXSETSEL, 0, (LPARAM)&range );
           return 0;
         break;
         case VK_UP:
-          if ( pW->mHistory.stack.empty() )
+          if ( window->mHistory.stack.empty() )
             break;
-          if ( pW->mHistory.browsing )
+          if ( window->mHistory.browsing )
           {
-            if ( pW->mHistory.position <= 0 )
+            if ( window->mHistory.position <= 0 )
             {
-              pW->mHistory.position = 0;
-              SendMessageW( pW->mCmdline, EM_EXSETSEL, 0, (LPARAM)&range );
+              window->mHistory.position = 0;
+              SendMessageW( window->mCmdline, EM_EXSETSEL, 0, (LPARAM)&range );
               break;
             }
-            pW->mHistory.position--;
-            wstring sBackLine = pW->mHistory.stack[pW->mHistory.position];
-            pW->setCmdline( sBackLine.c_str() );
-            SendMessageW( pW->mCmdline, EM_EXSETSEL, 0, (LPARAM)&range );
+            window->mHistory.position--;
+            wstring sBackLine = window->mHistory.stack[window->mHistory.position];
+            window->setCmdline( sBackLine.c_str() );
+            SendMessageW( window->mCmdline, EM_EXSETSEL, 0, (LPARAM)&range );
           }
           else
           {
-            pW->mHistory.browsing = true;
-            pW->mHistory.position = pW->mHistory.stack.size() - 1;
-            sBackLine = pW->mHistory.stack.back();
-            dwLength = (DWORD)SendMessageW( pW->mCmdline, WM_GETTEXTLENGTH, NULL, NULL );
-            if ( dwLength > 0 )
-            {
-              dwLength++;
-              pwsLine = new WCHAR[dwLength];
-              GetWindowTextW( pW->mCmdline, pwsLine, dwLength );
-              pW->mHistory.stack.push_back( pwsLine );
-              delete pwsLine;
-            }
-            else
-              pW->mHistory.stack.push_back( L"" );
-            pW->setCmdline( sBackLine );
-            SendMessageW( pW->mCmdline, EM_EXSETSEL, 0, (LPARAM)&range );
+            window->mHistory.browsing = true;
+            window->mHistory.position = window->mHistory.stack.size() - 1;
+            backline = window->mHistory.stack.back();
+            strtemp = Utilities::getWindowText( window->mCmdline );
+            window->mHistory.stack.push_back( strtemp );
+            window->setCmdline( backline );
+            SendMessageW( window->mCmdline, EM_EXSETSEL, 0, (LPARAM)&range );
           }
           return 0;
         break;
         case VK_DOWN:
-          if ( pW->mHistory.stack.empty() || !pW->mHistory.browsing )
+          if ( window->mHistory.stack.empty() || !window->mHistory.browsing )
             break;
-          pW->mHistory.position++;
-          if ( pW->mHistory.position >= pW->mHistory.stack.size() )
+          window->mHistory.position++;
+          if ( window->mHistory.position >= window->mHistory.stack.size() )
           {
-            pW->mHistory.position = pW->mHistory.stack.size() - 1;
-            SendMessageW( pW->mCmdline, EM_EXSETSEL, 0, (LPARAM)&range );
-            pW->mHistory.browsing = false;
+            window->mHistory.position = window->mHistory.stack.size() - 1;
+            SendMessageW( window->mCmdline, EM_EXSETSEL, 0, (LPARAM)&range );
+            window->mHistory.browsing = false;
             break;
           }
-          sBackLine = pW->mHistory.stack[pW->mHistory.position];
-          pW->setCmdline( sBackLine );
-          SendMessageW( pW->mCmdline, EM_EXSETSEL, 0, (LPARAM)&range );
-          if ( pW->mHistory.position >= pW->mHistory.stack.size() - 1 )
+          backline = window->mHistory.stack[window->mHistory.position];
+          window->setCmdline( backline );
+          SendMessageW( window->mCmdline, EM_EXSETSEL, 0, (LPARAM)&range );
+          if ( window->mHistory.position >= window->mHistory.stack.size() - 1 )
           {
-            pW->mHistory.stack.pop_back();
-            pW->mHistory.position = pW->mHistory.stack.size() - 1;
-            pW->mHistory.browsing = false;
+            window->mHistory.stack.pop_back();
+            window->mHistory.position = window->mHistory.stack.size() - 1;
+            window->mHistory.browsing = false;
           }
           return 0;
         break;
         case VK_RETURN:
-          if ( pW->mHistory.browsing )
+          if ( window->mHistory.browsing )
           {
-            pW->mHistory.stack.pop_back();
-            pW->mHistory.position = pW->mHistory.stack.size() - 1;
-            pW->mHistory.browsing = false;
+            window->mHistory.stack.pop_back();
+            window->mHistory.position = window->mHistory.stack.size() - 1;
+            window->mHistory.browsing = false;
           }
-          pW->mAutocomplete.reset();
-          dwLength = (DWORD)SendMessageW( pW->mCmdline, WM_GETTEXTLENGTH, NULL, NULL );
-          if ( dwLength > 0 )
+          window->mAutocomplete.reset();
+          strtemp = Utilities::getWindowText( window->mCmdline );
+          if ( !strtemp.empty() )
           {
-            dwLength++;
-            pwsLine = new WCHAR[dwLength];
-            GetWindowTextW( pW->mCmdline, pwsLine, dwLength );
-            pC = pW->mConsole;
-            if ( pC ) {
-              pC->executeBuffered( pwsLine );
-            }
-            pW->mHistory.stack.push_back( pwsLine );
-            pW->mHistory.position = pW->mHistory.stack.size() - 1;
-            pW->clearCmdline();
+            if ( console )
+              console->executeBuffered( strtemp );
+            window->mHistory.stack.push_back( strtemp );
+            window->mHistory.position = window->mHistory.stack.size() - 1;
+            window->clearCmdline();
             range.cpMin = -1;
-            SendMessageW( pW->mCmdline, EM_EXSETSEL, 0, (LPARAM)&range );
-            delete pwsLine;
+            SendMessageW( window->mCmdline, EM_EXSETSEL, 0, (LPARAM)&range );
           }
           return 0;
         break;
       }
     }
-    return CallWindowProcW( pW->mCmdlineProc, hWnd, msg, wParam, lParam );
+    return CallWindowProcW( window->mCmdlineProc, wnd, msg, wParam, lParam );
   }
 
-  void ConsoleWindow::paint( HWND window, HDC dc )
+  void ConsoleWindow::paint( HWND wnd, HDC dc )
   {
     RECT area;
-    GetClientRect( window, &area );
+    GetClientRect( wnd, &area );
 
     Win32::Gdiplus::Graphics gfx( dc );
 
@@ -248,7 +268,7 @@ namespace Glacier {
   LRESULT CALLBACK ConsoleWindow::wndProc( HWND wnd, UINT msg,
   WPARAM wParam, LPARAM lParam )
   {
-    auto pW = (ConsoleWindow*)GetWindowLongPtrW( wnd, GWLP_USERDATA );
+    auto window = (ConsoleWindow*)GetWindowLongPtrW( wnd, GWLP_USERDATA );
     LPCREATESTRUCTW cs;
     PAINTSTRUCT paintdata;
     CHARRANGE range = { -1, -1 };
@@ -262,9 +282,9 @@ namespace Glacier {
         switch ( HIWORD( wParam ) )
         {
           case EN_CHANGE:
-            if ( (HANDLE)lParam != pW->mCmdline )
+            if ( (HANDLE)lParam != window->mCmdline )
               break;
-            pW->mAutocomplete.reset();
+            window->mAutocomplete.reset();
           break;
         }
       break;
@@ -278,39 +298,41 @@ namespace Glacier {
       case WM_CREATE:
         // Get/set ownerships
         cs = (LPCREATESTRUCTW)lParam;
-        SetWindowLongPtrW( wnd, GWLP_USERDATA, (LONG_PTR)cs->lpCreateParams );
-        pW = (ConsoleWindow*)cs->lpCreateParams;
+        window = (ConsoleWindow*)cs->lpCreateParams;
+        SetWindowLongPtrW( wnd, GWLP_USERDATA, (LONG_PTR)window );
 
         // Get window size
         GetClientRect( wnd, &rect );
 
         // Create the log box
-        pW->mLog = CreateWindowExW( WS_EX_LEFT, L"RichEdit50W", L"",
+        window->mLog = CreateWindowExW( WS_EX_LEFT, L"RichEdit50W", L"",
           WS_VISIBLE | WS_CHILD | WS_VSCROLL | ES_LEFT | ES_MULTILINE | ES_WANTRETURN | ES_READONLY,
-          0, 30, rect.right, rect.bottom-18-32, wnd, NULL, pW->mWindow->getInstance(), (void*)pW );
+          0, 30, rect.right, rect.bottom - 18 - 32, wnd, NULL,
+          window->mWindow->getInstance(), (void*)window );
 
-        if ( !pW->mLog )
+        if ( !window->mLog )
           ENGINE_EXCEPT( L"Could not create RichEdit5 log window control" );
 
         // Create the command line
-        pW->mCmdline = CreateWindowExW( WS_EX_LEFT | WS_EX_STATICEDGE,
+        window->mCmdline = CreateWindowExW( WS_EX_LEFT | WS_EX_STATICEDGE,
           L"RichEdit50W", L"", WS_VISIBLE | WS_CHILD | ES_LEFT,
-          0, rect.bottom-18, rect.right, 18, wnd, NULL, pW->mWindow->getInstance(), (void*)pW );
+          0, rect.bottom - 18, rect.right, 18, wnd, NULL,
+          window->mWindow->getInstance(), (void*)window );
 
-        if ( !pW->mCmdline )
+        if ( !window->mCmdline )
           ENGINE_EXCEPT( L"Could not create RichEdit5 command line control" );
 
         // Set the command line proc
-        SetWindowLongPtrW( pW->mCmdline, GWLP_USERDATA, (LONG_PTR)pW );
-        pW->mCmdlineProc = (WNDPROC)SetWindowLongPtrW(
-          pW->mCmdline, GWLP_WNDPROC, (LONG_PTR)(WNDPROC)cmdLineProc );
+        SetWindowLongPtrW( window->mCmdline, GWLP_USERDATA, (LONG_PTR)window );
+        window->mCmdlineProc = (WNDPROC)SetWindowLongPtrW(
+          window->mCmdline, GWLP_WNDPROC, (LONG_PTR)(WNDPROC)cmdLineProc );
 
         // Setup
-        SendMessageW( pW->mLog, EM_LIMITTEXT, -1, 0 );
-        SendMessageW( pW->mCmdline, EM_LIMITTEXT, 100, 0 );
-        SendMessageW( pW->mLog, EM_AUTOURLDETECT, TRUE, 0 );
-        SendMessageW( pW->mLog, EM_SETEVENTMASK, NULL, ENM_SELCHANGE | ENM_LINK );
-        SendMessageW( pW->mLog, EM_SETOPTIONS, ECOOP_OR,
+        SendMessageW( window->mLog, EM_LIMITTEXT, -1, 0 );
+        SendMessageW( window->mCmdline, EM_LIMITTEXT, 100, 0 );
+        SendMessageW( window->mLog, EM_AUTOURLDETECT, TRUE, 0 );
+        SendMessageW( window->mLog, EM_SETEVENTMASK, NULL, ENM_SELCHANGE | ENM_LINK );
+        SendMessageW( window->mLog, EM_SETOPTIONS, ECOOP_OR,
           ECO_AUTOVSCROLL | ECO_NOHIDESEL | ECO_SAVESEL | ECO_SELECTIONBAR );
 
         // Create character format
@@ -326,34 +348,34 @@ namespace Glacier {
         wcscpy_s( format.szFaceName, LF_FACESIZE, cConsoleWindowFont );
 
         // Set character format
-        SendMessageW( pW->mLog, EM_SETCHARFORMAT, SCF_ALL, (LPARAM)&format );
-        SendMessageW( pW->mCmdline, EM_SETCHARFORMAT, SCF_ALL, (LPARAM)&format );
+        SendMessageW( window->mLog, EM_SETCHARFORMAT, SCF_ALL, (LPARAM)&format );
+        SendMessageW( window->mCmdline, EM_SETCHARFORMAT, SCF_ALL, (LPARAM)&format );
 
         // Set margins
-        SendMessageW( pW->mLog, EM_SETMARGINS, EC_LEFTMARGIN | EC_RIGHTMARGIN | EC_USEFONTINFO, NULL );
-        SendMessageW( pW->mCmdline, EM_SETMARGINS, EC_LEFTMARGIN | EC_RIGHTMARGIN | EC_USEFONTINFO, NULL );
+        SendMessageW( window->mLog, EM_SETMARGINS, EC_LEFTMARGIN | EC_RIGHTMARGIN | EC_USEFONTINFO, NULL );
+        SendMessageW( window->mCmdline, EM_SETMARGINS, EC_LEFTMARGIN | EC_RIGHTMARGIN | EC_USEFONTINFO, NULL );
 
         // Reset selection
-        SendMessageW( pW->mLog, EM_EXSETSEL, 0, (LPARAM)&range );
-        SendMessageW( pW->mCmdline, EM_EXSETSEL, 0, (LPARAM)&range );
+        SendMessageW( window->mLog, EM_EXSETSEL, 0, (LPARAM)&range );
+        SendMessageW( window->mCmdline, EM_EXSETSEL, 0, (LPARAM)&range );
 
         // Setup codepage (UCS-2) & text
-        SendMessageW( pW->mLog, EM_SETTEXTEX, (WPARAM)&textex, NULL );
-        SendMessageW( pW->mCmdline, EM_SETTEXTEX, (WPARAM)&textex, NULL );
+        SendMessageW( window->mLog, EM_SETTEXTEX, (WPARAM)&textex, NULL );
+        SendMessageW( window->mCmdline, EM_SETTEXTEX, (WPARAM)&textex, NULL );
 
         // Enable change notifications for the cmdline
-        SendMessageW( pW->mCmdline, EM_SETEVENTMASK, NULL, ENM_CHANGE );
+        SendMessageW( window->mCmdline, EM_SETEVENTMASK, NULL, ENM_CHANGE );
         return 0;
       break;
       case WM_PAINT:
         dc = BeginPaint( wnd, &paintdata );
-        pW->paint( wnd, dc );
+        window->paint( wnd, dc );
         EndPaint( wnd, &paintdata );
         return 0;
       break;
       case WM_SIZE:
-        MoveWindow( pW->mLog, 0, 32, LOWORD(lParam), HIWORD(lParam) - 18 - 32, TRUE );
-        MoveWindow( pW->mCmdline, 0, HIWORD(lParam) - 16, LOWORD(lParam), 18, TRUE );
+        MoveWindow( window->mLog, 0, 32, LOWORD(lParam), HIWORD(lParam) - 18 - 32, TRUE );
+        MoveWindow( window->mCmdline, 0, HIWORD(lParam) - 16, LOWORD(lParam), 18, TRUE );
         return 0;
       break;
       case WM_DESTROY:
