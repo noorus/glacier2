@@ -228,7 +228,7 @@
     <ClInclude Include="include\TextFile.h" />
     <ClInclude Include="include\ThreadController.h" />
     <ClInclude Include="include\Win32.h" />
-    <ClInclude Include="resource.h" />
+    <ClInclude Include="glacier2_resource.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\README.md" />

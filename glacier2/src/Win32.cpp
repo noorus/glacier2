@@ -1,18 +1,22 @@
 #include "StdAfx.h"
 #include "Win32.h"
 #include "Exception.h"
+#include "../glacier2_resource.h"
 
 #pragma warning( push )
 #pragma warning( disable: 4244 ) // warning C4244: 'argument': conversion from 'LONG' to 'Glacier::Win32::Gdiplus::REAL', possible loss of data
 
 namespace Glacier {
 
-  const wchar_t* cRichEditDLL = L"msftedit.dll";
-  const wchar_t* cWin32UIFont = L"Segoe UI";
-
   namespace Win32 {
 
     using namespace Gdiplus;
+
+    // Win32 constants ========================================================
+
+    const wchar_t* cErrorDialogTitle  = L"glacier² » error!";
+    const wchar_t* cRichEditDLL       = L"msftedit.dll";
+    const wchar_t* cWin32UIFont       = L"Segoe UI";
 
     // Win32 singleton ========================================================
 
@@ -35,6 +39,36 @@ namespace Glacier {
         ENGINE_EXCEPT_W32( L"Couldn't load RichEdit module" );
 
       Gdiplus::GdiplusStartup( &mGDIPlusToken, &mGDIPlusStartup, NULL );
+    }
+
+    void Win32::drawErrorDialog( Gdiplus::Graphics& gfx, RECT area, const ErrorDialog::Context& ctx )
+    {
+      Gdiplus::SolidBrush gpbrText( Color( 255, 255, 255, 255 ) );
+
+      RECT bar = { area.left, area.top, area.right, area.top + 32 };
+      drawNiceBar( gfx, bar );
+
+      Gdiplus::FontFamily fontFamily( cWin32UIFont );
+      Gdiplus::Font gpfntTitle( &fontFamily, 11, FontStyleRegular, UnitPixel );
+      Gdiplus::Font gpfntSubtitle( &fontFamily, 9, FontStyleRegular, UnitPixel );
+      Gdiplus::RectF rectTitle( area.left + 8.0f, 0.0f, area.right - 16.0f, 20.0f );
+      Gdiplus::RectF rectSubtitle( area.left + 9.0f, 15.0f, area.right - 16.0f, 20.0f );
+
+      Gdiplus::StringFormat format;
+      format.SetAlignment( StringAlignmentNear );
+      format.SetLineAlignment( StringAlignmentCenter );
+
+      Gdiplus::PointF ptTitle( area.left + 8.0f, 12.0f );
+      Gdiplus::PointF ptSubtitle( area.left + 9.0f, 22.0f );
+
+      Gdiplus::RectF clip( area.left, area.top, area.right - area.left - 8.0f, area.bottom - area.top );
+
+      gfx.SetClip( clip );
+
+      gfx.DrawString( ctx.title.c_str(), -1, &gpfntTitle, ptTitle, &format, &gpbrText );
+      gfx.DrawString( ctx.subtitle.c_str(), -1, &gpfntSubtitle, ptSubtitle, &format, &gpbrText );
+
+      gfx.ResetClip();
     }
 
     void Win32::drawConsole( Gdiplus::Graphics& gfx, RECT area, const wstring& title, const wstring& subtitle )
@@ -142,6 +176,71 @@ namespace Glacier {
         FreeLibrary( mRichEdit );
 
       mRichEdit = NULL;
+    }
+
+    // ErrorDialog class ======================================================
+
+    ErrorDialog::ErrorDialog( const Context& context ):
+    mContext( context )
+    {
+      DialogBoxParamW( mContext.instance,
+        MAKEINTRESOURCEW( IDD_ERROR ),
+        0, dlgProc, (LPARAM)this );
+    }
+
+    void ErrorDialog::paint( HWND dlg )
+    {
+      RECT area;
+      PAINTSTRUCT paintStruct;
+      HDC dc = BeginPaint( dlg, &paintStruct );
+      GetClientRect( dlg, &area );
+      Gdiplus::Graphics gfx( dc );
+      Win32::instance().drawErrorDialog( gfx, area, mContext );
+      EndPaint( dlg, &paintStruct );
+    }
+
+    void ErrorDialog::report()
+    {
+      // TODO
+    }
+
+    INT_PTR CALLBACK ErrorDialog::dlgProc( HWND dlg, UINT msg,
+    WPARAM wParam, LPARAM lParam )
+    {
+      auto dialog = (ErrorDialog*)GetWindowLongPtrW( dlg, GWLP_USERDATA );
+      switch ( msg )
+      {
+        case WM_INITDIALOG:
+          dialog = (ErrorDialog*)lParam;
+          SetWindowLongPtrW( dlg, GWLP_USERDATA, (LONG_PTR)dialog );
+          SetWindowTextW( dlg, cErrorDialogTitle );
+          SetDlgItemTextW( dlg, IDC_ERROR_BODY, dialog->mContext.body.c_str() );
+        break;
+        case WM_PAINT:
+          dialog->paint( dlg );
+          return 0;
+        break;
+        case WM_SYSCOMMAND:
+          switch ( wParam ) {
+            case SC_CLOSE:
+              EndDialog( dlg, FALSE );
+              return 1;
+            break;
+          }
+        break;
+        case WM_COMMAND:
+          switch ( wParam ) {
+            case IDC_ERROR_REPORT:
+              dialog->report();
+            break;
+            case IDC_ERROR_EXIT:
+              EndDialog( dlg, FALSE );
+              return 1;
+            break;
+          }
+        break;
+      }
+      return 0;
     }
 
     // Window class ===========================================================

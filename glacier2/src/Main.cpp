@@ -26,12 +26,43 @@ LPWSTR lpCmdLine, int nCmdShow )
   // _CrtSetBreakAlloc( x );
 
   Glacier::Win32::Win32::instance().initialize();
+  Glacier::Win32::ErrorDialog::Context error( hInstance );
+  error.title = L"Fatal engine error occurred";
 
-  gEngine = new Glacier::Engine( hInstance );
-  gEngine->initialize();
-  gEngine->run();
-  gEngine->shutdown();
-  SAFE_DELETE( gEngine );
+  // TODO: Add SEH guard to neatly handle access violations
+
+  try
+  {
+    gEngine = new Glacier::Engine( hInstance );
+    gEngine->initialize();
+    gEngine->run();
+    gEngine->shutdown();
+    SAFE_DELETE( gEngine );
+  }
+  catch ( Glacier::Exception& e )
+  {
+    error.subtitle = L"Program fault: Glacier² engine exception";
+    error.body = e.getFullDescription();
+    Glacier::Win32::ErrorDialog dialog( error );
+  }
+  catch ( Ogre::Exception& e )
+  {
+    error.subtitle = L"Program fault: Ogre3D runtime exception";
+    error.body = Glacier::Utilities::utf8ToWide( e.getFullDescription() );
+    Glacier::Win32::ErrorDialog dialog( error );
+  }
+  catch ( std::exception& e )
+  {
+    error.subtitle = L"Program fault: StdLib runtime exception";
+    error.body = Glacier::Utilities::utf8ToWide( e.what() );
+    Glacier::Win32::ErrorDialog dialog( error );
+  }
+  catch ( ... )
+  {
+    error.subtitle = L"Program fault: Unknown exception";
+    error.body = L"An un-identified exception occurred in the program code.";
+    Glacier::Win32::ErrorDialog dialog( error );
+  }
 
   Glacier::Win32::Win32::instance().shutdown();
 

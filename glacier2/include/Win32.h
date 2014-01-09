@@ -9,6 +9,24 @@ namespace Glacier {
 #   define min(a,b) (((a) < (b)) ? (a) : (b))
 #   include <gdiplus.h>
 
+    class ErrorDialog: boost::noncopyable {
+    public:
+      struct Context {
+        HINSTANCE instance;
+        wstring title;
+        wstring subtitle;
+        wstring body;
+        explicit Context( HINSTANCE instance_ ): instance( instance_ ) {}
+      };
+    protected:
+      Context mContext;
+      void paint( HWND dlg );
+      void report();
+      static INT_PTR CALLBACK dlgProc( HWND dlg, UINT msg, WPARAM wParam, LPARAM lParam );
+    public:
+      ErrorDialog( const Context& context );
+    };
+
     class Win32: public Singleton<Win32> {
     friend class Singleton<Win32>;
     protected:
@@ -18,6 +36,7 @@ namespace Glacier {
       Win32();
     public:
       void initialize();
+      void drawErrorDialog( Gdiplus::Graphics& gfx, RECT area, const ErrorDialog::Context& ctx );
       void drawConsole( Gdiplus::Graphics& gfx, RECT area, const wstring& title, const wstring& subtitle );
       void drawNiceBar( Gdiplus::Graphics& gfx, RECT area );
       void shutdown();
