@@ -1,5 +1,6 @@
 #pragma once
 #include "Types.h"
+#include "EngineComponent.h"
 
 namespace Glacier {
 
@@ -93,7 +94,7 @@ namespace Glacier {
   typedef std::list<ConsoleListener*> ConsoleListenerList;
 
   //! \class Console
-  class Console {
+  class Console: public EngineComponent {
   friend class ConBase;
   public:
     enum Source: unsigned long {
@@ -128,8 +129,9 @@ namespace Glacier {
     static void callbackExec( Console* console, ConCmd* command, StringVector& arguments );
     static void callbackHelp( Console* console, ConCmd* command, StringVector& arguments );
   public:
-    Console();
-    ~Console();
+    Console( Engine* engine );
+    virtual void preUpdate( GameTime time );
+    virtual ~Console();
     Source registerSource( const wstring& name, COLORREF color );
     void processBuffered();
     void addListener( ConsoleListener* listener );

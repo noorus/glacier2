@@ -15,3 +15,7 @@
 #ifndef SAFE_RELEASE_PHYSX
 # define SAFE_RELEASE_PHYSX(p) {if(p){(p)->release();(p)=NULL;}}
 #endif
+
+#ifndef SAFE_CLOSE_HANDLE
+# define SAFE_CLOSE_HANDLE(p) {if(p){CloseHandle(p);(p)=NULL;}}
+#endif

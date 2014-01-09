@@ -3,7 +3,7 @@
 
 namespace Glacier {
 
-  Scripting::Scripting()
+  Scripting::Scripting( Engine* engine ): EngineComponent( engine )
   {
     v8::V8::InitializeICU();
   }

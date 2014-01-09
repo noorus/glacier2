@@ -59,25 +59,25 @@ namespace Glacier {
       } mSettings;
     protected:
       ATOM mClass;
-      WNDPROC pfnWndProc;
-      HINSTANCE hInstance;
-      LPVOID lpUserdata;
+      WNDPROC mWndProc;
+      HINSTANCE mInstance;
+      LPVOID mUserData;
       HWND mHandle;
       virtual void registerClass( const wstring& name, const HICON icon,
         const HICON smallIcon, const HCURSOR cursor );
       virtual void unregisterClass();
       virtual void destroy();
     public:
-      explicit Window( const HINSTANCE hInstance, const WNDPROC lpfnWndProc, Settings& mSettings, LPVOID lpUserdata = NULL );
+      explicit Window( const HINSTANCE instance, const WNDPROC wndProc, Settings& settings, LPVOID userData = NULL );
       ~Window();
-      virtual void create( POINT ptPosition, POINT ptSize, const wstring& caption );
+      virtual void create( POINT position, POINT size, const wstring& caption );
       virtual void center();
-      virtual void resizeClient( POINT ptClientSize );
+      virtual void resizeClient( POINT clientSize );
       virtual void setVisible( bool visible );
       virtual void setSizable( bool sizable );
       virtual void setEnabled( bool enabled );
       virtual HWND getHandle() { return mHandle; }
-      virtual HINSTANCE getInstance() { return hInstance; }
+      virtual HINSTANCE getInstance() { return mInstance; }
     };
 
   }

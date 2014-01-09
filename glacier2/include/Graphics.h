@@ -1,10 +1,14 @@
 #pragma once
+#include "EngineComponent.h"
 
 namespace Glacier {
 
-  class Graphics {
+  class Graphics: public EngineComponent {
   public:
-    Graphics();
+    Graphics( Engine* engine );
+    virtual void preUpdate( GameTime time );
+    virtual void postUpdate( GameTime delta, GameTime time );
+    virtual ~Graphics();
   };
 
 }

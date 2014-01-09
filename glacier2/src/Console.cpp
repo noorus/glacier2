@@ -153,8 +153,9 @@ namespace Glacier {
 
   // Console class ============================================================
 
-  Console::Console(): mOutFile( nullptr ), mCmdList( nullptr ),
-  mCmdHelp( nullptr ), mCmdFind( nullptr ), mCmdExec( nullptr )
+  Console::Console( Engine* engine ): EngineComponent( engine ),
+  mOutFile( nullptr ), mCmdList( nullptr ), mCmdHelp( nullptr ),
+  mCmdFind( nullptr ), mCmdExec( nullptr )
   {
     InitializeSRWLock( &mLock );
     InitializeSRWLock( &mBufferLock );
@@ -183,6 +184,11 @@ namespace Glacier {
     mCommands.sort( Console::cmpSortCmds );
 
     mOutFile = new TextFile( L"console.log" );
+  }
+
+  void Console::preUpdate( GameTime time )
+  {
+    processBuffered();
   }
 
   Console::~Console()
@@ -403,9 +409,6 @@ namespace Glacier {
     for ( ConBase* base : mCommands )
     {
       wstring comparison = base->getName().substr( 0, trimmed.length() );
-      WCHAR str[100];
-      swprintf_s( str, 100, L"Comparing %s to %s\r\n", trimmed.c_str(), comparison.c_str() );
-      OutputDebugStringW( str );
       if ( !_wcsicmp( trimmed.c_str(), comparison.c_str() ) )
         matches.push_back( base );
     }

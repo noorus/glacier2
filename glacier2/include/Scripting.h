@@ -1,11 +1,12 @@
 #pragma once
+#include "EngineComponent.h"
 
 namespace Glacier {
 
-  class Scripting {
+  class Scripting: public EngineComponent {
   public:
-    Scripting();
-    ~Scripting();
+    Scripting( Engine* engine );
+    virtual ~Scripting();
     void test();
   };
 

@@ -13,10 +13,10 @@ namespace Glacier {
 
   // Engine timing values
 
-  GameTime  Engine::fTime = 0.0;
-  LocalTime Engine::fTimeDelta = 0.0;
-  GameTime  Engine::fTimeAccumulator = 0.0;
-  LocalTime Engine::fLogicStep = 1.0 / 60.0;
+  GameTime Engine::fTime = 0.0;
+  GameTime Engine::fTimeDelta = 0.0;
+  GameTime Engine::fTimeAccumulator = 0.0;
+  GameTime Engine::fLogicStep = 1.0 / 60.0;
 
   // Engine version struct
 
@@ -93,10 +93,12 @@ namespace Glacier {
 
   void Engine::initialize()
   {
+    // Get process & thread handles
     mProcess = GetCurrentProcess();
     mThread = GetCurrentThread();
 
-    mConsole = new Console();
+    // Setup console
+    mConsole = new Console( this );
     mConsoleWindow = new ConsoleWindowThread( mInstance, mConsole );
     mConsoleWindow->start();
 
@@ -105,21 +107,52 @@ namespace Glacier {
     mConsole->printf( Console::srcEngine, getVersion().subtitle.c_str() );
 
     adjustPrivileges();
-    fixupThreadAffinity();
 
     // Fetch HPC frequency
-    if ( !QueryPerformanceFrequency( &qwiTimerFrequency ) )
+    if ( !QueryPerformanceFrequency( &mHPCFrequency ) )
       ENGINE_EXCEPT_W32( L"Couldn't query HPC frequency" );
 
-    mScripting = new Scripting();
-    mGraphics = new Graphics();
+    // Create subsystems
+    mScripting = new Scripting( this );
+    mGraphics = new Graphics( this );
   }
 
   void Engine::run()
   {
+    fixupThreadAffinity();
+
+    LARGE_INTEGER timeCurrent;
+    LARGE_INTEGER tickDelta;
+    LARGE_INTEGER timeNew;
+
+    QueryPerformanceCounter( &timeCurrent );
+
+    fTime = 0.0;
+    fTimeAccumulator = 0.0;
+
     while ( mSignal != Signal_Stop )
     {
-      mConsole->processBuffered();
+      mConsole->preUpdate( fTime );
+      mGraphics->preUpdate( fTime );
+
+      QueryPerformanceCounter( &timeNew );
+
+      tickDelta.QuadPart = timeNew.QuadPart - timeCurrent.QuadPart;
+      timeCurrent = timeNew;
+
+      fTimeDelta = (GameTime)tickDelta.QuadPart / (GameTime)mHPCFrequency.QuadPart;
+      fTimeAccumulator += fTimeDelta;
+      while ( fTimeAccumulator >= fLogicStep )
+      {
+        // logic stepping here
+        fTime += fLogicStep;
+        fTimeAccumulator -= fLogicStep;
+      }
+      fTimeDelta -= fTimeAccumulator;
+      if ( fTimeDelta > 0.0 )
+      {
+        mGraphics->postUpdate( fTimeDelta, fTime );
+      }
     }
   }
 
@@ -130,14 +163,13 @@ namespace Glacier {
     SAFE_DELETE( mConsoleWindow );
     SAFE_DELETE( mConsole );
 
-    if ( mThread )
-      CloseHandle( mThread );
-    if ( mProcess )
-      CloseHandle( mProcess );
+    SAFE_CLOSE_HANDLE( mThread );
+    SAFE_CLOSE_HANDLE( mProcess );
   }
 
   Engine::~Engine()
   {
+    shutdown();
   }
 
 }

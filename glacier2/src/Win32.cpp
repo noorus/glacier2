@@ -7,6 +7,9 @@
 
 namespace Glacier {
 
+  const wchar_t* cRichEditDLL = L"msftedit.dll";
+  const wchar_t* cWin32UIFont = L"Segoe UI";
+
   namespace Win32 {
 
     using namespace Gdiplus;
@@ -27,7 +30,7 @@ namespace Glacier {
       if ( !InitCommonControlsEx( &ctrls ) )
         ENGINE_EXCEPT_W32( L"Couldn't initialize common controls, missing manifest?" );
 
-      mRichEdit = LoadLibraryW( L"msftedit.dll" );
+      mRichEdit = LoadLibraryW( cRichEditDLL );
       if ( !mRichEdit )
         ENGINE_EXCEPT_W32( L"Couldn't load RichEdit module" );
 
@@ -47,7 +50,7 @@ namespace Glacier {
       RECT bar = { area.left, area.top, area.right, area.top + 32 };
       drawNiceBar( gfx, bar );
 
-      Gdiplus::FontFamily fontFamily( L"Segoe UI" );
+      Gdiplus::FontFamily fontFamily( cWin32UIFont );
       Gdiplus::Font gpfntTitle( &fontFamily, 11, FontStyleRegular, UnitPixel );
       Gdiplus::Font gpfntSubtitle( &fontFamily, 9, FontStyleRegular, UnitPixel );
       Gdiplus::RectF rectTitle( area.left + 8.0f, 0.0f, area.right - 16.0f, 20.0f );
@@ -143,10 +146,10 @@ namespace Glacier {
 
     // Window class ===========================================================
 
-    Window::Window( const HINSTANCE hInstance_, const WNDPROC lpfnWndProc_,
-    Settings& mSettings_, LPVOID lpUserdata_ ): mClass( NULL ), mHandle( NULL ),
-    mSettings( mSettings_ ), pfnWndProc( lpfnWndProc_ ), hInstance( hInstance_ ),
-    lpUserdata( lpUserdata_ )
+    Window::Window( const HINSTANCE instance, const WNDPROC wndProc,
+    Settings& settings, LPVOID userData ): mClass( NULL ), mHandle( NULL ),
+    mSettings( settings ), mWndProc( wndProc ), mInstance( instance ),
+    mUserData( userData )
     {
       registerClass( mSettings.sClassName, mSettings.hIcon,
         mSettings.hSmallIcon, mSettings.hCursor );
@@ -165,10 +168,10 @@ namespace Glacier {
 
       wndClass.cbSize        = sizeof( WNDCLASSEXW );
       wndClass.style         = 0;
-      wndClass.lpfnWndProc   = pfnWndProc;
+      wndClass.lpfnWndProc   = mWndProc;
       wndClass.cbClsExtra    = NULL;
       wndClass.cbWndExtra    = NULL;
-      wndClass.hInstance     = hInstance;
+      wndClass.hInstance     = mInstance;
       wndClass.hIcon         = icon;
       wndClass.hCursor       = cursor;
       wndClass.hbrBackground = NULL;
@@ -222,7 +225,7 @@ namespace Glacier {
         NULL, NULL, SWP_NOSIZE );
     }
 
-    void Window::create( POINT ptPosition, POINT ptSize, const wstring& caption )
+    void Window::create( POINT position, POINT size, const wstring& caption )
     {
       DWORD dwStyle = WS_CLIPCHILDREN;
       DWORD dwExStyle = NULL;
@@ -240,13 +243,13 @@ namespace Glacier {
       mSettings.bDisabled ? dwStyle |= WS_DISABLED : dwStyle &= ~WS_DISABLED;
 
       mHandle = CreateWindowExW( dwExStyle, (LPCWSTR)mClass,
-        caption.c_str(), dwStyle, ptPosition.x, ptPosition.y,
-        ptSize.x, ptSize.y, NULL, NULL, hInstance, lpUserdata );
+        caption.c_str(), dwStyle, position.x, position.y,
+        size.x, size.y, NULL, NULL, mInstance, mUserData );
 
       if ( !mHandle )
         ENGINE_EXCEPT_W32( L"Could not create window" );
 
-      resizeClient( ptSize );
+      resizeClient( size );
 
       if ( mSettings.bCentered )
         center();
@@ -282,7 +285,7 @@ namespace Glacier {
     void Window::unregisterClass()
     {
       if ( mClass )
-        ::UnregisterClassW( (LPCWSTR)mClass, hInstance );
+        ::UnregisterClassW( (LPCWSTR)mClass, mInstance );
     }
 
   }

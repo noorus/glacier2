@@ -34,19 +34,16 @@ namespace Glacier {
     Scripting* mScripting;
     Graphics* mGraphics;
     // Timing
-    LARGE_INTEGER qwiTimerFrequency;      //!< HPC frequency
-    LARGE_INTEGER qwiTimeNew;             //!< Newest time
-    LARGE_INTEGER qwiTimeCurrent;         //!< Current time
-    LARGE_INTEGER qwiTickDelta;           //!< Time delta
-    static GameTime  fTime;               //!< Game time
-    static LocalTime fTimeDelta;          //!< Game frame delta
-    static GameTime  fTimeAccumulator;    //!< Game frametime accumulator
-    static LocalTime fLogicStep;          //!< Game logic step
+    LARGE_INTEGER mHPCFrequency;        //!< HPC frequency
+    static GameTime fTime;              //!< Game time
+    static GameTime fTimeDelta;         //!< Game frame delta
+    static GameTime fTimeAccumulator;   //!< Game frametime accumulator
+    static GameTime fLogicStep;         //!< Game logic step
     // Handles
-    HANDLE mProcess; //!< Process handle
-    HANDLE mThread; //!< Main thread handle
-    HINSTANCE mInstance; //!< Instance handle
-    volatile Signal mSignal; //!< Engine signal
+    HANDLE mProcess;                    //!< Process handle
+    HANDLE mThread;                     //!< Main thread handle
+    HINSTANCE mInstance;                //!< Instance handle
+    volatile Signal mSignal;            //!< Engine signal
     void adjustPrivileges();
     void fixupThreadAffinity();
   public:

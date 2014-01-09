@@ -139,7 +139,7 @@ namespace Glacier {
       return x & 0xFF;
     }
 
-    inline wstring getWindowText( HWND wnd )
+    inline wstring getWindowText( HWND wnd ) throw()
     {
       wstring str;
       int length = GetWindowTextLengthW( wnd );
