@@ -11,14 +11,14 @@ Glacier::Engine* gEngine = nullptr;
 
 namespace Glacier {
 
-  // Engine timing values
+  // Engine timing values =====================================================
 
   GameTime Engine::fTime = 0.0;
   GameTime Engine::fTimeDelta = 0.0;
   GameTime Engine::fTimeAccumulator = 0.0;
   GameTime Engine::fLogicStep = 1.0 / 60.0;
 
-  // Engine version struct
+  // Engine version struct ====================================================
 
   Engine::Version::Version( uint32_t major_, uint32_t minor_, uint32_t build_ ):
   compiler( _COMPILER ), profile( _PROFILE ),
@@ -33,13 +33,22 @@ namespace Glacier {
     subtitle = temp;
   }
 
-  // Engine class
+  // Engine class =============================================================
+
+  ENGINE_DECLARE_CONCMD( version, L"Print engine version.", Engine::callbackVersion );
 
   Engine::Engine( HINSTANCE instance ):
   mConsole( nullptr ), mScripting( nullptr ), mGraphics( nullptr ),
   mProcess( NULL ), mThread( NULL ), mInstance( instance ),
   mSignal( Signal_None ), mVersion( 0, 1, 1 ), mConsoleWindow( nullptr )
   {
+  }
+
+  void Engine::callbackVersion( Console* console, ConCmd* command, StringVector& arguments )
+  {
+    if ( !gEngine )
+      return;
+    console->printf( Console::srcEngine, gEngine->getVersion().title.c_str() );
   }
 
   const unsigned long cPrivileges = 1;
@@ -132,8 +141,8 @@ namespace Glacier {
 
     while ( mSignal != Signal_Stop )
     {
-      mConsole->preUpdate( fTime );
-      mGraphics->preUpdate( fTime );
+      mConsole->componentPreUpdate( fTime );
+      mGraphics->componentPreUpdate( fTime );
 
       QueryPerformanceCounter( &timeNew );
 
@@ -151,7 +160,7 @@ namespace Glacier {
       fTimeDelta -= fTimeAccumulator;
       if ( fTimeDelta > 0.0 )
       {
-        mGraphics->postUpdate( fTimeDelta, fTime );
+        mGraphics->componentPostUpdate( fTimeDelta, fTime );
       }
     }
   }

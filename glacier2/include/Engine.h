@@ -8,6 +8,7 @@ namespace Glacier {
   class ConsoleWindowThread;
   class Scripting;
   class Graphics;
+  class ConCmd;
 
   class Engine {
   public:
@@ -46,6 +47,8 @@ namespace Glacier {
     volatile Signal mSignal;            //!< Engine signal
     void adjustPrivileges();
     void fixupThreadAffinity();
+  public:
+    static void callbackVersion( Console* console, ConCmd* command, StringVector& arguments );
   public:
     Engine( HINSTANCE instance );
     ~Engine();

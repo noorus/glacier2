@@ -194,6 +194,7 @@
     <ClCompile Include="src\Engine.cpp" />
     <ClCompile Include="src\EngineComponent.cpp" />
     <ClCompile Include="src\Exception.cpp" />
+    <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\Graphics.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\Memory.cpp" />
@@ -216,6 +217,7 @@
     <ClInclude Include="include\Engine.h" />
     <ClInclude Include="include\EngineComponent.h" />
     <ClInclude Include="include\Exception.h" />
+    <ClInclude Include="include\Game.h" />
     <ClInclude Include="include\Graphics.h" />
     <ClInclude Include="include\GlacierMemory.h" />
     <ClInclude Include="include\Scripting.h" />

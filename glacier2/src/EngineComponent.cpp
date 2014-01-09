@@ -9,24 +9,24 @@ namespace Glacier {
     //
   }
 
-  void EngineComponent::preUpdate( GameTime time )
+  void EngineComponent::componentPreUpdate( GameTime time )
   {
     throw std::runtime_error(
-      "Called preUpdate on an EngineComponent that does not implement it"
+      "Called componentPreUpdate on an EngineComponent that does not implement it"
     );
   }
 
-  void EngineComponent::update( GameTime tick, GameTime time )
+  void EngineComponent::componentTick( GameTime tick, GameTime time )
   {
     throw std::runtime_error(
-      "Called update on an EngineComponent that does not implement it"
+      "Called componentTick on an EngineComponent that does not implement it"
     );
   }
 
-  void EngineComponent::postUpdate( GameTime delta, GameTime time )
+  void EngineComponent::componentPostUpdate( GameTime delta, GameTime time )
   {
     throw std::runtime_error(
-      "Called postUpdate on an EngineComponent that does not implement it"
+      "Called componentPostUpdate on an EngineComponent that does not implement it"
     );
   }
 

@@ -130,7 +130,7 @@ namespace Glacier {
     static void callbackHelp( Console* console, ConCmd* command, StringVector& arguments );
   public:
     Console( Engine* engine );
-    virtual void preUpdate( GameTime time );
+    virtual void componentPreUpdate( GameTime time );
     virtual ~Console();
     Source registerSource( const wstring& name, COLORREF color );
     void processBuffered();

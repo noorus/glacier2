@@ -4,6 +4,9 @@
 #include "Utilities.h"
 #include "TextFile.h"
 
+#pragma warning( disable: 4073 )
+#pragma init_seg( lib )
+
 namespace Glacier {
 
   const long     cMaxConsoleLine  = 4096;
@@ -153,6 +156,8 @@ namespace Glacier {
 
   // Console class ============================================================
 
+  ConBaseList Console::mPrecreated;
+
   Console::Console( Engine* engine ): EngineComponent( engine ),
   mOutFile( nullptr ), mCmdList( nullptr ), mCmdHelp( nullptr ),
   mCmdFind( nullptr ), mCmdExec( nullptr )
@@ -186,7 +191,7 @@ namespace Glacier {
     mOutFile = new TextFile( L"console.log" );
   }
 
-  void Console::preUpdate( GameTime time )
+  void Console::componentPreUpdate( GameTime time )
   {
     processBuffered();
   }

@@ -2,7 +2,7 @@
 
 namespace Glacier {
 
-  class TextFile: public boost::noncopyable {
+  class TextFile: boost::noncopyable {
   protected:
     HANDLE mFile;
   public:

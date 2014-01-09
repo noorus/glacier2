@@ -3,7 +3,7 @@
 
 namespace Glacier {
 
-  class ThreadController: public boost::noncopyable {
+  class ThreadController: boost::noncopyable {
   protected:
     HANDLE mThread;
     DWORD mThreadID;

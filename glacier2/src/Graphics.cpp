@@ -8,12 +8,12 @@ namespace Glacier {
     //
   }
 
-  void Graphics::preUpdate( GameTime time )
+  void Graphics::componentPreUpdate( GameTime time )
   {
     Ogre::WindowEventUtilities::messagePump();
   }
 
-  void Graphics::postUpdate( GameTime delta, GameTime time )
+  void Graphics::componentPostUpdate( GameTime delta, GameTime time )
   {
     // render here
   }
