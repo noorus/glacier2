@@ -7,3 +7,6 @@
 [submodule "nedmalloc"]
 	path = nedmalloc
 	url = https://github.com/ned14/nedmalloc.git
+[submodule "hdrlib"]
+	path = hdrlib
+	url = https://github.com/sldt/hdrlib.git
