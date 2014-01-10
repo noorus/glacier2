@@ -31,13 +31,16 @@ LPWSTR lpCmdLine, int nCmdShow )
 
   // TODO: Add SEH guard to neatly handle access violations
 
+#ifndef _DEBUG
   try
   {
+#endif
     gEngine = new Glacier::Engine( hInstance );
     gEngine->initialize();
     gEngine->run();
     gEngine->shutdown();
     SAFE_DELETE( gEngine );
+#ifndef _DEBUG
   }
   catch ( Glacier::Exception& e )
   {
@@ -63,6 +66,7 @@ LPWSTR lpCmdLine, int nCmdShow )
     error.body = L"An un-identified exception occurred in the program code.";
     Glacier::Win32::ErrorDialog dialog( error );
   }
+#endif
 
   Glacier::Win32::Win32::instance().shutdown();
 

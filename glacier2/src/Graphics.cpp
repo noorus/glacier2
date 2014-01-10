@@ -187,6 +187,20 @@ namespace Glacier {
 
     // Tell the engine to continue, in case this was a restart
     mEngine->operationContinueVideo();
+
+    /*mComp = new HDRCompositor(mWindow,cam);
+    mComp->SetToneMapper(HDRCompositor::TONEMAPPER::TM_REINHARDLOCAL);
+    mComp->SetStarPasses(2);
+    mComp->SetGlarePasses(2);
+    mComp->SetGlareType(HDRCompositor::GLARETYPE::GT_BLUR);
+    mComp->SetStarType(HDRCompositor::STARTYPE::ST_NONE);
+    mComp->SetAutoKeying(true);
+    mComp->SetKey(0.2);
+    mComp->SetLumAdapdation(true);
+    mComp->SetAdaptationScale(10);
+    mComp->SetGlareStrength(2.5f);
+    mComp->SetStarStrength(0);
+    mComp->Enable(true);*/
   }
 
   void Graphics::videoRestart()
