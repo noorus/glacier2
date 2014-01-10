@@ -13,7 +13,8 @@ namespace Glacier {
     enum Type {
       Generic = 0,
       WinAPI,
-      NT
+      NT,
+      FMOD
     };
   private:
     Exception() {}
@@ -28,6 +29,7 @@ namespace Glacier {
     Exception( const wstring& description, Type type = Generic );
     Exception( const wstring& description, const wstring& source, Type type = Generic );
     Exception( const wstring& description, const wstring& source, NTSTATUS ntstatus, Type type = Generic );
+    Exception( const wstring& description, const wstring& source, FMOD_RESULT result, Type type = Generic );
     virtual const std::wstring& getFullDescription() const;
     virtual const char* what() const throw();
   };
@@ -38,7 +40,7 @@ namespace Glacier {
 # define ENGINE_EXCEPT(description) {throw Glacier::Exception(description,__FUNCTIONW__,Glacier::Exception::Generic);}
 # define ENGINE_EXCEPT_W32(description) {throw Glacier::Exception(description,__FUNCTIONW__,Glacier::Exception::WinAPI);}
 # define ENGINE_EXCEPT_NT(r,description) {throw Glacier::Exception(description,__FUNCTIONW__,r,Glacier::Exception::NT);}
-// ENGINE_EXCEPT_FMOD
+# define ENGINE_EXCEPT_FMOD(r,description) {throw Glacier::Exception(description,__FUNCTIONW__,r,Glacier::Exception::FMOD);}
 // ENGINE_EXCEPT_SEH
 #endif
 

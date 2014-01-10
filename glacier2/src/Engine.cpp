@@ -6,6 +6,7 @@
 #include "Graphics.h"
 #include "Utilities.h"
 #include "Exception.h"
+#include "Sound.h"
 #include "Game.h"
 
 Glacier::Engine* gEngine = nullptr;
@@ -143,6 +144,7 @@ namespace Glacier {
     // Create subsystems
     mScripting = new Scripting( this );
     mGraphics = new Graphics( this );
+    mSound = new Sound( this );
     mGame = new Game( this );
   }
 
@@ -174,6 +176,7 @@ namespace Glacier {
       while ( fTimeAccumulator >= fLogicStep )
       {
         mGame->componentTick( fLogicStep, fTime );
+        mSound->componentTick( fLogicStep, fTime );
         fTime += fLogicStep;
         fTimeAccumulator -= fLogicStep;
       }
@@ -197,6 +200,7 @@ namespace Glacier {
   void Engine::shutdown()
   {
     SAFE_DELETE( mGame );
+    SAFE_DELETE( mSound );
     SAFE_DELETE( mGraphics );
     SAFE_DELETE( mScripting );
     SAFE_DELETE( mConsoleWindow );

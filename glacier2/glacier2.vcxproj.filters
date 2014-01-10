@@ -99,6 +99,9 @@
     <ClCompile Include="..\hdrlib\HDRCompositor.cpp">
       <Filter>Source Files\HDRLib</Filter>
     </ClCompile>
+    <ClCompile Include="src\Sound.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\StdAfx.h">
@@ -163,6 +166,9 @@
     </ClInclude>
     <ClInclude Include="..\hdrlib\HDRCompositor.h">
       <Filter>Header Files\HDRLib</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Sound.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

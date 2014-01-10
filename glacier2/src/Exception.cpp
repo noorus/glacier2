@@ -23,6 +23,13 @@ namespace Glacier {
     // TODO handle NTSTATUS
   }
 
+  Exception::Exception( const wstring& description, const wstring& source, FMOD_RESULT result, Type type ):
+  mDescription( description ), mSource( source ), mType( type )
+  {
+    handleAdditional();
+    // TODO handle FMOD_RESULT
+  }
+
   void Exception::handleAdditional()
   {
     if ( mType == WinAPI )

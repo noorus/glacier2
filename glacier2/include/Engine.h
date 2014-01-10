@@ -10,6 +10,7 @@ namespace Glacier {
   class Graphics;
   class ConCmd;
   class Game;
+  class Sound;
 
   //! \class Engine
   //! The main engine class that makes the world go round
@@ -37,6 +38,7 @@ namespace Glacier {
     ConsoleWindowThread* mConsoleWindow;
     Scripting* mScripting;
     Graphics* mGraphics;
+    Sound* mSound;
     Game* mGame;
     // Timing
     LARGE_INTEGER mHPCFrequency;        //!< HPC frequency
@@ -57,6 +59,7 @@ namespace Glacier {
     Console* getConsole() { return mConsole; }
     Scripting* getScripting() { return mScripting; }
     Graphics* getGraphics() { return mGraphics; }
+    Sound* getSound() { return mSound; }
     Game* getGame() { return mGame; }
     inline GameTime getTime() { return fTime; }
     // Callbacks
