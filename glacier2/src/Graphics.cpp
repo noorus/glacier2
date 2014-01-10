@@ -257,7 +257,7 @@ namespace Glacier {
 
   void Graphics::componentPostUpdate( GameTime delta, GameTime time )
   {
-    if ( !mRoot->renderOneFrame( delta ) )
+    if ( !mRoot->renderOneFrame( (Ogre::Real)delta ) )
       ENGINE_EXCEPT( L"Frame failed to render" );
   }
 

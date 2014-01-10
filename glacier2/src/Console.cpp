@@ -83,7 +83,7 @@ namespace Glacier {
   }
 
   ConVar::ConVar( const wstring& name, const wstring& description,
-  double defaultValue, ConVar::Callback callback ):
+  float defaultValue, ConVar::Callback callback ):
   ConBase( name, description ), mCallback( callback )
   {
     setValue( defaultValue );
@@ -108,7 +108,7 @@ namespace Glacier {
     return mValue.i;
   }
 
-  double ConVar::getFloat()
+  float ConVar::getFloat()
   {
     return mValue.f;
   }
@@ -122,7 +122,7 @@ namespace Glacier {
   {
     Value oldValue = mValue;
     mValue.i = value;
-    mValue.f = (double)value;
+    mValue.f = (float)value;
     wchar_t strtmp[32];
     swprintf_s( strtmp, 32, L"%i", value );
     mValue.str = strtmp;
@@ -131,13 +131,12 @@ namespace Glacier {
     mValue = oldValue;
   }
 
-  void ConVar::setValue( double value )
+  void ConVar::setValue( float value )
   {
     Value oldValue = mValue;
     mValue.i = (int)value;
     mValue.f = value;
     wchar_t strtmp[32];
-    // TODO: not sure if this is correct
     swprintf_s( strtmp, 32, L"%f", value );
     mValue.str = strtmp;
     if ( !mRegistered || !mCallback || mCallback( this, oldValue ) )
@@ -149,11 +148,36 @@ namespace Glacier {
   {
     Value oldValue = mValue;
     mValue.i = _wtoi( value.c_str() );
-    mValue.f = _wtof( value.c_str() );
+    mValue.f = (float)_wtof( value.c_str() );
     mValue.str = value;
     if ( !mRegistered || !mCallback || mCallback( this, oldValue ) )
       return;
     mValue = oldValue;
+  }
+
+  void ConVar::forceValue( int value )
+  {
+    mValue.i = value;
+    mValue.f = (float)value;
+    wchar_t strtmp[32];
+    swprintf_s( strtmp, 32, L"%i", value );
+    mValue.str = strtmp;
+  }
+
+  void ConVar::forceValue( float value )
+  {
+    mValue.i = (int)value;
+    mValue.f = value;
+    wchar_t strtmp[32];
+    swprintf_s( strtmp, 32, L"%f", value );
+    mValue.str = strtmp;
+  }
+
+  void ConVar::forceValue( const wstring& value )
+  {
+    mValue.i = _wtoi( value.c_str() );
+    mValue.f = (float)_wtof( value.c_str() );
+    mValue.str = value;
   }
 
   // Console class ============================================================

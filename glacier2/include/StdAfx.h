@@ -53,6 +53,7 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/utility.hpp>
 #include <boost/algorithm/string.hpp>
+#include <boost/algorithm/clamp.hpp>
 #include <boost/random.hpp>
 #include <boost/tokenizer.hpp>
 #include <boost/variant.hpp>
