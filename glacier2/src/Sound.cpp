@@ -193,6 +193,10 @@ namespace Glacier {
       // Auto means the speaker mode currently used by the OS.
       speakerMode = mInfo.speakerMode;
     }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 0058c0f9864081a8cae7f65e7c929efbcb935262
     hr = mSystem->setSpeakerMode( speakerMode );
     if ( FMOD_FAILED( hr ) )
       ENGINE_EXCEPT_FMOD( hr, L"Failed to set speaker mode" );
