@@ -96,10 +96,12 @@ namespace Glacier {
     CHARRANGE range = { -1, -1 };
     SendMessage( mLog, EM_EXSETSEL, 0, (LPARAM)&range );
     CHARFORMAT2W format;
-    format.dwMask = CFM_COLOR;
+    format.cbSize = sizeof( CHARFORMAT2W );
+    format.dwEffects = NULL;
+    format.dwMask = CFM_COLOR | CFM_EFFECTS;
     format.crTextColor = color;
     SendMessage( mLog, EM_SETCHARFORMAT, SCF_SELECTION, (LPARAM)&format );
-    SETTEXTEX textex = { ST_SELECTION | ST_UNICODE, 1200 };
+    SETTEXTEX textex = { ST_SELECTION, 1200 };
     SendMessage( mLog, EM_SETTEXTEX, (WPARAM)&textex, (LPARAM)line.c_str() );
   }
 
