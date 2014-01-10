@@ -4,6 +4,7 @@
 
 namespace Glacier {
 
+  ENGINE_EXTERN_CONVAR( fm_volume );
   ENGINE_EXTERN_CONVAR( fm_bgvolume );
   ENGINE_EXTERN_CONVAR( fm_fxvolume );
   ENGINE_EXTERN_CONVAR( fm_device );
@@ -15,8 +16,10 @@ namespace Glacier {
   class Sound: public EngineComponent {
   public:
     struct Info {
+      FMOD_CAPS caps;
       FMOD_OUTPUTTYPE outputType;
       FMOD_SPEAKERMODE speakerMode;
+      int rate;
       int driver;
       wstring driverName;
       const wstring& outputTypeString();
@@ -36,6 +39,13 @@ namespace Glacier {
     Info mInfo;
     FMOD::EventSystem* mEventSystem;
     FMOD::System* mSystem;
+    FMOD::ChannelGroup* mMasterGroup;
+    FMOD::ChannelGroup* mMusicGroup;
+    FMOD::ChannelGroup* mEffectGroup;
+    void resetGroups();
+    void setMasterVolume( float volume );
+    void setMusicVolume( float volume );
+    void setEffectVolume( float volume );
     void printDeviceList( Console* console );
   protected:
     // Memory callbacks
@@ -58,6 +68,12 @@ namespace Glacier {
       StringVector& arguments );
     static void callbackListDevices( Console* console, ConCmd* command,
       StringVector& arguments );
+    static bool callbackMasterVolume( ConVar* variable, ConVar::Value oldValue );
+    static bool callbackMusicVolume( ConVar* variable, ConVar::Value oldValue );
+    static bool callbackEffectVolume( ConVar* variable, ConVar::Value oldValue );
+    static bool callbackMaxChannels( ConVar* variable, ConVar::Value oldValue );
+    static bool callbackSpeakerMode( ConVar* variable, ConVar::Value oldValue );
+    static bool callbackOutputMode( ConVar* variable, ConVar::Value oldValue );
   public:
     Sound( Engine* engine );
     void soundInitialize();

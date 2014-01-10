@@ -62,7 +62,7 @@ namespace Glacier {
   public:
     struct Value {
       int i; //!< Integer representation
-      double f; //!< Floating point representation
+      float f; //!< Floating point representation
       wstring str; //!< String representation
     };
     typedef bool ( *Callback )( ConVar* variable, Value oldValue );
@@ -74,17 +74,20 @@ namespace Glacier {
     ConVar( const wstring& name, const wstring& description,
       int defaultValue, Callback callback = nullptr );
     ConVar( const wstring& name, const wstring& description,
-      double defaultValue, Callback callback = nullptr );
+      float defaultValue, Callback callback = nullptr );
     ConVar( const wstring& name, const wstring& description,
       const wstring& defaultValue, Callback callback = nullptr );
     virtual bool isCommand();
     virtual int getInt();
-    virtual double getFloat();
+    virtual float getFloat();
     virtual const wstring& getString();
     virtual bool getBool() { return ( getInt() > 0 ); }
     virtual void setValue( int value );
-    virtual void setValue( double value );
+    virtual void setValue( float value );
     virtual void setValue( const wstring& value );
+    virtual void forceValue( int value );
+    virtual void forceValue( float value );
+    virtual void forceValue( const wstring& value );
   };
 
   class ConsoleListener {

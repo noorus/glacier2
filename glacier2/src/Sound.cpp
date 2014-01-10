@@ -39,19 +39,23 @@ namespace Glacier {
 
   // Sound engine CVARs =======================================================
 
-  ENGINE_DECLARE_CONVAR( fm_bgvolume, L"Background music volume.", 1.0 );
-  ENGINE_DECLARE_CONVAR( fm_fxvolume, L"Sound effect volume.", 1.0 );
+  ENGINE_DECLARE_CONVAR_WITH_CB( fm_volume, L"Master volume.",
+    1.0f, &Sound::callbackMasterVolume );
+  ENGINE_DECLARE_CONVAR_WITH_CB( fm_bgvolume, L"Background music volume.",
+    1.0f, &Sound::callbackMusicVolume );
+  ENGINE_DECLARE_CONVAR_WITH_CB( fm_fxvolume, L"Sound effect volume.",
+    1.0f, &Sound::callbackEffectVolume );
   ENGINE_DECLARE_CONVAR( fm_device,
     L"Audio output device index. 0 = System default. Use fm_listdevices for a list of devices.", 0 );
-  ENGINE_DECLARE_CONVAR( fm_maxchannels,
+  ENGINE_DECLARE_CONVAR_WITH_CB( fm_maxchannels,
     L"Maximum number of virtual sound channels available. Does not equal the amount of actual voices playing.",
-    256 );
-  ENGINE_DECLARE_CONVAR( fm_speakermode,
+    256, &Sound::callbackMaxChannels );
+  ENGINE_DECLARE_CONVAR_WITH_CB( fm_speakermode,
     L"Speaker setup on the system. Valid values are \"auto\",\"mono\",\"stereo\",\"quad\" (4.0),\"surround\" (5.0),\"surround51\" (5.1),\"surround71\" (7.1),\"prologic\" (prologic surround encoding).",
-    L"auto" );
-  ENGINE_DECLARE_CONVAR( fm_outputmode,
+    L"auto", &Sound::callbackSpeakerMode );
+  ENGINE_DECLARE_CONVAR_WITH_CB( fm_outputmode,
     L"Audio output mode. Valid values are \"nosound\" (No output),\"auto\" (System default),\"winmm\" (Windows MultiMedia),\"dsound\" (DirectSound),\"wasapi\" (WASAPI),\"asio\" (ASIO 2.0).",
-    L"auto" );
+    L"auto", &Sound::callbackOutputMode );
   ENGINE_DECLARE_CONCMD( fm_restart,
     L"Restart the sound subsystem to apply changes to speaker/output setup.",
     &Sound::callbackAudioRestart );
@@ -76,12 +80,21 @@ namespace Glacier {
   Sound::Sound( Engine* engine ): EngineComponent( engine ),
   mEventSystem( nullptr ), mSystem( nullptr )
   {
+    resetGroups();
+
     FMOD::Memory_Initialize( NULL, 0,
       Sound::callbackFMODMemAlloc,
       Sound::callbackFMODMemRealloc,
       Sound::callbackFMODMemFree, FMOD_MEMORY_NORMAL );
 
     soundInitialize();
+  }
+
+  void Sound::resetGroups()
+  {
+    mMasterGroup = nullptr;
+    mMusicGroup = nullptr;
+    mEffectGroup = nullptr;
   }
 
   void Sound::soundInitialize()
@@ -118,7 +131,70 @@ namespace Glacier {
     mEngine->getConsole()->printf( Console::srcSound, L"Using FMOD Ex %x.%x.%x",
       HIWORD(version), HIBYTE(LOWORD(version)), LOBYTE(LOWORD(version)) );
 
-    // TODO: set output mode, output device, speaker mode, validity callbacks
+    // Set output mode
+    auto outputType = stringToOutputType( g_CVar_fm_outputmode.getString() );
+    if ( outputType == FMOD_OUTPUTTYPE_MAX )
+    {
+      mEngine->getConsole()->errorPrintf(
+        L"Invalid value for fm_outputmode, reverting to auto!" );
+      g_CVar_fm_outputmode.setValue( L"auto" );
+    }
+    else if ( outputType != FMOD_OUTPUTTYPE_MAX + 1 )
+    {
+      // Only call setOutput if value is _not_ "auto"!
+      hr = mSystem->setOutput( outputType );
+      if ( FMOD_FAILED( hr ) )
+        ENGINE_EXCEPT_FMOD( hr, L"Failed to set output mode" );
+    }
+
+    // Set output device
+    int driverCount;
+    hr = mSystem->getNumDrivers( &driverCount );
+    if ( FMOD_FAILED( hr ) )
+      ENGINE_EXCEPT_FMOD( hr, L"Failed to get driver count" );
+    int driver = g_CVar_fm_device.getInt();
+    if ( driver > driverCount ) {
+      mEngine->getConsole()->errorPrintf(
+        L"Invalid value for fm_device, reverting to 0!" );
+      g_CVar_fm_device.setValue( 0 );
+    } else if ( driver > 0 ) {
+      // Only call setDriver if value is _not_ 0!
+      hr = mSystem->setDriver( driver - 1 );
+      if ( FMOD_FAILED( hr ) )
+        ENGINE_EXCEPT_FMOD( hr, L"Failed to set output device" );
+    }
+
+    // Get driver caps
+    hr = mSystem->getDriverCaps( NULL, &mInfo.caps, &mInfo.rate, &mInfo.speakerMode );
+    if ( FMOD_FAILED( hr ) )
+      ENGINE_EXCEPT_FMOD( hr, L"Failed to get driver caps" );
+
+    // Print a warning and raise the DSP buffer if someone is poor enough to run on emulation
+    if ( mInfo.caps & FMOD_CAPS_HARDWARE_EMULATED )
+    {
+      mEngine->getConsole()->printf( Console::srcSound,
+        L"No hardware audio acceleration detected! Using software emulation!" );
+      mSystem->setDSPBufferSize( 1024, 10 );
+    }
+
+    // Set speaker mode
+    auto speakerMode = stringToSpeakerMode( g_CVar_fm_speakermode.getString() );
+    if ( speakerMode == FMOD_SPEAKERMODE_MAX )
+    {
+      mEngine->getConsole()->errorPrintf(
+        L"Invalid value for fm_speakermode, reverting to auto!" );
+      g_CVar_fm_speakermode.setValue( L"auto" );
+      speakerMode = mInfo.speakerMode;
+    }
+    else if ( speakerMode == FMOD_SPEAKERMODE_MAX + 1 )
+    {
+      // Auto means the speaker mode currently used by the OS.
+      speakerMode = mInfo.speakerMode;
+    }
+
+    hr = mSystem->setSpeakerMode( speakerMode );
+    if ( FMOD_FAILED( hr ) )
+      ENGINE_EXCEPT_FMOD( hr, L"Failed to set speaker mode" );
 
     // Prepare flags
     FMOD_INITFLAGS fmodFlags = FMOD_INIT_NORMAL | FMOD_INIT_3D_RIGHTHANDED | FMOD_INIT_OCCLUSION_LOWPASS | FMOD_INIT_HRTF_LOWPASS | FMOD_INIT_GEOMETRY_USECLOSEST;
@@ -156,6 +232,30 @@ namespace Glacier {
     mEngine->getConsole()->printf( Console::srcSound,
       L"Output device: %s", mInfo.driverName.c_str() );
 
+    // Setup channel groups
+    hr = mSystem->getMasterChannelGroup( &mMasterGroup );
+    if ( FMOD_FAILED( hr ) )
+      ENGINE_EXCEPT_FMOD( hr, L"Failed to get master channel group" );
+
+    hr = mSystem->createChannelGroup( "music", &mMusicGroup );
+    if ( FMOD_FAILED( hr ) )
+      ENGINE_EXCEPT_FMOD( hr, L"Failed to create music channel group" );
+    hr = mMasterGroup->addGroup( mMusicGroup );
+    if ( FMOD_FAILED( hr ) )
+      ENGINE_EXCEPT_FMOD( hr, L"Failed to assign music channel group" );
+
+    hr = mSystem->createChannelGroup( "effect", &mEffectGroup );
+    if ( FMOD_FAILED( hr ) )
+      ENGINE_EXCEPT_FMOD( hr, L"Failed to create effect channel group" );
+    hr = mMasterGroup->addGroup( mEffectGroup );
+    if ( FMOD_FAILED( hr ) )
+      ENGINE_EXCEPT_FMOD( hr, L"Failed to assign effect channel group" );
+
+    // Set initial volumes
+    setMasterVolume( g_CVar_fm_volume.getFloat() );
+    setMusicVolume( g_CVar_fm_bgvolume.getFloat() );
+    setEffectVolume( g_CVar_fm_fxvolume.getFloat() );
+
     mEngine->operationContinueAudio();
   }
 
@@ -174,6 +274,8 @@ namespace Glacier {
       mEventSystem->unload();
 
     SAFE_RELEASE_FMOD( mEventSystem );
+
+    resetGroups();
   }
 
   void Sound::soundRestart()
@@ -185,6 +287,24 @@ namespace Glacier {
   Sound::~Sound()
   {
     soundShutdown();
+  }
+
+  void Sound::setMasterVolume( float volume )
+  {
+    if ( mMasterGroup )
+      mMasterGroup->setVolume( volume );
+  }
+
+  void Sound::setMusicVolume( float volume )
+  {
+    if ( mMusicGroup )
+      mMusicGroup->setVolume( volume );
+  }
+
+  void Sound::setEffectVolume( float volume )
+  {
+    if ( mEffectGroup )
+      mEffectGroup->setVolume( volume );
   }
 
   void Sound::printDeviceList( Console* console )
@@ -209,6 +329,105 @@ namespace Glacier {
       mSystem->getDriverInfoW( i, (short*)deviceName, 128, NULL );
       console->printf( Console::srcSound, L"Device %i: %s", i + 1, deviceName );
     }
+  }
+
+  // Console command callbacks ================================================
+
+  bool Sound::callbackMasterVolume( ConVar* variable, ConVar::Value oldValue )
+  {
+    float volume = boost::algorithm::clamp( variable->getFloat(), 0.0f, 1.0f );
+    if ( gEngine && gEngine->getSound() )
+      gEngine->getSound()->setMasterVolume( volume );
+    return true;
+  }
+
+  bool Sound::callbackMusicVolume( ConVar* variable, ConVar::Value oldValue )
+  {
+    float volume = boost::algorithm::clamp( variable->getFloat(), 0.0f, 1.0f );
+    if ( gEngine && gEngine->getSound() )
+      gEngine->getSound()->setMusicVolume( volume );
+    return true;
+  }
+
+  bool Sound::callbackEffectVolume( ConVar* variable, ConVar::Value oldValue )
+  {
+    float volume = boost::algorithm::clamp( variable->getFloat(), 0.0f, 1.0f );
+    if ( gEngine && gEngine->getSound() )
+      gEngine->getSound()->setEffectVolume( volume );
+    return true;
+  }
+
+  bool Sound::callbackMaxChannels( ConVar* variable, ConVar::Value oldValue )
+  {
+    int channels = boost::algorithm::clamp( variable->getInt(), 64, 4093 );
+    variable->forceValue( channels );
+    return true;
+  }
+
+  bool Sound::callbackSpeakerMode( ConVar* variable, ConVar::Value oldValue )
+  {
+    auto mode = Sound::stringToSpeakerMode( variable->getString() );
+    if ( mode == FMOD_SPEAKERMODE_MAX )
+    {
+      if ( gEngine && gEngine->getConsole() )
+        gEngine->getConsole()->errorPrintf(
+          L"Bad value \"%s\" given for fm_speakermode.",
+          variable->getString().c_str() );
+      return false;
+    }
+    return true;
+  }
+
+  bool Sound::callbackOutputMode( ConVar* variable, ConVar::Value oldValue )
+  {
+    auto type = Sound::stringToOutputType( variable->getString() );
+    if ( type == FMOD_OUTPUTTYPE_MAX )
+    {
+      if ( gEngine && gEngine->getConsole() )
+        gEngine->getConsole()->errorPrintf(
+        L"Bad value \"%s\" given for fm_outputmode.",
+        variable->getString().c_str() );
+      return false;
+    }
+    return true;
+  }
+
+  void Sound::callbackAudioRestart( Console* console, ConCmd* command,
+  StringVector& arguments )
+  {
+    if ( !gEngine || !gEngine->getSound() )
+      return;
+
+    gEngine->getSound()->soundRestart();
+  }
+
+  void Sound::callbackListDevices( Console* console, ConCmd* command,
+  StringVector& arguments )
+  {
+    if ( !gEngine || !gEngine->getSound() )
+      return;
+
+    gEngine->getSound()->printDeviceList( console );
+  }
+
+  // Memory allocation callbacks ==============================================
+
+  void* Sound::callbackFMODMemAlloc( unsigned int size,
+  FMOD_MEMORY_TYPE type, const char* source )
+  {
+    return Memory::instance().alloc( size );
+  }
+
+  void* Sound::callbackFMODMemRealloc( void* mem, unsigned int size,
+  FMOD_MEMORY_TYPE type, const char* source )
+  {
+    return Memory::instance().realloc( mem, size );
+  }
+
+  void Sound::callbackFMODMemFree( void* mem,
+  FMOD_MEMORY_TYPE type, const char* source )
+  {
+    Memory::instance().free( mem );
   }
 
   // Conversion utilities =====================================================
@@ -255,46 +474,6 @@ namespace Glacier {
         return cFMODOutputTypes[i].name;
     }
     return cUnknown;
-  }
-
-  // Console command callbacks ================================================
-
-  void Sound::callbackAudioRestart( Console* console, ConCmd* command,
-  StringVector& arguments )
-  {
-    if ( !gEngine || !gEngine->getSound() )
-      return;
-
-    gEngine->getSound()->soundRestart();
-  }
-
-  void Sound::callbackListDevices( Console* console, ConCmd* command,
-  StringVector& arguments )
-  {
-    if ( !gEngine || !gEngine->getSound() )
-      return;
-
-    gEngine->getSound()->printDeviceList( console );
-  }
-
-  // Memory allocation callbacks ==============================================
-
-  void* Sound::callbackFMODMemAlloc( unsigned int size,
-  FMOD_MEMORY_TYPE type, const char* source )
-  {
-    return Memory::instance().alloc( size );
-  }
-
-  void* Sound::callbackFMODMemRealloc( void* mem, unsigned int size,
-  FMOD_MEMORY_TYPE type, const char* source )
-  {
-    return Memory::instance().realloc( mem, size );
-  }
-
-  void Sound::callbackFMODMemFree( void* mem,
-  FMOD_MEMORY_TYPE type, const char* source )
-  {
-    Memory::instance().free( mem );
   }
 
 }
