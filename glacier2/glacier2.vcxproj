@@ -97,7 +97,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;ENABLE_LARGE_PAGES;ENABLE_USERMODEPAGEALLOCATOR;USE_LOCKS;USE_SPIN_LOCKS;DEBUG;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)include;$(ProjectDir)include;$(SolutionDir)..\SDK\Ogre\include\OGRE;$(SolutionDir)..\SDK\Ogre\include\OGRE\Overlay;$(SolutionDir)..\SDK\Ogre\include\OGRE\Paging;$(SolutionDir)..\SDK\Ogre\include\OGRE\Plugins\PCZSceneManager;$(SolutionDir)..\SDK\Ogre\include\OGRE\RenderSystems\Direct3D9;$(SolutionDir)..\SDK\Ogre\include\OGRE\Terrain;$(SolutionDir)..\SDK\Ogre\include\OGRE\Threading;$(SolutionDir)..\SDK\FMOD SoundSystem\FMOD Programmers API Windows\api\inc;$(SolutionDir)..\SDK\FMOD SoundSystem\FMOD Programmers API Windows\fmoddesignerapi\api\inc;$(SolutionDir)..\v8\include;$(SolutionDir)EASTL\include;$(SolutionDir)nil\include;$(SolutionDir)nedmalloc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)include;$(ProjectDir)include;$(SolutionDir)..\SDK\Ogre\include\OGRE;$(SolutionDir)..\SDK\Ogre\include\OGRE\Overlay;$(SolutionDir)..\SDK\Ogre\include\OGRE\Paging;$(SolutionDir)..\SDK\Ogre\include\OGRE\Plugins\PCZSceneManager;$(SolutionDir)..\SDK\Ogre\include\OGRE\RenderSystems\Direct3D9;$(SolutionDir)..\SDK\Ogre\include\OGRE\Terrain;$(SolutionDir)..\SDK\Ogre\include\OGRE\Threading;$(SolutionDir)..\SDK\FMOD SoundSystem\FMOD Programmers API Windows\api\inc;$(SolutionDir)..\SDK\FMOD SoundSystem\FMOD Programmers API Windows\fmoddesignerapi\api\inc;$(SolutionDir)..\v8\include;$(SolutionDir)EASTL\include;$(SolutionDir)nil\include;$(SolutionDir)nedmalloc;$(SolutionDir)hdrlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>StdAfx.h</PrecompiledHeaderFile>
       <AdditionalOptions>/Zm512 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
@@ -136,7 +136,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;ENABLE_LARGE_PAGES;ENABLE_USERMODEPAGEALLOCATOR;USE_LOCKS;USE_SPIN_LOCKS;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)include;$(ProjectDir)include;$(SolutionDir)..\SDK\Ogre\include\OGRE;$(SolutionDir)..\SDK\Ogre\include\OGRE\Overlay;$(SolutionDir)..\SDK\Ogre\include\OGRE\Paging;$(SolutionDir)..\SDK\Ogre\include\OGRE\Plugins\PCZSceneManager;$(SolutionDir)..\SDK\Ogre\include\OGRE\RenderSystems\Direct3D9;$(SolutionDir)..\SDK\Ogre\include\OGRE\Terrain;$(SolutionDir)..\SDK\Ogre\include\OGRE\Threading;$(SolutionDir)..\SDK\FMOD SoundSystem\FMOD Programmers API Windows\api\inc;$(SolutionDir)..\SDK\FMOD SoundSystem\FMOD Programmers API Windows\fmoddesignerapi\api\inc;$(SolutionDir)..\v8\include;$(SolutionDir)EASTL\include;$(SolutionDir)nil\include;$(SolutionDir)nedmalloc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)include;$(ProjectDir)include;$(SolutionDir)..\SDK\Ogre\include\OGRE;$(SolutionDir)..\SDK\Ogre\include\OGRE\Overlay;$(SolutionDir)..\SDK\Ogre\include\OGRE\Paging;$(SolutionDir)..\SDK\Ogre\include\OGRE\Plugins\PCZSceneManager;$(SolutionDir)..\SDK\Ogre\include\OGRE\RenderSystems\Direct3D9;$(SolutionDir)..\SDK\Ogre\include\OGRE\Terrain;$(SolutionDir)..\SDK\Ogre\include\OGRE\Threading;$(SolutionDir)..\SDK\FMOD SoundSystem\FMOD Programmers API Windows\api\inc;$(SolutionDir)..\SDK\FMOD SoundSystem\FMOD Programmers API Windows\fmoddesignerapi\api\inc;$(SolutionDir)..\v8\include;$(SolutionDir)EASTL\include;$(SolutionDir)nil\include;$(SolutionDir)nedmalloc;$(SolutionDir)hdrlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>StdAfx.h</PrecompiledHeaderFile>
       <DebugInformationFormat>None</DebugInformationFormat>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
@@ -183,6 +183,10 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="..\hdrlib\HDRCompositor.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="..\nedmalloc\nedmalloc.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
@@ -209,6 +213,7 @@
     <ClCompile Include="src\Win32.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\hdrlib\HDRCompositor.h" />
     <ClInclude Include="..\include\CompilerDef.h" />
     <ClInclude Include="..\include\Defines.h" />
     <ClInclude Include="..\include\Types.h" />

@@ -22,6 +22,12 @@
     <Filter Include="Source Files\nedmalloc">
       <UniqueIdentifier>{59261995-0e1a-47d5-8bb0-1503ee79d3dc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\HDRLib">
+      <UniqueIdentifier>{009720e5-f203-4f4a-bfd9-19723834dde4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\HDRLib">
+      <UniqueIdentifier>{4d45a1da-b48d-4eca-97de-83ad370f6d5d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Main.cpp">
@@ -90,6 +96,9 @@
     <ClCompile Include="src\State.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\hdrlib\HDRCompositor.cpp">
+      <Filter>Source Files\HDRLib</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\StdAfx.h">
@@ -151,6 +160,9 @@
     </ClInclude>
     <ClInclude Include="glacier2_resource.h">
       <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\hdrlib\HDRCompositor.h">
+      <Filter>Header Files\HDRLib</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
