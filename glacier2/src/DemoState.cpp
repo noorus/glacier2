@@ -3,6 +3,7 @@
 #include "Engine.h"
 #include "Game.h"
 #include "Director.h"
+#include "Camera.h"
 
 namespace Glacier {
 
@@ -13,6 +14,8 @@ namespace Glacier {
     State::initialize( game, time );
 
     mDirector = new Director( mGame->getEngine()->getGraphics() );
+
+    mDirector->getCamera()->lookAt( Vector3::ZERO );
   }
 
   void DemoState::pause( GameTime time )
