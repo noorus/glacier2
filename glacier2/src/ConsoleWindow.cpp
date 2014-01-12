@@ -18,30 +18,89 @@ namespace Glacier {
 
   ConsoleWindowThread::ConsoleWindowThread( HINSTANCE instance,
   Console* console ): mWindow( nullptr ), mInstance( instance ),
-  mConsole( console ), ThreadController()
+  mConsole( console ), mThread( NULL ), mThreadID( 0 ), mRunEvent( NULL ),
+  mStopEvent( NULL )
   {
-    //
+    mRunEvent  = CreateEventW( NULL, TRUE, FALSE, NULL );
+    mStopEvent = CreateEventW( NULL, TRUE, FALSE, NULL );
+    if ( !mRunEvent || !mStopEvent )
+      ENGINE_EXCEPT_W32( L"Could not create control events" );
   }
 
-  void ConsoleWindowThread::onStart()
+  void ConsoleWindowThread::start()
   {
-    mWindow = new ConsoleWindow( mInstance, mConsole );
+    stop();
+
+    mThread = CreateThread( NULL, NULL, threadProc, this,
+      CREATE_SUSPENDED, &mThreadID );
+
+    if ( !mThread )
+      ENGINE_EXCEPT_W32( L"Could not create thread" );
+
+    if ( ResumeThread( mThread ) == (DWORD)-1 )
+      ENGINE_EXCEPT_W32( L"Could not resume thread" );
+
+    HANDLE events[2];
+    events[0] = mRunEvent;
+    events[1] = mThread;
+
+    DWORD wait = WaitForMultipleObjects( 2, events, FALSE, INFINITE );
+
+    switch ( wait )
+    {
+    case WAIT_OBJECT_0 + 0:
+      // Thread running OK
+      break;
+    case WAIT_OBJECT_0 + 1:
+      ENGINE_EXCEPT( L"Console window thread failed to start" );
+      break;
+    case WAIT_FAILED:
+      ENGINE_EXCEPT_W32( L"Wait for console window thread start failed" );
+      break;
+    }
   }
 
-  void ConsoleWindowThread::onStep()
+  DWORD WINAPI ConsoleWindowThread::threadProc( void* argument )
   {
-    mWindow->step();
+    auto me = (ConsoleWindowThread*)argument;
+    try
+    {
+      me->mWindow = new ConsoleWindow( me->mInstance, me->mConsole );
+      SetEvent( me->mRunEvent );
+      while ( WaitForSingleObject( me->mStopEvent, 0 ) != WAIT_OBJECT_0 )
+      {
+        me->mWindow->step();
+      }
+      SAFE_DELETE( me->mWindow );
+    }
+    catch ( ... )
+    {
+      SAFE_DELETE( me->mWindow );
+      return EXIT_FAILURE;
+    }
+    return EXIT_SUCCESS;
   }
 
-  void ConsoleWindowThread::onPreStop()
+  void ConsoleWindowThread::stop()
   {
-    if ( mWindow )
-      mWindow->kill();
+    if ( mStopEvent )
+    {
+      if ( mWindow )
+        mWindow->kill();
+      SetEvent( mStopEvent );
+      WaitForSingleObject( mThread, INFINITE );
+    }
+    ResetEvent( mRunEvent );
+    ResetEvent( mStopEvent );
   }
 
-  void ConsoleWindowThread::onStop()
+  ConsoleWindowThread::~ConsoleWindowThread()
   {
-    SAFE_DELETE( mWindow );
+    stop();
+    if ( mRunEvent )
+      CloseHandle( mRunEvent );
+    if ( mStopEvent )
+      CloseHandle( mStopEvent );
   }
 
   // ConsoleWindow class ======================================================

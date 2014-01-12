@@ -225,6 +225,10 @@ namespace Glacier {
   Console::~Console()
   {
     SAFE_DELETE( mOutFile );
+    SAFE_DELETE( mCmdList );
+    SAFE_DELETE( mCmdFind );
+    SAFE_DELETE( mCmdExec );
+    SAFE_DELETE( mCmdHelp );
   }
 
   StringVector Console::tokenize( const wstring& str )

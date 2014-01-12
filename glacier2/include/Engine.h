@@ -1,5 +1,6 @@
 #pragma once
 #include "Types.h"
+#include "Console.h"
 
 namespace Glacier {
 
@@ -12,6 +13,10 @@ namespace Glacier {
   class Game;
   class Sound;
   class Physics;
+
+  ENGINE_EXTERN_CONCMD( version );
+  ENGINE_EXTERN_CONCMD( screenshot );
+  ENGINE_EXTERN_CONCMD( quit );
 
   //! \class Engine
   //! The main engine class that makes the world go round
@@ -66,8 +71,12 @@ namespace Glacier {
     Game* getGame() { return mGame; }
     inline GameTime getTime() { return fTime; }
     // Callbacks
-    static void callbackVersion( Console* console, ConCmd* command, StringVector& arguments );
-    static void callbackScreenshot( Console* console, ConCmd* command, StringVector& arguments );
+    static void callbackVersion( Console* console,
+      ConCmd* command, StringVector& arguments );
+    static void callbackScreenshot( Console* console,
+      ConCmd* command, StringVector& arguments );
+    static void callbackQuit( Console* console,
+      ConCmd* command, StringVector& arguments );
   public:
     Engine( HINSTANCE instance );
     ~Engine();

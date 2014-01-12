@@ -18,7 +18,8 @@ namespace Glacier {
       Radian( Math::DegreesToRadians( 90.0f ) ),
       zone );
 
-    mViewport = mGraphics->getWindow()->addViewport( mCamera->getCamera(), 0 );
+    mViewport = mGraphics->getWindow()->addViewport(
+      mCamera->getCamera(), 0 );
     mViewport->setClearEveryFrame( true );
     mViewport->setBackgroundColour( ColourValue( 0.62f, 0.78f, 0.88f ) );
 
@@ -34,7 +35,10 @@ namespace Glacier {
   Director::~Director()
   {
     SAFE_DELETE( mHDRCompositor );
-    mGraphics->getWindow()->removeViewport( mViewport->getZOrder() );
+
+    mGraphics->getWindow()->removeViewport(
+      mViewport->getZOrder() );
+
     SAFE_DELETE( mCamera );
   }
 

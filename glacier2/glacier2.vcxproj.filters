@@ -34,6 +34,12 @@
     <Filter Include="Source Files\States">
       <UniqueIdentifier>{d6ee77a3-9930-475f-93f7-10aea4131c5d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Console">
+      <UniqueIdentifier>{03133e9e-489c-4d5c-8654-7873584d4f9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Console">
+      <UniqueIdentifier>{b430c7e6-94a2-49a5-b869-04bfe67c61f4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Main.cpp">
@@ -49,9 +55,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Graphics.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Console.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\EASTL\src\allocator.cpp">
@@ -82,9 +85,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Win32.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ConsoleWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\ThreadController.cpp">
@@ -120,6 +120,12 @@
     <ClCompile Include="src\Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Console.cpp">
+      <Filter>Source Files\Console</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ConsoleWindow.cpp">
+      <Filter>Source Files\Console</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\StdAfx.h">
@@ -149,9 +155,6 @@
     <ClInclude Include="include\Graphics.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Console.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\GlacierMemory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -162,9 +165,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Win32.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ConsoleWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\ThreadController.h">
@@ -199,6 +199,12 @@
     </ClInclude>
     <ClInclude Include="include\Camera.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ConsoleWindow.h">
+      <Filter>Header Files\Console</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Console.h">
+      <Filter>Header Files\Console</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

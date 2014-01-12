@@ -68,8 +68,8 @@ namespace Glacier {
   {
     if ( mStopEvent )
     {
-      SetEvent( mStopEvent );
       onPreStop();
+      SetEvent( mStopEvent );
       WaitForSingleObject( mThread, INFINITE );
     }
     ResetEvent( mRunEvent );

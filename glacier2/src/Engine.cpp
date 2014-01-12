@@ -38,8 +38,12 @@ namespace Glacier {
 
   // Engine class =============================================================
 
-  ENGINE_DECLARE_CONCMD( version, L"Print engine version.", Engine::callbackVersion );
-  ENGINE_DECLARE_CONCMD( screenshot, L"Save a screenshot to the working directory.", Engine::callbackScreenshot );
+  ENGINE_DECLARE_CONCMD( version,
+    L"Print engine version.", Engine::callbackVersion );
+  ENGINE_DECLARE_CONCMD( screenshot,
+    L"Save a screenshot to working directory.", Engine::callbackScreenshot );
+  ENGINE_DECLARE_CONCMD( quit,
+    L"Quit.", Engine::callbackQuit );
 
   Engine::Engine( HINSTANCE instance ):
   mConsole( nullptr ), mScripting( nullptr ), mGraphics( nullptr ),
@@ -217,6 +221,15 @@ namespace Glacier {
     // TODO:LOW maybe pause execution and timing,
     // since this can cause a tiny hiccup
     gEngine->getGraphics()->screenshot();
+  }
+
+  void Engine::callbackQuit( Console* console, ConCmd* command,
+  StringVector& arguments )
+  {
+    if ( !gEngine )
+      return;
+
+    gEngine->mSignal = Signal_Stop;
   }
 
   void Engine::shutdown()

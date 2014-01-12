@@ -41,17 +41,21 @@ namespace Glacier {
     void step();
   };
 
-  class ConsoleWindowThread: public ThreadController {
+  class ConsoleWindowThread {
   protected:
-    ConsoleWindow* mWindow;
+    HANDLE mThread;
+    DWORD mThreadID;
     HINSTANCE mInstance;
     Console* mConsole;
+    ConsoleWindow* mWindow;
+    volatile HANDLE mRunEvent;
+    volatile HANDLE mStopEvent;
+    static DWORD WINAPI threadProc( void* argument );
   public:
     ConsoleWindowThread( HINSTANCE instance, Console* console );
-    virtual void onStart();
-    virtual void onStep();
-    virtual void onPreStop();
-    virtual void onStop();
+    virtual void start();
+    virtual void stop();
+    ~ConsoleWindowThread();
   };
 
 }
