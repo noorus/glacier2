@@ -25,8 +25,9 @@ namespace Glacier {
     mHDRCompositor = new HDRlib::HDRCompositor(
       mGraphics->getWindow(), mCamera->getCamera() );
 
-    mHDRCompositor->setTonemapper( HDRlib::HDRCompositor::Tonemapper_ReinhardLocal );
-    mHDRCompositor->setGlareType( HDRlib::HDRCompositor::Glare_Blur );
+    mHDRCompositor->setTonemapper( HDRlib::Tonemapper_ReinhardLocal );
+    mHDRCompositor->setGlareType( HDRlib::Glare_Blur );
+    mHDRCompositor->setStarType( HDRlib::Star_Plus );
     mHDRCompositor->enable( true );
   }
 
