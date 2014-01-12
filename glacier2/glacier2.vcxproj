@@ -193,9 +193,11 @@
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCpp</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCpp</CompileAs>
     </ClCompile>
+    <ClCompile Include="src\Camera.cpp" />
     <ClCompile Include="src\Console.cpp" />
     <ClCompile Include="src\ConsoleWindow.cpp" />
     <ClCompile Include="src\DemoState.cpp" />
+    <ClCompile Include="src\Director.cpp" />
     <ClCompile Include="src\Engine.cpp" />
     <ClCompile Include="src\EngineComponent.cpp" />
     <ClCompile Include="src\Exception.cpp" />
@@ -221,9 +223,11 @@
     <ClInclude Include="..\include\Defines.h" />
     <ClInclude Include="..\include\Types.h" />
     <ClInclude Include="..\include\Utilities.h" />
+    <ClInclude Include="include\Camera.h" />
     <ClInclude Include="include\Console.h" />
     <ClInclude Include="include\ConsoleWindow.h" />
     <ClInclude Include="include\DemoState.h" />
+    <ClInclude Include="include\Director.h" />
     <ClInclude Include="include\Engine.h" />
     <ClInclude Include="include\EngineComponent.h" />
     <ClInclude Include="include\Exception.h" />
