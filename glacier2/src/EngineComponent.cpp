@@ -9,6 +9,11 @@ namespace Glacier {
     //
   }
 
+  Engine* EngineComponent::getEngine()
+  {
+    return mEngine;
+  }
+
   void EngineComponent::componentPreUpdate( GameTime time )
   {
     throw std::runtime_error(

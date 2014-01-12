@@ -28,6 +28,12 @@
     <Filter Include="Header Files\HDRLib">
       <UniqueIdentifier>{4d45a1da-b48d-4eca-97de-83ad370f6d5d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\States">
+      <UniqueIdentifier>{2ae52bc9-4c29-4716-a233-2caec2f900fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\States">
+      <UniqueIdentifier>{d6ee77a3-9930-475f-93f7-10aea4131c5d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Main.cpp">
@@ -105,6 +111,9 @@
     <ClCompile Include="src\Physics.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\DemoState.cpp">
+      <Filter>Source Files\States</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\StdAfx.h">
@@ -175,6 +184,9 @@
     </ClInclude>
     <ClInclude Include="include\Physics.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DemoState.h">
+      <Filter>Header Files\States</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

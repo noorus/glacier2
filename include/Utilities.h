@@ -7,7 +7,7 @@ namespace Glacier {
   template <class T>
   class Singleton: boost::noncopyable {
   public:
-    static inline T& instance()
+    static T& instance()
     {
       static T _instance;
       return _instance;

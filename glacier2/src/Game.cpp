@@ -2,12 +2,13 @@
 #include "Game.h"
 #include "Engine.h"
 #include "EngineComponent.h"
+#include "DemoState.h"
 
 namespace Glacier {
 
   Game::Game( Engine* engine ): EngineComponent( engine )
   {
-    //
+    changeState( &DemoState::instance() );
   }
 
   void Game::componentTick( GameTime tick, GameTime time )
