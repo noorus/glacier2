@@ -17,6 +17,8 @@ namespace Glacier {
     virtual void lookAt( const Vector3& position );
     virtual PCZCamera* getCamera() { return mCamera; }
     virtual PCZSceneNode* getNode() { return mNode; }
+    virtual const Radian& getFOVy();
+    virtual void setFOVy( const Radian& fovy );
     virtual const Quaternion& getWorldOrientation() {
       return mNode->_getDerivedOrientation(); }
     virtual const Vector3& getWorldPosition() {

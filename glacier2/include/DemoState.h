@@ -4,7 +4,11 @@
 
 namespace Glacier {
 
+  class Director;
+
   class DemoState: public State, public Singleton<DemoState> {
+  protected:
+    Director* mDirector;
   public:
     DemoState();
     virtual void initialize( Game* game, GameTime time );

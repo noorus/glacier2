@@ -27,6 +27,16 @@ namespace Glacier {
     mCamera->setFarClipDistance( 4096.0f );
   }
 
+  const Radian& Camera::getFOVy()
+  {
+    return mCamera->getFOVy();
+  }
+
+  void Camera::setFOVy( const Radian& fovy )
+  {
+    mCamera->setFOVy( fovy );
+  }
+
   void Camera::lookAt( const Vector3& position )
   {
     mCamera->lookAt( position );

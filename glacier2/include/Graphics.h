@@ -29,7 +29,8 @@ namespace Glacier {
       bool mFullscreen;
       bool mVSync;
       uint32_t mFSAA;
-      VideoMode( uint32_t width, uint32_t height, uint32_t bpp, bool fs, bool vsync, uint32_t fsaa );
+      VideoMode( uint32_t width, uint32_t height, uint32_t bpp,
+        bool fs, bool vsync, uint32_t fsaa );
       void setConfigurations( Ogre::RenderSystem& renderer );
       Ogre::NameValuePairList getParams();
       string getAsOptionString();
@@ -38,13 +39,18 @@ namespace Glacier {
       string optVSyncAsString();
       string optFSAAAsString();
     };
-    static void callbackVideoRestart( Console* console, ConCmd* command, StringVector& arguments );
+    static void callbackVideoRestart( Console* console,
+      ConCmd* command, StringVector& arguments );
   public:
     Graphics( Engine* engine );
     void videoInitialize();
     void videoShutdown();
     void videoRestart();
     void screenshot();
+    Ogre::Root* getRoot() { return mRoot; }
+    Ogre::RenderSystem* getRenderer() { return mRenderer; }
+    Ogre::RenderWindow* getWindow() { return mWindow; }
+    Ogre::PCZSceneManager* getScene() { return mSceneManager; }
     virtual void componentPreUpdate( GameTime time );
     virtual void componentPostUpdate( GameTime delta, GameTime time );
     virtual ~Graphics();

@@ -1,6 +1,8 @@
 #include "StdAfx.h"
 #include "DemoState.h"
 #include "Engine.h"
+#include "Game.h"
+#include "Director.h"
 
 namespace Glacier {
 
@@ -9,6 +11,8 @@ namespace Glacier {
   void DemoState::initialize( Game* game, GameTime time )
   {
     State::initialize( game, time );
+
+    mDirector = new Director( mGame->getEngine()->getGraphics() );
   }
 
   void DemoState::pause( GameTime time )
@@ -28,6 +32,8 @@ namespace Glacier {
 
   void DemoState::shutdown( GameTime time )
   {
+    SAFE_DELETE( mDirector );
+
     State::shutdown( time );
   }
 

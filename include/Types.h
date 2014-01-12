@@ -61,4 +61,6 @@ namespace Glacier {
   using Ogre::AxisAlignedBox;
   using Ogre::Sphere;
 
+  using Ogre::Math;
+
 }
