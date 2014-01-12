@@ -202,6 +202,7 @@
     <ClCompile Include="src\Graphics.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\Memory.cpp" />
+    <ClCompile Include="src\Physics.cpp" />
     <ClCompile Include="src\Scripting.cpp" />
     <ClCompile Include="src\Sound.cpp" />
     <ClCompile Include="src\State.cpp" />
@@ -227,6 +228,7 @@
     <ClInclude Include="include\Game.h" />
     <ClInclude Include="include\Graphics.h" />
     <ClInclude Include="include\GlacierMemory.h" />
+    <ClInclude Include="include\Physics.h" />
     <ClInclude Include="include\Scripting.h" />
     <ClInclude Include="include\Sound.h" />
     <ClInclude Include="include\State.h" />

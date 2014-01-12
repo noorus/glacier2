@@ -4,6 +4,7 @@
 #include "ConsoleWindow.h"
 #include "Scripting.h"
 #include "Graphics.h"
+#include "Physics.h"
 #include "Utilities.h"
 #include "Exception.h"
 #include "Sound.h"
@@ -144,6 +145,7 @@ namespace Glacier {
     // Create subsystems
     mScripting = new Scripting( this );
     mGraphics = new Graphics( this );
+    mPhysics = new Physics( this );
     mSound = new Sound( this );
     mGame = new Game( this );
   }
@@ -175,6 +177,7 @@ namespace Glacier {
       fTimeAccumulator += fTimeDelta;
       while ( fTimeAccumulator >= fLogicStep )
       {
+        mPhysics->componentTick( fLogicStep, fTime );
         mGame->componentTick( fLogicStep, fTime );
         mSound->componentTick( fLogicStep, fTime );
         fTime += fLogicStep;
@@ -201,6 +204,7 @@ namespace Glacier {
   {
     SAFE_DELETE( mGame );
     SAFE_DELETE( mSound );
+    SAFE_DELETE( mPhysics );
     SAFE_DELETE( mGraphics );
     SAFE_DELETE( mScripting );
     SAFE_DELETE( mConsoleWindow );
