@@ -67,6 +67,7 @@ namespace Glacier {
     inline GameTime getTime() { return fTime; }
     // Callbacks
     static void callbackVersion( Console* console, ConCmd* command, StringVector& arguments );
+    static void callbackScreenshot( Console* console, ConCmd* command, StringVector& arguments );
   public:
     Engine( HINSTANCE instance );
     ~Engine();

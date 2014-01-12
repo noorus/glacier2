@@ -42,28 +42,28 @@ namespace Glacier {
   // Sound engine CVARs =======================================================
 
   ENGINE_DECLARE_CONVAR_WITH_CB( fm_volume, L"Master volume.",
-    1.0f, &Sound::callbackMasterVolume );
+    1.0f, Sound::callbackMasterVolume );
   ENGINE_DECLARE_CONVAR_WITH_CB( fm_bgvolume, L"Background music volume.",
-    1.0f, &Sound::callbackMusicVolume );
+    1.0f, Sound::callbackMusicVolume );
   ENGINE_DECLARE_CONVAR_WITH_CB( fm_fxvolume, L"Sound effect volume.",
-    1.0f, &Sound::callbackEffectVolume );
+    1.0f, Sound::callbackEffectVolume );
   ENGINE_DECLARE_CONVAR( fm_device,
     L"Audio output device index. 0 = System default. Use fm_listdevices for a list of devices.", 0 );
   ENGINE_DECLARE_CONVAR_WITH_CB( fm_maxchannels,
     L"Maximum number of virtual sound channels available. Does not equal the amount of actual voices playing.",
-    256, &Sound::callbackMaxChannels );
+    256, Sound::callbackMaxChannels );
   ENGINE_DECLARE_CONVAR_WITH_CB( fm_speakermode,
     L"Speaker setup on the system. Valid values are \"auto\",\"mono\",\"stereo\",\"quad\" (4.0),\"surround\" (5.0),\"surround51\" (5.1),\"surround71\" (7.1),\"prologic\" (prologic surround encoding).",
-    L"auto", &Sound::callbackSpeakerMode );
+    L"auto", Sound::callbackSpeakerMode );
   ENGINE_DECLARE_CONVAR_WITH_CB( fm_outputmode,
     L"Audio output mode. Valid values are \"nosound\" (No output),\"auto\" (System default),\"winmm\" (Windows MultiMedia),\"dsound\" (DirectSound),\"wasapi\" (WASAPI),\"asio\" (ASIO 2.0).",
-    L"auto", &Sound::callbackOutputMode );
+    L"auto", Sound::callbackOutputMode );
   ENGINE_DECLARE_CONCMD( fm_restart,
     L"Restart the sound subsystem to apply changes to speaker/output setup.",
-    &Sound::callbackAudioRestart );
+    Sound::callbackAudioRestart );
   ENGINE_DECLARE_CONCMD( fm_listdevices,
     L"Lists all available audio devices for the current output mode.",
-    &Sound::callbackListDevices );
+    Sound::callbackListDevices );
 
   // Sound engine info struct =================================================
 

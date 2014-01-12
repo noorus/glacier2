@@ -44,6 +44,7 @@ namespace Glacier {
     void videoInitialize();
     void videoShutdown();
     void videoRestart();
+    void screenshot();
     virtual void componentPreUpdate( GameTime time );
     virtual void componentPostUpdate( GameTime delta, GameTime time );
     virtual ~Graphics();

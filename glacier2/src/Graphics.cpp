@@ -31,6 +31,8 @@ namespace Glacier {
   const char* cRenderSystemRelease = "RenderSystem_Direct3D9";
   const char* cRenderWindowClass   = "gcr2_render";
   const char* cRenderWindowTitle   = "glacier² » renderer";
+  const char* cScreenshotPrefix    = "screenshot";
+  const char* cScreenshotSuffix    = ".png";
 
   // Graphics::VideoMode class ================================================
 
@@ -187,20 +189,6 @@ namespace Glacier {
 
     // Tell the engine to continue, in case this was a restart
     mEngine->operationContinueVideo();
-
-    /*mComp = new HDRCompositor(mWindow,cam);
-    mComp->SetToneMapper(HDRCompositor::TONEMAPPER::TM_REINHARDLOCAL);
-    mComp->SetStarPasses(2);
-    mComp->SetGlarePasses(2);
-    mComp->SetGlareType(HDRCompositor::GLARETYPE::GT_BLUR);
-    mComp->SetStarType(HDRCompositor::STARTYPE::ST_NONE);
-    mComp->SetAutoKeying(true);
-    mComp->SetKey(0.2);
-    mComp->SetLumAdapdation(true);
-    mComp->SetAdaptationScale(10);
-    mComp->SetGlareStrength(2.5f);
-    mComp->SetStarStrength(0);
-    mComp->Enable(true);*/
   }
 
   void Graphics::videoRestart()
@@ -218,18 +206,33 @@ namespace Glacier {
     {
       mEngine->getConsole()->printf( Console::srcGfx,
         L"Shutting down renderer..." );
+
       if ( mSceneManager )
       {
         if ( mOverlaySystem )
           mSceneManager->removeRenderQueueListener( mOverlaySystem );
         mRoot->destroySceneManager( mSceneManager );
       }
+
       unregisterResources();
       SAFE_DELETE( mOverlaySystem );
       mRoot->shutdown();
       SAFE_DELETE( mRoot );
       mRenderer = nullptr;
     }
+  }
+
+  void Graphics::screenshot()
+  {
+    if ( !mWindow )
+      return;
+
+    Ogre::String filename = mWindow->writeContentsToTimestampedFile(
+      cScreenshotPrefix, cScreenshotSuffix );
+
+    if ( gEngine && gEngine->getConsole() )
+      gEngine->getConsole()->printf( Console::srcGfx,
+      L"Saved screenshot to %S", filename.c_str() );
   }
 
   void Graphics::registerResources()

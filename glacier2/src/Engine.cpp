@@ -39,6 +39,7 @@ namespace Glacier {
   // Engine class =============================================================
 
   ENGINE_DECLARE_CONCMD( version, L"Print engine version.", Engine::callbackVersion );
+  ENGINE_DECLARE_CONCMD( screenshot, L"Save a screenshot to the working directory.", Engine::callbackScreenshot );
 
   Engine::Engine( HINSTANCE instance ):
   mConsole( nullptr ), mScripting( nullptr ), mGraphics( nullptr ),
@@ -75,26 +76,33 @@ namespace Glacier {
   void Engine::fixupThreadAffinity()
   {
     DWORD_PTR processMask, systemMask;
+
     if ( !GetProcessAffinityMask( mProcess, &processMask, &systemMask ) )
     {
       getConsole()->printf( Console::srcEngine,
         L"Could not query process affinity mask - thread affinity may fluctuate" );
       return;
     }
+
     if ( processMask == 0 )
       processMask = 1;
+
     uint32_t core = 1;
-    DWORD_PTR engineMask = 1; // target 1st core
+    DWORD_PTR engineMask = 1;
+
     while ( ( engineMask & processMask ) == 0 )
     {
       core++;
       engineMask <<= 1;
     }
+
     uint32_t cores = Utilities::hammingWeight64( processMask );
+
     getConsole()->printf( Console::srcEngine,
       L"Fixating engine main thread to core %d (out of %d)", core, cores );
+
     if ( !SetThreadAffinityMask( mThread, engineMask ) )
-      getConsole()->printf( Console::srcEngine, L"Failed to set thread affinity mask" );
+      getConsole()->errorPrintf( L"Failed to set thread affinity mask" );
   }
 
   void Engine::operationSuspendVideo()
@@ -198,6 +206,17 @@ namespace Glacier {
       return;
 
     console->printf( Console::srcEngine, gEngine->getVersion().title.c_str() );
+  }
+
+  void Engine::callbackScreenshot( Console* console, ConCmd* command,
+  StringVector& arguments )
+  {
+    if ( !gEngine || !gEngine->getGraphics() )
+      return;
+
+    // TODO:LOW maybe pause execution and timing,
+    // since this can cause a tiny hiccup
+    gEngine->getGraphics()->screenshot();
   }
 
   void Engine::shutdown()
