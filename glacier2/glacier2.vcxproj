@@ -108,7 +108,7 @@
       <AdditionalDependencies>OgreMain_d.lib;OgreOverlay_d.lib;RenderSystem_Direct3D9_d.lib;Plugin_PCZSceneManager_d.lib;fmodexL64_vc.lib;fmod_eventL64.lib;icui18n.lib;icuuc.lib;v8_base.x64.lib;v8_snapshot.lib;ws2_32.lib;winmm.lib;comctl32.lib;gdiplus.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Manifest>
-      <AdditionalManifestFiles>CommonControls.manifest</AdditionalManifestFiles>
+      <AdditionalManifestFiles>glacier2.manifest</AdditionalManifestFiles>
     </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -155,7 +155,7 @@
       <ShowProgress>NotSet</ShowProgress>
     </Link>
     <Manifest>
-      <AdditionalManifestFiles>CommonControls.manifest</AdditionalManifestFiles>
+      <AdditionalManifestFiles>glacier2.manifest</AdditionalManifestFiles>
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
