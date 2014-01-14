@@ -1,6 +1,9 @@
 #pragma once
 #include "Exception.h"
 
+// Glacier² Game Engine © 2014 noorus
+// All rights reserved.
+
 namespace Glacier {
 
   class ThreadController: boost::noncopyable {

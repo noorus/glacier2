@@ -5,6 +5,9 @@
 #include "Director.h"
 #include "Camera.h"
 
+// Glacier² Game Engine © 2014 noorus
+// All rights reserved.
+
 namespace Glacier {
 
   DemoState::DemoState(): State( L"DemoState" ) {}

@@ -5,6 +5,9 @@
 #include "Console.h"
 #include "Win32.h"
 
+// Glacier² Game Engine © 2014 noorus
+// All rights reserved.
+
 int Vsnprintf8(char8_t* pDestination, size_t n, const char8_t* pFormat, va_list arguments)
 {
   return _vsnprintf(pDestination, n, pFormat, arguments);

@@ -4,6 +4,9 @@
 #include "EngineComponent.h"
 #include "DemoState.h"
 
+// Glacier² Game Engine © 2014 noorus
+// All rights reserved.
+
 namespace Glacier {
 
   Game::Game( Engine* engine ): EngineComponent( engine )

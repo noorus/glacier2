@@ -1,6 +1,9 @@
 #include "StdAfx.h"
 #include "GlacierMemory.h"
 
+// Glacier² Game Engine © 2014 noorus
+// All rights reserved.
+
 // Operators used and required by EASTL
 void* operator new[]( size_t size, const char* name, int flags, unsigned debugFlags, const char* file, int line )
 {

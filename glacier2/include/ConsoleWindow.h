@@ -3,6 +3,9 @@
 #include "Console.h"
 #include "ThreadController.h"
 
+// Glacier² Game Engine © 2014 noorus
+// All rights reserved.
+
 namespace Glacier {
 
   class ConsoleWindow: protected ConsoleListener {

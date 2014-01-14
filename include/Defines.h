@@ -1,5 +1,8 @@
 #pragma once
 
+// Glacier² Game Engine © 2014 noorus
+// All rights reserved.
+
 #if defined( _DEBUG ) && !defined( DEBUG )
 # define DEBUG
 #endif

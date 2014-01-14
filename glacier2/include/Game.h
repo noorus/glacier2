@@ -3,6 +3,9 @@
 #include "State.h"
 #include "EngineComponent.h"
 
+// Glacier² Game Engine © 2014 noorus
+// All rights reserved.
+
 namespace Glacier {
 
   //! \class Game

@@ -10,6 +10,9 @@
 #include "Sound.h"
 #include "Game.h"
 
+// Glacier² Game Engine © 2014 noorus
+// All rights reserved.
+
 Glacier::Engine* gEngine = nullptr;
 
 namespace Glacier {

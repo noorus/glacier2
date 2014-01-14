@@ -1,5 +1,8 @@
 #pragma once
 
+// Glacier² Game Engine © 2014 noorus
+// All rights reserved.
+
 #include "TargetVer.h"
 #include "CompilerDef.h"
 #include "Defines.h"

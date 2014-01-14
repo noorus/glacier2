@@ -3,6 +3,9 @@
 #include "Exception.h"
 #include "../glacier2_resource.h"
 
+// Glacier² Game Engine © 2014 noorus
+// All rights reserved.
+
 #pragma warning( push )
 #pragma warning( disable: 4244 ) // warning C4244: 'argument': conversion from 'LONG' to 'Glacier::Win32::Gdiplus::REAL', possible loss of data
 

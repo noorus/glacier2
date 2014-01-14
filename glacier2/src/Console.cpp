@@ -4,6 +4,9 @@
 #include "Utilities.h"
 #include "TextFile.h"
 
+// Glacier² Game Engine © 2014 noorus
+// All rights reserved.
+
 #pragma warning( disable: 4073 )
 #pragma init_seg( lib )
 

@@ -1,5 +1,8 @@
 #pragma once
 
+// Glacier² Game Engine © 2014 noorus
+// All rights reserved.
+
 // _PROFILE
 // Identify the build profile.
 #ifdef _DEBUG

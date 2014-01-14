@@ -1,6 +1,9 @@
 #pragma once
 #include "Utilities.h"
 
+// Glacier² Game Engine © 2014 noorus
+// All rights reserved.
+
 namespace Glacier {
 
   class Memory: public Singleton<Memory> {

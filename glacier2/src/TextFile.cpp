@@ -3,6 +3,9 @@
 #include "Exception.h"
 #include "Utilities.h"
 
+// Glacier² Game Engine © 2014 noorus
+// All rights reserved.
+
 namespace Glacier {
 
   TextFile::TextFile( const wstring& filename ): mFile( INVALID_HANDLE_VALUE )
