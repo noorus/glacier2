@@ -101,5 +101,8 @@
 // V8 Headers
 #include <v8.h>
 
+// PhysX Headers
+#include <PxPhysicsAPI.h>
+
 // Glacier types
 #include "Types.h"

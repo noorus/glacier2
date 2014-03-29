@@ -87,6 +87,8 @@ namespace Glacier {
     void operationContinueVideo();      //!< Continue state after gfx restart
     void operationSuspendAudio();       //!< Shutdown state for audio restart
     void operationContinueAudio();      //!< Continue state after audio restart
+    void operationSuspendPhysics();     //!< Shutdown state for physics restart
+    void operationContinuePhysics();    //!< Continue state after physics restart
     void initialize();
     void run();
     void shutdown();

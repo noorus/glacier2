@@ -136,6 +136,18 @@ namespace Glacier {
       mGame->resumeState();
   }
 
+  void Engine::operationSuspendPhysics()
+  {
+    if ( mGame )
+      mGame->suspendState();
+  }
+
+  void Engine::operationContinuePhysics()
+  {
+    if ( mGame )
+      mGame->resumeState();
+  }
+
   void Engine::initialize()
   {
     // Get process & thread handles

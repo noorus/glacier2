@@ -133,8 +133,10 @@ namespace Glacier {
       ENGINE_EXCEPT( L"Bad FMOD version" );
 
     // Print some version info
-    mEngine->getConsole()->printf( Console::srcSound, L"Using FMOD Ex %x.%x.%x",
-      HIWORD(version), HIBYTE(LOWORD(version)), LOBYTE(LOWORD(version)) );
+    mEngine->getConsole()->printf( Console::srcSound,
+      L"Using FMOD Ex %x.%x.%x",
+      HIWORD( version ), HIBYTE( LOWORD( version ) ),
+      LOBYTE( LOWORD( version ) ) );
 
     // Set output mode
     auto outputType = stringToOutputType( g_CVar_fm_outputmode.getString() );
@@ -269,7 +271,8 @@ namespace Glacier {
 
   void Sound::soundShutdown()
   {
-    mEngine->getConsole()->printf( Console::srcSound, L"Shutting down FMOD" );
+    mEngine->getConsole()->printf( Console::srcSound,
+      L"Shutting down FMOD..." );
 
     mEngine->operationSuspendAudio();
 
