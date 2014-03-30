@@ -3,6 +3,7 @@
 #include "Console.h"
 #include "Exception.h"
 #include "Engine.h"
+#include "WindowHandler.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
@@ -112,9 +113,10 @@ namespace Glacier {
 
   // Graphics class ===========================================================
 
-  Graphics::Graphics( Engine* engine ): EngineComponent( engine ),
+  Graphics::Graphics( Engine* engine, WindowHandler* windowHandler ):
+  EngineComponent( engine ),
   mRoot( nullptr ), mRenderer( nullptr ), mSceneManager( nullptr ),
-  mOverlaySystem( nullptr )
+  mOverlaySystem( nullptr ), mWindowHandler( windowHandler )
   {
     videoInitialize();
   }
@@ -175,6 +177,10 @@ namespace Glacier {
       videoMode.mWidth, videoMode.mHeight, videoMode.mFullscreen,
       &videoMode.getParams() );
 
+    // Add engine-supplied event listener to the render window
+    Ogre::WindowEventUtilities::addWindowEventListener(
+      mWindow, mWindowHandler );
+
     // Stop the window from being deactivated when it loses focus
     mWindow->setDeactivateOnFocusChange( false );
 
@@ -221,6 +227,14 @@ namespace Glacier {
     // Shutdown globals
     mGlobals.stats.shutdown();
 
+    // If we have a window, remove the associated event listener
+    if ( mWindow )
+    {
+      Ogre::WindowEventUtilities::removeWindowEventListener(
+        mWindow, mWindowHandler );
+    }
+
+    // Destroy Ogre
     if ( mRoot )
     {
       mEngine->getConsole()->printf( Console::srcGfx,
@@ -234,6 +248,7 @@ namespace Glacier {
       }
 
       unregisterResources();
+
       SAFE_DELETE( mOverlaySystem );
       mRoot->shutdown();
       SAFE_DELETE( mRoot );

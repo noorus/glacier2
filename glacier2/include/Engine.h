@@ -16,6 +16,7 @@ namespace Glacier {
   class Game;
   class Sound;
   class Physics;
+  class WindowHandler;
 
   ENGINE_EXTERN_CONCMD( version );
   ENGINE_EXTERN_CONCMD( screenshot );
@@ -50,6 +51,7 @@ namespace Glacier {
     Physics* mPhysics;
     Sound* mSound;
     Game* mGame;
+    WindowHandler* mWindowHandler;
     // Timing
     LARGE_INTEGER mHPCFrequency;        //!< HPC frequency
     static GameTime fTime;              //!< Game time
@@ -83,12 +85,13 @@ namespace Glacier {
   public:
     Engine( HINSTANCE instance );
     ~Engine();
-    void operationSuspendVideo();       //!< Shutdown state for gfx restart
-    void operationContinueVideo();      //!< Continue state after gfx restart
-    void operationSuspendAudio();       //!< Shutdown state for audio restart
-    void operationContinueAudio();      //!< Continue state after audio restart
-    void operationSuspendPhysics();     //!< Shutdown state for physics restart
-    void operationContinuePhysics();    //!< Continue state after physics restart
+    void signalStop(); //!< Set a signal to stop on next cycle
+    void operationSuspendVideo(); //!< Shutdown state for gfx restart
+    void operationContinueVideo(); //!< Continue state after gfx restart
+    void operationSuspendAudio(); //!< Shutdown state for audio restart
+    void operationContinueAudio(); //!< Continue state after audio restart
+    void operationSuspendPhysics(); //!< Shutdown state for physics restart
+    void operationContinuePhysics(); //!< Continue state after physics restart
     void initialize();
     void run();
     void shutdown();

@@ -227,6 +227,7 @@
     <ClCompile Include="src\TextFile.cpp" />
     <ClCompile Include="src\ThreadController.cpp" />
     <ClCompile Include="src\Win32.cpp" />
+    <ClCompile Include="src\WindowHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\hdrlib\HDRCompositor.h" />
@@ -256,6 +257,7 @@
     <ClInclude Include="include\ThreadController.h" />
     <ClInclude Include="include\Win32.h" />
     <ClInclude Include="glacier2_resource.h" />
+    <ClInclude Include="include\WindowHandler.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\README.md" />

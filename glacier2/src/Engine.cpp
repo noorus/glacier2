@@ -9,6 +9,7 @@
 #include "Exception.h"
 #include "Sound.h"
 #include "Game.h"
+#include "WindowHandler.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
@@ -52,7 +53,7 @@ namespace Glacier {
   mConsole( nullptr ), mScripting( nullptr ), mGraphics( nullptr ),
   mProcess( NULL ), mThread( NULL ), mInstance( instance ),
   mSignal( Signal_None ), mVersion( 0, 1, 1 ), mConsoleWindow( nullptr ),
-  mGame( nullptr )
+  mGame( nullptr ), mWindowHandler( nullptr )
   {
   }
 
@@ -170,11 +171,17 @@ namespace Glacier {
       ENGINE_EXCEPT_W32( L"Couldn't query HPC frequency" );
 
     // Create subsystems
+    mWindowHandler = new WindowHandler( this );
     mScripting = new Scripting( this );
-    mGraphics = new Graphics( this );
+    mGraphics = new Graphics( this, mWindowHandler );
     mPhysics = new Physics( this );
     mSound = new Sound( this );
     mGame = new Game( this );
+  }
+
+  void Engine::signalStop()
+  {
+    mSignal = Signal_Stop;
   }
 
   void Engine::run()
@@ -244,7 +251,7 @@ namespace Glacier {
     if ( !gEngine )
       return;
 
-    gEngine->mSignal = Signal_Stop;
+    gEngine->signalStop();
   }
 
   void Engine::shutdown()
@@ -254,6 +261,7 @@ namespace Glacier {
     SAFE_DELETE( mPhysics );
     SAFE_DELETE( mGraphics );
     SAFE_DELETE( mScripting );
+    SAFE_DELETE( mWindowHandler );
     SAFE_DELETE( mConsoleWindow );
     SAFE_DELETE( mConsole );
 

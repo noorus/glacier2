@@ -129,6 +129,9 @@
     <ClCompile Include="src\GlobalStats.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\WindowHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\StdAfx.h">
@@ -210,6 +213,9 @@
       <Filter>Header Files\Console</Filter>
     </ClInclude>
     <ClInclude Include="include\GlobalStats.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\WindowHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

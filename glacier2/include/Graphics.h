@@ -17,6 +17,8 @@ namespace Glacier {
   ENGINE_EXTERN_CONVAR( vid_d3d9ex );
   ENGINE_EXTERN_CONCMD( vid_restart );
 
+  class WindowHandler;
+
   class Graphics: public EngineComponent {
   protected:
     struct Globals {
@@ -27,6 +29,7 @@ namespace Glacier {
     Ogre::RenderWindow* mWindow;
     Ogre::PCZSceneManager* mSceneManager;
     Ogre::OverlaySystem* mOverlaySystem;
+    WindowHandler* mWindowHandler;
     void registerResources();
     void unregisterResources();
   public:
@@ -52,7 +55,7 @@ namespace Glacier {
     static void callbackVideoRestart( Console* console,
       ConCmd* command, StringVector& arguments );
   public:
-    Graphics( Engine* engine );
+    Graphics( Engine* engine, WindowHandler* windowHandler );
     void videoInitialize();
     void videoShutdown();
     void videoRestart();
