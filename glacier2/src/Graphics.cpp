@@ -9,7 +9,7 @@
 
 namespace Glacier {
 
-  // Graphics Engine CVARs ====================================================
+  // Graphics engine CVARs ====================================================
 
   ENGINE_DECLARE_CONVAR( vid_screenwidth,
     L"Screen width. Changes are applied when the renderer is restarted.", 1280 );
@@ -27,7 +27,7 @@ namespace Glacier {
     L"Restart the renderer to apply changes to display mode.",
     &Graphics::callbackVideoRestart );
 
-  // Graphics Engine constants ================================================
+  // Graphics engine constants ================================================
 
   const char* cRenderSystemName    = "Direct3D9 Rendering Subsystem";
   const char* cRenderSystemDebug   = "RenderSystem_Direct3D9_d";
@@ -36,6 +36,7 @@ namespace Glacier {
   const char* cRenderWindowTitle   = "glacier² » renderer";
   const char* cScreenshotPrefix    = "screenshot";
   const char* cScreenshotSuffix    = ".png";
+  const char* cOgreLogFile         = "ogre.log";
 
   // Graphics::VideoMode class ================================================
 
@@ -122,7 +123,7 @@ namespace Glacier {
       OGRE_VERSION_SUFFIX, OGRE_VERSION_NAME );
 
     // Create Ogre root
-    mRoot = new Ogre::Root( "", "", "Ogre.log" );
+    mRoot = new Ogre::Root( "", "", cOgreLogFile );
 
     // Create overlay system
     mOverlaySystem = new Ogre::OverlaySystem();
@@ -190,6 +191,9 @@ namespace Glacier {
     // Register & initialize resource groups
     registerResources();
 
+    // Initialize globals
+    mGlobals.stats.init();
+
     // Tell the engine to continue, in case this was a restart
     mEngine->operationContinueVideo();
   }
@@ -204,6 +208,9 @@ namespace Glacier {
   {
     // Suspend active state's video operations
     mEngine->operationSuspendVideo();
+
+    // Shutdown globals
+    mGlobals.stats.shutdown();
 
     if ( mRoot )
     {
@@ -263,6 +270,10 @@ namespace Glacier {
 
   void Graphics::componentPostUpdate( GameTime delta, GameTime time )
   {
+    // Update globals
+    mGlobals.stats.update();
+
+    // Render frame
     if ( !mRoot->renderOneFrame( (Ogre::Real)delta ) )
       ENGINE_EXCEPT( L"Frame failed to render" );
   }

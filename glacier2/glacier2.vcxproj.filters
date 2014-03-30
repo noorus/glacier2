@@ -126,6 +126,9 @@
     <ClCompile Include="src\ConsoleWindow.cpp">
       <Filter>Source Files\Console</Filter>
     </ClCompile>
+    <ClCompile Include="src\GlobalStats.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\StdAfx.h">
@@ -205,6 +208,9 @@
     </ClInclude>
     <ClInclude Include="include\Console.h">
       <Filter>Header Files\Console</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GlobalStats.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

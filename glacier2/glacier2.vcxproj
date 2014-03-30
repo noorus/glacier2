@@ -136,7 +136,8 @@
       <WarningLevel>Level3</WarningLevel>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <FunctionLevelLinking>
+      </FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;ENABLE_LARGE_PAGES;ENABLE_USERMODEPAGEALLOCATOR;USE_LOCKS;USE_SPIN_LOCKS;NDEBUG;_WINDOWS;_ALLOW_MSC_VER_MISMATCH;_ALLOW_ITERATOR_DEBUG_LEVEL_MISMATCH;PHYSX_PROFILE_SDK;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(SolutionDir)include;$(ProjectDir)include;$(SolutionDir)..\SDK\Ogre\include\OGRE;$(SolutionDir)..\SDK\Ogre\include\OGRE\Overlay;$(SolutionDir)..\SDK\Ogre\include\OGRE\Paging;$(SolutionDir)..\SDK\Ogre\include\OGRE\Plugins\PCZSceneManager;$(SolutionDir)..\SDK\Ogre\include\OGRE\RenderSystems\Direct3D9;$(SolutionDir)..\SDK\Ogre\include\OGRE\Terrain;$(SolutionDir)..\SDK\Ogre\include\OGRE\Threading;$(SolutionDir)..\SDK\FMOD SoundSystem\FMOD Programmers API Windows\api\inc;$(SolutionDir)..\SDK\FMOD SoundSystem\FMOD Programmers API Windows\fmoddesignerapi\api\inc;$(SolutionDir)..\v8\include;$(SolutionDir)EASTL\include;$(SolutionDir)nil\include;$(SolutionDir)nedmalloc;$(SolutionDir)hdrlib;$(SolutionDir)..\SDK\PhysX\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -150,10 +151,13 @@
       <ShowIncludes>false</ShowIncludes>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FloatingPointModel>Fast</FloatingPointModel>
+      <EnableParallelCodeGeneration>true</EnableParallelCodeGeneration>
+      <FloatingPointExceptions>
+      </FloatingPointExceptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(SolutionDir)..\SDK\Ogre\lib\$(Configuration);$(SolutionDir)..\SDK\Ogre\lib\$(Configuration)\opt;$(SolutionDir)..\SDK\FMOD SoundSystem\FMOD Programmers API Windows\api\lib;$(SolutionDir)..\SDK\FMOD SoundSystem\FMOD Programmers API Windows\fmoddesignerapi\api\lib;$(SolutionDir)..\v8\build\$(Configuration)\lib;$(SolutionDir)..\SDK\PhysX\Lib\win64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -208,6 +212,7 @@
     <ClCompile Include="src\EngineComponent.cpp" />
     <ClCompile Include="src\Exception.cpp" />
     <ClCompile Include="src\Game.cpp" />
+    <ClCompile Include="src\GlobalStats.cpp" />
     <ClCompile Include="src\Graphics.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\Memory.cpp" />
@@ -238,6 +243,7 @@
     <ClInclude Include="include\EngineComponent.h" />
     <ClInclude Include="include\Exception.h" />
     <ClInclude Include="include\Game.h" />
+    <ClInclude Include="include\GlobalStats.h" />
     <ClInclude Include="include\Graphics.h" />
     <ClInclude Include="include\GlacierMemory.h" />
     <ClInclude Include="include\Physics.h" />

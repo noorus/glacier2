@@ -1,6 +1,7 @@
 #pragma once
 #include "Console.h"
 #include "EngineComponent.h"
+#include "GlobalStats.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
@@ -17,6 +18,9 @@ namespace Glacier {
 
   class Graphics: public EngineComponent {
   protected:
+    struct Globals {
+      GlobalStats stats;
+    } mGlobals;
     Ogre::Root* mRoot;
     Ogre::RenderSystem* mRenderer;
     Ogre::RenderWindow* mWindow;

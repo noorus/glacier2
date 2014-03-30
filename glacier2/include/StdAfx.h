@@ -104,5 +104,8 @@
 // PhysX Headers
 #include <PxPhysicsAPI.h>
 
+// Nil Headers
+#include <nil.h>
+
 // Glacier types
 #include "Types.h"
