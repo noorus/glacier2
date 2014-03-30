@@ -57,6 +57,12 @@ LPWSTR lpCmdLine, int nCmdShow )
     error.body = Glacier::Utilities::utf8ToWide( e.getFullDescription() );
     Glacier::Win32::ErrorDialog dialog( error );
   }
+  catch ( Nil::Exception& e )
+  {
+    error.subtitle = L"Program fault: NIL runtime exception";
+    error.body = e.getFullDescription();
+    Glacier::Win32::ErrorDialog dialog( error );
+  }
   catch ( std::exception& e )
   {
     error.subtitle = L"Program fault: StdLib runtime exception";

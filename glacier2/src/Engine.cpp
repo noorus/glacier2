@@ -10,6 +10,7 @@
 #include "Sound.h"
 #include "Game.h"
 #include "WindowHandler.h"
+#include "Input.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
@@ -53,7 +54,7 @@ namespace Glacier {
   mConsole( nullptr ), mScripting( nullptr ), mGraphics( nullptr ),
   mProcess( NULL ), mThread( NULL ), mInstance( instance ),
   mSignal( Signal_None ), mVersion( 0, 1, 1 ), mConsoleWindow( nullptr ),
-  mGame( nullptr ), mWindowHandler( nullptr )
+  mGame( nullptr ), mWindowHandler( nullptr ), mInput( nullptr )
   {
   }
 
@@ -174,6 +175,7 @@ namespace Glacier {
     mWindowHandler = new WindowHandler( this );
     mScripting = new Scripting( this );
     mGraphics = new Graphics( this, mWindowHandler );
+    mInput = new Input( this, mInstance, mGraphics->getWindow() );
     mPhysics = new Physics( this );
     mSound = new Sound( this );
     mGame = new Game( this );
@@ -212,6 +214,7 @@ namespace Glacier {
       while ( fTimeAccumulator >= fLogicStep )
       {
         mPhysics->componentTick( fLogicStep, fTime );
+        mInput->componentTick( fLogicStep, fTime );
         mGame->componentTick( fLogicStep, fTime );
         mSound->componentTick( fLogicStep, fTime );
         fTime += fLogicStep;
@@ -259,6 +262,7 @@ namespace Glacier {
     SAFE_DELETE( mGame );
     SAFE_DELETE( mSound );
     SAFE_DELETE( mPhysics );
+    SAFE_DELETE( mInput );
     SAFE_DELETE( mGraphics );
     SAFE_DELETE( mScripting );
     SAFE_DELETE( mWindowHandler );
