@@ -106,7 +106,8 @@ namespace Glacier {
   {
     // Greetings
     FMOD_RESULT hr;
-    mEngine->getConsole()->printf( Console::srcSound, L"Initializing sound system..." );
+    mEngine->getConsole()->printf( Console::srcSound,
+      L"Initializing sound system..." );
 
     // Create event system instance
     hr = FMOD::EventSystem_Create( &mEventSystem );

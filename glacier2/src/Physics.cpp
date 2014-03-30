@@ -29,7 +29,7 @@ namespace Glacier {
 
     // Print some version stuff
     mEngine->getConsole()->printf( Console::srcPhysics,
-      L"Setting up PhysX %i.%i.%i",
+      L"Using PhysX %i.%i.%i",
       PX_PHYSICS_VERSION_MAJOR, PX_PHYSICS_VERSION_MINOR,
       PX_PHYSICS_VERSION_BUGFIX );
 
@@ -84,7 +84,7 @@ namespace Glacier {
     if ( mCudaContextManager )
     {
       mEngine->getConsole()->printf( Console::srcPhysics,
-        L"CUDA device %S%s, %dMHz, %dMB",
+        L"CUDA device: %S%s, %dMHz, %dMB",
         mCudaContextManager->getDeviceName(),
         mCudaContextManager->usingDedicatedPhysXGPU() ? " (PhysX PPU)" : "",
         mCudaContextManager->getClockRate() / 1000,

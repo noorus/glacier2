@@ -118,7 +118,7 @@ namespace Glacier {
 
     // Print some version stuff
     mEngine->getConsole()->printf( Console::srcGfx,
-      L"Using Ogre3D %i.%i.%i %S (%S)",
+      L"Using Ogre3D %i.%i.%i%S (%S)",
       OGRE_VERSION_MAJOR, OGRE_VERSION_MINOR, OGRE_VERSION_PATCH,
       OGRE_VERSION_SUFFIX, OGRE_VERSION_NAME );
 
@@ -247,7 +247,8 @@ namespace Glacier {
 
   void Graphics::registerResources()
   {
-    mEngine->getConsole()->printf( Console::srcGfx, L"Registering resources" );
+    mEngine->getConsole()->printf( Console::srcGfx,
+      L"Registering resources..." );
 
     ResourceGroupManager::getSingleton().addResourceLocation(
       "data\\bootload", "FileSystem", "Bootload", true );
@@ -257,7 +258,8 @@ namespace Glacier {
 
   void Graphics::unregisterResources()
   {
-    mEngine->getConsole()->printf( Console::srcGfx, L"Unregistering resources" );
+    mEngine->getConsole()->printf( Console::srcGfx,
+      L"Unregistering resources..." );
 
     ResourceGroupManager::getSingleton().removeResourceLocation(
       "data\\bootload", "Bootload" );
@@ -275,7 +277,7 @@ namespace Glacier {
 
     // Render frame
     if ( !mRoot->renderOneFrame( (Ogre::Real)delta ) )
-      ENGINE_EXCEPT( L"Frame failed to render" );
+      ENGINE_EXCEPT( L"Failed to render frame" );
   }
 
   void Graphics::callbackVideoRestart( Console* console, ConCmd* command,
