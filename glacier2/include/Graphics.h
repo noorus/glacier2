@@ -14,6 +14,7 @@ namespace Glacier {
   ENGINE_EXTERN_CONVAR( vid_fullscreen );
   ENGINE_EXTERN_CONVAR( vid_vsync );
   ENGINE_EXTERN_CONVAR( vid_fsaa );
+  ENGINE_EXTERN_CONVAR( vid_d3d9ex );
   ENGINE_EXTERN_CONCMD( vid_restart );
 
   class Graphics: public EngineComponent {
@@ -35,9 +36,10 @@ namespace Glacier {
       uint32_t mBits;
       bool mFullscreen;
       bool mVSync;
+      bool mDX9Ex;
       uint32_t mFSAA;
       VideoMode( uint32_t width, uint32_t height, uint32_t bpp,
-        bool fs, bool vsync, uint32_t fsaa );
+        bool fs, bool vsync, uint32_t fsaa, bool dx9ex );
       void setConfigurations( Ogre::RenderSystem& renderer );
       Ogre::NameValuePairList getParams();
       string getAsOptionString();
@@ -45,6 +47,7 @@ namespace Glacier {
       string optFSAsString();
       string optVSyncAsString();
       string optFSAAAsString();
+      string optDX9ExAsString();
     };
     static void callbackVideoRestart( Console* console,
       ConCmd* command, StringVector& arguments );

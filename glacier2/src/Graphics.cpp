@@ -23,6 +23,8 @@ namespace Glacier {
     L"Vertical sync toggle. Changes are applied when the renderer is restarted.", false );
   ENGINE_DECLARE_CONVAR( vid_fsaa,
     L"Full Scene Anti-Aliasing multiplier. Valid values are multiples of 2.", 8 );
+  ENGINE_DECLARE_CONVAR( vid_d3d9ex,
+    L"Whether to try using Direct3D9Ex when available. Windows 7+.", true );
   ENGINE_DECLARE_CONCMD( vid_restart,
     L"Restart the renderer to apply changes to display mode.",
     &Graphics::callbackVideoRestart );
@@ -41,9 +43,9 @@ namespace Glacier {
   // Graphics::VideoMode class ================================================
 
   Graphics::VideoMode::VideoMode( uint32_t width, uint32_t height,
-  uint32_t bpp, bool fs, bool vsync, uint32_t fsaa ):
+  uint32_t bpp, bool fs, bool vsync, uint32_t fsaa, bool dx9ex ):
   mWidth( width ), mHeight( height ), mBits( bpp ), mFullscreen( fs ),
-  mVSync( vsync ), mFSAA( fsaa )
+  mVSync( vsync ), mFSAA( fsaa ), mDX9Ex( dx9ex )
   {
     //
   }
@@ -56,6 +58,7 @@ namespace Glacier {
     renderer.setConfigOption( "Full Screen", optFSAsString() );
     renderer.setConfigOption( "Video Mode", getAsOptionString() );
     renderer.setConfigOption( "sRGB Gamma Conversion", "No" );
+    renderer.setConfigOption( "Allow DirectX9Ex", optDX9ExAsString() );
   }
 
   Ogre::NameValuePairList Graphics::VideoMode::getParams()
@@ -102,6 +105,11 @@ namespace Glacier {
     return fsaa;
   }
 
+  string Graphics::VideoMode::optDX9ExAsString()
+  {
+    return mDX9Ex ? "Yes" : "No";
+  }
+
   // Graphics class ===========================================================
 
   Graphics::Graphics( Engine* engine ): EngineComponent( engine ),
@@ -146,7 +154,8 @@ namespace Glacier {
       g_CVar_vid_screenbpp.getInt(), 
       g_CVar_vid_fullscreen.getBool(),
       g_CVar_vid_vsync.getBool(),
-      g_CVar_vid_fsaa.getInt() );
+      g_CVar_vid_fsaa.getInt(),
+      g_CVar_vid_d3d9ex.getBool() );
 
     mEngine->getConsole()->printf( Console::srcGfx,
       L"Video mode: %S%s%s (fsaa x%u)",
