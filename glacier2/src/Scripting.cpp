@@ -1,5 +1,8 @@
 #include "StdAfx.h"
 #include "Scripting.h"
+#include "Script.h"
+#include "Engine.h"
+#include "Console.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
@@ -8,6 +11,12 @@ namespace Glacier {
 
   Scripting::Scripting( Engine* engine ): EngineComponent( engine )
   {
+    mEngine->getConsole()->printf( Console::srcScripting,
+      L"Initializing scripting..." );
+
+    mEngine->getConsole()->printf( Console::srcScripting,
+      L"Using V8 %S", v8::V8::GetVersion() );
+
     v8::V8::InitializeICU();
   }
 
@@ -19,22 +28,9 @@ namespace Glacier {
   void Scripting::test()
   {
     v8::Isolate* isolate = v8::Isolate::GetCurrent();
-
-    v8::HandleScope handle_scope( isolate );
-
-    v8::Handle<v8::Context> context = v8::Context::New( isolate );
-
-    v8::Context::Scope context_scope( context );
-
-    v8::Handle<v8::String> source = v8::String::NewFromUtf8( isolate, "'V8' + ' works'" );
-
-    v8::Handle<v8::Script> script = v8::Script::Compile( source );
-
-    v8::Handle<v8::Value> result = script->Run();
-
-    v8::String::Value out( result );
-
-    MessageBoxW( 0, (LPCWSTR)*out, NULL, MB_OK );
+    Script s( isolate );
+    if ( s.compile( L"print('hello world');" ) )
+      s.execute();
   }
 
 }

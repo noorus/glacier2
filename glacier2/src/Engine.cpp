@@ -174,6 +174,7 @@ namespace Glacier {
     // Create subsystems
     mWindowHandler = new WindowHandler( this );
     mScripting = new Scripting( this );
+    mScripting->test();
     mGraphics = new Graphics( this, mWindowHandler );
     mInput = new Input( this, mInstance, mGraphics->getWindow() );
     mPhysics = new Physics( this );
