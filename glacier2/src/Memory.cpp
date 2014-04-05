@@ -21,28 +21,28 @@ namespace Glacier {
 
   Memory::Memory(): mPool( nullptr )
   {
-    mPool = nedalloc::nedcreatepool( 10240, 4 );
+    mPool = glacier_nedalloc::nedcreatepool( 10240, 4 );
   }
 
   Memory::~Memory()
   {
     if ( mPool )
-      nedalloc::neddestroypool( mPool );
+      glacier_nedalloc::neddestroypool( mPool );
   }
 
   void* Memory::alloc( size_t size, size_t alignment )
   {
-    return nedalloc::nedpmalloc2( mPool, size, alignment, 0 );
+    return glacier_nedalloc::nedpmalloc2( mPool, size, alignment, 0 );
   }
 
   void* Memory::realloc( void* location, size_t size, size_t alignment )
   {
-    return nedalloc::nedprealloc2( mPool, location, size, alignment, 0 );
+    return glacier_nedalloc::nedprealloc2( mPool, location, size, alignment, 0 );
   }
 
   void Memory::free( void* location )
   {
-    nedalloc::nedpfree2( mPool, location, 0 );
+    glacier_nedalloc::nedpfree2( mPool, location, 0 );
   }
 
 }

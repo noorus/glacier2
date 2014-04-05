@@ -9,13 +9,25 @@
 
 namespace Glacier {
 
-  void Print( const v8::FunctionCallbackInfo<v8::Value>& args )
+  using v8::Isolate;
+  using v8::Handle;
+  using v8::Persistent;
+  using v8::Local;
+  using v8::Context;
+  using v8::TryCatch;
+  using v8::HandleScope;
+  using v8::FunctionCallbackInfo;
+  using v8::ObjectTemplate;
+  using v8::FunctionTemplate;
+  using v8::Value;
+
+  void Print( const FunctionCallbackInfo<Value>& args )
   {
     wstring msg;
     bool first = true;
     for ( int i = 0; i < args.Length(); i++ )
     {
-      v8::HandleScope handleScope( args.GetIsolate() );
+      HandleScope handleScope( args.GetIsolate() );
       if ( first )
         first = false;
       else
@@ -29,34 +41,38 @@ namespace Glacier {
       gEngine->getConsole()->printf( Console::srcScripting, msg.c_str() );
   }
 
-  Script::Script( v8::Isolate* isolation ): mIsolate( isolation )
+  Script::Script( Isolate* isolation ): mIsolate( isolation )
   {
-    v8::HandleScope handleScope( mIsolate );
+    HandleScope handleScope( mIsolate );
 
-    v8::Handle<v8::ObjectTemplate> global = v8::ObjectTemplate::New();
+    Handle<ObjectTemplate> global = ObjectTemplate::New();
     global->Set(
-      v8::String::NewFromUtf8( mIsolate, "print" ),
-      v8::FunctionTemplate::New( mIsolate, Print ) );
+      allocString( L"print" ),
+      FunctionTemplate::New( mIsolate, Print ) );
 
-    v8::Handle<v8::Context> context = v8::Context::New( mIsolate,
+    Handle<Context> context = Context::New( mIsolate,
       nullptr, global );
 
     mContext.Reset( mIsolate, context );
   }
 
+  inline Local<v8::String> Script::allocString( const wstring& str )
+  {
+    return v8::String::NewFromTwoByte( mIsolate, (uint16_t*)str.c_str() );
+  }
+
   bool Script::compile( const wstring& source )
   {
-    v8::HandleScope handleScope( mIsolate );
-    v8::Context::Scope contextScope( v8::Handle<v8::Context>::New( mIsolate, mContext ) );
-    v8::TryCatch tryCatch;
+    HandleScope handleScope( mIsolate );
+    Context::Scope contextScope( Handle<Context>::New( mIsolate, mContext ) );
+    TryCatch tryCatch;
 
-    v8::Handle<v8::Script> script = v8::Script::Compile(
-      v8::String::NewFromTwoByte( mIsolate, (uint16_t*)source.c_str() ) );
+    Handle<v8::Script> script = v8::Script::Compile( allocString( source ) );
 
     if ( script.IsEmpty() )
     {
       v8::String::Value errorValue( tryCatch.Exception() );
-      v8::Handle<v8::Message> errorMessage = tryCatch.Message();
+      Handle<v8::Message> errorMessage = tryCatch.Message();
       if ( !errorMessage.IsEmpty() )
       {
       }
@@ -73,12 +89,12 @@ namespace Glacier {
     if ( mScript.IsEmpty() )
       return false;
 
-    v8::HandleScope handleScope( mIsolate );
-    v8::Context::Scope contextScope( v8::Handle<v8::Context>::New( mIsolate, mContext ) );
-    v8::TryCatch tryCatch;
+    HandleScope handleScope( mIsolate );
+    Context::Scope contextScope( Handle<Context>::New( mIsolate, mContext ) );
+    TryCatch tryCatch;
 
-    v8::Local<v8::Script> script = v8::Local<v8::Script>::New( mIsolate, mScript );
-    v8::Handle<v8::Value> result = script->Run();
+    Local<v8::Script> script = Local<v8::Script>::New( mIsolate, mScript );
+    Handle<Value> result = script->Run();
     if ( result.IsEmpty() )
     {
       return false;

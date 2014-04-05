@@ -4,6 +4,9 @@
 #include "Exception.h"
 #include "Engine.h"
 #include "WindowHandler.h"
+#include "OgreD3D9Plugin.h"
+#include "Plugins/CgProgramManager/OgreCgPlugin.h"
+#include "Plugins/PCZSceneManager/OgrePCZPlugin.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
@@ -139,11 +142,7 @@ namespace Glacier {
     mOverlaySystem = new Ogre::OverlaySystem();
 
     // Load renderer
-#if defined( _DEBUG )
-    mRoot->loadPlugin( cRenderSystemDebug );
-#else
-    mRoot->loadPlugin( cRenderSystemRelease );
-#endif
+    mRoot->installPlugin( new Ogre::D3D9Plugin );
 
     // Select renderer
     mRenderer = mRoot->getRenderSystemByName( cRenderSystemName );
@@ -185,15 +184,8 @@ namespace Glacier {
     mWindow->setDeactivateOnFocusChange( false );
 
     // Load plugins
-#if defined( _DEBUG )
-    mRoot->loadPlugin( "Plugin_CgProgramManager_d" );
-    mRoot->loadPlugin( "Plugin_PCZSceneManager_d" );
-    // mRoot->loadPlugin( "Plugin_OctreeZone_d" );
-#else
-    mRoot->loadPlugin( "Plugin_CgProgramManager" );
-    mRoot->loadPlugin( "Plugin_PCZSceneManager" );
-    // mRoot->loadPlugin( "Plugin_OctreeZone" );
-#endif
+    mRoot->installPlugin( new Ogre::CgPlugin );
+    mRoot->installPlugin( new Ogre::PCZPlugin );
 
     // Create the portal-connected scene manager
     mSceneManager = (Ogre::PCZSceneManager*)mRoot->createSceneManager(

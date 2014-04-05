@@ -9,7 +9,8 @@
 
 namespace Glacier {
 
-  Scripting::Scripting( Engine* engine ): EngineComponent( engine )
+  Scripting::Scripting( Engine* engine ): EngineComponent( engine ),
+  mIsolate( nullptr )
   {
     mEngine->getConsole()->printf( Console::srcScripting,
       L"Initializing scripting..." );
@@ -18,6 +19,8 @@ namespace Glacier {
       L"Using V8 %S", v8::V8::GetVersion() );
 
     v8::V8::InitializeICU();
+
+    mIsolate = v8::Isolate::GetCurrent();
   }
 
   Scripting::~Scripting()
@@ -27,8 +30,7 @@ namespace Glacier {
 
   void Scripting::test()
   {
-    v8::Isolate* isolate = v8::Isolate::GetCurrent();
-    Script s( isolate );
+    Script s( mIsolate );
     if ( s.compile( L"print('hello world');" ) )
       s.execute();
   }

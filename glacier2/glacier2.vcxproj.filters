@@ -19,9 +19,6 @@
     <Filter Include="Source Files\EASTL">
       <UniqueIdentifier>{ca53c6be-e9e7-441c-85e1-dc9f20925642}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\nedmalloc">
-      <UniqueIdentifier>{59261995-0e1a-47d5-8bb0-1503ee79d3dc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\HDRLib">
       <UniqueIdentifier>{009720e5-f203-4f4a-bfd9-19723834dde4}</UniqueIdentifier>
     </Filter>
@@ -39,6 +36,9 @@
     </Filter>
     <Filter Include="Header Files\Console">
       <UniqueIdentifier>{b430c7e6-94a2-49a5-b869-04bfe67c61f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\nedmalloc">
+      <UniqueIdentifier>{ea18ffd0-63de-4f91-a0f9-95599af5072d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -90,9 +90,6 @@
     <ClCompile Include="src\ThreadController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\nedmalloc\nedmalloc.c">
-      <Filter>Source Files\nedmalloc</Filter>
-    </ClCompile>
     <ClCompile Include="src\EngineComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -137,6 +134,9 @@
     </ClCompile>
     <ClCompile Include="src\Script.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\nedmalloc\nedmalloc.cpp">
+      <Filter>Source Files\nedmalloc</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

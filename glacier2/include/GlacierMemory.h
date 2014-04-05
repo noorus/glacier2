@@ -12,7 +12,7 @@ namespace Glacier {
     Memory();
     ~Memory();
   protected:
-    nedalloc::nedpool* mPool;
+    glacier_nedalloc::nedpool* mPool;
   public:
     void* alloc( size_t size, size_t alignment = 0Ui64 );
     void* realloc( void* location, size_t size, size_t alignment = 0Ui64 );

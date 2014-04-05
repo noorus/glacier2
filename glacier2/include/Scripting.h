@@ -7,6 +7,8 @@
 namespace Glacier {
 
   class Scripting: public EngineComponent {
+  protected:
+    v8::Isolate* mIsolate;
   public:
     Scripting( Engine* engine );
     virtual ~Scripting();
