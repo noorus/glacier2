@@ -72,7 +72,8 @@ namespace Glacier {
       SetEvent( me->mRunEvent );
       while ( WaitForSingleObject( me->mStopEvent, 0 ) != WAIT_OBJECT_0 )
       {
-        me->mWindow->step();
+        if ( !me->mWindow->step() )
+          break;
       }
       SAFE_DELETE( me->mWindow );
     }
@@ -88,9 +89,9 @@ namespace Glacier {
   {
     if ( mStopEvent )
     {
+      SetEvent( mStopEvent );
       if ( mWindow )
         mWindow->kill();
-      SetEvent( mStopEvent );
       WaitForSingleObject( mThread, INFINITE );
     }
     ResetEvent( mRunEvent );
@@ -167,13 +168,18 @@ namespace Glacier {
     SendMessage( mLog, EM_SETTEXTEX, (WPARAM)&textex, (LPARAM)line.c_str() );
   }
 
-  void ConsoleWindow::step()
+  bool ConsoleWindow::step()
   {
     MSG msg;
-    if ( GetMessageW( &msg, NULL, 0, 0 ) != FALSE )
-    {
+    BOOL ret = GetMessageW( &msg, NULL, 0, 0 );
+    if ( ret == -1 )
+      ENGINE_EXCEPT_W32( L"GetMessageW returned -1" )
+    else if ( ret == 0 )
+      return false;
+    else {
       TranslateMessage( &msg );
       DispatchMessage( &msg );
+      return true;
     }
   }
 
@@ -452,7 +458,7 @@ namespace Glacier {
         return 0;
       break;
       case WM_DESTROY:
-        PostQuitMessage( 0 );
+        PostQuitMessage( EXIT_SUCCESS );
         return 0;
       break;
     }

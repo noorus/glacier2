@@ -41,7 +41,7 @@ namespace Glacier {
     ~ConsoleWindow();
     void kill();
     void print( COLORREF color, const wstring& line );
-    void step();
+    bool step();
   };
 
   class ConsoleWindowThread {
