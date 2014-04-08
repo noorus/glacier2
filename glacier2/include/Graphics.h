@@ -30,8 +30,6 @@ namespace Glacier {
     Ogre::PCZSceneManager* mSceneManager;
     Ogre::OverlaySystem* mOverlaySystem;
     WindowHandler* mWindowHandler;
-    void registerResources();
-    void unregisterResources();
   public:
     struct VideoMode {
       uint32_t mWidth;
@@ -66,6 +64,8 @@ namespace Glacier {
     Ogre::PCZSceneManager* getScene() { return mSceneManager; }
     virtual void componentPreUpdate( GameTime time );
     virtual void componentPostUpdate( GameTime delta, GameTime time );
+    static void registerResources( ResourceGroupManager& manager );
+    static void unregisterResources( ResourceGroupManager& manager );
     virtual ~Graphics();
   };
 

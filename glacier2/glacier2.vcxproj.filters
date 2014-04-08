@@ -40,6 +40,12 @@
     <Filter Include="Source Files\nedmalloc">
       <UniqueIdentifier>{ea18ffd0-63de-4f91-a0f9-95599af5072d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Scripting">
+      <UniqueIdentifier>{026a2bdd-f8b7-4b37-abc3-a9f0f42fd01e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Scripting">
+      <UniqueIdentifier>{53e58cd0-4330-4fd0-a57c-d5522f9ce170}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Main.cpp">
@@ -76,9 +82,6 @@
       <Filter>Source Files\EASTL</Filter>
     </ClCompile>
     <ClCompile Include="src\Memory.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Scripting.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\TextFile.cpp">
@@ -132,11 +135,20 @@
     <ClCompile Include="src\Input.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Script.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\nedmalloc\nedmalloc.cpp">
       <Filter>Source Files\nedmalloc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Script.cpp">
+      <Filter>Source Files\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scripting.cpp">
+      <Filter>Source Files\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="src\JSVector3.cpp">
+      <Filter>Source Files\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="src\JSObjectWrapper.cpp">
+      <Filter>Source Files\Scripting</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -168,9 +180,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\GlacierMemory.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Scripting.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\TextFile.h">
@@ -228,7 +237,13 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Script.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Scripting.h">
+      <Filter>Header Files\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="include\JSNatives.h">
+      <Filter>Header Files\Scripting</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

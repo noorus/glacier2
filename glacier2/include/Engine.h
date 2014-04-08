@@ -95,6 +95,8 @@ namespace Glacier {
     void operationContinueAudio(); //!< Continue state after audio restart
     void operationSuspendPhysics(); //!< Shutdown state for physics restart
     void operationContinuePhysics(); //!< Continue state after physics restart
+    void registerResources( ResourceGroupManager& manager );
+    void unregisterResources( ResourceGroupManager& manager );
     void initialize();
     void run();
     void shutdown();

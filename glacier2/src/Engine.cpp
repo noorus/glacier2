@@ -150,6 +150,18 @@ namespace Glacier {
       mGame->resumeState();
   }
 
+  void Engine::registerResources( ResourceGroupManager& manager )
+  {
+    Graphics::registerResources( manager );
+    Scripting::registerResources( manager );
+  }
+
+  void Engine::unregisterResources( ResourceGroupManager& manager )
+  {
+    Scripting::unregisterResources( manager );
+    Graphics::unregisterResources( manager );
+  }
+
   void Engine::initialize()
   {
     // Get process & thread handles
@@ -173,12 +185,12 @@ namespace Glacier {
 
     // Create subsystems
     mWindowHandler = new WindowHandler( this );
-    mScripting = new Scripting( this );
-    mScripting->test();
     mGraphics = new Graphics( this, mWindowHandler );
     mInput = new Input( this, mInstance, mGraphics->getWindow() );
     mPhysics = new Physics( this );
     mSound = new Sound( this );
+    mScripting = new Scripting( this );
+    mScripting->test( "vector3-test.js" );
     mGame = new Game( this );
   }
 
@@ -261,11 +273,11 @@ namespace Glacier {
   void Engine::shutdown()
   {
     SAFE_DELETE( mGame );
+    SAFE_DELETE( mScripting );
     SAFE_DELETE( mSound );
     SAFE_DELETE( mPhysics );
     SAFE_DELETE( mInput );
     SAFE_DELETE( mGraphics );
-    SAFE_DELETE( mScripting );
     SAFE_DELETE( mWindowHandler );
     SAFE_DELETE( mConsoleWindow );
     SAFE_DELETE( mConsole );

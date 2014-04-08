@@ -21,53 +21,17 @@ namespace Glacier {
   using v8::FunctionTemplate;
   using v8::Value;
 
-  void Print( const FunctionCallbackInfo<Value>& args )
+  Script::Script( Scripting* host ): mHost( host )
   {
-    wstring msg;
-    bool first = true;
-    for ( int i = 0; i < args.Length(); i++ )
-    {
-      HandleScope handleScope( args.GetIsolate() );
-      if ( first )
-        first = false;
-      else
-        msg.append( L" " );
-      v8::String::Value str( args[i] );
-      const wchar_t* cstr = (const wchar_t*)*str;
-      if ( cstr )
-        msg.append( cstr );
-    }
-    if ( gEngine && !msg.empty() )
-      gEngine->getConsole()->printf( Console::srcScripting, msg.c_str() );
   }
 
-  Script::Script( Isolate* isolation ): mIsolate( isolation )
+  bool Script::compile( const Ogre::String& source )
   {
-    HandleScope handleScope( mIsolate );
-
-    Handle<ObjectTemplate> global = ObjectTemplate::New();
-    global->Set(
-      allocString( L"print" ),
-      FunctionTemplate::New( mIsolate, Print ) );
-
-    Handle<Context> context = Context::New( mIsolate,
-      nullptr, global );
-
-    mContext.Reset( mIsolate, context );
-  }
-
-  inline Local<v8::String> Script::allocString( const wstring& str )
-  {
-    return v8::String::NewFromTwoByte( mIsolate, (uint16_t*)str.c_str() );
-  }
-
-  bool Script::compile( const wstring& source )
-  {
-    HandleScope handleScope( mIsolate );
-    Context::Scope contextScope( Handle<Context>::New( mIsolate, mContext ) );
+    HandleScope handleScope( mHost->getIsolation() );
+    Context::Scope contextScope( Handle<Context>::New( mHost->getIsolation(), mHost->getContext() ) );
     TryCatch tryCatch;
 
-    Handle<v8::Script> script = v8::Script::Compile( allocString( source ) );
+    Handle<v8::Script> script = v8::Script::Compile( mHost->allocString( source ) );
 
     if ( script.IsEmpty() )
     {
@@ -79,7 +43,7 @@ namespace Glacier {
       return false;
     }
 
-    mScript.Reset( mIsolate, script );
+    mScript.Reset( mHost->getIsolation(), script );
 
     return true;
   }
@@ -89,11 +53,11 @@ namespace Glacier {
     if ( mScript.IsEmpty() )
       return false;
 
-    HandleScope handleScope( mIsolate );
-    Context::Scope contextScope( Handle<Context>::New( mIsolate, mContext ) );
+    HandleScope handleScope( mHost->getIsolation() );
+    Context::Scope contextScope( Handle<Context>::New( mHost->getIsolation(), mHost->getContext() ) );
     TryCatch tryCatch;
 
-    Local<v8::Script> script = Local<v8::Script>::New( mIsolate, mScript );
+    Local<v8::Script> script = Local<v8::Script>::New( mHost->getIsolation(), mScript );
     Handle<Value> result = script->Run();
     if ( result.IsEmpty() )
     {
@@ -106,7 +70,6 @@ namespace Glacier {
   Script::~Script()
   {
     mScript.Reset();
-    mContext.Reset();
   }
 
 }

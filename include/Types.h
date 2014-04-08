@@ -63,6 +63,8 @@ namespace Glacier {
   using Ogre::Ray;
   using Ogre::AxisAlignedBox;
   using Ogre::Sphere;
+  using Ogre::DataStreamPtr;
+  using Ogre::UTFString;
 
   using Ogre::Math;
 

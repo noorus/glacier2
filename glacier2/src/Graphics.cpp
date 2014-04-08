@@ -196,7 +196,7 @@ namespace Glacier {
     mSceneManager->addRenderQueueListener( mOverlaySystem );
 
     // Register & initialize resource groups
-    registerResources();
+    mEngine->registerResources( ResourceGroupManager::getSingleton() );
 
     // Initialize globals
     mGlobals.stats.init();
@@ -239,7 +239,7 @@ namespace Glacier {
         mRoot->destroySceneManager( mSceneManager );
       }
 
-      unregisterResources();
+      mEngine->unregisterResources( ResourceGroupManager::getSingleton() );
 
       SAFE_DELETE( mOverlaySystem );
       mRoot->shutdown();
@@ -261,24 +261,22 @@ namespace Glacier {
       L"Saved screenshot to %S", filename.c_str() );
   }
 
-  void Graphics::registerResources()
+
+  void Graphics::registerResources( ResourceGroupManager& manager )
   {
-    mEngine->getConsole()->printf( Console::srcGfx,
+    gEngine->getConsole()->printf( Console::srcGfx,
       L"Registering resources..." );
 
-    ResourceGroupManager::getSingleton().addResourceLocation(
-      "data\\bootload", "FileSystem", "Bootload", true );
-    ResourceGroupManager::getSingleton().initialiseResourceGroup(
-      "Bootload" );
+    manager.addResourceLocation( "data\\bootload", "FileSystem", "Bootload", true );
+    manager.initialiseResourceGroup( "Bootload" );
   }
 
-  void Graphics::unregisterResources()
+  void Graphics::unregisterResources( ResourceGroupManager& manager )
   {
-    mEngine->getConsole()->printf( Console::srcGfx,
+    gEngine->getConsole()->printf( Console::srcGfx,
       L"Unregistering resources..." );
 
-    ResourceGroupManager::getSingleton().removeResourceLocation(
-      "data\\bootload", "Bootload" );
+    manager.removeResourceLocation( "data\\bootload", "Bootload" );
   }
 
   void Graphics::componentPreUpdate( GameTime time )
