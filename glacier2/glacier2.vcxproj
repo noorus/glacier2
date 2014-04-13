@@ -111,6 +111,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)..\SDK\Ogre\lib\$(Configuration);$(SolutionDir)..\SDK\Ogre\lib\$(Configuration)\opt;$(SolutionDir)..\SDK\FMOD SoundSystem\FMOD Programmers API Windows\api\lib;$(SolutionDir)..\SDK\FMOD SoundSystem\FMOD Programmers API Windows\fmoddesignerapi\api\lib;$(SolutionDir)..\v8\build\$(Configuration)\lib;$(SolutionDir)..\SDK\PhysX\Lib\win64;$(SolutionDir)nil\lib;$(SolutionDir)..\SDK\OgreDependencies\lib\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>OgreMainStatic_d.lib;OgreOverlayStatic_d.lib;RenderSystem_Direct3D9Static_d.lib;Plugin_PCZSceneManagerStatic_d.lib;Plugin_CgProgramManagerStatic_d.lib;fmodexL64_vc.lib;fmod_eventL64.lib;icui18n.lib;icuuc.lib;v8_base.x64.lib;v8_snapshot.lib;PhysX3CommonDEBUG_x64.lib;PhysX3DEBUG_x64.lib;PhysX3CookingDEBUG_x64.lib;PhysX3CharacterKinematicDEBUG_x64.lib;PhysX3ExtensionsDEBUG.lib;PhysX3VehicleDEBUG.lib;PhysXProfileSDKDEBUG.lib;PhysXVisualDebuggerSDKDEBUG.lib;PxTaskDEBUG.lib;nil64_d.lib;ws2_32.lib;winmm.lib;comctl32.lib;gdiplus.lib;FreeImage_d.lib;zziplib_d.lib;zlib_d.lib;libboost_thread-vc110-mt-sgd-1_55.lib;libboost_date_time-vc110-mt-sgd-1_55.lib;libboost_system-vc110-mt-sgd-1_55.lib;libboost_atomic-vc110-mt-sgd-1_55.lib;libboost_chrono-vc110-mt-sgd-1_55.lib;freetype_d.lib;cg.lib;d3d9.lib;d3dx9.lib;DxErr.lib;dxguid.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalOptions>/ignore:4099 %(AdditionalOptions)</AdditionalOptions>
+      <TreatLinkerWarningAsErrors>true</TreatLinkerWarningAsErrors>
     </Link>
     <Manifest>
       <AdditionalManifestFiles>glacier2.manifest</AdditionalManifestFiles>
@@ -165,6 +167,8 @@
       <AdditionalLibraryDirectories>$(SolutionDir)..\SDK\Ogre\lib\$(Configuration);$(SolutionDir)..\SDK\Ogre\lib\$(Configuration)\opt;$(SolutionDir)..\SDK\FMOD SoundSystem\FMOD Programmers API Windows\api\lib;$(SolutionDir)..\SDK\FMOD SoundSystem\FMOD Programmers API Windows\fmoddesignerapi\api\lib;$(SolutionDir)..\v8\build\$(Configuration)\lib;$(SolutionDir)..\SDK\PhysX\Lib\win64;$(SolutionDir)nil\lib;$(SolutionDir)..\SDK\OgreDependencies\lib\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>OgreMainStatic.lib;OgreOverlayStatic.lib;RenderSystem_Direct3D9Static.lib;Plugin_PCZSceneManagerStatic.lib;Plugin_CgProgramManagerStatic.lib;fmodex64_vc.lib;fmod_event64.lib;icui18n.lib;icuuc.lib;v8_base.x64.lib;v8_snapshot.lib;PhysX3Common_x64.lib;PhysX3_x64.lib;PhysX3Cooking_x64.lib;PhysX3CharacterKinematic_x64.lib;PhysX3Extensions.lib;PhysX3Vehicle.lib;PhysXProfileSDK.lib;PhysXVisualDebuggerSDK.lib;PxTask.lib;nil64.lib;ws2_32.lib;winmm.lib;comctl32.lib;gdiplus.lib;FreeImage.lib;zziplib.lib;zlib.lib;libboost_thread-vc110-mt-s-1_55.lib;libboost_date_time-vc110-mt-s-1_55.lib;libboost_system-vc110-mt-s-1_55.lib;libboost_atomic-vc110-mt-s-1_55.lib;libboost_chrono-vc110-mt-s-1_55.lib;freetype.lib;cg.lib;d3d9.lib;d3dx9.lib;DxErr.lib;dxguid.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ShowProgress>NotSet</ShowProgress>
+      <AdditionalOptions>/ignore:4099 %(AdditionalOptions)</AdditionalOptions>
+      <TreatLinkerWarningAsErrors>true</TreatLinkerWarningAsErrors>
     </Link>
     <Manifest>
       <AdditionalManifestFiles>glacier2.manifest</AdditionalManifestFiles>
@@ -212,7 +216,7 @@
     <ClCompile Include="src\GlobalStats.cpp" />
     <ClCompile Include="src\Graphics.cpp" />
     <ClCompile Include="src\Input.cpp" />
-    <ClCompile Include="src\JSObjectWrapper.cpp" />
+    <ClCompile Include="src\JSUtil.cpp" />
     <ClCompile Include="src\JSVector3.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\Memory.cpp" />
@@ -250,6 +254,8 @@
     <ClInclude Include="include\GlacierMemory.h" />
     <ClInclude Include="include\Input.h" />
     <ClInclude Include="include\JSNatives.h" />
+    <ClInclude Include="include\JSObjectWrapper.h" />
+    <ClInclude Include="include\JSUtil.h" />
     <ClInclude Include="include\Physics.h" />
     <ClInclude Include="include\Script.h" />
     <ClInclude Include="include\Scripting.h" />

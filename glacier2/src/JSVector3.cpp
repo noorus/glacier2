@@ -1,8 +1,13 @@
 #include "StdAfx.h"
 #include "JSNatives.h"
+#include "JSObjectWrapper.h"
+#include "JSUtil.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
+
+// warning C4244: '=' : conversion from double to float, possible loss of data
+#pragma warning(disable: 4244)
 
 namespace Glacier {
 
@@ -28,59 +33,60 @@ namespace Glacier {
 
       Local<FunctionTemplate> tpl = FunctionTemplate::New( Vector3::create );
 
-      tpl->SetClassName( newStr( cJSVector3Class ) );
+      tpl->SetClassName( Util::allocString( cJSVector3Class ) );
       tpl->InstanceTemplate()->SetInternalFieldCount( 1 );
 
-      tpl->PrototypeTemplate()->SetAccessor( newStr( "x" ),
-        Vector3::jsGetX, Vector3::jsSetX );
+      JS_TEMPLATE_ACCESSOR( tpl, "x", jsGetX, jsSetX );
+      JS_TEMPLATE_ACCESSOR( tpl, "y", jsGetY, jsSetY );
+      JS_TEMPLATE_ACCESSOR( tpl, "z", jsGetZ, jsSetZ );
 
-      tpl->PrototypeTemplate()->SetAccessor( newStr( "y" ),
-        Vector3::jsGetY, Vector3::jsSetY );
-
-      tpl->PrototypeTemplate()->SetAccessor( newStr( "z" ),
-        Vector3::jsGetZ, Vector3::jsSetZ );
-
-      tpl->PrototypeTemplate()->Set( newStr( "length" ),
-        FunctionTemplate::New( jsLength ) );
-
-      tpl->PrototypeTemplate()->Set( newStr( "squaredLength" ),
-        FunctionTemplate::New( jsSquaredLength ) );
-
-      tpl->PrototypeTemplate()->Set( newStr( "distance" ),
-        FunctionTemplate::New( jsDistance ) );
-
-      tpl->PrototypeTemplate()->Set( newStr( "squaredDistance" ),
-        FunctionTemplate::New( jsSquaredDistance ) );
-
-      tpl->PrototypeTemplate()->Set( newStr( "dotProduct" ),
-        FunctionTemplate::New( jsDotProduct ) );
-
-      tpl->PrototypeTemplate()->Set( newStr( "absDotProduct" ),
-        FunctionTemplate::New( jsAbsDotProduct ) );
-
-      tpl->PrototypeTemplate()->Set( newStr( "normalise" ),
-        FunctionTemplate::New( jsNormalise ) );
-
-      tpl->PrototypeTemplate()->Set( newStr( "crossProduct" ),
-        FunctionTemplate::New( jsCrossProduct ) );
-
-      constructor.Set( isolate, tpl );
+      JS_TEMPLATE_SET( tpl, "toString", jsToString );
+      JS_TEMPLATE_SET( tpl, "equals", jsEquals );
+      JS_TEMPLATE_SET( tpl, "add", jsAdd );
+      JS_TEMPLATE_SET( tpl, "subtract", jsSubtract );
+      JS_TEMPLATE_SET( tpl, "multiply", jsMultiply );
+      JS_TEMPLATE_SET( tpl, "length", jsLength );
+      JS_TEMPLATE_SET( tpl, "squaredLength", jsSquaredLength );
+      JS_TEMPLATE_SET( tpl, "distance", jsDistance );
+      JS_TEMPLATE_SET( tpl, "squaredDistance", jsSquaredDistance );
+      JS_TEMPLATE_SET( tpl, "dotProduct", jsDotProduct );
+      JS_TEMPLATE_SET( tpl, "absDotProduct", jsAbsDotProduct );
+      JS_TEMPLATE_SET( tpl, "normalise", jsNormalise );
+      JS_TEMPLATE_SET( tpl, "crossProduct", jsCrossProduct );
+      JS_TEMPLATE_SET( tpl, "midPoint", jsMidPoint );
+      JS_TEMPLATE_SET( tpl, "makeFloor", jsMakeFloor );
+      JS_TEMPLATE_SET( tpl, "makeCeil", jsMakeCeil );
+      JS_TEMPLATE_SET( tpl, "perpendicular", jsPerpendicular );
 
       exports->Set( isolate, cJSVector3Class, tpl );
+      constructor.Set( isolate, tpl );
+    }
+
+    //! New JS::Vector3 from Ogre::Vector3
+    Local<v8::Object> Vector3::newFrom( const Ogre::Vector3& vector )
+    {
+      Local<v8::Function> constFunc = constructor.Get(
+        Isolate::GetCurrent() )->GetFunction();
+      Local<v8::Object> object = constFunc->NewInstance();
+      auto ret = unwrap<Vector3>( object );
+      ret->x = vector.x;
+      ret->y = vector.y;
+      ret->z = vector.z;
+      return object;
     }
 
     //! Vector3()
     //! Vector3( Real scalar )
     //! Vector3( Real x, Real y, Real z )
     //! Vector3([Real x, Real y, Real z])
+    //! Vector3({Real x, Real y, Real z})
     void Vector3::create( const FunctionCallbackInfo<v8::Value>& args )
     {
       HandleScope handleScope( args.GetIsolate() );
       if ( !args.IsConstructCall() )
       {
         args.GetIsolate()->ThrowException(
-          v8::String::NewFromUtf8( args.GetIsolate(),
-          "Function called as non-constructor" ) );
+          Util::allocString( "Function called as non-constructor" ) );
         return;
       }
       Ogre::Vector3 vec( Ogre::Vector3::ZERO );
@@ -106,27 +112,22 @@ namespace Glacier {
             vec.z = arr->Get( 2 )->NumberValue();
           }
         }
+        else if ( args[0]->IsObject() )
+        {
+          v8::Local<v8::Value> val = args[0]->ToObject()->Get( Util::allocString( "x" ) );
+          if ( val->IsNumber() )
+            vec.x = val->NumberValue();
+          val = args[0]->ToObject()->Get( Util::allocString( "y" ) );
+          if ( val->IsNumber() )
+            vec.y = val->NumberValue();
+          val = args[0]->ToObject()->Get( Util::allocString( "z" ) );
+          if ( val->IsNumber() )
+            vec.z = val->NumberValue();
+        }
       }
       Vector3* object = new Vector3( vec );
       object->wrap( args.This() );
       args.GetReturnValue().Set( args.This() );
-    }
-
-    //! Expect and extract a Vector3 object as argument[0],
-    //! throw JS exception and return null on failure
-    Vector3* Vector3::extractVector3Argument(
-    const FunctionCallbackInfo<v8::Value>& args )
-    {
-      if ( args.Length() != 1 || !args[0]->IsObject() )
-      {
-        args.GetIsolate()->ThrowException(
-          v8::String::NewFromUtf8( args.GetIsolate(),
-          "Argument must be a Vector3" ) );
-        return nullptr;
-      }
-      // TODO actually verify object type..
-      Vector3* that = unwrap<Vector3>( args[0]->ToObject() );
-      return that;
     }
 
     //! Real Vector3.x getter
@@ -177,6 +178,58 @@ namespace Glacier {
       ptr->z = value->NumberValue();
     }
 
+    //! Vector3.toString
+    void Vector3::jsToString( const FunctionCallbackInfo<v8::Value>& args )
+    {
+      auto ptr = unwrap<Vector3>( args.Holder() );
+      char result[128];
+      sprintf_s<128>( result, "[%f,%f,%f]", ptr->x, ptr->y, ptr->z );
+      args.GetReturnValue().Set( Util::allocString( result ) );
+    }
+
+    //! bool Vector3.equals( Vector3 )
+    void Vector3::jsEquals( const FunctionCallbackInfo<v8::Value>& args )
+    {
+      auto ptr = unwrap<Vector3>( args.Holder() );
+      Vector3* other = Util::extractVector3( 0, args );
+      if ( !other )
+        return;
+      args.GetReturnValue().Set( (Ogre::Vector3)*ptr == (Ogre::Vector3)*other );
+    }
+
+    //! Vector3 Vector3.add( Vector3 )
+    void Vector3::jsAdd( const FunctionCallbackInfo<v8::Value>& args )
+    {
+      auto ptr = unwrap<Vector3>( args.Holder() );
+      Vector3* other = Util::extractVector3( 0, args );
+      if ( !other )
+        return;
+      Ogre::Vector3 result = (Ogre::Vector3)*ptr + (Ogre::Vector3)*other;
+      args.GetReturnValue().Set( Vector3::newFrom( result ) );
+    }
+
+    //! Vector3 Vector3.subtract( Vector3 )
+    void Vector3::jsSubtract( const FunctionCallbackInfo<v8::Value>& args )
+    {
+      auto ptr = unwrap<Vector3>( args.Holder() );
+      Vector3* other = Util::extractVector3( 0, args );
+      if ( !other )
+        return;
+      Ogre::Vector3 result = (Ogre::Vector3)*ptr - (Ogre::Vector3)*other;
+      args.GetReturnValue().Set( Vector3::newFrom( result ) );
+    }
+
+    //! Vector3 Vector3.multiply( Vector3 )
+    void Vector3::jsMultiply( const FunctionCallbackInfo<v8::Value>& args )
+    {
+      auto ptr = unwrap<Vector3>( args.Holder() );
+      Vector3* other = Util::extractVector3( 0, args );
+      if ( !other )
+        return;
+      Ogre::Vector3 result = (Ogre::Vector3)*ptr * (Ogre::Vector3)*other;
+      args.GetReturnValue().Set( Vector3::newFrom( result ) );
+    }
+
     //! Real Vector3.length()
     void Vector3::jsLength( const FunctionCallbackInfo<v8::Value>& args )
     {
@@ -195,40 +248,40 @@ namespace Glacier {
     void Vector3::jsDistance( const FunctionCallbackInfo<v8::Value>& args )
     {
       auto ptr = unwrap<Vector3>( args.Holder() );
-      auto that = extractVector3Argument( args );
-      if ( !that )
+      Vector3* other = Util::extractVector3( 0, args );
+      if ( !other )
         return;
-      args.GetReturnValue().Set( ptr->distance( *that ) );
+      args.GetReturnValue().Set( ptr->distance( *other ) );
     }
 
     //! Real Vector3.squaredDistance( Vector3 other )
     void Vector3::jsSquaredDistance( const FunctionCallbackInfo<v8::Value>& args )
     {
       auto ptr = unwrap<Vector3>( args.Holder() );
-      auto that = extractVector3Argument( args );
-      if ( !that )
+      Vector3* other = Util::extractVector3( 0, args );
+      if ( !other )
         return;
-      args.GetReturnValue().Set( ptr->squaredDistance( *that ) );
+      args.GetReturnValue().Set( ptr->squaredDistance( *other ) );
     }
 
     //! Real Vector3.dotProduct( Vector3 )
     void Vector3::jsDotProduct( const FunctionCallbackInfo<v8::Value>& args )
     {
       auto ptr = unwrap<Vector3>( args.Holder() );
-      auto that = extractVector3Argument( args );
-      if ( !that )
+      Vector3* other = Util::extractVector3( 0, args );
+      if ( !other )
         return;
-      args.GetReturnValue().Set( ptr->dotProduct( *that ) );
+      args.GetReturnValue().Set( ptr->dotProduct( *other ) );
     }
 
     //! Real Vector3.absDotProduct( Vector3 other )
     void Vector3::jsAbsDotProduct( const FunctionCallbackInfo<v8::Value>& args )
     {
       auto ptr = unwrap<Vector3>( args.Holder() );
-      auto that = extractVector3Argument( args );
-      if ( !that )
+      Vector3* other = Util::extractVector3( 0, args );
+      if ( !other )
         return;
-      args.GetReturnValue().Set( ptr->absDotProduct( *that ) );
+      args.GetReturnValue().Set( ptr->absDotProduct( *other ) );
     }
 
     //! Real Vector3.normalise()
@@ -242,16 +295,52 @@ namespace Glacier {
     void Vector3::jsCrossProduct( const FunctionCallbackInfo<v8::Value>& args )
     {
       auto ptr = unwrap<Vector3>( args.Holder() );
-      auto that = extractVector3Argument( args );
-      if ( !that )
+      Vector3* other = Util::extractVector3( 0, args );
+      if ( !other )
         return;
-      Ogre::Vector3 result = ptr->crossProduct( *that );
-      Local<v8::Function> constFunc = constructor.Get( args.GetIsolate() )->GetFunction();
-      Local<v8::Object> object = constFunc->NewInstance();
-      auto ret = unwrap<Vector3>( object );
-      ret->swap( result );
-      args.GetReturnValue().Set( object );
+      Ogre::Vector3 result = ptr->crossProduct( *other );
+      args.GetReturnValue().Set( Vector3::newFrom( result ) );
     }
+
+    //! Vector3 Vector3.midPoint( Vector3 other )
+    void Vector3::jsMidPoint( const FunctionCallbackInfo<v8::Value>& args )
+    {
+      auto ptr = unwrap<Vector3>( args.Holder() );
+      Vector3* other = Util::extractVector3( 0, args );
+      if ( !other )
+        return;
+      Ogre::Vector3 result = ptr->midPoint( *other );
+      args.GetReturnValue().Set( Vector3::newFrom( result ) );
+    }
+
+    //! Vector3.makeFloor( Vector3 cmp )
+    void Vector3::jsMakeFloor( const FunctionCallbackInfo<v8::Value>& args )
+    {
+      auto ptr = unwrap<Vector3>( args.Holder() );
+      Vector3* cmp = Util::extractVector3( 0, args );
+      if ( !cmp )
+        return;
+      ptr->makeFloor( *cmp );
+    }
+
+    //! Vector3.makeCeil( Vector3 cmp )
+    void Vector3::jsMakeCeil( const FunctionCallbackInfo<v8::Value>& args )
+    {
+      auto ptr = unwrap<Vector3>( args.Holder() );
+      Vector3* cmp = Util::extractVector3( 0, args );
+      if ( !cmp )
+        return;
+      ptr->makeCeil( *cmp );
+    }
+
+    //! Vector3 Vector3.perpendicular()
+    void Vector3::jsPerpendicular( const FunctionCallbackInfo<v8::Value>& args )
+    {
+      auto ptr = unwrap<Vector3>( args.Holder() );
+      Ogre::Vector3 result = ptr->perpendicular();
+      args.GetReturnValue().Set( Vector3::newFrom( result ) );
+    }
+
   }
 
 }

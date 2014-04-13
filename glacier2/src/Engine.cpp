@@ -15,6 +15,10 @@
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
 
+#define GLACIER_NO_SOUND 1
+#define GLACIER_NO_PHYSICS 1
+#define GLACIER_NO_INPUT 1
+
 Glacier::Engine* gEngine = nullptr;
 
 namespace Glacier {
@@ -54,7 +58,8 @@ namespace Glacier {
   mConsole( nullptr ), mScripting( nullptr ), mGraphics( nullptr ),
   mProcess( NULL ), mThread( NULL ), mInstance( instance ),
   mSignal( Signal_None ), mVersion( 0, 1, 1 ), mConsoleWindow( nullptr ),
-  mGame( nullptr ), mWindowHandler( nullptr ), mInput( nullptr )
+  mGame( nullptr ), mWindowHandler( nullptr ), mInput( nullptr ),
+  mSound( nullptr ), mPhysics( nullptr )
   {
   }
 
@@ -186,9 +191,15 @@ namespace Glacier {
     // Create subsystems
     mWindowHandler = new WindowHandler( this );
     mGraphics = new Graphics( this, mWindowHandler );
+#ifndef GLACIER_NO_INPUT
     mInput = new Input( this, mInstance, mGraphics->getWindow() );
+#endif
+#ifndef GLACIER_NO_PHYSICS
     mPhysics = new Physics( this );
+#endif
+#ifndef GLACIER_NO_SOUND
     mSound = new Sound( this );
+#endif
     mScripting = new Scripting( this );
     mScripting->test( "vector3-test.js" );
     mGame = new Game( this );
@@ -226,10 +237,16 @@ namespace Glacier {
       fTimeAccumulator += fTimeDelta;
       while ( fTimeAccumulator >= fLogicStep )
       {
+#ifndef GLACIER_NO_PHYSICS
         mPhysics->componentTick( fLogicStep, fTime );
+#endif
+#ifndef GLACIER_NO_INPUT
         mInput->componentTick( fLogicStep, fTime );
+#endif
         mGame->componentTick( fLogicStep, fTime );
+#ifndef GLACIER_NO_SOUND
         mSound->componentTick( fLogicStep, fTime );
+#endif
         fTime += fLogicStep;
         fTimeAccumulator -= fLogicStep;
       }

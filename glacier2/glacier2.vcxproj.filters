@@ -147,7 +147,7 @@
     <ClCompile Include="src\JSVector3.cpp">
       <Filter>Source Files\Scripting</Filter>
     </ClCompile>
-    <ClCompile Include="src\JSObjectWrapper.cpp">
+    <ClCompile Include="src\JSUtil.cpp">
       <Filter>Source Files\Scripting</Filter>
     </ClCompile>
   </ItemGroup>
@@ -243,6 +243,12 @@
       <Filter>Header Files\Scripting</Filter>
     </ClInclude>
     <ClInclude Include="include\JSNatives.h">
+      <Filter>Header Files\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="include\JSUtil.h">
+      <Filter>Header Files\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="include\JSObjectWrapper.h">
       <Filter>Header Files\Scripting</Filter>
     </ClInclude>
   </ItemGroup>
