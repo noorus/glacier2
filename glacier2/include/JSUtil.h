@@ -46,6 +46,7 @@ namespace Glacier {
       }
 
       Vector3* extractVector3( int arg, const FunctionCallbackInfo<v8::Value>& args );
+      //Ogre::Radian extractRadian( int arg, const FunctionCallbackInfo<v8::Value>& args );
 
     }
 

@@ -57,6 +57,8 @@ namespace Glacier {
       JS_TEMPLATE_SET( tpl, "makeFloor", jsMakeFloor );
       JS_TEMPLATE_SET( tpl, "makeCeil", jsMakeCeil );
       JS_TEMPLATE_SET( tpl, "perpendicular", jsPerpendicular );
+      JS_TEMPLATE_SET( tpl, "randomDeviant", jsRandomDeviant );
+      JS_TEMPLATE_SET( tpl, "angleBetween", jsAngleBetween );
 
       exports->Set( isolate, cJSVector3Class, tpl );
       constructor.Set( isolate, tpl );
@@ -134,7 +136,7 @@ namespace Glacier {
     void Vector3::jsGetX( Local<v8::String> prop,
     const PropertyCallbackInfo<v8::Value>& info )
     {
-      auto ptr = unwrap<Vector3>( info.This() );
+      Vector3* ptr = unwrap<Vector3>( info.This() );
       info.GetReturnValue().Set( ptr->x );
     }
 
@@ -142,7 +144,7 @@ namespace Glacier {
     void Vector3::jsSetX( Local<v8::String> prop,
     Local<v8::Value> value, const PropertyCallbackInfo<void>& info )
     {
-      auto ptr = unwrap<Vector3>( info.This() );
+      Vector3* ptr = unwrap<Vector3>( info.This() );
       ptr->x = value->NumberValue();
     }
 
@@ -150,7 +152,7 @@ namespace Glacier {
     void Vector3::jsGetY( Local<v8::String> prop,
     const PropertyCallbackInfo<v8::Value>& info )
     {
-      auto ptr = unwrap<Vector3>( info.This() );
+      Vector3* ptr = unwrap<Vector3>( info.This() );
       info.GetReturnValue().Set( ptr->y );
     }
 
@@ -158,7 +160,7 @@ namespace Glacier {
     void Vector3::jsSetY( Local<v8::String> prop,
     Local<v8::Value> value, const PropertyCallbackInfo<void>& info )
     {
-      auto ptr = unwrap<Vector3>( info.This() );
+      Vector3* ptr = unwrap<Vector3>( info.This() );
       ptr->y = value->NumberValue();
     }
 
@@ -166,7 +168,7 @@ namespace Glacier {
     void Vector3::jsGetZ( Local<v8::String> prop,
     const PropertyCallbackInfo<v8::Value>& info )
     {
-      auto ptr = unwrap<Vector3>( info.This() );
+      Vector3* ptr = unwrap<Vector3>( info.This() );
       info.GetReturnValue().Set( ptr->z );
     }
 
@@ -174,14 +176,14 @@ namespace Glacier {
     void Vector3::jsSetZ( Local<v8::String> prop,
     Local<v8::Value> value, const PropertyCallbackInfo<void>& info )
     {
-      auto ptr = unwrap<Vector3>( info.This() );
+      Vector3* ptr = unwrap<Vector3>( info.This() );
       ptr->z = value->NumberValue();
     }
 
     //! Vector3.toString
     void Vector3::jsToString( const FunctionCallbackInfo<v8::Value>& args )
     {
-      auto ptr = unwrap<Vector3>( args.Holder() );
+      Vector3* ptr = unwrap<Vector3>( args.Holder() );
       char result[128];
       sprintf_s<128>( result, "[%f,%f,%f]", ptr->x, ptr->y, ptr->z );
       args.GetReturnValue().Set( Util::allocString( result ) );
@@ -190,7 +192,7 @@ namespace Glacier {
     //! bool Vector3.equals( Vector3 )
     void Vector3::jsEquals( const FunctionCallbackInfo<v8::Value>& args )
     {
-      auto ptr = unwrap<Vector3>( args.Holder() );
+      Vector3* ptr = unwrap<Vector3>( args.Holder() );
       Vector3* other = Util::extractVector3( 0, args );
       if ( !other )
         return;
@@ -200,7 +202,7 @@ namespace Glacier {
     //! Vector3 Vector3.add( Vector3 )
     void Vector3::jsAdd( const FunctionCallbackInfo<v8::Value>& args )
     {
-      auto ptr = unwrap<Vector3>( args.Holder() );
+      Vector3* ptr = unwrap<Vector3>( args.Holder() );
       Vector3* other = Util::extractVector3( 0, args );
       if ( !other )
         return;
@@ -211,7 +213,7 @@ namespace Glacier {
     //! Vector3 Vector3.subtract( Vector3 )
     void Vector3::jsSubtract( const FunctionCallbackInfo<v8::Value>& args )
     {
-      auto ptr = unwrap<Vector3>( args.Holder() );
+      Vector3* ptr = unwrap<Vector3>( args.Holder() );
       Vector3* other = Util::extractVector3( 0, args );
       if ( !other )
         return;
@@ -222,7 +224,7 @@ namespace Glacier {
     //! Vector3 Vector3.multiply( Vector3 )
     void Vector3::jsMultiply( const FunctionCallbackInfo<v8::Value>& args )
     {
-      auto ptr = unwrap<Vector3>( args.Holder() );
+      Vector3* ptr = unwrap<Vector3>( args.Holder() );
       Vector3* other = Util::extractVector3( 0, args );
       if ( !other )
         return;
@@ -233,21 +235,21 @@ namespace Glacier {
     //! Real Vector3.length()
     void Vector3::jsLength( const FunctionCallbackInfo<v8::Value>& args )
     {
-      auto ptr = unwrap<Vector3>( args.Holder() );
+      Vector3* ptr = unwrap<Vector3>( args.Holder() );
       args.GetReturnValue().Set( ptr->length() );
     }
 
     //! Real Vector3.squaredLength()
     void Vector3::jsSquaredLength( const FunctionCallbackInfo<v8::Value>& args )
     {
-      auto ptr = unwrap<Vector3>( args.Holder() );
+      Vector3* ptr = unwrap<Vector3>( args.Holder() );
       args.GetReturnValue().Set( ptr->squaredLength() );
     }
 
     //! Real Vector3.distance( Vector3 other )
     void Vector3::jsDistance( const FunctionCallbackInfo<v8::Value>& args )
     {
-      auto ptr = unwrap<Vector3>( args.Holder() );
+      Vector3* ptr = unwrap<Vector3>( args.Holder() );
       Vector3* other = Util::extractVector3( 0, args );
       if ( !other )
         return;
@@ -257,7 +259,7 @@ namespace Glacier {
     //! Real Vector3.squaredDistance( Vector3 other )
     void Vector3::jsSquaredDistance( const FunctionCallbackInfo<v8::Value>& args )
     {
-      auto ptr = unwrap<Vector3>( args.Holder() );
+      Vector3* ptr = unwrap<Vector3>( args.Holder() );
       Vector3* other = Util::extractVector3( 0, args );
       if ( !other )
         return;
@@ -267,7 +269,7 @@ namespace Glacier {
     //! Real Vector3.dotProduct( Vector3 )
     void Vector3::jsDotProduct( const FunctionCallbackInfo<v8::Value>& args )
     {
-      auto ptr = unwrap<Vector3>( args.Holder() );
+      Vector3* ptr = unwrap<Vector3>( args.Holder() );
       Vector3* other = Util::extractVector3( 0, args );
       if ( !other )
         return;
@@ -277,7 +279,7 @@ namespace Glacier {
     //! Real Vector3.absDotProduct( Vector3 other )
     void Vector3::jsAbsDotProduct( const FunctionCallbackInfo<v8::Value>& args )
     {
-      auto ptr = unwrap<Vector3>( args.Holder() );
+      Vector3* ptr = unwrap<Vector3>( args.Holder() );
       Vector3* other = Util::extractVector3( 0, args );
       if ( !other )
         return;
@@ -287,14 +289,14 @@ namespace Glacier {
     //! Real Vector3.normalise()
     void Vector3::jsNormalise( const FunctionCallbackInfo<v8::Value>& args )
     {
-      auto ptr = unwrap<Vector3>( args.Holder() );
+      Vector3* ptr = unwrap<Vector3>( args.Holder() );
       args.GetReturnValue().Set( ptr->normalise() );
     }
 
     //! Vector3 Vector3.crossProduct( Vector3 other )
     void Vector3::jsCrossProduct( const FunctionCallbackInfo<v8::Value>& args )
     {
-      auto ptr = unwrap<Vector3>( args.Holder() );
+      Vector3* ptr = unwrap<Vector3>( args.Holder() );
       Vector3* other = Util::extractVector3( 0, args );
       if ( !other )
         return;
@@ -305,7 +307,7 @@ namespace Glacier {
     //! Vector3 Vector3.midPoint( Vector3 other )
     void Vector3::jsMidPoint( const FunctionCallbackInfo<v8::Value>& args )
     {
-      auto ptr = unwrap<Vector3>( args.Holder() );
+      Vector3* ptr = unwrap<Vector3>( args.Holder() );
       Vector3* other = Util::extractVector3( 0, args );
       if ( !other )
         return;
@@ -316,7 +318,7 @@ namespace Glacier {
     //! Vector3.makeFloor( Vector3 cmp )
     void Vector3::jsMakeFloor( const FunctionCallbackInfo<v8::Value>& args )
     {
-      auto ptr = unwrap<Vector3>( args.Holder() );
+      Vector3* ptr = unwrap<Vector3>( args.Holder() );
       Vector3* cmp = Util::extractVector3( 0, args );
       if ( !cmp )
         return;
@@ -326,7 +328,7 @@ namespace Glacier {
     //! Vector3.makeCeil( Vector3 cmp )
     void Vector3::jsMakeCeil( const FunctionCallbackInfo<v8::Value>& args )
     {
-      auto ptr = unwrap<Vector3>( args.Holder() );
+      Vector3* ptr = unwrap<Vector3>( args.Holder() );
       Vector3* cmp = Util::extractVector3( 0, args );
       if ( !cmp )
         return;
@@ -336,9 +338,39 @@ namespace Glacier {
     //! Vector3 Vector3.perpendicular()
     void Vector3::jsPerpendicular( const FunctionCallbackInfo<v8::Value>& args )
     {
-      auto ptr = unwrap<Vector3>( args.Holder() );
+      Vector3* ptr = unwrap<Vector3>( args.Holder() );
       Ogre::Vector3 result = ptr->perpendicular();
       args.GetReturnValue().Set( Vector3::newFrom( result ) );
+    }
+
+    //! Vector3 Vector3.randomDeviant( Radian angle, Vector3 up )
+    void Vector3::jsRandomDeviant( const FunctionCallbackInfo<v8::Value>& args )
+    {
+      Vector3* ptr = unwrap<Vector3>( args.Holder() );
+      if ( args.Length() != 2 || !args[0]->IsNumber() )
+      {
+        args.GetIsolate()->ThrowException(
+          v8::String::NewFromUtf8( args.GetIsolate(),
+          "Expected arguments Radian angle, Vector3 up" ) );
+        return;
+      }
+      Ogre::Radian angle( args[0]->NumberValue() );
+      Vector3* up = Util::extractVector3( 1, args );
+      if ( !up )
+        return;
+      Ogre::Vector3 result = ptr->randomDeviant( angle, *up );
+      args.GetReturnValue().Set( Vector3::newFrom( result ) );
+    }
+
+    // Radian Vector3.angleBetween( Vector3 )
+    void Vector3::jsAngleBetween( const FunctionCallbackInfo<v8::Value>& args )
+    {
+      Vector3* ptr = unwrap<Vector3>( args.Holder() );
+      Vector3* other = Util::extractVector3( 0, args );
+      if ( !other )
+        return;
+      Ogre::Radian result = ptr->angleBetween( *other );
+      args.GetReturnValue().Set( result.valueRadians() );
     }
 
   }

@@ -83,6 +83,7 @@ namespace Glacier {
 
     // Initialize native classes in the global namespace
     JS::Vector3::initialize( global );
+    JS::Quaternion::initialize( global );
 
     // Create our one and only global context
     v8::Handle<v8::Context> context = v8::Context::New( mIsolate,

@@ -57,9 +57,39 @@ namespace Glacier {
       static void jsMakeFloor( const FunctionCallbackInfo<v8::Value>& args );
       static void jsMakeCeil( const FunctionCallbackInfo<v8::Value>& args );
       static void jsPerpendicular( const FunctionCallbackInfo<v8::Value>& args );
+      static void jsRandomDeviant( const FunctionCallbackInfo<v8::Value>& args );
+      static void jsAngleBetween( const FunctionCallbackInfo<v8::Value>& args );
     public:
       static void initialize( Handle<ObjectTemplate> exports );
       static Local<v8::Object> newFrom( const Ogre::Vector3& vector );
+    };
+
+    class Quaternion: public Ogre::Quaternion, public ObjectWrapper {
+    private:
+      static Eternal<FunctionTemplate> constructor;
+    protected:
+      explicit Quaternion( const Ogre::Quaternion& source );
+      ~Quaternion();
+      static void create( const FunctionCallbackInfo<v8::Value>& args );
+      static void jsGetW( Local<v8::String> prop,
+        const PropertyCallbackInfo<v8::Value>& info );
+      static void jsSetW( Local<v8::String> prop, Local<v8::Value> value,
+        const PropertyCallbackInfo<void>& info );
+      static void jsGetX( Local<v8::String> prop,
+        const PropertyCallbackInfo<v8::Value>& info );
+      static void jsSetX( Local<v8::String> prop, Local<v8::Value> value,
+        const PropertyCallbackInfo<void>& info );
+      static void jsGetY( Local<v8::String> prop,
+        const PropertyCallbackInfo<v8::Value>& info );
+      static void jsSetY( Local<v8::String> prop, Local<v8::Value> value,
+        const PropertyCallbackInfo<void>& info );
+      static void jsGetZ( Local<v8::String> prop,
+        const PropertyCallbackInfo<v8::Value>& info );
+      static void jsSetZ( Local<v8::String> prop, Local<v8::Value> value,
+        const PropertyCallbackInfo<void>& info );
+    public:
+      static void initialize( Handle<ObjectTemplate> exports );
+      static Local<v8::Object> newFrom( const Ogre::Quaternion& qtn );
     };
 
   }

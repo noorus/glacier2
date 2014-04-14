@@ -150,6 +150,9 @@
     <ClCompile Include="src\JSUtil.cpp">
       <Filter>Source Files\Scripting</Filter>
     </ClCompile>
+    <ClCompile Include="src\JSQuaternion.cpp">
+      <Filter>Source Files\Scripting</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\StdAfx.h">
