@@ -59,6 +59,9 @@ namespace Glacier {
       static void jsPerpendicular( const FunctionCallbackInfo<v8::Value>& args );
       static void jsRandomDeviant( const FunctionCallbackInfo<v8::Value>& args );
       static void jsAngleBetween( const FunctionCallbackInfo<v8::Value>& args );
+      static void jsGetRotationTo( const FunctionCallbackInfo<v8::Value>& args );
+      static void jsIsZeroLength( const FunctionCallbackInfo<v8::Value>& args );
+      static void jsNormalisedCopy( const FunctionCallbackInfo<v8::Value>& args );
     public:
       static void initialize( Handle<ObjectTemplate> exports );
       static Local<v8::Object> newFrom( const Ogre::Vector3& vector );
@@ -87,6 +90,11 @@ namespace Glacier {
         const PropertyCallbackInfo<v8::Value>& info );
       static void jsSetZ( Local<v8::String> prop, Local<v8::Value> value,
         const PropertyCallbackInfo<void>& info );
+      static void jsToString( const FunctionCallbackInfo<v8::Value>& args );
+      static void jsMultiply( const FunctionCallbackInfo<v8::Value>& args );
+      static void jsGetRoll( const FunctionCallbackInfo<v8::Value>& args );
+      static void jsGetPitch( const FunctionCallbackInfo<v8::Value>& args );
+      static void jsGetYaw( const FunctionCallbackInfo<v8::Value>& args );
     public:
       static void initialize( Handle<ObjectTemplate> exports );
       static Local<v8::Object> newFrom( const Ogre::Quaternion& qtn );

@@ -39,6 +39,12 @@ namespace Glacier {
       JS_TEMPLATE_ACCESSOR( tpl, "y", jsGetY, jsSetY );
       JS_TEMPLATE_ACCESSOR( tpl, "z", jsGetZ, jsSetZ );
 
+      JS_TEMPLATE_SET( tpl, "toString", jsToString );
+      JS_TEMPLATE_SET( tpl, "multiply", jsMultiply );
+      JS_TEMPLATE_SET( tpl, "getRoll", jsGetRoll );
+      JS_TEMPLATE_SET( tpl, "getPitch", jsGetPitch );
+      JS_TEMPLATE_SET( tpl, "getYaw", jsGetYaw );
+
       exports->Set( isolate, cJSQuaternionClass, tpl );
       constructor.Set( isolate, tpl );
     }
@@ -58,6 +64,7 @@ namespace Glacier {
     }
 
     //! Quaternion()
+    //! Quaternion( Radian rotation, Vector3 axis )
     //! Quaternion( Real w, Real x, Real y, Real z )
     //! Quaternion([Real w, Real x, Real y, Real z])
     //! Quaternion({Real w, Real x, Real y, Real z})
@@ -77,6 +84,11 @@ namespace Glacier {
         qtn.x = args[1]->NumberValue();
         qtn.y = args[2]->NumberValue();
         qtn.z = args[3]->NumberValue();
+      }
+      else if ( args.Length() == 2 )
+      {
+        Vector3* axis = Util::extractVector3( 1, args );
+        qtn.FromAngleAxis( Ogre::Radian( args[0]->NumberValue() ), *axis );
       }
       else if ( args.Length() == 1 )
       {
@@ -174,6 +186,48 @@ namespace Glacier {
     {
       Quaternion* ptr = unwrap<Quaternion>( info.This() );
       ptr->z = value->NumberValue();
+    }
+
+    //! Quaternion.toString
+    void Quaternion::jsToString( const FunctionCallbackInfo<v8::Value>& args )
+    {
+      Quaternion* ptr = unwrap<Quaternion>( args.Holder() );
+      char result[128];
+      sprintf_s<128>( result, "Quaternion[%f,%f,%f,%f]", ptr->w, ptr->x, ptr->y, ptr->z );
+      args.GetReturnValue().Set( Util::allocString( result ) );
+    }
+
+    //! Vector3 Quaternion.multiply( Vector3 )
+    //! Rotate vector by quaternion
+    void Quaternion::jsMultiply( const FunctionCallbackInfo<v8::Value>& args )
+    {
+      Quaternion* ptr = unwrap<Quaternion>( args.Holder() );
+      Vector3* other = Util::extractVector3( 0, args );
+      if ( !other )
+        return;
+      Ogre::Vector3 result = (Ogre::Quaternion)*ptr * (Ogre::Vector3)*other;
+      args.GetReturnValue().Set( Vector3::newFrom( result ) );
+    }
+
+    //! Radian Quaternion.getRoll()
+    void Quaternion::jsGetRoll( const FunctionCallbackInfo<v8::Value>& args )
+    {
+      Quaternion* ptr = unwrap<Quaternion>( args.Holder() );
+      args.GetReturnValue().Set( ptr->getRoll().valueRadians() );
+    }
+
+    //! Radian Quaternion.getPitch()
+    void Quaternion::jsGetPitch( const FunctionCallbackInfo<v8::Value>& args )
+    {
+      Quaternion* ptr = unwrap<Quaternion>( args.Holder() );
+      args.GetReturnValue().Set( ptr->getPitch().valueRadians() );
+    }
+
+    //! Radian Quaternion.getYaw()
+    void Quaternion::jsGetYaw( const FunctionCallbackInfo<v8::Value>& args )
+    {
+      Quaternion* ptr = unwrap<Quaternion>( args.Holder() );
+      args.GetReturnValue().Set( ptr->getYaw().valueRadians() );
     }
 
   }

@@ -344,7 +344,7 @@ namespace Glacier {
 
       mSettings.bDisabled ? dwStyle |= WS_DISABLED : dwStyle &= ~WS_DISABLED;
 
-      mHandle = CreateWindowExW( dwExStyle, (LPCWSTR)mClass,
+      mHandle = CreateWindowExW( dwExStyle, (LPCWSTR)mClass, //-V542
         caption.c_str(), dwStyle, position.x, position.y,
         size.x, size.y, NULL, NULL, mInstance, mUserData );
 
@@ -387,7 +387,7 @@ namespace Glacier {
     void Window::unregisterClass()
     {
       if ( mClass )
-        ::UnregisterClassW( (LPCWSTR)mClass, mInstance );
+        ::UnregisterClassW( (LPCWSTR)mClass, mInstance ); //-V542
     }
 
   }

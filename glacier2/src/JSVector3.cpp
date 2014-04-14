@@ -59,6 +59,9 @@ namespace Glacier {
       JS_TEMPLATE_SET( tpl, "perpendicular", jsPerpendicular );
       JS_TEMPLATE_SET( tpl, "randomDeviant", jsRandomDeviant );
       JS_TEMPLATE_SET( tpl, "angleBetween", jsAngleBetween );
+      JS_TEMPLATE_SET( tpl, "getRotationTo", jsGetRotationTo );
+      JS_TEMPLATE_SET( tpl, "isZeroLength", jsIsZeroLength );
+      JS_TEMPLATE_SET( tpl, "normalisedCopy", jsNormalisedCopy );
 
       exports->Set( isolate, cJSVector3Class, tpl );
       constructor.Set( isolate, tpl );
@@ -185,7 +188,7 @@ namespace Glacier {
     {
       Vector3* ptr = unwrap<Vector3>( args.Holder() );
       char result[128];
-      sprintf_s<128>( result, "[%f,%f,%f]", ptr->x, ptr->y, ptr->z );
+      sprintf_s<128>( result, "Vector3[%f,%f,%f]", ptr->x, ptr->y, ptr->z );
       args.GetReturnValue().Set( Util::allocString( result ) );
     }
 
@@ -362,7 +365,7 @@ namespace Glacier {
       args.GetReturnValue().Set( Vector3::newFrom( result ) );
     }
 
-    // Radian Vector3.angleBetween( Vector3 )
+    //! Radian Vector3.angleBetween( Vector3 )
     void Vector3::jsAngleBetween( const FunctionCallbackInfo<v8::Value>& args )
     {
       Vector3* ptr = unwrap<Vector3>( args.Holder() );
@@ -371,6 +374,32 @@ namespace Glacier {
         return;
       Ogre::Radian result = ptr->angleBetween( *other );
       args.GetReturnValue().Set( result.valueRadians() );
+    }
+
+    //! Quaternion Vector3.getRotationTo( Vector3 )
+    void Vector3::jsGetRotationTo( const FunctionCallbackInfo<v8::Value>& args )
+    {
+      Vector3* ptr = unwrap<Vector3>( args.Holder() );
+      Vector3* other = Util::extractVector3( 0, args );
+      if ( !other )
+        return;
+      Ogre::Quaternion result = ptr->getRotationTo( *other );
+      args.GetReturnValue().Set( Quaternion::newFrom( result ) );
+    }
+
+    //! bool Vector3.isZeroLength()
+    void Vector3::jsIsZeroLength( const FunctionCallbackInfo<v8::Value>& args )
+    {
+      Vector3* ptr = unwrap<Vector3>( args.Holder() );
+      args.GetReturnValue().Set( ptr->isZeroLength() );
+    }
+
+    //! Vector3 Vector3.normalisedCopy()
+    void Vector3::jsNormalisedCopy( const FunctionCallbackInfo<v8::Value>& args )
+    {
+      Vector3* ptr = unwrap<Vector3>( args.Holder() );
+      Ogre::Vector3 result = ptr->normalisedCopy();
+      args.GetReturnValue().Set( Vector3::newFrom( result ) );
     }
 
   }
