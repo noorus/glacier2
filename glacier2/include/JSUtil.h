@@ -21,6 +21,7 @@ namespace Glacier {
     using v8::WeakCallbackData;
 
     class Vector3;
+    class Quaternion;
 
     namespace Util {
 
@@ -46,6 +47,7 @@ namespace Glacier {
       }
 
       Vector3* extractVector3( int arg, const FunctionCallbackInfo<v8::Value>& args );
+      Quaternion* extractQuaternion( int arg, const FunctionCallbackInfo<v8::Value>& args );
       //Ogre::Radian extractRadian( int arg, const FunctionCallbackInfo<v8::Value>& args );
 
     }

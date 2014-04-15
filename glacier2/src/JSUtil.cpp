@@ -30,6 +30,24 @@ namespace Glacier {
         return that;
       }
 
+      //! Expect and extract a Quaternion object as args[arg],
+      //! throw JS exception and return null on failure
+      Quaternion* extractQuaternion( int arg,
+      const FunctionCallbackInfo<v8::Value>& args )
+      {
+        if ( args.Length() < ( arg + 1 ) || !args[arg]->IsObject() )
+        {
+          // TODO argument %d
+          args.GetIsolate()->ThrowException(
+            v8::String::NewFromUtf8( args.GetIsolate(),
+            "Argument must be a Quaternion" ) );
+          return nullptr;
+        }
+        // TODO actually verify object type..
+        Quaternion* that = Quaternion::unwrap<Quaternion>( args[arg]->ToObject() );
+        return that;
+      }
+
     }
 
   }

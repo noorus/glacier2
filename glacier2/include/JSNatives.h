@@ -92,6 +92,11 @@ namespace Glacier {
         const PropertyCallbackInfo<void>& info );
       static void jsToString( const FunctionCallbackInfo<v8::Value>& args );
       static void jsMultiply( const FunctionCallbackInfo<v8::Value>& args );
+      static void jsDot( const FunctionCallbackInfo<v8::Value>& args );
+      static void jsNorm( const FunctionCallbackInfo<v8::Value>& args );
+      static void jsNormalise( const FunctionCallbackInfo<v8::Value>& args );
+      static void jsInverse( const FunctionCallbackInfo<v8::Value>& args );
+      static void jsUnitInverse( const FunctionCallbackInfo<v8::Value>& args );
       static void jsGetRoll( const FunctionCallbackInfo<v8::Value>& args );
       static void jsGetPitch( const FunctionCallbackInfo<v8::Value>& args );
       static void jsGetYaw( const FunctionCallbackInfo<v8::Value>& args );

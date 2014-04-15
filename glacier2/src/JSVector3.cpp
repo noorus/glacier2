@@ -73,10 +73,8 @@ namespace Glacier {
       Local<v8::Function> constFunc = constructor.Get(
         Isolate::GetCurrent() )->GetFunction();
       Local<v8::Object> object = constFunc->NewInstance();
-      auto ret = unwrap<Vector3>( object );
-      ret->x = vector.x;
-      ret->y = vector.y;
-      ret->z = vector.z;
+      Vector3* ret = unwrap<Vector3>( object );
+      (Ogre::Vector3)*ret = vector;
       return object;
     }
 

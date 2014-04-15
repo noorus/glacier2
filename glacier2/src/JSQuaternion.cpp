@@ -41,6 +41,11 @@ namespace Glacier {
 
       JS_TEMPLATE_SET( tpl, "toString", jsToString );
       JS_TEMPLATE_SET( tpl, "multiply", jsMultiply );
+      JS_TEMPLATE_SET( tpl, "dot", jsDot );
+      JS_TEMPLATE_SET( tpl, "norm", jsNorm );
+      JS_TEMPLATE_SET( tpl, "normalise", jsNormalise );
+      JS_TEMPLATE_SET( tpl, "inverse", jsInverse );
+      JS_TEMPLATE_SET( tpl, "unitInverse", jsUnitInverse );
       JS_TEMPLATE_SET( tpl, "getRoll", jsGetRoll );
       JS_TEMPLATE_SET( tpl, "getPitch", jsGetPitch );
       JS_TEMPLATE_SET( tpl, "getYaw", jsGetYaw );
@@ -56,10 +61,7 @@ namespace Glacier {
         Isolate::GetCurrent() )->GetFunction();
       Local<v8::Object> object = constFunc->NewInstance();
       Quaternion* ret = unwrap<Quaternion>( object );
-      ret->w = qtn.w;
-      ret->x = qtn.x;
-      ret->y = qtn.y;
-      ret->z = qtn.z;
+      (Ogre::Quaternion)*ret = qtn;
       return object;
     }
 
@@ -207,6 +209,44 @@ namespace Glacier {
         return;
       Ogre::Vector3 result = (Ogre::Quaternion)*ptr * (Ogre::Vector3)*other;
       args.GetReturnValue().Set( Vector3::newFrom( result ) );
+    }
+
+    //! Real Quaternion.dot( Quaternion other )
+    void Quaternion::jsDot( const FunctionCallbackInfo<v8::Value>& args )
+    {
+      Quaternion* ptr = unwrap<Quaternion>( args.Holder() );
+      Quaternion* other = Util::extractQuaternion( 0, args );
+      if ( !other )
+        return;
+      args.GetReturnValue().Set( ptr->Dot( *other ) );
+    }
+
+    //! Real Quaternion.norm()
+    void Quaternion::jsNorm( const FunctionCallbackInfo<v8::Value>& args )
+    {
+      Quaternion* ptr = unwrap<Quaternion>( args.Holder() );
+      args.GetReturnValue().Set( ptr->Norm() );
+    }
+
+    //! Real Quaternion.normalise()
+    void Quaternion::jsNormalise( const FunctionCallbackInfo<v8::Value>& args )
+    {
+      Quaternion* ptr = unwrap<Quaternion>( args.Holder() );
+      args.GetReturnValue().Set( ptr->normalise() );
+    }
+
+    //! Quaternion Quaternion.inverse()
+    void Quaternion::jsInverse( const FunctionCallbackInfo<v8::Value>& args )
+    {
+      Quaternion* ptr = unwrap<Quaternion>( args.Holder() );
+      args.GetReturnValue().Set( Quaternion::newFrom( ptr->Inverse() ) );
+    }
+
+    //! Quaternion Quaternion.unitInverse()
+    void Quaternion::jsUnitInverse( const FunctionCallbackInfo<v8::Value>& args )
+    {
+      Quaternion* ptr = unwrap<Quaternion>( args.Holder() );
+      args.GetReturnValue().Set( Quaternion::newFrom( ptr->UnitInverse() ) );
     }
 
     //! Radian Quaternion.getRoll()
