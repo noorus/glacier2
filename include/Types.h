@@ -5,19 +5,19 @@
 
 namespace Glacier {
 
-  using std::uint8_t;
-  using std::uint16_t;
-  using std::uint32_t;
-  using std::uint64_t;
+  using std::uint8_t;  //!< 8-bit unsigned integer type.
+  using std::uint16_t; //!< 16-bit unsigned integer type.
+  using std::uint32_t; //!< 32-bit unsigned integer type.
+  using std::uint64_t; //!< 64-bit unsigned integer type.
 
-  using std::vector;
+  using std::vector; //!< Local vector type.
 
-  typedef std::string string;
-  typedef std::wstring wstring;
-  typedef std::stringstream stringstream;
-  typedef std::wstringstream wstringstream;
+  typedef std::string string; //!< Local string type.
+  typedef std::wstring wstring; //!< Local wide-string type.
+  typedef std::stringstream stringstream; //!< Local string stream type.
+  typedef std::wstringstream wstringstream; //!< Locale wide-string stream type.
 
-  typedef double GameTime;
+  typedef double GameTime; //!< Our generic type for representing time.
 
   typedef boost::char_separator<wchar_t> CharSeparator;
   typedef boost::tokenizer<CharSeparator, wstring::const_iterator, wstring> StringTokenizer;

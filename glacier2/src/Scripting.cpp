@@ -5,6 +5,7 @@
 #include "Console.h"
 #include "Exception.h"
 #include "JSNatives.h"
+#include "JSUtil.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
@@ -61,16 +62,6 @@ namespace Glacier {
     return mContext;
   }
 
-  v8::Local<v8::String> Scripting::allocString( const wstring& str )
-  {
-    return v8::String::NewFromTwoByte( mIsolate, (uint16_t*)str.c_str() );
-  }
-
-  v8::Local<v8::String> Scripting::allocString( const Ogre::String& str )
-  {
-    return v8::String::NewFromUtf8( mIsolate, str.c_str() );
-  }
-
   void Scripting::initialize()
   {
     v8::HandleScope handleScope( mIsolate );
@@ -78,7 +69,7 @@ namespace Glacier {
     // Set up global object template
     v8::Handle<v8::ObjectTemplate> global = v8::ObjectTemplate::New();
     global->Set(
-      allocString( L"print" ),
+      JS::Util::allocString( L"print" ),
       v8::FunctionTemplate::New( mIsolate, Print ) );
 
     // Initialize native classes in the global namespace

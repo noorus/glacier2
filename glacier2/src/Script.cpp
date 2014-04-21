@@ -3,6 +3,7 @@
 #include "Script.h"
 #include "Engine.h"
 #include "Console.h"
+#include "JSUtil.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
@@ -31,7 +32,7 @@ namespace Glacier {
     Context::Scope contextScope( Handle<Context>::New( mHost->getIsolation(), mHost->getContext() ) );
     TryCatch tryCatch;
 
-    Handle<v8::Script> script = v8::Script::Compile( mHost->allocString( source ) );
+    Handle<v8::Script> script = v8::Script::Compile( JS::Util::allocString( source ) );
 
     if ( script.IsEmpty() )
     {

@@ -5,6 +5,12 @@
 
 namespace Glacier {
 
+  //! \addtogroup Glacier
+  //! @{
+
+  //! \addtogroup Engine
+  //! @{
+
   class Engine;
 
   class EngineComponent: boost::noncopyable {
@@ -18,5 +24,9 @@ namespace Glacier {
     virtual void componentPostUpdate( GameTime delta, GameTime time );
     virtual ~EngineComponent();
   };
+
+  //! @}
+
+  //! @}
 
 }

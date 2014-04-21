@@ -2,12 +2,14 @@
 #include "JSNatives.h"
 #include "JSObjectWrapper.h"
 #include "JSUtil.h"
+#include "Engine.h"
+#include "Console.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
 
 // warning C4244: '=' : conversion from double to float, possible loss of data
-#pragma warning(disable: 4244)
+#pragma warning( disable: 4244 )
 
 namespace Glacier {
 
@@ -74,15 +76,20 @@ namespace Glacier {
         Isolate::GetCurrent() )->GetFunction();
       Local<v8::Object> object = constFunc->NewInstance();
       Vector3* ret = unwrap<Vector3>( object );
-      (Ogre::Vector3)*ret = vector;
+      // Ugly this way, but the Ogre::Vector3 assignment operator silently fails.
+      ret->x = vector.x;
+      ret->y = vector.y;
+      ret->z = vector.z;
       return object;
     }
 
+    //! \verbatim
     //! Vector3()
     //! Vector3( Real scalar )
     //! Vector3( Real x, Real y, Real z )
     //! Vector3([Real x, Real y, Real z])
     //! Vector3({Real x, Real y, Real z})
+    //! \endverbatim
     void Vector3::create( const FunctionCallbackInfo<v8::Value>& args )
     {
       HandleScope handleScope( args.GetIsolate() );
@@ -133,7 +140,9 @@ namespace Glacier {
       args.GetReturnValue().Set( args.This() );
     }
 
-    //! Real Vector3.x getter
+    //! \verbatim
+    //! Real Vector3.x
+    //! \endverbatim
     void Vector3::jsGetX( Local<v8::String> prop,
     const PropertyCallbackInfo<v8::Value>& info )
     {
@@ -141,7 +150,9 @@ namespace Glacier {
       info.GetReturnValue().Set( ptr->x );
     }
 
-    //! Real Vector3.x setter
+    //! \verbatim
+    //! Vector3.x
+    //! \endverbatim
     void Vector3::jsSetX( Local<v8::String> prop,
     Local<v8::Value> value, const PropertyCallbackInfo<void>& info )
     {
@@ -149,7 +160,9 @@ namespace Glacier {
       ptr->x = value->NumberValue();
     }
 
-    //! Real Vector3.y getter
+    //! \verbatim
+    //! Real Vector3.y
+    //! \endverbatim
     void Vector3::jsGetY( Local<v8::String> prop,
     const PropertyCallbackInfo<v8::Value>& info )
     {
@@ -157,7 +170,9 @@ namespace Glacier {
       info.GetReturnValue().Set( ptr->y );
     }
 
-    //! Real Vector3.y setter
+    //! \verbatim
+    //! Vector3.y
+    //! \endverbatim
     void Vector3::jsSetY( Local<v8::String> prop,
     Local<v8::Value> value, const PropertyCallbackInfo<void>& info )
     {
@@ -165,7 +180,9 @@ namespace Glacier {
       ptr->y = value->NumberValue();
     }
 
-    //! Real Vector3.z getter
+    //! \verbatim
+    //! Real Vector3.z
+    //! \endverbatim
     void Vector3::jsGetZ( Local<v8::String> prop,
     const PropertyCallbackInfo<v8::Value>& info )
     {
@@ -173,7 +190,9 @@ namespace Glacier {
       info.GetReturnValue().Set( ptr->z );
     }
 
-    //! Real Vector3.z setter
+    //! \verbatim
+    //! Vector3.z
+    //! \endverbatim
     void Vector3::jsSetZ( Local<v8::String> prop,
     Local<v8::Value> value, const PropertyCallbackInfo<void>& info )
     {
@@ -181,7 +200,9 @@ namespace Glacier {
       ptr->z = value->NumberValue();
     }
 
-    //! Vector3.toString
+    //! \verbatim
+    //! String Vector3.toString
+    //! \endverbatim
     void Vector3::jsToString( const FunctionCallbackInfo<v8::Value>& args )
     {
       Vector3* ptr = unwrap<Vector3>( args.Holder() );
@@ -190,7 +211,9 @@ namespace Glacier {
       args.GetReturnValue().Set( Util::allocString( result ) );
     }
 
+    //! \verbatim
     //! bool Vector3.equals( Vector3 )
+    //! \endverbatim
     void Vector3::jsEquals( const FunctionCallbackInfo<v8::Value>& args )
     {
       Vector3* ptr = unwrap<Vector3>( args.Holder() );
@@ -200,7 +223,9 @@ namespace Glacier {
       args.GetReturnValue().Set( (Ogre::Vector3)*ptr == (Ogre::Vector3)*other );
     }
 
+    //! \verbatim
     //! Vector3 Vector3.add( Vector3 )
+    //! \endverbatim
     void Vector3::jsAdd( const FunctionCallbackInfo<v8::Value>& args )
     {
       Vector3* ptr = unwrap<Vector3>( args.Holder() );
@@ -211,7 +236,9 @@ namespace Glacier {
       args.GetReturnValue().Set( Vector3::newFrom( result ) );
     }
 
+    //! \verbatim
     //! Vector3 Vector3.subtract( Vector3 )
+    //! \endverbatim
     void Vector3::jsSubtract( const FunctionCallbackInfo<v8::Value>& args )
     {
       Vector3* ptr = unwrap<Vector3>( args.Holder() );
@@ -222,7 +249,9 @@ namespace Glacier {
       args.GetReturnValue().Set( Vector3::newFrom( result ) );
     }
 
+    //! \verbatim
     //! Vector3 Vector3.multiply( Vector3 )
+    //! \endverbatim
     void Vector3::jsMultiply( const FunctionCallbackInfo<v8::Value>& args )
     {
       Vector3* ptr = unwrap<Vector3>( args.Holder() );
@@ -233,21 +262,27 @@ namespace Glacier {
       args.GetReturnValue().Set( Vector3::newFrom( result ) );
     }
 
+    //! \verbatim
     //! Real Vector3.length()
+    //! \endverbatim
     void Vector3::jsLength( const FunctionCallbackInfo<v8::Value>& args )
     {
       Vector3* ptr = unwrap<Vector3>( args.Holder() );
       args.GetReturnValue().Set( ptr->length() );
     }
 
+    //! \verbatim
     //! Real Vector3.squaredLength()
+    //! \endverbatim
     void Vector3::jsSquaredLength( const FunctionCallbackInfo<v8::Value>& args )
     {
       Vector3* ptr = unwrap<Vector3>( args.Holder() );
       args.GetReturnValue().Set( ptr->squaredLength() );
     }
 
+    //! \verbatim
     //! Real Vector3.distance( Vector3 other )
+    //! \endverbatim
     void Vector3::jsDistance( const FunctionCallbackInfo<v8::Value>& args )
     {
       Vector3* ptr = unwrap<Vector3>( args.Holder() );
@@ -257,7 +292,9 @@ namespace Glacier {
       args.GetReturnValue().Set( ptr->distance( *other ) );
     }
 
+    //! \verbatim
     //! Real Vector3.squaredDistance( Vector3 other )
+    //! \endverbatim
     void Vector3::jsSquaredDistance( const FunctionCallbackInfo<v8::Value>& args )
     {
       Vector3* ptr = unwrap<Vector3>( args.Holder() );
@@ -267,7 +304,9 @@ namespace Glacier {
       args.GetReturnValue().Set( ptr->squaredDistance( *other ) );
     }
 
+    //! \verbatim
     //! Real Vector3.dotProduct( Vector3 )
+    //! \endverbatim
     void Vector3::jsDotProduct( const FunctionCallbackInfo<v8::Value>& args )
     {
       Vector3* ptr = unwrap<Vector3>( args.Holder() );
@@ -277,7 +316,9 @@ namespace Glacier {
       args.GetReturnValue().Set( ptr->dotProduct( *other ) );
     }
 
+    //! \verbatim
     //! Real Vector3.absDotProduct( Vector3 other )
+    //! \endverbatim
     void Vector3::jsAbsDotProduct( const FunctionCallbackInfo<v8::Value>& args )
     {
       Vector3* ptr = unwrap<Vector3>( args.Holder() );
@@ -287,14 +328,18 @@ namespace Glacier {
       args.GetReturnValue().Set( ptr->absDotProduct( *other ) );
     }
 
+    //! \verbatim
     //! Real Vector3.normalise()
+    //! \endverbatim
     void Vector3::jsNormalise( const FunctionCallbackInfo<v8::Value>& args )
     {
       Vector3* ptr = unwrap<Vector3>( args.Holder() );
       args.GetReturnValue().Set( ptr->normalise() );
     }
 
+    //! \verbatim
     //! Vector3 Vector3.crossProduct( Vector3 other )
+    //! \endverbatim
     void Vector3::jsCrossProduct( const FunctionCallbackInfo<v8::Value>& args )
     {
       Vector3* ptr = unwrap<Vector3>( args.Holder() );
@@ -305,7 +350,9 @@ namespace Glacier {
       args.GetReturnValue().Set( Vector3::newFrom( result ) );
     }
 
+    //! \verbatim
     //! Vector3 Vector3.midPoint( Vector3 other )
+    //! \endverbatim
     void Vector3::jsMidPoint( const FunctionCallbackInfo<v8::Value>& args )
     {
       Vector3* ptr = unwrap<Vector3>( args.Holder() );
@@ -316,7 +363,9 @@ namespace Glacier {
       args.GetReturnValue().Set( Vector3::newFrom( result ) );
     }
 
+    //! \verbatim
     //! Vector3.makeFloor( Vector3 cmp )
+    //! \endverbatim
     void Vector3::jsMakeFloor( const FunctionCallbackInfo<v8::Value>& args )
     {
       Vector3* ptr = unwrap<Vector3>( args.Holder() );
@@ -326,7 +375,9 @@ namespace Glacier {
       ptr->makeFloor( *cmp );
     }
 
+    //! \verbatim
     //! Vector3.makeCeil( Vector3 cmp )
+    //! \endverbatim
     void Vector3::jsMakeCeil( const FunctionCallbackInfo<v8::Value>& args )
     {
       Vector3* ptr = unwrap<Vector3>( args.Holder() );
@@ -336,7 +387,9 @@ namespace Glacier {
       ptr->makeCeil( *cmp );
     }
 
+    //! \verbatim
     //! Vector3 Vector3.perpendicular()
+    //! \endverbatim
     void Vector3::jsPerpendicular( const FunctionCallbackInfo<v8::Value>& args )
     {
       Vector3* ptr = unwrap<Vector3>( args.Holder() );
@@ -344,7 +397,9 @@ namespace Glacier {
       args.GetReturnValue().Set( Vector3::newFrom( result ) );
     }
 
+    //! \verbatim
     //! Vector3 Vector3.randomDeviant( Radian angle, Vector3 up )
+    //! \endverbatim
     void Vector3::jsRandomDeviant( const FunctionCallbackInfo<v8::Value>& args )
     {
       Vector3* ptr = unwrap<Vector3>( args.Holder() );
@@ -363,7 +418,9 @@ namespace Glacier {
       args.GetReturnValue().Set( Vector3::newFrom( result ) );
     }
 
+    //! \verbatim
     //! Radian Vector3.angleBetween( Vector3 )
+    //! \endverbatim
     void Vector3::jsAngleBetween( const FunctionCallbackInfo<v8::Value>& args )
     {
       Vector3* ptr = unwrap<Vector3>( args.Holder() );
@@ -374,7 +431,9 @@ namespace Glacier {
       args.GetReturnValue().Set( result.valueRadians() );
     }
 
+    //! \verbatim
     //! Quaternion Vector3.getRotationTo( Vector3 )
+    //! \endverbatim
     void Vector3::jsGetRotationTo( const FunctionCallbackInfo<v8::Value>& args )
     {
       Vector3* ptr = unwrap<Vector3>( args.Holder() );
@@ -382,17 +441,22 @@ namespace Glacier {
       if ( !other )
         return;
       Ogre::Quaternion result = ptr->getRotationTo( *other );
+      gEngine->getConsole()->printf(Console::srcEngine, L"quaternion is %f %f %f %f", result.w, result.x, result.y, result.z );
       args.GetReturnValue().Set( Quaternion::newFrom( result ) );
     }
 
+    //! \verbatim
     //! bool Vector3.isZeroLength()
+    //! \endverbatim
     void Vector3::jsIsZeroLength( const FunctionCallbackInfo<v8::Value>& args )
     {
       Vector3* ptr = unwrap<Vector3>( args.Holder() );
       args.GetReturnValue().Set( ptr->isZeroLength() );
     }
 
+    //! \verbatim
     //! Vector3 Vector3.normalisedCopy()
+    //! \endverbatim
     void Vector3::jsNormalisedCopy( const FunctionCallbackInfo<v8::Value>& args )
     {
       Vector3* ptr = unwrap<Vector3>( args.Holder() );

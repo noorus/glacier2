@@ -6,6 +6,9 @@
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
 
+// warning C4244: '=' : conversion from double to float, possible loss of data
+#pragma warning( disable: 4244 )
+
 namespace Glacier {
 
   namespace JS {
@@ -61,15 +64,21 @@ namespace Glacier {
         Isolate::GetCurrent() )->GetFunction();
       Local<v8::Object> object = constFunc->NewInstance();
       Quaternion* ret = unwrap<Quaternion>( object );
-      (Ogre::Quaternion)*ret = qtn;
+      // Ugly this way, but the Ogre::Quaternion assignment operator silently fails.
+      ret->w = qtn.w;
+      ret->x = qtn.x;
+      ret->y = qtn.y;
+      ret->z = qtn.z;
       return object;
     }
 
+    //! \verbatim
     //! Quaternion()
     //! Quaternion( Radian rotation, Vector3 axis )
     //! Quaternion( Real w, Real x, Real y, Real z )
     //! Quaternion([Real w, Real x, Real y, Real z])
     //! Quaternion({Real w, Real x, Real y, Real z})
+    //! \endverbatim
     void Quaternion::create( const FunctionCallbackInfo<v8::Value>& args )
     {
       HandleScope handleScope( args.GetIsolate() );
@@ -126,7 +135,9 @@ namespace Glacier {
       args.GetReturnValue().Set( args.This() );
     }
 
-    //! Real Quaternion.w getter
+    //! \verbatim
+    //! Real Quaternion.w
+    //! \endverbatim
     void Quaternion::jsGetW( Local<v8::String> prop,
     const PropertyCallbackInfo<v8::Value>& info )
     {
@@ -134,7 +145,9 @@ namespace Glacier {
       info.GetReturnValue().Set( ptr->w );
     }
 
-    //! Real Quaternion.w setter
+    //! \verbatim
+    //! Quaternion.w
+    //! \endverbatim
     void Quaternion::jsSetW( Local<v8::String> prop,
     Local<v8::Value> value, const PropertyCallbackInfo<void>& info )
     {
@@ -142,7 +155,9 @@ namespace Glacier {
       ptr->w = value->NumberValue();
     }
 
-    //! Real Quaternion.x getter
+    //! \verbatim
+    //! Real Quaternion.x
+    //! \endverbatim
     void Quaternion::jsGetX( Local<v8::String> prop,
     const PropertyCallbackInfo<v8::Value>& info )
     {
@@ -150,7 +165,9 @@ namespace Glacier {
       info.GetReturnValue().Set( ptr->x );
     }
 
-    //! Real Quaternion.x setter
+    //! \verbatim
+    //! Quaternion.x
+    //! \endverbatim
     void Quaternion::jsSetX( Local<v8::String> prop,
     Local<v8::Value> value, const PropertyCallbackInfo<void>& info )
     {
@@ -158,7 +175,9 @@ namespace Glacier {
       ptr->x = value->NumberValue();
     }
 
-    //! Real Quaternion.y getter
+    //! \verbatim
+    //! Real Quaternion.y
+    //! \endverbatim
     void Quaternion::jsGetY( Local<v8::String> prop,
     const PropertyCallbackInfo<v8::Value>& info )
     {
@@ -166,7 +185,9 @@ namespace Glacier {
       info.GetReturnValue().Set( ptr->y );
     }
 
-    //! Real Quaternion.y setter
+    //! \verbatim
+    //! Quaternion.y
+    //! \endverbatim
     void Quaternion::jsSetY( Local<v8::String> prop,
     Local<v8::Value> value, const PropertyCallbackInfo<void>& info )
     {
@@ -174,7 +195,9 @@ namespace Glacier {
       ptr->y = value->NumberValue();
     }
 
-    //! Real Quaternion.z getter
+    //! \verbatim
+    //! Real Quaternion.z
+    //! \endverbatim
     void Quaternion::jsGetZ( Local<v8::String> prop,
     const PropertyCallbackInfo<v8::Value>& info )
     {
@@ -182,7 +205,9 @@ namespace Glacier {
       info.GetReturnValue().Set( ptr->z );
     }
 
-    //! Real Quaternion.z setter
+    //! \verbatim
+    //! Quaternion.z
+    //! \endverbatim
     void Quaternion::jsSetZ( Local<v8::String> prop,
     Local<v8::Value> value, const PropertyCallbackInfo<void>& info )
     {
@@ -190,7 +215,9 @@ namespace Glacier {
       ptr->z = value->NumberValue();
     }
 
-    //! Quaternion.toString
+    //! \verbatim
+    //! String Quaternion.toString
+    //! \endverbatim
     void Quaternion::jsToString( const FunctionCallbackInfo<v8::Value>& args )
     {
       Quaternion* ptr = unwrap<Quaternion>( args.Holder() );
@@ -199,8 +226,10 @@ namespace Glacier {
       args.GetReturnValue().Set( Util::allocString( result ) );
     }
 
+    //! \verbatim
     //! Vector3 Quaternion.multiply( Vector3 )
     //! Rotate vector by quaternion
+    //! \endverbatim
     void Quaternion::jsMultiply( const FunctionCallbackInfo<v8::Value>& args )
     {
       Quaternion* ptr = unwrap<Quaternion>( args.Holder() );
@@ -211,7 +240,9 @@ namespace Glacier {
       args.GetReturnValue().Set( Vector3::newFrom( result ) );
     }
 
+    //! \verbatim
     //! Real Quaternion.dot( Quaternion other )
+    //! \endverbatim
     void Quaternion::jsDot( const FunctionCallbackInfo<v8::Value>& args )
     {
       Quaternion* ptr = unwrap<Quaternion>( args.Holder() );
@@ -221,49 +252,63 @@ namespace Glacier {
       args.GetReturnValue().Set( ptr->Dot( *other ) );
     }
 
+    //! \verbatim
     //! Real Quaternion.norm()
+    //! \endverbatim
     void Quaternion::jsNorm( const FunctionCallbackInfo<v8::Value>& args )
     {
       Quaternion* ptr = unwrap<Quaternion>( args.Holder() );
       args.GetReturnValue().Set( ptr->Norm() );
     }
 
+    //! \verbatim
     //! Real Quaternion.normalise()
+    //! \endverbatim
     void Quaternion::jsNormalise( const FunctionCallbackInfo<v8::Value>& args )
     {
       Quaternion* ptr = unwrap<Quaternion>( args.Holder() );
       args.GetReturnValue().Set( ptr->normalise() );
     }
 
+    //! \verbatim
     //! Quaternion Quaternion.inverse()
+    //! \endverbatim
     void Quaternion::jsInverse( const FunctionCallbackInfo<v8::Value>& args )
     {
       Quaternion* ptr = unwrap<Quaternion>( args.Holder() );
       args.GetReturnValue().Set( Quaternion::newFrom( ptr->Inverse() ) );
     }
 
+    //! \verbatim
     //! Quaternion Quaternion.unitInverse()
+    //! \endverbatim
     void Quaternion::jsUnitInverse( const FunctionCallbackInfo<v8::Value>& args )
     {
       Quaternion* ptr = unwrap<Quaternion>( args.Holder() );
       args.GetReturnValue().Set( Quaternion::newFrom( ptr->UnitInverse() ) );
     }
 
+    //! \verbatim
     //! Radian Quaternion.getRoll()
+    //! \endverbatim
     void Quaternion::jsGetRoll( const FunctionCallbackInfo<v8::Value>& args )
     {
       Quaternion* ptr = unwrap<Quaternion>( args.Holder() );
       args.GetReturnValue().Set( ptr->getRoll().valueRadians() );
     }
 
+    //! \verbatim
     //! Radian Quaternion.getPitch()
+    //! \endverbatim
     void Quaternion::jsGetPitch( const FunctionCallbackInfo<v8::Value>& args )
     {
       Quaternion* ptr = unwrap<Quaternion>( args.Holder() );
       args.GetReturnValue().Set( ptr->getPitch().valueRadians() );
     }
 
+    //! \verbatim
     //! Radian Quaternion.getYaw()
+    //! \endverbatim
     void Quaternion::jsGetYaw( const FunctionCallbackInfo<v8::Value>& args )
     {
       Quaternion* ptr = unwrap<Quaternion>( args.Holder() );

@@ -6,6 +6,12 @@
 
 namespace Glacier {
 
+  //! \addtogroup Glacier
+  //! @{
+
+  //! \addtogroup Scripting
+  //! @{
+
   namespace JS {
 
     using v8::Isolate;
@@ -31,16 +37,19 @@ namespace Glacier {
 #define JS_TEMPLATE_SET(tpl,x,y) tpl->PrototypeTemplate()->Set( \
   Util::allocString( x ), FunctionTemplate::New( y ) )
 
+      //! Create a local JavaScript String instance from given source string.
       inline Local<v8::String> allocString( const wstring& str )
       {
         return v8::String::NewFromTwoByte( Isolate::GetCurrent(), (uint16_t*)str.c_str() );
       }
-
+      
+      //! Create a local JavaScript String instance from given source string.
       inline Local<v8::String> allocString( const Ogre::String& str )
       {
         return v8::String::NewFromUtf8( Isolate::GetCurrent(), str.c_str() );
       }
 
+      //! Create a local JavaScript String instance from given source string.
       inline Local<v8::String> allocString( const char* str )
       {
         return v8::String::NewFromUtf8( Isolate::GetCurrent(), str );
@@ -53,5 +62,9 @@ namespace Glacier {
     }
 
   }
+
+  //! @}
+
+  //! @}
 
 }

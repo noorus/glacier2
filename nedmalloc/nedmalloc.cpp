@@ -47,6 +47,7 @@ DEALINGS IN THE SOFTWARE.
 #pragma warning(disable:4127)	/* conditional expression is constant */
 #pragma warning(disable:4232)	/* address of dllimport is not static, identity not guaranteed */
 #pragma warning(disable:4706)	/* assignment within conditional expression */
+#pragma warning(disable:4005) // warning C4005: '_CRT_SECURE_NO_WARNINGS' : macro redefinition
 
 #define _CRT_SECURE_NO_WARNINGS 1	/* Don't care about MSVC warnings on POSIX functions */
 #include <stdio.h>

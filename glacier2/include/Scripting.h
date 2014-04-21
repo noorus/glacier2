@@ -7,13 +7,20 @@
 
 namespace Glacier {
 
+  //! \addtogroup Glacier
+  //! @{
+
+  //! \addtogroup Scripting
+  //! @{
+
+  //! \class Scripting
+  //! Main engine component responsible of running all JS scripting.
+  //! \sa EngineComponent
   class Scripting: public EngineComponent {
   friend class Script;
   protected:
     v8::Isolate* mIsolate;
     v8::Persistent<v8::Context> mContext;
-    v8::Local<v8::String> allocString( const wstring& str );
-    v8::Local<v8::String> allocString( const Ogre::String& str );
     v8::Isolate* getIsolation();
     v8::Persistent<v8::Context>& getContext();
     void initialize();
@@ -25,5 +32,9 @@ namespace Glacier {
     static void unregisterResources( ResourceGroupManager& manager );
     void test( const Ogre::String& filename );
   };
+
+  //! @}
+
+  //! @}
 
 }

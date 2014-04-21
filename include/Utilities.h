@@ -5,6 +5,9 @@
 
 namespace Glacier {
 
+  //! \addtogroup Glacier
+  //! @{
+
   //! \class Singleton
   //! Simple template for a Meyers singleton.
   template <class T>
@@ -22,21 +25,26 @@ namespace Glacier {
   //! \warning Lock must be initialized in advance!
   class ScopedSRWLock: boost::noncopyable {
   protected:
-    PSRWLOCK mLock;
-    bool mExclusive;
-    bool mLocked;
+    PSRWLOCK mLock;   //!< The lock
+    bool mExclusive;  //!< Whether we're acquired in exclusive mode
+    bool mLocked;     //!< Whether we're still locked
   public:
+    //! Constructor.
+    //! \param  lock      The lock to acquire.
+    //! \param  exclusive (Optional) true to acquire in exclusive mode, false for shared.
     ScopedSRWLock( PSRWLOCK lock, bool exclusive = true ):
     mLock( lock ), mExclusive( exclusive ), mLocked( true )
     {
       mExclusive ? AcquireSRWLockExclusive( mLock ) : AcquireSRWLockShared( mLock );
     }
+    //! Call directly if you want to unlock before object leaves scope.
     void unlock()
     {
       if ( mLocked )
         mExclusive ? ReleaseSRWLockExclusive( mLock ) : ReleaseSRWLockShared( mLock );
       mLocked = false;
     }
+    //! Destructor.
     ~ScopedSRWLock()
     {
       unlock();
@@ -49,30 +57,40 @@ namespace Glacier {
   template <typename T>
   class SafeWaitableQueue: boost::noncopyable {
   protected:
-    SRWLOCK mLock;
-    HANDLE mSemaphore;
-    std::list<T> mQueue;
-    bool mOverflow;
+    SRWLOCK mLock;        //!< The lock
+    HANDLE mSemaphore;    //!< Handle of the semaphore
+    std::list<T> mQueue;  //!< The queue
+    bool mOverflow;       //!< Whether we're overflowing
   public:
+    //! Constructor.
+    //! \param  maxCount Maximum number of waitables.
     SafeWaitableQueue( long maxCount ): mSemaphore( NULL ),
     mOverflow( false )
     {
       InitializeSRWLock( &mLock );
       mSemaphore = CreateSemaphoreW( NULL, 0, maxCount, NULL );
     }
+    //! Destructor.
     ~SafeWaitableQueue()
     {
       if ( mSemaphore )
         CloseHandle( mSemaphore );
     }
+    //! Gets the handle.
+    //! \return The handle.
     HANDLE getHandle()
     {
       return mSemaphore;
     }
+    //! Query if this object is overflowed.
+    //! \return true if overflowed, false if not.
     bool isOverflowed()
     {
       return mOverflow;
     }
+    //! Pushes an object onto this stack.
+    //! \param element The element to push.
+    //! \return true if it succeeds, false if it fails.
     bool push( T& element )
     {
       ScopedSRWLock lock( &mLock );
@@ -86,6 +104,9 @@ namespace Glacier {
       }
       return true;
     }
+    //! Removes and returns the top-of-stack object.
+    //! \param element The element to pop.
+    //! \return true if it succeeds, false if it fails.
     bool pop( T& element )
     {
       ScopedSRWLock lock( &mLock );
@@ -99,6 +120,7 @@ namespace Glacier {
       mQueue.pop_front();
       return true;
     }
+    //! Clears this object to its blank/initial state.
     void clear()
     {
       ScopedSRWLock lock( &mLock );
@@ -111,6 +133,7 @@ namespace Glacier {
 
   namespace Utilities
   {
+    //! UTF-8 to wide string conversion.
     inline wstring utf8ToWide( const string& in ) throw()
     {
       int length = MultiByteToWideChar( CP_UTF8, 0, in.c_str(), -1, nullptr, 0 );
@@ -121,6 +144,7 @@ namespace Glacier {
       return wstring( &conversion[0] );
     }
 
+    //! Wide string to UTF-8 conversion.
     inline string wideToUtf8( const wstring& in ) throw()
     {
       int length = WideCharToMultiByte( CP_UTF8, 0, in.c_str(), -1, nullptr, 0, 0, FALSE );
@@ -131,6 +155,7 @@ namespace Glacier {
       return string( &conversion[0] );
     }
 
+    //! Calculate 64-bit Hamming weight.
     inline int hammingWeight64( uint64_t x ) throw()
     {
       x = ( x & 0x5555555555555555ULL ) + ( ( x >> 1 ) & 0x5555555555555555ULL );
@@ -142,14 +167,13 @@ namespace Glacier {
       return x & 0xFF;
     }
 
+    //! Gets window text.
     inline wstring getWindowText( HWND wnd ) throw()
     {
       wstring str;
       int length = GetWindowTextLengthW( wnd );
       if ( !length )
         return str;
-      // technically, str isn't promised to be contiguous earlier
-      // than in C++11, but in practice it is anyway in VC++.
       str.resize( length + 1, '\0' );
       GetWindowTextW( wnd, &str[0], length + 1 );
       str.resize( length );
@@ -157,5 +181,7 @@ namespace Glacier {
     }
 
   }
+
+  //! @}
 
 }

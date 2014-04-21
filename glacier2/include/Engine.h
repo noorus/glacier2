@@ -7,6 +7,12 @@
 
 namespace Glacier {
 
+  //! \addtogroup Glacier
+  //! @{
+
+  //! \addtogroup Engine
+  //! @{
+
   class Console;
   class ConsoleWindow;
   class ConsoleWindowThread;
@@ -27,17 +33,19 @@ namespace Glacier {
   //! The main engine class that makes the world go round
   class Engine {
   public:
+    //! Possible signal values interpreted by the engine's gameloop
     enum Signal {
-      Signal_None = 0,
-      Signal_Stop
+      Signal_None = 0,  //!< No signal
+      Signal_Stop       //!< Engine stop signal
     };
+    //! Engine version structure
     struct Version {
-      uint32_t major;
-      uint32_t minor;
-      uint32_t build;
-      wstring compiler;
-      wstring compiled;
-      wstring profile;
+      uint32_t major;   //!< The major version
+      uint32_t minor;   //!< The minor version
+      uint32_t build;   //!< The build version
+      wstring compiler; //!< Compiler name
+      wstring compiled; //!< Compilation date
+      wstring profile;  //!< Compilation profile
       wstring title;
       wstring subtitle;
       Version( uint32_t major, uint32_t minor, uint32_t build );
@@ -86,22 +94,43 @@ namespace Glacier {
     static void callbackQuit( Console* console,
       ConCmd* command, StringVector& arguments );
   public:
+    //! Constructor.
+    //! \param  instance The owning application's instance handle.
     Engine( HINSTANCE instance );
+    //! Destructor.
     ~Engine();
-    void signalStop(); //!< Set a signal to stop on next cycle
-    void operationSuspendVideo(); //!< Shutdown state for gfx restart
-    void operationContinueVideo(); //!< Continue state after gfx restart
-    void operationSuspendAudio(); //!< Shutdown state for audio restart
-    void operationContinueAudio(); //!< Continue state after audio restart
-    void operationSuspendPhysics(); //!< Shutdown state for physics restart
-    void operationContinuePhysics(); //!< Continue state after physics restart
+    //! Raises a stop signal on the next cycle.
+    void signalStop();
+    //! Shutdown state for gfx restart.
+    void operationSuspendVideo();
+    //! Continue state after gfx restart.
+    void operationContinueVideo();
+    //! Shutdown state for audio restart.
+    void operationSuspendAudio();
+    //! Continue state after audio restart.
+    void operationContinueAudio();
+    //! Shutdown state for physics restart.
+    void operationSuspendPhysics();
+    //! Continue state after physics restart.
+    void operationContinuePhysics();
+    //! Registers the resources described by manager.
+    //! \param [in,out] manager The resource group manager.
     void registerResources( ResourceGroupManager& manager );
+    //! Unregisters the resources described by manager.
+    //! \param [in,out] manager The resource group manager.
     void unregisterResources( ResourceGroupManager& manager );
+    //! Initializes the Engine.
     void initialize();
+    //! Runs the Engine.
     void run();
+    //! Shuts down the Engine and frees any resources it is using.
     void shutdown();
   };
 
+  //! @}
+
+  //! @}
+
 }
 
-extern Glacier::Engine* gEngine;
+extern Glacier::Engine* gEngine; //!< Global engine instance pointer

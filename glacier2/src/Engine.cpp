@@ -75,15 +75,18 @@ namespace Glacier {
     };
     auto privileges = (PTOKEN_PRIVILEGES)malloc(
       FIELD_OFFSET( TOKEN_PRIVILEGES, Privileges[cPrivileges] ) );
-    privileges->PrivilegeCount = cPrivileges;
-    for ( int i = 0; i < cPrivileges; i++ )
+    if ( privileges )
     {
-      if ( !LookupPrivilegeValueW( NULL, wantedPrivileges[i], &privileges->Privileges[i].Luid ) )
-        return;
-      privileges->Privileges[i].Attributes = SE_PRIVILEGE_ENABLED;
+      privileges->PrivilegeCount = cPrivileges;
+      for ( int i = 0; i < cPrivileges; i++ )
+      {
+        if ( !LookupPrivilegeValueW( NULL, wantedPrivileges[i], &privileges->Privileges[i].Luid ) )
+          return;
+        privileges->Privileges[i].Attributes = SE_PRIVILEGE_ENABLED;
+      }
+      AdjustTokenPrivileges( token, FALSE, privileges, 0, NULL, NULL );
+      free( privileges );
     }
-    AdjustTokenPrivileges( token, FALSE, privileges, 0, NULL, NULL );
-    free( privileges );
     CloseHandle( token );
   }
 

@@ -6,6 +6,12 @@
 
 namespace Glacier {
 
+  //! \addtogroup Glacier
+  //! @{
+
+  //! \addtogroup Scripting
+  //! @{
+
   namespace JS {
 
     using v8::Isolate;
@@ -20,9 +26,12 @@ namespace Glacier {
     using v8::FunctionCallbackInfo;
     using v8::WeakCallbackData;
 
+    //! \class ObjectWrapper
+    //! A wrapper for easy creation of JavaScript-exported objects.
     class ObjectWrapper {
     private:
       Persistent<v8::Object> mJSHandle; //!< Internal v8 object handle
+      //! Internal callback for when the object is made weak.
       static void weakCallback( const WeakCallbackData<v8::Object, ObjectWrapper>& data )
       {
         v8::Isolate* isolate = data.GetIsolate();
@@ -37,6 +46,7 @@ namespace Glacier {
     protected:
       Isolate* mJSIsolate; //!< Isolation
       int mJSReferences; //!< Reference counter
+      //! Wraps the given handle.
       inline void wrap( Handle<v8::Object> handle )
       {
         assert( persistent().IsEmpty() );
@@ -45,17 +55,20 @@ namespace Glacier {
         persistent().Reset( Isolate::GetCurrent(), handle );
         makeWeak();
       }
+      //! Makes myself weak.
       inline void makeWeak()
       {
         persistent().SetWeak( this, weakCallback );
         persistent().MarkIndependent();
       }
+      //! Increases my references.
       virtual void ref()
       {
         assert( !persistent().IsEmpty() );
         persistent().ClearWeak();
         mJSReferences++;
       }
+      //! Decreses my references.
       virtual void unref()
       {
         assert( !persistent().IsEmpty() );
@@ -65,10 +78,12 @@ namespace Glacier {
           makeWeak();
       }
     public:
+      //! Default constructor.
       ObjectWrapper(): mJSReferences( 0 )
       {
         mJSIsolate = v8::Isolate::GetCurrent();
       }
+      //! Destructor.
       virtual ~ObjectWrapper()
       {
         if ( !persistent().IsEmpty() )
@@ -78,18 +93,22 @@ namespace Glacier {
           persistent().Reset();
         }
       }
+      //! Gets the handle.
       inline Local<v8::Object> handle()
       {
         return handle( Isolate::GetCurrent() );
       }
+      //! Returns a local handle to self.
       inline Local<v8::Object> handle( v8::Isolate* isolate )
       {
         return Local<v8::Object>::New( isolate, persistent() );
       }
+      //! Gets the persistent.
       inline Persistent<v8::Object>& persistent()
       {
         return mJSHandle;
       }
+      //! Unwraps the given handle.
       template <class T>
       static inline T* unwrap( Handle<v8::Object> handle )
       {
@@ -102,5 +121,9 @@ namespace Glacier {
     };
 
   }
+
+  //! @}
+
+  //! @}
 
 }

@@ -14,7 +14,9 @@
 // _COMPILER
 // Identify the compiler.
 #ifdef _MSC_VER
-# if _MSC_VER >= 1700
+# if _MSC_VER >= 1800
+#  define _COMPILER L"Visual C++ 2013"
+# elif _MSC_VER >= 1700
 #  define _COMPILER L"Visual C++ 2012"
 # elif _MSC_VER >= 1600
 #  define _COMPILER L"Visual C++ 2010"
