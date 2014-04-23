@@ -18,16 +18,16 @@ namespace Glacier {
       const FunctionCallbackInfo<v8::Value>& args )
       {
         char error[64];
-        if ( args.Length() > ( arg + 1 ) && args[arg]->IsObject() )
+        if ( args.Length() >= ( arg + 1 ) && args[arg]->IsObject() )
         {
           Local<v8::Object> object = args[arg]->ToObject();
-          if ( !ObjectWrapper::isWrappedType( object, Wrapped_Vector3 ) )
+          if ( ObjectWrapper::isWrappedType( object, Wrapped_Vector3 ) )
           {
             Vector3* unwrapped = ObjectWrapper::unwrap<Vector3>( object );
             return unwrapped;
           }
         }
-        sprintf_s<64>( error, "Expected argument %d as object Vector3", arg );
+        sprintf_s<64>( error, "Expected object Vector3 as argument %d", arg );
         args.GetIsolate()->ThrowException(
           allocString( error, args.GetIsolate() ) );
         return nullptr;
@@ -39,16 +39,16 @@ namespace Glacier {
       const FunctionCallbackInfo<v8::Value>& args )
       {
         char error[64];
-        if ( args.Length() > ( arg + 1 ) && args[arg]->IsObject() )
+        if ( args.Length() >= ( arg + 1 ) && args[arg]->IsObject() )
         {
           Local<v8::Object> object = args[arg]->ToObject();
-          if ( !ObjectWrapper::isWrappedType( object, Wrapped_Quaternion ) )
+          if ( ObjectWrapper::isWrappedType( object, Wrapped_Quaternion ) )
           {
             Quaternion* unwrapped = ObjectWrapper::unwrap<Quaternion>( object );
             return unwrapped;
           }
         }
-        sprintf_s<64>( error, "Expected argument %d as object Quaternion", arg );
+        sprintf_s<64>( error, "Expected object Quaternion as argument %d", arg );
         args.GetIsolate()->ThrowException(
           allocString( error, args.GetIsolate() ) );
         return nullptr;
