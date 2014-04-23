@@ -25,12 +25,13 @@ namespace Glacier {
     v8::Persistent<v8::Context>& getContext();
     void initialize();
     void shutdown();
+    DataStreamPtr openScriptFile( const Ogre::String& filename );
   public:
     Scripting( Engine* engine );
     virtual ~Scripting();
     static void registerResources( ResourceGroupManager& manager );
     static void unregisterResources( ResourceGroupManager& manager );
-    void test( const Ogre::String& filename );
+    void test( const wstring& filename );
   };
 
   //! @}

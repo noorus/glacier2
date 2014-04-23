@@ -204,7 +204,7 @@ namespace Glacier {
     mSound = new Sound( this );
 #endif
     mScripting = new Scripting( this );
-    mScripting->test( "vector3-test.js" );
+    mScripting->test( L"vector3-test.js" );
     mGame = new Game( this );
   }
 
