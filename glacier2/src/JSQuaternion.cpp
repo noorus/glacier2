@@ -17,7 +17,7 @@ namespace Glacier {
     Eternal<v8::FunctionTemplate> Quaternion::constructor;
 
     Quaternion::Quaternion( const Ogre::Quaternion& source ):
-    Ogre::Quaternion( source )
+    Ogre::Quaternion( source ), ObjectWrapper( Wrapped_Quaternion )
     {
       //
     }

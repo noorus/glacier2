@@ -17,17 +17,20 @@ namespace Glacier {
       Vector3* extractVector3( int arg,
       const FunctionCallbackInfo<v8::Value>& args )
       {
-        if ( args.Length() < ( arg + 1 ) || !args[arg]->IsObject() )
+        char error[64];
+        if ( args.Length() > ( arg + 1 ) && args[arg]->IsObject() )
         {
-          // TODO argument %d
-          args.GetIsolate()->ThrowException(
-            v8::String::NewFromUtf8( args.GetIsolate(),
-            "Argument must be a Vector3" ) );
-          return nullptr;
+          Local<v8::Object> object = args[arg]->ToObject();
+          if ( !ObjectWrapper::isWrappedType( object, Wrapped_Vector3 ) )
+          {
+            Vector3* unwrapped = ObjectWrapper::unwrap<Vector3>( object );
+            return unwrapped;
+          }
         }
-        // TODO actually verify object type..
-        Vector3* that = Vector3::unwrap<Vector3>( args[arg]->ToObject() );
-        return that;
+        sprintf_s<64>( error, "Expected argument %d as object Vector3", arg );
+        args.GetIsolate()->ThrowException(
+          allocString( error, args.GetIsolate() ) );
+        return nullptr;
       }
 
       //! Expect and extract a Quaternion object as args[arg],
@@ -35,17 +38,20 @@ namespace Glacier {
       Quaternion* extractQuaternion( int arg,
       const FunctionCallbackInfo<v8::Value>& args )
       {
-        if ( args.Length() < ( arg + 1 ) || !args[arg]->IsObject() )
+        char error[64];
+        if ( args.Length() > ( arg + 1 ) && args[arg]->IsObject() )
         {
-          // TODO argument %d
-          args.GetIsolate()->ThrowException(
-            v8::String::NewFromUtf8( args.GetIsolate(),
-            "Argument must be a Quaternion" ) );
-          return nullptr;
+          Local<v8::Object> object = args[arg]->ToObject();
+          if ( !ObjectWrapper::isWrappedType( object, Wrapped_Quaternion ) )
+          {
+            Quaternion* unwrapped = ObjectWrapper::unwrap<Quaternion>( object );
+            return unwrapped;
+          }
         }
-        // TODO actually verify object type..
-        Quaternion* that = Quaternion::unwrap<Quaternion>( args[arg]->ToObject() );
-        return that;
+        sprintf_s<64>( error, "Expected argument %d as object Quaternion", arg );
+        args.GetIsolate()->ThrowException(
+          allocString( error, args.GetIsolate() ) );
+        return nullptr;
       }
 
     }

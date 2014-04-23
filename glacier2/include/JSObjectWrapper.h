@@ -26,11 +26,17 @@ namespace Glacier {
     using v8::FunctionCallbackInfo;
     using v8::WeakCallbackData;
 
+    enum WrappedType {
+      Wrapped_Vector3 = 0,
+      Wrapped_Quaternion
+    };
+
     //! \class ObjectWrapper
     //! A wrapper for easy creation of JavaScript-exported objects.
     class ObjectWrapper {
     private:
       Persistent<v8::Object> mJSHandle; //!< Internal v8 object handle
+      WrappedType mWrappedType; //!< Internal type for checking before casts
       //! Internal callback for when the object is made weak.
       static void weakCallback( const WeakCallbackData<v8::Object, ObjectWrapper>& data )
       {
@@ -43,6 +49,7 @@ namespace Glacier {
         wrapper->mJSHandle.Reset();
         delete wrapper;
       }
+      ObjectWrapper() {}
     protected:
       Isolate* mJSIsolate; //!< Isolation
       int mJSReferences; //!< Reference counter
@@ -79,7 +86,8 @@ namespace Glacier {
       }
     public:
       //! Default constructor.
-      ObjectWrapper(): mJSReferences( 0 )
+      explicit ObjectWrapper( const WrappedType type ):
+      mJSReferences( 0 ), mWrappedType( type )
       {
         mJSIsolate = v8::Isolate::GetCurrent();
       }
@@ -107,6 +115,20 @@ namespace Glacier {
       inline Persistent<v8::Object>& persistent()
       {
         return mJSHandle;
+      }
+      //! Gets the wrapped type identifier.
+      inline const WrappedType getWrappedType()
+      {
+        return mWrappedType;
+      }
+      //! Check whether a JavaScript object is of wanted wrapped type.
+      static inline bool isWrappedType( Handle<v8::Object> handle, const WrappedType type )
+      {
+        if ( handle->InternalFieldCount() < 1 )
+          return false;
+        auto ptr = handle->GetAlignedPointerFromInternalField( 0 );
+        auto wrapper = static_cast<ObjectWrapper*>( ptr );
+        return ( wrapper->getWrappedType() == type );
       }
       //! Unwraps the given handle.
       template <class T>

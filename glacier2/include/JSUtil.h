@@ -31,28 +31,34 @@ namespace Glacier {
 
     namespace Util {
 
-#define JS_TEMPLATE_ACCESSOR(tpl,x,y,z) tpl->PrototypeTemplate()->SetAccessor( \
-  Util::allocString( x ), y, z )
+#     define JS_TEMPLATE_ACCESSOR(tpl,x,y,z) tpl->PrototypeTemplate()->SetAccessor( \
+        Util::allocString( x ), y, z )
 
-#define JS_TEMPLATE_SET(tpl,x,y) tpl->PrototypeTemplate()->Set( \
-  Util::allocString( x ), FunctionTemplate::New( y ) )
+#     define JS_TEMPLATE_SET(tpl,x,y) tpl->PrototypeTemplate()->Set( \
+        Util::allocString( x ), FunctionTemplate::New( y ) )
 
       //! Create a local JavaScript String instance from given source string.
-      inline Local<v8::String> allocString( const wstring& str )
+      inline Local<v8::String> allocString( const wstring& str, Isolate* isolate = nullptr )
       {
-        return v8::String::NewFromTwoByte( Isolate::GetCurrent(), (uint16_t*)str.c_str() );
+        return v8::String::NewFromTwoByte(
+          isolate ? isolate : Isolate::GetCurrent(),
+          (uint16_t*)str.c_str() );
       }
       
       //! Create a local JavaScript String instance from given source string.
-      inline Local<v8::String> allocString( const Ogre::String& str )
+      inline Local<v8::String> allocString( const Ogre::String& str, Isolate* isolate = nullptr )
       {
-        return v8::String::NewFromUtf8( Isolate::GetCurrent(), str.c_str() );
+        return v8::String::NewFromUtf8(
+          isolate ? isolate : Isolate::GetCurrent(),
+          str.c_str() );
       }
 
       //! Create a local JavaScript String instance from given source string.
-      inline Local<v8::String> allocString( const char* str )
+      inline Local<v8::String> allocString( const char* str, Isolate* isolate = nullptr )
       {
-        return v8::String::NewFromUtf8( Isolate::GetCurrent(), str );
+        return v8::String::NewFromUtf8(
+          isolate ? isolate : Isolate::GetCurrent(),
+          str );
       }
 
       Vector3* extractVector3( int arg, const FunctionCallbackInfo<v8::Value>& args );

@@ -18,7 +18,8 @@ namespace Glacier {
     const char* cJSVector3Class = "Vector3";
     Eternal<v8::FunctionTemplate> Vector3::constructor;
 
-    Vector3::Vector3( const Ogre::Vector3& source ): Ogre::Vector3( source )
+    Vector3::Vector3( const Ogre::Vector3& source ):
+    Ogre::Vector3( source ), ObjectWrapper( Wrapped_Vector3 )
     {
       //
     }
