@@ -15,8 +15,7 @@ namespace Glacier {
 
   namespace JS {
 
-    const char* cJSVector3Class = "Vector3";
-    Eternal<v8::FunctionTemplate> Vector3::constructor;
+    string Vector3::className( "Vector3" );
 
     Vector3::Vector3( const Ogre::Vector3& source ):
     Ogre::Vector3( source ), ObjectWrapper( Wrapped_Vector3 )
@@ -36,7 +35,7 @@ namespace Glacier {
 
       Local<FunctionTemplate> tpl = FunctionTemplate::New( Vector3::create );
 
-      tpl->SetClassName( Util::allocString( cJSVector3Class ) );
+      tpl->SetClassName( Util::allocString( className.c_str() ) );
       tpl->InstanceTemplate()->SetInternalFieldCount( 1 );
 
       JS_TEMPLATE_ACCESSOR( tpl, "x", jsGetX, jsSetX );
@@ -66,7 +65,7 @@ namespace Glacier {
       JS_TEMPLATE_SET( tpl, "isZeroLength", jsIsZeroLength );
       JS_TEMPLATE_SET( tpl, "normalisedCopy", jsNormalisedCopy );
 
-      exports->Set( isolate, cJSVector3Class, tpl );
+      exports->Set( isolate, className.c_str(), tpl );
       constructor.Set( isolate, tpl );
     }
 
@@ -76,7 +75,7 @@ namespace Glacier {
       Local<v8::Function> constFunc = constructor.Get(
         Isolate::GetCurrent() )->GetFunction();
       Local<v8::Object> object = constFunc->NewInstance();
-      Vector3* ret = unwrap<Vector3>( object );
+      Vector3* ret = unwrap( object );
       // Ugly this way, but the Ogre::Vector3 assignment operator silently fails.
       ret->x = vector.x;
       ret->y = vector.y;
@@ -147,7 +146,7 @@ namespace Glacier {
     void Vector3::jsGetX( Local<v8::String> prop,
     const PropertyCallbackInfo<v8::Value>& info )
     {
-      Vector3* ptr = unwrap<Vector3>( info.This() );
+      Vector3* ptr = unwrap( info.This() );
       info.GetReturnValue().Set( ptr->x );
     }
 
@@ -157,7 +156,7 @@ namespace Glacier {
     void Vector3::jsSetX( Local<v8::String> prop,
     Local<v8::Value> value, const PropertyCallbackInfo<void>& info )
     {
-      Vector3* ptr = unwrap<Vector3>( info.This() );
+      Vector3* ptr = unwrap( info.This() );
       ptr->x = value->NumberValue();
     }
 
@@ -167,7 +166,7 @@ namespace Glacier {
     void Vector3::jsGetY( Local<v8::String> prop,
     const PropertyCallbackInfo<v8::Value>& info )
     {
-      Vector3* ptr = unwrap<Vector3>( info.This() );
+      Vector3* ptr = unwrap( info.This() );
       info.GetReturnValue().Set( ptr->y );
     }
 
@@ -177,7 +176,7 @@ namespace Glacier {
     void Vector3::jsSetY( Local<v8::String> prop,
     Local<v8::Value> value, const PropertyCallbackInfo<void>& info )
     {
-      Vector3* ptr = unwrap<Vector3>( info.This() );
+      Vector3* ptr = unwrap( info.This() );
       ptr->y = value->NumberValue();
     }
 
@@ -187,7 +186,7 @@ namespace Glacier {
     void Vector3::jsGetZ( Local<v8::String> prop,
     const PropertyCallbackInfo<v8::Value>& info )
     {
-      Vector3* ptr = unwrap<Vector3>( info.This() );
+      Vector3* ptr = unwrap( info.This() );
       info.GetReturnValue().Set( ptr->z );
     }
 
@@ -197,7 +196,7 @@ namespace Glacier {
     void Vector3::jsSetZ( Local<v8::String> prop,
     Local<v8::Value> value, const PropertyCallbackInfo<void>& info )
     {
-      Vector3* ptr = unwrap<Vector3>( info.This() );
+      Vector3* ptr = unwrap( info.This() );
       ptr->z = value->NumberValue();
     }
 
@@ -206,7 +205,7 @@ namespace Glacier {
     //! \endverbatim
     void Vector3::jsToString( const FunctionCallbackInfo<v8::Value>& args )
     {
-      Vector3* ptr = unwrap<Vector3>( args.Holder() );
+      Vector3* ptr = unwrap( args.Holder() );
       char result[128];
       sprintf_s<128>( result, "Vector3[%f,%f,%f]", ptr->x, ptr->y, ptr->z );
       args.GetReturnValue().Set( Util::allocString( result ) );
@@ -217,7 +216,7 @@ namespace Glacier {
     //! \endverbatim
     void Vector3::jsEquals( const FunctionCallbackInfo<v8::Value>& args )
     {
-      Vector3* ptr = unwrap<Vector3>( args.Holder() );
+      Vector3* ptr = unwrap( args.Holder() );
       Vector3* other = Util::extractVector3( 0, args );
       if ( !other )
         return;
@@ -229,7 +228,7 @@ namespace Glacier {
     //! \endverbatim
     void Vector3::jsAdd( const FunctionCallbackInfo<v8::Value>& args )
     {
-      Vector3* ptr = unwrap<Vector3>( args.Holder() );
+      Vector3* ptr = unwrap( args.Holder() );
       Vector3* other = Util::extractVector3( 0, args );
       if ( !other )
         return;
@@ -242,7 +241,7 @@ namespace Glacier {
     //! \endverbatim
     void Vector3::jsSubtract( const FunctionCallbackInfo<v8::Value>& args )
     {
-      Vector3* ptr = unwrap<Vector3>( args.Holder() );
+      Vector3* ptr = unwrap( args.Holder() );
       Vector3* other = Util::extractVector3( 0, args );
       if ( !other )
         return;
@@ -255,7 +254,7 @@ namespace Glacier {
     //! \endverbatim
     void Vector3::jsMultiply( const FunctionCallbackInfo<v8::Value>& args )
     {
-      Vector3* ptr = unwrap<Vector3>( args.Holder() );
+      Vector3* ptr = unwrap( args.Holder() );
       Vector3* other = Util::extractVector3( 0, args );
       if ( !other )
         return;
@@ -268,7 +267,7 @@ namespace Glacier {
     //! \endverbatim
     void Vector3::jsLength( const FunctionCallbackInfo<v8::Value>& args )
     {
-      Vector3* ptr = unwrap<Vector3>( args.Holder() );
+      Vector3* ptr = unwrap( args.Holder() );
       args.GetReturnValue().Set( ptr->length() );
     }
 
@@ -277,7 +276,7 @@ namespace Glacier {
     //! \endverbatim
     void Vector3::jsSquaredLength( const FunctionCallbackInfo<v8::Value>& args )
     {
-      Vector3* ptr = unwrap<Vector3>( args.Holder() );
+      Vector3* ptr = unwrap( args.Holder() );
       args.GetReturnValue().Set( ptr->squaredLength() );
     }
 
@@ -286,7 +285,7 @@ namespace Glacier {
     //! \endverbatim
     void Vector3::jsDistance( const FunctionCallbackInfo<v8::Value>& args )
     {
-      Vector3* ptr = unwrap<Vector3>( args.Holder() );
+      Vector3* ptr = unwrap( args.Holder() );
       Vector3* other = Util::extractVector3( 0, args );
       if ( !other )
         return;
@@ -298,7 +297,7 @@ namespace Glacier {
     //! \endverbatim
     void Vector3::jsSquaredDistance( const FunctionCallbackInfo<v8::Value>& args )
     {
-      Vector3* ptr = unwrap<Vector3>( args.Holder() );
+      Vector3* ptr = unwrap( args.Holder() );
       Vector3* other = Util::extractVector3( 0, args );
       if ( !other )
         return;
@@ -310,7 +309,7 @@ namespace Glacier {
     //! \endverbatim
     void Vector3::jsDotProduct( const FunctionCallbackInfo<v8::Value>& args )
     {
-      Vector3* ptr = unwrap<Vector3>( args.Holder() );
+      Vector3* ptr = unwrap( args.Holder() );
       Vector3* other = Util::extractVector3( 0, args );
       if ( !other )
         return;
@@ -322,7 +321,7 @@ namespace Glacier {
     //! \endverbatim
     void Vector3::jsAbsDotProduct( const FunctionCallbackInfo<v8::Value>& args )
     {
-      Vector3* ptr = unwrap<Vector3>( args.Holder() );
+      Vector3* ptr = unwrap( args.Holder() );
       Vector3* other = Util::extractVector3( 0, args );
       if ( !other )
         return;
@@ -334,7 +333,7 @@ namespace Glacier {
     //! \endverbatim
     void Vector3::jsNormalise( const FunctionCallbackInfo<v8::Value>& args )
     {
-      Vector3* ptr = unwrap<Vector3>( args.Holder() );
+      Vector3* ptr = unwrap( args.Holder() );
       args.GetReturnValue().Set( ptr->normalise() );
     }
 
@@ -343,7 +342,7 @@ namespace Glacier {
     //! \endverbatim
     void Vector3::jsCrossProduct( const FunctionCallbackInfo<v8::Value>& args )
     {
-      Vector3* ptr = unwrap<Vector3>( args.Holder() );
+      Vector3* ptr = unwrap( args.Holder() );
       Vector3* other = Util::extractVector3( 0, args );
       if ( !other )
         return;
@@ -356,7 +355,7 @@ namespace Glacier {
     //! \endverbatim
     void Vector3::jsMidPoint( const FunctionCallbackInfo<v8::Value>& args )
     {
-      Vector3* ptr = unwrap<Vector3>( args.Holder() );
+      Vector3* ptr = unwrap( args.Holder() );
       Vector3* other = Util::extractVector3( 0, args );
       if ( !other )
         return;
@@ -369,7 +368,7 @@ namespace Glacier {
     //! \endverbatim
     void Vector3::jsMakeFloor( const FunctionCallbackInfo<v8::Value>& args )
     {
-      Vector3* ptr = unwrap<Vector3>( args.Holder() );
+      Vector3* ptr = unwrap( args.Holder() );
       Vector3* cmp = Util::extractVector3( 0, args );
       if ( !cmp )
         return;
@@ -381,7 +380,7 @@ namespace Glacier {
     //! \endverbatim
     void Vector3::jsMakeCeil( const FunctionCallbackInfo<v8::Value>& args )
     {
-      Vector3* ptr = unwrap<Vector3>( args.Holder() );
+      Vector3* ptr = unwrap( args.Holder() );
       Vector3* cmp = Util::extractVector3( 0, args );
       if ( !cmp )
         return;
@@ -393,7 +392,7 @@ namespace Glacier {
     //! \endverbatim
     void Vector3::jsPerpendicular( const FunctionCallbackInfo<v8::Value>& args )
     {
-      Vector3* ptr = unwrap<Vector3>( args.Holder() );
+      Vector3* ptr = unwrap( args.Holder() );
       Ogre::Vector3 result = ptr->perpendicular();
       args.GetReturnValue().Set( Vector3::newFrom( result ) );
     }
@@ -403,7 +402,7 @@ namespace Glacier {
     //! \endverbatim
     void Vector3::jsRandomDeviant( const FunctionCallbackInfo<v8::Value>& args )
     {
-      Vector3* ptr = unwrap<Vector3>( args.Holder() );
+      Vector3* ptr = unwrap( args.Holder() );
       if ( args.Length() != 2 || !args[0]->IsNumber() )
       {
         args.GetIsolate()->ThrowException(
@@ -424,7 +423,7 @@ namespace Glacier {
     //! \endverbatim
     void Vector3::jsAngleBetween( const FunctionCallbackInfo<v8::Value>& args )
     {
-      Vector3* ptr = unwrap<Vector3>( args.Holder() );
+      Vector3* ptr = unwrap( args.Holder() );
       Vector3* other = Util::extractVector3( 0, args );
       if ( !other )
         return;
@@ -437,12 +436,11 @@ namespace Glacier {
     //! \endverbatim
     void Vector3::jsGetRotationTo( const FunctionCallbackInfo<v8::Value>& args )
     {
-      Vector3* ptr = unwrap<Vector3>( args.Holder() );
+      Vector3* ptr = unwrap( args.Holder() );
       Vector3* other = Util::extractVector3( 0, args );
       if ( !other )
         return;
       Ogre::Quaternion result = ptr->getRotationTo( *other );
-      gEngine->getConsole()->printf(Console::srcEngine, L"quaternion is %f %f %f %f", result.w, result.x, result.y, result.z );
       args.GetReturnValue().Set( Quaternion::newFrom( result ) );
     }
 
@@ -451,7 +449,7 @@ namespace Glacier {
     //! \endverbatim
     void Vector3::jsIsZeroLength( const FunctionCallbackInfo<v8::Value>& args )
     {
-      Vector3* ptr = unwrap<Vector3>( args.Holder() );
+      Vector3* ptr = unwrap( args.Holder() );
       args.GetReturnValue().Set( ptr->isZeroLength() );
     }
 
@@ -460,7 +458,7 @@ namespace Glacier {
     //! \endverbatim
     void Vector3::jsNormalisedCopy( const FunctionCallbackInfo<v8::Value>& args )
     {
-      Vector3* ptr = unwrap<Vector3>( args.Holder() );
+      Vector3* ptr = unwrap( args.Holder() );
       Ogre::Vector3 result = ptr->normalisedCopy();
       args.GetReturnValue().Set( Vector3::newFrom( result ) );
     }

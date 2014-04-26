@@ -33,10 +33,18 @@ namespace Glacier {
 
     //! \class ObjectWrapper
     //! A wrapper for easy creation of JavaScript-exported objects.
+    template <typename T>
     class ObjectWrapper {
+    protected:
+      //! My JavaScript-exported constructor function template.
+      static Eternal<FunctionTemplate> constructor;
+      //! My JavaScript-exported class name
+      static string className;
     private:
-      Persistent<v8::Object> mJSHandle; //!< Internal v8 object handle
-      WrappedType mWrappedType; //!< Internal type for checking before casts
+      //! Internal v8 object handle
+      Persistent<v8::Object> mJSHandle;
+      //! Internal type for checking before casts
+      WrappedType mWrappedType;
       //! Internal callback for when the object is made weak.
       static void weakCallback( const WeakCallbackData<v8::Object, ObjectWrapper>& data )
       {
@@ -131,7 +139,6 @@ namespace Glacier {
         return ( wrapper->getWrappedType() == type );
       }
       //! Unwraps the given handle.
-      template <class T>
       static inline T* unwrap( Handle<v8::Object> handle )
       {
         assert( !handle.IsEmpty() );
@@ -141,6 +148,8 @@ namespace Glacier {
         return static_cast<T*>( wrapper );
       }
     };
+
+    template <typename T> Eternal<v8::FunctionTemplate> ObjectWrapper<T>::constructor;
 
   }
 

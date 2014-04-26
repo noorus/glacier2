@@ -31,10 +31,7 @@ namespace Glacier {
     //! A JavaScript-wrapped Vector3.
     //! \sa Ogre::Vector3
     //! \sa ObjectWrapper
-    class Vector3: public Ogre::Vector3, public ObjectWrapper {
-    private:
-      //! My JavaScript-exported constructor function template.
-      static Eternal<FunctionTemplate> constructor;
+    class Vector3: public Ogre::Vector3, public ObjectWrapper<Vector3> {
     protected:
       //! Constructor.
       //! \param source Source Ogre::Vector3 to initialize from.
@@ -166,12 +163,8 @@ namespace Glacier {
     //! A JavaScript-wrapped Quaternion.
     //! \sa Ogre::Quaternion
     //! \sa ObjectWrapper
-    class Quaternion: public Ogre::Quaternion, public ObjectWrapper {
-    private:
-       //! My JavaScript-exported constructor function template.
-      static Eternal<FunctionTemplate> constructor;
+    class Quaternion: public Ogre::Quaternion, public ObjectWrapper<Quaternion> {
     protected:
-
       //! Constructor.
       //! \param source Source Ogre::Quaternion to initialize from.
       explicit Quaternion( const Ogre::Quaternion& source );

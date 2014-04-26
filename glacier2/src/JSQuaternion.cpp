@@ -13,8 +13,7 @@ namespace Glacier {
 
   namespace JS {
 
-    const char* cJSQuaternionClass = "Quaternion";
-    Eternal<v8::FunctionTemplate> Quaternion::constructor;
+    string Quaternion::className( "Quaternion" );
 
     Quaternion::Quaternion( const Ogre::Quaternion& source ):
     Ogre::Quaternion( source ), ObjectWrapper( Wrapped_Quaternion )
@@ -34,7 +33,7 @@ namespace Glacier {
 
       Local<FunctionTemplate> tpl = FunctionTemplate::New( Quaternion::create );
 
-      tpl->SetClassName( Util::allocString( cJSQuaternionClass ) );
+      tpl->SetClassName( Util::allocString( className.c_str() ) );
       tpl->InstanceTemplate()->SetInternalFieldCount( 1 );
 
       JS_TEMPLATE_ACCESSOR( tpl, "w", jsGetW, jsSetW );
@@ -53,7 +52,7 @@ namespace Glacier {
       JS_TEMPLATE_SET( tpl, "getPitch", jsGetPitch );
       JS_TEMPLATE_SET( tpl, "getYaw", jsGetYaw );
 
-      exports->Set( isolate, cJSQuaternionClass, tpl );
+      exports->Set( isolate, className.c_str(), tpl );
       constructor.Set( isolate, tpl );
     }
 
@@ -63,7 +62,7 @@ namespace Glacier {
       Local<v8::Function> constFunc = constructor.Get(
         Isolate::GetCurrent() )->GetFunction();
       Local<v8::Object> object = constFunc->NewInstance();
-      Quaternion* ret = unwrap<Quaternion>( object );
+      Quaternion* ret = unwrap( object );
       // Ugly this way, but the Ogre::Quaternion assignment operator silently fails.
       ret->w = qtn.w;
       ret->x = qtn.x;
@@ -141,7 +140,7 @@ namespace Glacier {
     void Quaternion::jsGetW( Local<v8::String> prop,
     const PropertyCallbackInfo<v8::Value>& info )
     {
-      Quaternion* ptr = unwrap<Quaternion>( info.This() );
+      Quaternion* ptr = unwrap( info.This() );
       info.GetReturnValue().Set( ptr->w );
     }
 
@@ -151,7 +150,7 @@ namespace Glacier {
     void Quaternion::jsSetW( Local<v8::String> prop,
     Local<v8::Value> value, const PropertyCallbackInfo<void>& info )
     {
-      Quaternion* ptr = unwrap<Quaternion>( info.This() );
+      Quaternion* ptr = unwrap( info.This() );
       ptr->w = value->NumberValue();
     }
 
@@ -161,7 +160,7 @@ namespace Glacier {
     void Quaternion::jsGetX( Local<v8::String> prop,
     const PropertyCallbackInfo<v8::Value>& info )
     {
-      Quaternion* ptr = unwrap<Quaternion>( info.This() );
+      Quaternion* ptr = unwrap( info.This() );
       info.GetReturnValue().Set( ptr->x );
     }
 
@@ -171,7 +170,7 @@ namespace Glacier {
     void Quaternion::jsSetX( Local<v8::String> prop,
     Local<v8::Value> value, const PropertyCallbackInfo<void>& info )
     {
-      Quaternion* ptr = unwrap<Quaternion>( info.This() );
+      Quaternion* ptr = unwrap( info.This() );
       ptr->x = value->NumberValue();
     }
 
@@ -181,7 +180,7 @@ namespace Glacier {
     void Quaternion::jsGetY( Local<v8::String> prop,
     const PropertyCallbackInfo<v8::Value>& info )
     {
-      Quaternion* ptr = unwrap<Quaternion>( info.This() );
+      Quaternion* ptr = unwrap( info.This() );
       info.GetReturnValue().Set( ptr->y );
     }
 
@@ -191,7 +190,7 @@ namespace Glacier {
     void Quaternion::jsSetY( Local<v8::String> prop,
     Local<v8::Value> value, const PropertyCallbackInfo<void>& info )
     {
-      Quaternion* ptr = unwrap<Quaternion>( info.This() );
+      Quaternion* ptr = unwrap( info.This() );
       ptr->y = value->NumberValue();
     }
 
@@ -201,7 +200,7 @@ namespace Glacier {
     void Quaternion::jsGetZ( Local<v8::String> prop,
     const PropertyCallbackInfo<v8::Value>& info )
     {
-      Quaternion* ptr = unwrap<Quaternion>( info.This() );
+      Quaternion* ptr = unwrap( info.This() );
       info.GetReturnValue().Set( ptr->z );
     }
 
@@ -211,7 +210,7 @@ namespace Glacier {
     void Quaternion::jsSetZ( Local<v8::String> prop,
     Local<v8::Value> value, const PropertyCallbackInfo<void>& info )
     {
-      Quaternion* ptr = unwrap<Quaternion>( info.This() );
+      Quaternion* ptr = unwrap( info.This() );
       ptr->z = value->NumberValue();
     }
 
@@ -220,7 +219,7 @@ namespace Glacier {
     //! \endverbatim
     void Quaternion::jsToString( const FunctionCallbackInfo<v8::Value>& args )
     {
-      Quaternion* ptr = unwrap<Quaternion>( args.Holder() );
+      Quaternion* ptr = unwrap( args.Holder() );
       char result[128];
       sprintf_s<128>( result, "Quaternion[%f,%f,%f,%f]", ptr->w, ptr->x, ptr->y, ptr->z );
       args.GetReturnValue().Set( Util::allocString( result ) );
@@ -232,7 +231,7 @@ namespace Glacier {
     //! \endverbatim
     void Quaternion::jsMultiply( const FunctionCallbackInfo<v8::Value>& args )
     {
-      Quaternion* ptr = unwrap<Quaternion>( args.Holder() );
+      Quaternion* ptr = unwrap( args.Holder() );
       Vector3* other = Util::extractVector3( 0, args );
       if ( !other )
         return;
@@ -245,7 +244,7 @@ namespace Glacier {
     //! \endverbatim
     void Quaternion::jsDot( const FunctionCallbackInfo<v8::Value>& args )
     {
-      Quaternion* ptr = unwrap<Quaternion>( args.Holder() );
+      Quaternion* ptr = unwrap( args.Holder() );
       Quaternion* other = Util::extractQuaternion( 0, args );
       if ( !other )
         return;
@@ -257,7 +256,7 @@ namespace Glacier {
     //! \endverbatim
     void Quaternion::jsNorm( const FunctionCallbackInfo<v8::Value>& args )
     {
-      Quaternion* ptr = unwrap<Quaternion>( args.Holder() );
+      Quaternion* ptr = unwrap( args.Holder() );
       args.GetReturnValue().Set( ptr->Norm() );
     }
 
@@ -266,7 +265,7 @@ namespace Glacier {
     //! \endverbatim
     void Quaternion::jsNormalise( const FunctionCallbackInfo<v8::Value>& args )
     {
-      Quaternion* ptr = unwrap<Quaternion>( args.Holder() );
+      Quaternion* ptr = unwrap( args.Holder() );
       args.GetReturnValue().Set( ptr->normalise() );
     }
 
@@ -275,7 +274,7 @@ namespace Glacier {
     //! \endverbatim
     void Quaternion::jsInverse( const FunctionCallbackInfo<v8::Value>& args )
     {
-      Quaternion* ptr = unwrap<Quaternion>( args.Holder() );
+      Quaternion* ptr = unwrap( args.Holder() );
       args.GetReturnValue().Set( Quaternion::newFrom( ptr->Inverse() ) );
     }
 
@@ -284,7 +283,7 @@ namespace Glacier {
     //! \endverbatim
     void Quaternion::jsUnitInverse( const FunctionCallbackInfo<v8::Value>& args )
     {
-      Quaternion* ptr = unwrap<Quaternion>( args.Holder() );
+      Quaternion* ptr = unwrap( args.Holder() );
       args.GetReturnValue().Set( Quaternion::newFrom( ptr->UnitInverse() ) );
     }
 
@@ -293,7 +292,7 @@ namespace Glacier {
     //! \endverbatim
     void Quaternion::jsGetRoll( const FunctionCallbackInfo<v8::Value>& args )
     {
-      Quaternion* ptr = unwrap<Quaternion>( args.Holder() );
+      Quaternion* ptr = unwrap( args.Holder() );
       args.GetReturnValue().Set( ptr->getRoll().valueRadians() );
     }
 
@@ -302,7 +301,7 @@ namespace Glacier {
     //! \endverbatim
     void Quaternion::jsGetPitch( const FunctionCallbackInfo<v8::Value>& args )
     {
-      Quaternion* ptr = unwrap<Quaternion>( args.Holder() );
+      Quaternion* ptr = unwrap( args.Holder() );
       args.GetReturnValue().Set( ptr->getPitch().valueRadians() );
     }
 
@@ -311,7 +310,7 @@ namespace Glacier {
     //! \endverbatim
     void Quaternion::jsGetYaw( const FunctionCallbackInfo<v8::Value>& args )
     {
-      Quaternion* ptr = unwrap<Quaternion>( args.Holder() );
+      Quaternion* ptr = unwrap( args.Holder() );
       args.GetReturnValue().Set( ptr->getYaw().valueRadians() );
     }
 

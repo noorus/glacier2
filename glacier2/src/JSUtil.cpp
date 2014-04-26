@@ -21,9 +21,9 @@ namespace Glacier {
         if ( args.Length() >= ( arg + 1 ) && args[arg]->IsObject() )
         {
           Local<v8::Object> object = args[arg]->ToObject();
-          if ( ObjectWrapper::isWrappedType( object, Wrapped_Vector3 ) )
+          if ( Vector3::isWrappedType( object, Wrapped_Vector3 ) )
           {
-            Vector3* unwrapped = ObjectWrapper::unwrap<Vector3>( object );
+            Vector3* unwrapped = Vector3::unwrap( object );
             return unwrapped;
           }
         }
@@ -42,9 +42,9 @@ namespace Glacier {
         if ( args.Length() >= ( arg + 1 ) && args[arg]->IsObject() )
         {
           Local<v8::Object> object = args[arg]->ToObject();
-          if ( ObjectWrapper::isWrappedType( object, Wrapped_Quaternion ) )
+          if ( Quaternion::isWrappedType( object, Wrapped_Quaternion ) )
           {
-            Quaternion* unwrapped = ObjectWrapper::unwrap<Quaternion>( object );
+            Quaternion* unwrapped = Quaternion::unwrap( object );
             return unwrapped;
           }
         }
