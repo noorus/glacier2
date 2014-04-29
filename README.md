@@ -11,4 +11,4 @@ Some component licensing details before I forget about them;
 * *nedmalloc* by Niall Douglas, **Boost**
 * *Ogre3D* by Ogre3D Project, **MIT**
 * *FMOD Ex* by Firelight Technologies, **NC w/ attribution**
-* *nil*, obviously under **MIT** license
+* *shiny* by scrawl, **MIT**
