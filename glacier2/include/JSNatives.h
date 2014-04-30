@@ -12,6 +12,8 @@ namespace Glacier {
 
   //! \addtogroup Scripting
   //! @{
+  
+  class Console;
 
   namespace JS {
 
@@ -26,6 +28,16 @@ namespace Glacier {
     using v8::FunctionTemplate;
     using v8::FunctionCallbackInfo;
     using v8::WeakCallbackData;
+
+    class Console: public ObjectWrapper<Console> {
+    protected:
+      Glacier::Console* mConsole;
+      explicit Console( Glacier::Console* console );
+      static void jsPrint( const FunctionCallbackInfo<v8::Value>& args );
+    public:
+      Glacier::Console* getConsole();
+      static void initialize( Handle<v8::Context> context );
+    };
 
     //! \class Vector3
     //! A JavaScript-wrapped Vector3.

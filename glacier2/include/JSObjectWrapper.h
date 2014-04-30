@@ -27,7 +27,8 @@ namespace Glacier {
     using v8::WeakCallbackData;
 
     enum WrappedType {
-      Wrapped_Vector3 = 0,
+      Wrapped_Console = 0,
+      Wrapped_Vector3,
       Wrapped_Quaternion
     };
 

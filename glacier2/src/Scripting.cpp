@@ -14,26 +14,6 @@ namespace Glacier {
 
   const Ogre::String cJSResourceGroup = "JavaScript";
 
-  void Print( const v8::FunctionCallbackInfo<v8::Value>& args )
-  {
-    wstring msg;
-    bool first = true;
-    for ( int i = 0; i < args.Length(); i++ )
-    {
-      v8::HandleScope handleScope( args.GetIsolate() );
-      if ( first )
-        first = false;
-      else
-        msg.append( L" " );
-      v8::String::Value str( args[i] );
-      const wchar_t* cstr = (const wchar_t*)*str;
-      if ( cstr )
-        msg.append( cstr );
-    }
-    if ( gEngine && !msg.empty() )
-      gEngine->getConsole()->printf( Console::srcScripting, msg.c_str() );
-  }
-
   Scripting::Scripting( Engine* engine ): EngineComponent( engine ),
   mIsolate( nullptr )
   {
@@ -69,9 +49,6 @@ namespace Glacier {
 
     // Set up global object template
     v8::Handle<v8::ObjectTemplate> global = v8::ObjectTemplate::New();
-    global->Set(
-      JS::Util::allocString( L"print" ),
-      v8::FunctionTemplate::New( mIsolate, Print ) );
 
     // Initialize native classes in the global namespace
     JS::Vector3::initialize( global );
@@ -83,6 +60,8 @@ namespace Glacier {
 
     // Switch it in place
     mContext.Reset( mIsolate, context );
+
+    JS::Console::initialize( context );
   }
 
   void Scripting::shutdown()
