@@ -213,11 +213,14 @@
     <ClCompile Include="src\Director.cpp" />
     <ClCompile Include="src\Engine.cpp" />
     <ClCompile Include="src\EngineComponent.cpp" />
+    <ClCompile Include="src\Entity.cpp" />
+    <ClCompile Include="src\EntityManager.cpp" />
     <ClCompile Include="src\Exception.cpp" />
     <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\GlobalStats.cpp" />
     <ClCompile Include="src\Graphics.cpp" />
     <ClCompile Include="src\Input.cpp" />
+    <ClCompile Include="src\JSConsole.cpp" />
     <ClCompile Include="src\JSQuaternion.cpp" />
     <ClCompile Include="src\JSUtil.cpp" />
     <ClCompile Include="src\JSVector3.cpp" />
@@ -226,7 +229,8 @@
     <ClCompile Include="src\Physics.cpp" />
     <ClCompile Include="src\Script.cpp" />
     <ClCompile Include="src\Scripting.cpp" />
-    <ClCompile Include="src\Sound.cpp" />
+    <ClCompile Include="src\FMODAudio.cpp" />
+    <ClCompile Include="src\ServiceLocator.cpp" />
     <ClCompile Include="src\State.cpp" />
     <ClCompile Include="src\StdAfx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -250,6 +254,9 @@
     <ClInclude Include="include\Director.h" />
     <ClInclude Include="include\Engine.h" />
     <ClInclude Include="include\EngineComponent.h" />
+    <ClInclude Include="include\Entity.h" />
+    <ClInclude Include="include\EntityManager.h" />
+    <ClInclude Include="include\EntityRegistry.h" />
     <ClInclude Include="include\Exception.h" />
     <ClInclude Include="include\Game.h" />
     <ClInclude Include="include\GlobalStats.h" />
@@ -262,7 +269,9 @@
     <ClInclude Include="include\Physics.h" />
     <ClInclude Include="include\Script.h" />
     <ClInclude Include="include\Scripting.h" />
-    <ClInclude Include="include\Sound.h" />
+    <ClInclude Include="include\ServiceLocator.h" />
+    <ClInclude Include="include\Services.h" />
+    <ClInclude Include="include\FMODAudio.h" />
     <ClInclude Include="include\State.h" />
     <ClInclude Include="include\StdAfx.h" />
     <ClInclude Include="include\TargetVer.h" />

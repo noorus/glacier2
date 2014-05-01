@@ -1,5 +1,5 @@
 #include "StdAfx.h"
-#include "Sound.h"
+#include "FMODAudio.h"
 #include "Engine.h"
 #include "Console.h"
 #include "GlacierMemory.h"
@@ -18,7 +18,7 @@ namespace Glacier {
   const char* cFMODLogFile = "fmod.log";
 
   const int cFMODSpeakerModeCount = 10;
-  const Sound::SpeakerMode cFMODSpeakerModes[cFMODSpeakerModeCount] =
+  const FMODAudio::SpeakerMode cFMODSpeakerModes[cFMODSpeakerModeCount] =
   {
     { FMOD_SPEAKERMODE_RAW, L"raw", L"Raw" },
     { FMOD_SPEAKERMODE_MONO, L"mono", L"Mono (1.0)" },
@@ -33,7 +33,7 @@ namespace Glacier {
   };
 
   const int cFMODOutputTypeCount = 5;
-  const Sound::OutputType cFMODOutputTypes[cFMODOutputTypeCount] =
+  const FMODAudio::OutputType cFMODOutputTypes[cFMODOutputTypeCount] =
   {
     { FMOD_OUTPUTTYPE_NOSOUND, L"nosound", L"No sound" },
     { FMOD_OUTPUTTYPE_WINMM, L"winmm", L"Windows MultiMedia" },
@@ -45,64 +45,64 @@ namespace Glacier {
   // Sound engine CVARs =======================================================
 
   ENGINE_DECLARE_CONVAR_WITH_CB( fm_volume, L"Master volume.",
-    1.0f, Sound::callbackMasterVolume );
+    1.0f, FMODAudio::callbackMasterVolume );
   ENGINE_DECLARE_CONVAR_WITH_CB( fm_bgvolume, L"Background music volume.",
-    1.0f, Sound::callbackMusicVolume );
+    1.0f, FMODAudio::callbackMusicVolume );
   ENGINE_DECLARE_CONVAR_WITH_CB( fm_fxvolume, L"Sound effect volume.",
-    1.0f, Sound::callbackEffectVolume );
+    1.0f, FMODAudio::callbackEffectVolume );
   ENGINE_DECLARE_CONVAR( fm_device,
     L"Audio output device index. 0 = System default. Use fm_listdevices for a list of devices.", 0 );
   ENGINE_DECLARE_CONVAR_WITH_CB( fm_maxchannels,
     L"Maximum number of virtual sound channels available. Does not equal the amount of actual voices playing.",
-    256, Sound::callbackMaxChannels );
+    256, FMODAudio::callbackMaxChannels );
   ENGINE_DECLARE_CONVAR_WITH_CB( fm_speakermode,
     L"Speaker setup on the system. Valid values are \"auto\",\"mono\",\"stereo\",\"quad\" (4.0),\"surround\" (5.0),\"surround51\" (5.1),\"surround71\" (7.1),\"prologic\" (prologic surround encoding).",
-    L"auto", Sound::callbackSpeakerMode );
+    L"auto", FMODAudio::callbackSpeakerMode );
   ENGINE_DECLARE_CONVAR_WITH_CB( fm_outputmode,
     L"Audio output mode. Valid values are \"nosound\" (No output),\"auto\" (System default),\"winmm\" (Windows MultiMedia),\"dsound\" (DirectSound),\"wasapi\" (WASAPI),\"asio\" (ASIO 2.0).",
-    L"auto", Sound::callbackOutputMode );
+    L"auto", FMODAudio::callbackOutputMode );
   ENGINE_DECLARE_CONCMD( fm_restart,
     L"Restart the sound subsystem to apply changes to speaker/output setup.",
-    Sound::callbackAudioRestart );
+    FMODAudio::callbackAudioRestart );
   ENGINE_DECLARE_CONCMD( fm_listdevices,
     L"Lists all available audio devices for the current output mode.",
-    Sound::callbackListDevices );
+    FMODAudio::callbackListDevices );
 
   // Sound engine info struct =================================================
 
-  const wstring& Sound::Info::outputTypeString()
+  const wstring& FMODAudio::Info::outputTypeString()
   {
     return outputTypeToDisplayString( outputType );
   }
 
-  const wstring& Sound::Info::speakerModeString()
+  const wstring& FMODAudio::Info::speakerModeString()
   {
     return speakerModeToDisplayString( speakerMode );
   }
 
   // Sound engine =============================================================
 
-  Sound::Sound( Engine* engine ): EngineComponent( engine ),
+  FMODAudio::FMODAudio( Engine* engine ): EngineComponent( engine ),
   mEventSystem( nullptr ), mSystem( nullptr )
   {
     resetGroups();
 
     FMOD::Memory_Initialize( NULL, 0,
-      Sound::callbackFMODMemAlloc,
-      Sound::callbackFMODMemRealloc,
-      Sound::callbackFMODMemFree, FMOD_MEMORY_NORMAL );
+      FMODAudio::callbackFMODMemAlloc,
+      FMODAudio::callbackFMODMemRealloc,
+      FMODAudio::callbackFMODMemFree, FMOD_MEMORY_NORMAL );
 
-    soundInitialize();
+    initialize();
   }
 
-  void Sound::resetGroups()
+  void FMODAudio::resetGroups()
   {
     mMasterGroup = nullptr;
     mMusicGroup = nullptr;
     mEffectGroup = nullptr;
   }
 
-  void Sound::soundInitialize()
+  void FMODAudio::initialize()
   {
     // Greetings
     FMOD_RESULT hr;
@@ -265,12 +265,12 @@ namespace Glacier {
     mEngine->operationContinueAudio();
   }
 
-  void Sound::componentTick( GameTime tick, GameTime time )
+  void FMODAudio::componentTick( GameTime tick, GameTime time )
   {
     mEventSystem->update();
   }
 
-  void Sound::soundShutdown()
+  void FMODAudio::shutdown()
   {
     mEngine->getConsole()->printf( Console::srcSound,
       L"Shutting down FMOD..." );
@@ -285,36 +285,36 @@ namespace Glacier {
     resetGroups();
   }
 
-  void Sound::soundRestart()
+  void FMODAudio::restart()
   {
-    soundShutdown();
-    soundInitialize();
+    shutdown();
+    initialize();
   }
 
-  Sound::~Sound()
+  FMODAudio::~FMODAudio()
   {
-    soundShutdown();
+    shutdown();
   }
 
-  void Sound::setMasterVolume( float volume )
+  void FMODAudio::setMasterVolume( float volume )
   {
     if ( mMasterGroup )
       mMasterGroup->setVolume( volume );
   }
 
-  void Sound::setMusicVolume( float volume )
+  void FMODAudio::setMusicVolume( float volume )
   {
     if ( mMusicGroup )
       mMusicGroup->setVolume( volume );
   }
 
-  void Sound::setEffectVolume( float volume )
+  void FMODAudio::setEffectVolume( float volume )
   {
     if ( mEffectGroup )
       mEffectGroup->setVolume( volume );
   }
 
-  void Sound::printDeviceList( Console* console )
+  void FMODAudio::printDeviceList( Console* console )
   {
     if ( !mSystem )
       return;
@@ -340,7 +340,7 @@ namespace Glacier {
 
   // Console command callbacks ================================================
 
-  bool Sound::callbackMasterVolume( ConVar* variable, ConVar::Value oldValue )
+  bool FMODAudio::callbackMasterVolume( ConVar* variable, ConVar::Value oldValue )
   {
     float volume = boost::algorithm::clamp( variable->getFloat(), 0.0f, 1.0f );
     if ( gEngine && gEngine->getSound() )
@@ -348,7 +348,7 @@ namespace Glacier {
     return true;
   }
 
-  bool Sound::callbackMusicVolume( ConVar* variable, ConVar::Value oldValue )
+  bool FMODAudio::callbackMusicVolume( ConVar* variable, ConVar::Value oldValue )
   {
     float volume = boost::algorithm::clamp( variable->getFloat(), 0.0f, 1.0f );
     if ( gEngine && gEngine->getSound() )
@@ -356,7 +356,7 @@ namespace Glacier {
     return true;
   }
 
-  bool Sound::callbackEffectVolume( ConVar* variable, ConVar::Value oldValue )
+  bool FMODAudio::callbackEffectVolume( ConVar* variable, ConVar::Value oldValue )
   {
     float volume = boost::algorithm::clamp( variable->getFloat(), 0.0f, 1.0f );
     if ( gEngine && gEngine->getSound() )
@@ -364,16 +364,16 @@ namespace Glacier {
     return true;
   }
 
-  bool Sound::callbackMaxChannels( ConVar* variable, ConVar::Value oldValue )
+  bool FMODAudio::callbackMaxChannels( ConVar* variable, ConVar::Value oldValue )
   {
     int channels = boost::algorithm::clamp( variable->getInt(), 64, 4093 );
     variable->forceValue( channels );
     return true;
   }
 
-  bool Sound::callbackSpeakerMode( ConVar* variable, ConVar::Value oldValue )
+  bool FMODAudio::callbackSpeakerMode( ConVar* variable, ConVar::Value oldValue )
   {
-    auto mode = Sound::stringToSpeakerMode( variable->getString() );
+    auto mode = FMODAudio::stringToSpeakerMode( variable->getString() );
     if ( mode == FMOD_SPEAKERMODE_MAX )
     {
       if ( gEngine && gEngine->getConsole() )
@@ -385,9 +385,9 @@ namespace Glacier {
     return true;
   }
 
-  bool Sound::callbackOutputMode( ConVar* variable, ConVar::Value oldValue )
+  bool FMODAudio::callbackOutputMode( ConVar* variable, ConVar::Value oldValue )
   {
-    auto type = Sound::stringToOutputType( variable->getString() );
+    auto type = FMODAudio::stringToOutputType( variable->getString() );
     if ( type == FMOD_OUTPUTTYPE_MAX )
     {
       if ( gEngine && gEngine->getConsole() )
@@ -399,16 +399,16 @@ namespace Glacier {
     return true;
   }
 
-  void Sound::callbackAudioRestart( Console* console, ConCmd* command,
+  void FMODAudio::callbackAudioRestart( Console* console, ConCmd* command,
   StringVector& arguments )
   {
     if ( !gEngine || !gEngine->getSound() )
       return;
 
-    gEngine->getSound()->soundRestart();
+    gEngine->getSound()->restart();
   }
 
-  void Sound::callbackListDevices( Console* console, ConCmd* command,
+  void FMODAudio::callbackListDevices( Console* console, ConCmd* command,
   StringVector& arguments )
   {
     if ( !gEngine || !gEngine->getSound() )
@@ -419,19 +419,19 @@ namespace Glacier {
 
   // Memory allocation callbacks ==============================================
 
-  void* Sound::callbackFMODMemAlloc( unsigned int size,
+  void* FMODAudio::callbackFMODMemAlloc( unsigned int size,
   FMOD_MEMORY_TYPE type, const char* source )
   {
     return Memory::instance().alloc( size );
   }
 
-  void* Sound::callbackFMODMemRealloc( void* mem, unsigned int size,
+  void* FMODAudio::callbackFMODMemRealloc( void* mem, unsigned int size,
   FMOD_MEMORY_TYPE type, const char* source )
   {
     return Memory::instance().realloc( mem, size );
   }
 
-  void Sound::callbackFMODMemFree( void* mem,
+  void FMODAudio::callbackFMODMemFree( void* mem,
   FMOD_MEMORY_TYPE type, const char* source )
   {
     Memory::instance().free( mem );
@@ -439,7 +439,7 @@ namespace Glacier {
 
   // Conversion utilities =====================================================
 
-  FMOD_SPEAKERMODE Sound::stringToSpeakerMode( const wstring& mode )
+  FMOD_SPEAKERMODE FMODAudio::stringToSpeakerMode( const wstring& mode )
   {
     if ( boost::iequals( mode, L"auto" ) )
       return (FMOD_SPEAKERMODE)( FMOD_SPEAKERMODE_MAX + 1 );
@@ -451,7 +451,7 @@ namespace Glacier {
     return FMOD_SPEAKERMODE_MAX;
   }
 
-  const wstring& Sound::speakerModeToDisplayString( const FMOD_SPEAKERMODE mode )
+  const wstring& FMODAudio::speakerModeToDisplayString( const FMOD_SPEAKERMODE mode )
   {
     for ( int i = 0; i < cFMODSpeakerModeCount; i++ )
     {
@@ -461,7 +461,7 @@ namespace Glacier {
     return cUnknown;
   }
 
-  FMOD_OUTPUTTYPE Sound::stringToOutputType( const wstring& type )
+  FMOD_OUTPUTTYPE FMODAudio::stringToOutputType( const wstring& type )
   {
     if ( boost::iequals( type, L"auto" ) )
       return (FMOD_OUTPUTTYPE)( FMOD_OUTPUTTYPE_MAX + 1 );
@@ -473,7 +473,7 @@ namespace Glacier {
     return FMOD_OUTPUTTYPE_MAX;
   }
 
-  const wstring& Sound::outputTypeToDisplayString( const FMOD_OUTPUTTYPE type )
+  const wstring& FMODAudio::outputTypeToDisplayString( const FMOD_OUTPUTTYPE type )
   {
     for ( int i = 0; i < cFMODOutputTypeCount; i++ )
     {

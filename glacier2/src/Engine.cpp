@@ -7,17 +7,14 @@
 #include "Physics.h"
 #include "Utilities.h"
 #include "Exception.h"
-#include "Sound.h"
+#include "FMODAudio.h"
 #include "Game.h"
 #include "WindowHandler.h"
 #include "Input.h"
+#include "ServiceLocator.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
-
-#define GLACIER_NO_SOUND 1
-#define GLACIER_NO_PHYSICS 1
-#define GLACIER_NO_INPUT 1
 
 Glacier::Engine* gEngine = nullptr;
 
@@ -59,7 +56,7 @@ namespace Glacier {
   mProcess( NULL ), mThread( NULL ), mInstance( instance ),
   mSignal( Signal_None ), mVersion( 0, 1, 1 ), mConsoleWindow( nullptr ),
   mGame( nullptr ), mWindowHandler( nullptr ), mInput( nullptr ),
-  mSound( nullptr ), mPhysics( nullptr )
+  mAudio( nullptr ), mPhysics( nullptr )
   {
   }
 
@@ -194,15 +191,10 @@ namespace Glacier {
     // Create subsystems
     mWindowHandler = new WindowHandler( this );
     mGraphics = new Graphics( this, mWindowHandler );
-#ifndef GLACIER_NO_INPUT
     mInput = new Input( this, mInstance, mGraphics->getWindow() );
-#endif
-#ifndef GLACIER_NO_PHYSICS
     mPhysics = new Physics( this );
-#endif
-#ifndef GLACIER_NO_SOUND
-    mSound = new Sound( this );
-#endif
+    mAudio = new FMODAudio( this );
+    Locator::provideAudio( mAudio );
     mScripting = new Scripting( this );
     mScripting->test( L"test.js" );
     mGame = new Game( this );
@@ -240,16 +232,10 @@ namespace Glacier {
       fTimeAccumulator += fTimeDelta;
       while ( fTimeAccumulator >= fLogicStep )
       {
-#ifndef GLACIER_NO_PHYSICS
         mPhysics->componentTick( fLogicStep, fTime );
-#endif
-#ifndef GLACIER_NO_INPUT
         mInput->componentTick( fLogicStep, fTime );
-#endif
         mGame->componentTick( fLogicStep, fTime );
-#ifndef GLACIER_NO_SOUND
-        mSound->componentTick( fLogicStep, fTime );
-#endif
+        mAudio->componentTick( fLogicStep, fTime );
         fTime += fLogicStep;
         fTimeAccumulator -= fLogicStep;
       }
@@ -294,7 +280,8 @@ namespace Glacier {
   {
     SAFE_DELETE( mGame );
     SAFE_DELETE( mScripting );
-    SAFE_DELETE( mSound );
+    SAFE_DELETE( mAudio );
+    Locator::provideAudio( nullptr );
     SAFE_DELETE( mPhysics );
     SAFE_DELETE( mInput );
     SAFE_DELETE( mGraphics );

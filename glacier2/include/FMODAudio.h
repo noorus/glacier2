@@ -1,6 +1,7 @@
 #pragma once
 #include "Console.h"
 #include "EngineComponent.h"
+#include "Services.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
@@ -16,7 +17,7 @@ namespace Glacier {
   ENGINE_EXTERN_CONVAR( fm_outputmode );
   ENGINE_EXTERN_CONCMD( fm_restart );
 
-  class Sound: public EngineComponent {
+  class FMODAudio: public Audio, public EngineComponent {
   public:
     struct Info {
       FMOD_CAPS caps;
@@ -78,13 +79,13 @@ namespace Glacier {
     static bool callbackSpeakerMode( ConVar* variable, ConVar::Value oldValue );
     static bool callbackOutputMode( ConVar* variable, ConVar::Value oldValue );
   public:
-    Sound( Engine* engine );
-    void soundInitialize();
-    void soundShutdown();
-    void soundRestart();
+    FMODAudio( Engine* engine );
+    virtual void initialize();
+    virtual void shutdown();
+    virtual void restart();
     const Info& getInfo() { return mInfo; }
     virtual void componentTick( GameTime tick, GameTime time );
-    virtual ~Sound();
+    virtual ~FMODAudio();
   };
 
 }

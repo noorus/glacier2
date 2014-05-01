@@ -20,7 +20,7 @@ namespace Glacier {
   class Graphics;
   class ConCmd;
   class Game;
-  class Sound;
+  class FMODAudio;
   class Physics;
   class WindowHandler;
   class Input;
@@ -58,7 +58,7 @@ namespace Glacier {
     Scripting* mScripting;
     Graphics* mGraphics;
     Physics* mPhysics;
-    Sound* mSound;
+    FMODAudio* mAudio;
     Game* mGame;
     Input* mInput;
     WindowHandler* mWindowHandler;
@@ -82,7 +82,7 @@ namespace Glacier {
     Scripting* getScripting() { return mScripting; }
     Graphics* getGraphics() { return mGraphics; }
     Physics* getPhysics() { return mPhysics; }
-    Sound* getSound() { return mSound; }
+    FMODAudio* getSound() { return mAudio; }
     Game* getGame() { return mGame; }
     Input* getInput() { return mInput; }
     inline GameTime getTime() { return fTime; }
