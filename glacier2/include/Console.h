@@ -185,6 +185,8 @@ namespace Glacier {
     virtual void componentPreUpdate( GameTime time );
     //! Destructor.
     virtual ~Console();
+    ConVar* getVariable( const wstring& name );
+    ConCmd* getCommand( const wstring& name );
     //! Registers a message source.
     Source registerSource( const wstring& name, COLORREF color );
     //! Processes commands currently in the command buffer.

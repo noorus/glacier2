@@ -34,6 +34,8 @@ namespace Glacier {
       Glacier::Console* mConsole;
       explicit Console( Glacier::Console* console );
       static void jsPrint( const FunctionCallbackInfo<v8::Value>& args );
+      static void jsGetVariable( const FunctionCallbackInfo<v8::Value>& args );
+      static void jsSetVariable( const FunctionCallbackInfo<v8::Value>& args );
     public:
       Glacier::Console* getConsole();
       static void initialize( Handle<v8::Context> context );

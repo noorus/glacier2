@@ -452,6 +452,34 @@ namespace Glacier {
     }
   }
 
+  ConVar* Console::getVariable( const wstring& name )
+  {
+    for ( ConBase* base : mCommands )
+    {
+      if ( !base->isRegistered() )
+        continue;
+
+      if ( boost::iequals( base->getName(), name ) )
+        return base->isCommand() ? nullptr : (ConVar*)base;
+    }
+
+    return nullptr;
+  }
+
+  ConCmd* Console::getCommand( const wstring& name )
+  {
+    for ( ConBase* base : mCommands )
+    {
+      if ( !base->isRegistered() )
+        continue;
+
+      if ( boost::iequals( base->getName(), name ) )
+        return base->isCommand() ? (ConCmd*)base : nullptr;
+    }
+
+    return nullptr;
+  }
+
   void Console::execute( wstring commandLine )
   {
     boost::trim( commandLine );
