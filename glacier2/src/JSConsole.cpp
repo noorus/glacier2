@@ -34,6 +34,7 @@ namespace Glacier {
       JS_TEMPLATE_SET( tpl, "print", jsPrint );
       JS_TEMPLATE_SET( tpl, "getVariable", jsGetVariable );
       JS_TEMPLATE_SET( tpl, "setVariable", jsSetVariable );
+      JS_TEMPLATE_SET( tpl, "execute", jsExecute );
 
       Console* console = new Console( gEngine->getConsole() );
       Local<v8::Object> object = tpl->GetFunction()->NewInstance();
@@ -69,8 +70,9 @@ namespace Glacier {
     void Console::jsGetVariable( const FunctionCallbackInfo<v8::Value>& args )
     {
       v8::Isolate* isolate = args.GetIsolate();
-      Console* console = unwrap( args.Holder() );
       HandleScope handleScope( isolate );
+
+      Console* console = unwrap( args.Holder() );
 
       if ( args.Length() != 1 || !args[0]->IsString() )
       {
@@ -101,8 +103,9 @@ namespace Glacier {
     void Console::jsSetVariable( const FunctionCallbackInfo<v8::Value>& args )
     {
       v8::Isolate* isolate = args.GetIsolate();
-      Console* console = unwrap( args.Holder() );
       HandleScope handleScope( isolate );
+
+      Console* console = unwrap( args.Holder() );
 
       if ( args.Length() != 2 || !args[0]->IsString() )
       {
@@ -126,6 +129,28 @@ namespace Glacier {
       }
 
       variable->setValue( (const wchar_t*)*variableValue );
+    }
+
+    //! \verbatim
+    //! Console.execute( String commandLine )
+    //! \endverbatim
+    void Console::jsExecute( const FunctionCallbackInfo<v8::Value>& args )
+    {
+      v8::Isolate* isolate = args.GetIsolate();
+      HandleScope handleScope( isolate );
+
+      Console* console = unwrap( args.Holder() );
+
+      if ( args.Length() != 1 || !args[0]->IsString() )
+      {
+        Util::throwException( isolate,
+          L"Syntax error: Console.execute( String commandLine )" );
+        return;
+      }
+
+      v8::String::Value commandLine( args[0] );
+
+      console->getConsole()->execute( (const wchar_t*)*commandLine );
     }
 
     Glacier::Console* Console::getConsole()
