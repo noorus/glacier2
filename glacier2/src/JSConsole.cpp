@@ -74,8 +74,8 @@ namespace Glacier {
 
       if ( args.Length() != 1 || !args[0]->IsString() )
       {
-        args.GetIsolate()->ThrowException(
-          Util::allocString( "Expected arguments String variable", isolate ) );
+        Util::throwException( isolate,
+          L"Syntax error: String Console.getVariable( String variable )" );
         return;
       }
 
@@ -86,8 +86,9 @@ namespace Glacier {
 
       if ( !variable )
       {
-        args.GetIsolate()->ThrowException(
-          Util::allocString( "No such console variable", isolate ) );
+        Util::throwException( isolate,
+          L"Console.getVariable: No such console variable \"%s\"",
+          (const wchar_t*)*variableName );
         return;
       }
 
@@ -105,8 +106,8 @@ namespace Glacier {
 
       if ( args.Length() != 2 || !args[0]->IsString() )
       {
-        args.GetIsolate()->ThrowException(
-          Util::allocString( "Expected arguments String variable, Mixed value", isolate ) );
+        Util::throwException( isolate,
+          L"Syntax error: Console.setVariable( String variable, String value )" );
         return;
       }
 
@@ -118,8 +119,9 @@ namespace Glacier {
 
       if ( !variable )
       {
-        args.GetIsolate()->ThrowException(
-          Util::allocString( "No such console variable", isolate ) );
+        Util::throwException( isolate,
+          L"Console.setVariable: No such console variable \"%s\"",
+          (const wchar_t*)*variableName );
         return;
       }
 

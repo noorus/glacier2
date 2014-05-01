@@ -44,6 +44,14 @@ namespace Glacier {
           isolate ? isolate : Isolate::GetCurrent(),
           (uint16_t*)str.c_str() );
       }
+
+      //! Create a local JavaScript String instance from given source string.
+      inline Local<v8::String> allocString( const wchar_t* str, Isolate* isolate = nullptr )
+      {
+        return v8::String::NewFromTwoByte(
+          isolate ? isolate : Isolate::GetCurrent(),
+          (uint16_t*)str );
+      }
       
       //! Create a local JavaScript String instance from given source string.
       inline Local<v8::String> allocString( const Ogre::String& str, Isolate* isolate = nullptr )
@@ -59,6 +67,18 @@ namespace Glacier {
         return v8::String::NewFromUtf8(
           isolate ? isolate : Isolate::GetCurrent(),
           str );
+      }
+
+      inline void throwException( Isolate* isolate, const wchar_t* message, ... )
+      {
+        wchar_t buffer[1024];
+
+        va_list va_alist;
+        va_start( va_alist, message );
+        _vsnwprintf_s( buffer, 1024, message, va_alist );
+        va_end( va_alist );
+
+        isolate->ThrowException( allocString( buffer, isolate ) );
       }
 
       Vector3* extractVector3( int arg, const FunctionCallbackInfo<v8::Value>& args );

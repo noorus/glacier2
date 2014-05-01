@@ -24,7 +24,7 @@ namespace Glacier {
       L"Using V8 %S", v8::V8::GetVersion() );
 
     v8::V8::InitializeICU();
-    v8::V8::SetCaptureStackTraceForUncaughtExceptions( true, 10 );
+    v8::V8::SetCaptureStackTraceForUncaughtExceptions( true, 5, v8::StackTrace::kDetailed );
 
     mIsolate = v8::Isolate::GetCurrent();
     if ( !mIsolate )
