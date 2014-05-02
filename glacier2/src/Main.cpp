@@ -1,10 +1,10 @@
 #include "StdAfx.h"
 #include "Exception.h"
-#include "GlacierMemory.h"
 #include "Engine.h"
 #include "Console.h"
 #include "Win32.h"
 #include "ServiceLocator.h"
+#include "NedPoolMemory.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
@@ -31,6 +31,7 @@ LPWSTR lpCmdLine, int nCmdShow )
   // CRT memory allocation breakpoints can be set here
   // _CrtSetBreakAlloc( x );
 
+  // Parse command line arguments into engine options
   int argCount;
   wchar_t** arguments = CommandLineToArgvW( lpCmdLine, &argCount );
   if ( !arguments )
@@ -49,6 +50,11 @@ LPWSTR lpCmdLine, int nCmdShow )
 
   LocalFree( arguments );
 
+  // Initialize & provide the pooled memory service
+  NedPoolMemory* memoryService = new NedPoolMemory();
+  Locator::provideMemory( memoryService );
+
+  // Init generic win32 stuff and our error dialog context
   Win32::Win32::instance().initialize();
   Win32::ErrorDialog::Context error( hInstance );
   error.title = L"Fatal engine error occurred";
@@ -99,6 +105,8 @@ LPWSTR lpCmdLine, int nCmdShow )
 #endif
 
   Win32::Win32::instance().shutdown();
+
+  SAFE_DELETE( memoryService );
 
   return EXIT_SUCCESS;
 }

@@ -19,4 +19,11 @@ namespace Glacier {
     virtual void restart() { /* Nothing */ }
   };
 
+  class Memory {
+  public:
+    virtual void* alloc( size_t size, size_t alignment = 0Ui64 ) = 0;
+    virtual void* realloc( void* location, size_t size, size_t alignment = 0Ui64 ) = 0;
+    virtual void free( void* location ) = 0;
+  };
+
 }

@@ -87,9 +87,6 @@
     <ClCompile Include="..\EASTL\src\string.cpp">
       <Filter>Source Files\EASTL</Filter>
     </ClCompile>
-    <ClCompile Include="src\Memory.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\TextFile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -171,6 +168,9 @@
     <ClCompile Include="src\ServiceLocator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\NedPoolMemory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\StdAfx.h">
@@ -198,9 +198,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Graphics.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\GlacierMemory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\TextFile.h">
@@ -285,6 +282,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\FMODAudio.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\NedPoolMemory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

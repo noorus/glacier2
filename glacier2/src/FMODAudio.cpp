@@ -2,8 +2,8 @@
 #include "FMODAudio.h"
 #include "Engine.h"
 #include "Console.h"
-#include "GlacierMemory.h"
 #include "Exception.h"
+#include "ServiceLocator.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
@@ -422,19 +422,19 @@ namespace Glacier {
   void* FMODAudio::callbackFMODMemAlloc( unsigned int size,
   FMOD_MEMORY_TYPE type, const char* source )
   {
-    return Memory::instance().alloc( size );
+    return Locator::getMemory().alloc( size );
   }
 
   void* FMODAudio::callbackFMODMemRealloc( void* mem, unsigned int size,
   FMOD_MEMORY_TYPE type, const char* source )
   {
-    return Memory::instance().realloc( mem, size );
+    return Locator::getMemory().realloc( mem, size );
   }
 
   void FMODAudio::callbackFMODMemFree( void* mem,
   FMOD_MEMORY_TYPE type, const char* source )
   {
-    Memory::instance().free( mem );
+    Locator::getMemory().free( mem );
   }
 
   // Conversion utilities =====================================================

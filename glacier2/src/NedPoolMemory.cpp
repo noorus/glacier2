@@ -1,5 +1,5 @@
 #include "StdAfx.h"
-#include "GlacierMemory.h"
+#include "NedPoolMemory.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
@@ -19,28 +19,28 @@ void* operator new[]( size_t size, size_t alignment, size_t alignmentOffset, con
 
 namespace Glacier {
 
-  Memory::Memory(): mPool( nullptr )
+  NedPoolMemory::NedPoolMemory(): mPool( nullptr )
   {
     mPool = glacier_nedalloc::nedcreatepool( 10240, 4 );
   }
 
-  Memory::~Memory()
+  NedPoolMemory::~NedPoolMemory()
   {
     if ( mPool )
       glacier_nedalloc::neddestroypool( mPool );
   }
 
-  void* Memory::alloc( size_t size, size_t alignment )
+  void* NedPoolMemory::alloc( size_t size, size_t alignment )
   {
     return glacier_nedalloc::nedpmalloc2( mPool, size, alignment, 0 );
   }
 
-  void* Memory::realloc( void* location, size_t size, size_t alignment )
+  void* NedPoolMemory::realloc( void* location, size_t size, size_t alignment )
   {
     return glacier_nedalloc::nedprealloc2( mPool, location, size, alignment, 0 );
   }
 
-  void Memory::free( void* location )
+  void NedPoolMemory::free( void* location )
   {
     glacier_nedalloc::nedpfree2( mPool, location, 0 );
   }

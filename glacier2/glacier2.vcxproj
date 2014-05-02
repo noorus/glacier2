@@ -225,7 +225,7 @@
     <ClCompile Include="src\JSUtil.cpp" />
     <ClCompile Include="src\JSVector3.cpp" />
     <ClCompile Include="src\Main.cpp" />
-    <ClCompile Include="src\Memory.cpp" />
+    <ClCompile Include="src\NedPoolMemory.cpp" />
     <ClCompile Include="src\Physics.cpp" />
     <ClCompile Include="src\Script.cpp" />
     <ClCompile Include="src\Scripting.cpp" />
@@ -261,7 +261,7 @@
     <ClInclude Include="include\Game.h" />
     <ClInclude Include="include\GlobalStats.h" />
     <ClInclude Include="include\Graphics.h" />
-    <ClInclude Include="include\GlacierMemory.h" />
+    <ClInclude Include="include\NedPoolMemory.h" />
     <ClInclude Include="include\Input.h" />
     <ClInclude Include="include\JSNatives.h" />
     <ClInclude Include="include\JSObjectWrapper.h" />
