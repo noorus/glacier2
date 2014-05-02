@@ -8,8 +8,8 @@ namespace Glacier {
 
   class Locator {
   private:
-    static Audio* audioService;
-    static NullAudio nullAudioService;
+    static Audio* audioService; //!< Currently provided audio service
+    static NullAudio nullAudioService; //!< Default null audio service
   public:
     static Audio& getAudio() { return *audioService; }
 

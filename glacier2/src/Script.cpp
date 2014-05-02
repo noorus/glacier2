@@ -22,18 +22,36 @@ namespace Glacier {
   using v8::FunctionTemplate;
   using v8::Value;
 
-  Script::Script( const wstring& name, Scripting* host ):
-  mName( name ) , mHost( host )
+  Script::Script( Scripting& host, const wstring& name ):
+  mHost( host ), mName( name ), mStatus( Status_Uncompiled )
   {
+  }
+
+  const wstring& Script::getName()
+  {
+    return mName;
+  }
+
+  const bool Script::isSimple()
+  {
+    return true;
+  }
+
+  void Script::changeStatus( Status status )
+  {
+    mStatus = status;
   }
 
   bool Script::compile()
   {
-    HandleScope handleScope( mHost->getIsolation() );
-    Context::Scope contextScope( Handle<Context>::New( mHost->getIsolation(), mHost->getContext() ) );
+    HandleScope handleScope( mHost.getIsolate() );
+
+    Context::Scope contextScope( Handle<Context>::New(
+      mHost.getIsolate(), mHost.getContext() ) );
+
     TryCatch tryCatch;
 
-    DataStreamPtr stream = mHost->openScriptFile( Ogre::UTFString( mName ) );
+    DataStreamPtr stream = mHost.openScriptFile( Ogre::UTFString( mName ) );
 
     v8::ScriptOrigin origin( JS::Util::allocString( mName ) );
 
@@ -45,19 +63,21 @@ namespace Glacier {
 
     if ( script.IsEmpty() )
     {
+      changeStatus( Status_CompileError );
       if ( tryCatch.HasCaught() )
         reportException( tryCatch );
       return false;
     }
 
-    mScript.Reset( mHost->getIsolation(), script );
+    mScript.Reset( mHost.getIsolate(), script );
+    changeStatus( Status_Compiled );
 
     return true;
   }
 
   void Script::reportException( const v8::TryCatch& tryCatch )
   {
-    HandleScope handleScope( mHost->getIsolation() );
+    HandleScope handleScope( mHost.getIsolate() );
 
     Glacier::Console* console = gEngine->getConsole();
 
@@ -97,21 +117,33 @@ namespace Glacier {
 
   bool Script::execute()
   {
+    v8::Isolate* isolate = mHost.getIsolate();
+
     if ( mScript.IsEmpty() )
       return false;
 
-    HandleScope handleScope( mHost->getIsolation() );
-    Context::Scope contextScope( Handle<Context>::New( mHost->getIsolation(), mHost->getContext() ) );
+    changeStatus( Status_Executing );
+
+    HandleScope handleScope( isolate );
+    Context::Scope contextScope( Handle<Context>::New(
+      isolate, mHost.getContext() ) );
+
     TryCatch tryCatch;
 
-    Local<v8::Script> script = Local<v8::Script>::New( mHost->getIsolation(), mScript );
+    Local<v8::Script> script = Local<v8::Script>::New( isolate, mScript );
+
     Handle<Value> result = script->Run();
+
     if ( tryCatch.HasCaught() )
-      reportException( tryCatch );
-    if ( result.IsEmpty() )
     {
-      return false;
+      changeStatus( Status_RuntimeError );
+      reportException( tryCatch );
     }
+
+    if ( result.IsEmpty() )
+      return false;
+
+    changeStatus( Status_Compiled );
 
     return true;
   }

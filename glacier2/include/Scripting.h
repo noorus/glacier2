@@ -1,5 +1,6 @@
 #pragma once
 #include "EngineComponent.h"
+#include "Script.h"
 #include <v8.h>
 
 // Glacier² Game Engine © 2014 noorus
@@ -21,17 +22,20 @@ namespace Glacier {
   protected:
     v8::Isolate* mIsolate;
     v8::Persistent<v8::Context> mContext;
-    v8::Isolate* getIsolation();
+    v8::Isolate* getIsolate();
     v8::Persistent<v8::Context>& getContext();
+    ScriptList mScripts;
     void initialize();
     void shutdown();
+    void clearScripts();
     DataStreamPtr openScriptFile( const Ogre::String& filename );
   public:
     Scripting( Engine* engine );
     virtual ~Scripting();
+    Script* getScript( const wstring& filename );
     static void registerResources( ResourceGroupManager& manager );
     static void unregisterResources( ResourceGroupManager& manager );
-    void test( const wstring& filename );
+    void simpleExecute( const wstring& filename );
   };
 
   //! @}

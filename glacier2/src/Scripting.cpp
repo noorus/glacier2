@@ -24,7 +24,8 @@ namespace Glacier {
       L"Using V8 %S", v8::V8::GetVersion() );
 
     v8::V8::InitializeICU();
-    v8::V8::SetCaptureStackTraceForUncaughtExceptions( true, 5, v8::StackTrace::kDetailed );
+    v8::V8::SetCaptureStackTraceForUncaughtExceptions(
+      true, 5, v8::StackTrace::kDetailed );
 
     mIsolate = v8::Isolate::GetCurrent();
     if ( !mIsolate )
@@ -33,7 +34,7 @@ namespace Glacier {
     initialize();
   }
 
-  v8::Isolate* Scripting::getIsolation()
+  v8::Isolate* Scripting::getIsolate()
   {
     return mIsolate;
   }
@@ -61,13 +62,31 @@ namespace Glacier {
     // Switch it in place
     mContext.Reset( mIsolate, context );
 
-    JS::Console::initialize( context );
+    // Initialize native objects in the global namespace
+    JS::Console::initialize( mEngine->getConsole(), context );
+  }
+
+  void Scripting::clearScripts()
+  {
+    for ( auto script : mScripts )
+      delete script;
+
+    mScripts.clear();
   }
 
   void Scripting::shutdown()
   {
-    // Destroy the global context
+    clearScripts();
     mContext.Reset();
+  }
+
+  Script* Scripting::getScript( const wstring& filename )
+  {
+    for ( auto script : mScripts )
+      if ( boost::iequals( script->getName(), filename ) )
+        return script;
+
+    return nullptr;
   }
 
   void Scripting::registerResources( ResourceGroupManager& manager )
@@ -99,11 +118,21 @@ namespace Glacier {
     return stream;
   }
 
-  void Scripting::test( const wstring& filename )
+  void Scripting::simpleExecute( const wstring& filename )
   {
-    Script script( filename, this );
-    if ( script.compile() )
-      script.execute();
+    Script* script = getScript( filename );
+
+    if ( !script )
+    {
+      script = new Script( *this, filename );
+      mScripts.push_back( script );
+    }
+
+    if ( !script->isSimple() )
+      ENGINE_EXCEPT( L"Script is registered as non-simple" );
+
+    script->compile();
+    script->execute();
   }
 
 }

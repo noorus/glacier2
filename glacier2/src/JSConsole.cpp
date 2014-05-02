@@ -20,7 +20,7 @@ namespace Glacier {
       //
     }
 
-    void Console::initialize( Handle<v8::Context> context )
+    void Console::initialize( Glacier::Console* console_, Handle<v8::Context> context )
     {
       Isolate* isolate = Isolate::GetCurrent();
       HandleScope handleScope( isolate );
@@ -36,7 +36,7 @@ namespace Glacier {
       JS_TEMPLATE_SET( tpl, "setVariable", jsSetVariable );
       JS_TEMPLATE_SET( tpl, "execute", jsExecute );
 
-      Console* console = new Console( gEngine->getConsole() );
+      Console* console = new Console( console_ );
       Local<v8::Object> object = tpl->GetFunction()->NewInstance();
       console->wrap( object );
 

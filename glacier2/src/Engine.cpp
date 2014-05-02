@@ -20,6 +20,12 @@ Glacier::Engine* gEngine = nullptr;
 
 namespace Glacier {
 
+  Engine::Options::Options():
+  noAudio( false )
+  {
+    //
+  }
+
   // Engine timing values =====================================================
 
   GameTime Engine::fTime = 0.0;
@@ -167,7 +173,7 @@ namespace Glacier {
     Graphics::unregisterResources( manager );
   }
 
-  void Engine::initialize()
+  void Engine::initialize( const Options& options )
   {
     // Get process & thread handles
     mProcess = GetCurrentProcess();
@@ -188,15 +194,23 @@ namespace Glacier {
     if ( !QueryPerformanceFrequency( &mHPCFrequency ) )
       ENGINE_EXCEPT_W32( L"Couldn't query HPC frequency" );
 
-    // Create subsystems
     mWindowHandler = new WindowHandler( this );
     mGraphics = new Graphics( this, mWindowHandler );
+
+    mScripting = new Scripting( this );
+    mScripting->simpleExecute( L"initialization.js" );
+
     mInput = new Input( this, mInstance, mGraphics->getWindow() );
     mPhysics = new Physics( this );
-    mAudio = new FMODAudio( this );
-    Locator::provideAudio( mAudio );
-    mScripting = new Scripting( this );
-    mScripting->test( L"test.js" );
+
+    if ( !options.noAudio )
+    {
+      mAudio = new FMODAudio( this );
+      Locator::provideAudio( mAudio );
+    }
+    else
+      mConsole->printf( Console::srcEngine, L"Init: Skipping audio" );
+
     mGame = new Game( this );
   }
 
@@ -235,7 +249,8 @@ namespace Glacier {
         mPhysics->componentTick( fLogicStep, fTime );
         mInput->componentTick( fLogicStep, fTime );
         mGame->componentTick( fLogicStep, fTime );
-        mAudio->componentTick( fLogicStep, fTime );
+        if ( mAudio )
+          mAudio->componentTick( fLogicStep, fTime );
         fTime += fLogicStep;
         fTimeAccumulator -= fLogicStep;
       }
@@ -279,11 +294,17 @@ namespace Glacier {
   void Engine::shutdown()
   {
     SAFE_DELETE( mGame );
-    SAFE_DELETE( mScripting );
-    SAFE_DELETE( mAudio );
-    Locator::provideAudio( nullptr );
+
+    if ( mAudio )
+    {
+      delete mAudio;
+      mAudio = nullptr;
+      Locator::provideAudio( nullptr );
+    }
+
     SAFE_DELETE( mPhysics );
     SAFE_DELETE( mInput );
+    SAFE_DELETE( mScripting );
     SAFE_DELETE( mGraphics );
     SAFE_DELETE( mWindowHandler );
     SAFE_DELETE( mConsoleWindow );

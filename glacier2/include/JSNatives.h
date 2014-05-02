@@ -29,17 +29,25 @@ namespace Glacier {
     using v8::FunctionCallbackInfo;
     using v8::WeakCallbackData;
 
+    //! \class Console
+    //! A JavaScript-wrapped Console.
+    //! \sa Glacier::Console
+    //! \sa ObjectWrapper
     class Console: public ObjectWrapper<Console> {
     protected:
       Glacier::Console* mConsole;
       explicit Console( Glacier::Console* console );
+      //! JavaScript Console.print.
       static void jsPrint( const FunctionCallbackInfo<v8::Value>& args );
+      //! JavaScript Console.getVariable.
       static void jsGetVariable( const FunctionCallbackInfo<v8::Value>& args );
+      //! JavaScript Console.setVariable.
       static void jsSetVariable( const FunctionCallbackInfo<v8::Value>& args );
+      //! JavaScript Console.execute.
       static void jsExecute( const FunctionCallbackInfo<v8::Value>& args );
     public:
       Glacier::Console* getConsole();
-      static void initialize( Handle<v8::Context> context );
+      static void initialize( Glacier::Console* console, Handle<v8::Context> context );
     };
 
     //! \class Vector3

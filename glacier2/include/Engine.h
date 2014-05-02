@@ -50,6 +50,11 @@ namespace Glacier {
       wstring subtitle;
       Version( uint32_t major, uint32_t minor, uint32_t build );
     };
+    //! Engine options structure
+    struct Options {
+      bool noAudio;
+      Options();
+    };
   protected:
     Version mVersion;
     // Subsystems
@@ -120,7 +125,7 @@ namespace Glacier {
     //! \param [in,out] manager The resource group manager.
     void unregisterResources( ResourceGroupManager& manager );
     //! Initializes the Engine.
-    void initialize();
+    void initialize( const Options& options );
     //! Runs the Engine.
     void run();
     //! Shuts down the Engine and frees any resources it is using.
