@@ -2,6 +2,7 @@
 #include "Physics.h"
 #include "Engine.h"
 #include "Exception.h"
+#include "ServiceLocator.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
@@ -11,7 +12,17 @@ namespace Glacier {
   using namespace physx;
 
   static PxDefaultErrorCallback gDefaultErrorCallback;
-  static PxDefaultAllocator gDefaultAllocatorCallback;
+
+  void* Physics::Allocator::allocate( size_t size, const char* typeName, 
+  const char* filename, int line )
+  {
+    return Locator::getMemory().alloc( size, 16 );
+  }
+
+  void Physics::Allocator::deallocate( void* ptr )
+  {
+    Locator::getMemory().free( ptr );
+  }
 
   // Physics class ============================================================
 
@@ -34,7 +45,7 @@ namespace Glacier {
       PX_PHYSICS_VERSION_BUGFIX );
 
     // Using default allocator & error callbacks for now
-    PxAllocatorCallback* allocator = &gDefaultAllocatorCallback;
+    PxAllocatorCallback* allocator = &mAllocator;
     PxErrorCallback* error = &gDefaultErrorCallback;
 
     // Create foundation

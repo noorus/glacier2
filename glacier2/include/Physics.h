@@ -9,6 +9,12 @@ namespace Glacier {
 
   class Physics: public EngineComponent {
   protected:
+    class Allocator: public PxAllocatorCallback {
+    public:
+      virtual void* allocate( size_t size, const char* typeName,
+        const char* filename, int line );
+      virtual void deallocate( void* ptr );
+    } mAllocator;
     physx::PxFoundation* mFoundation;
     physx::PxPhysics* mPhysics;
     physx::PxCooking* mCooking;
