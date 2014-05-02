@@ -1,5 +1,5 @@
 #include "StdAfx.h"
-#include "Physics.h"
+#include "PhysXPhysics.h"
 #include "Engine.h"
 #include "Exception.h"
 #include "ServiceLocator.h"
@@ -13,27 +13,27 @@ namespace Glacier {
 
   static PxDefaultErrorCallback gDefaultErrorCallback;
 
-  void* Physics::Allocator::allocate( size_t size, const char* typeName, 
+  void* PhysXPhysics::Allocator::allocate( size_t size, const char* typeName, 
   const char* filename, int line )
   {
     return Locator::getMemory().alloc( size, 16 );
   }
 
-  void Physics::Allocator::deallocate( void* ptr )
+  void PhysXPhysics::Allocator::deallocate( void* ptr )
   {
     Locator::getMemory().free( ptr );
   }
 
   // Physics class ============================================================
 
-  Physics::Physics( Engine* engine ): EngineComponent( engine ),
+  PhysXPhysics::PhysXPhysics( Engine* engine ): EngineComponent( engine ),
   mFoundation( nullptr ), mPhysics( nullptr ), mCooking( nullptr ),
   mCudaContextManager( nullptr ), mControllerMgr( nullptr )
   {
-    physicsInitialize();
+    initialize();
   }
 
-  void Physics::physicsInitialize()
+  void PhysXPhysics::initialize()
   {
     mEngine->getConsole()->printf( Console::srcPhysics,
       L"Initializing physics engine..." );
@@ -106,22 +106,22 @@ namespace Glacier {
     mEngine->operationContinuePhysics();
   }
 
-  void Physics::componentPreUpdate( GameTime time )
+  void PhysXPhysics::componentPreUpdate( GameTime time )
   {
     //
   }
 
-  void Physics::componentTick( GameTime tick, GameTime time )
+  void PhysXPhysics::componentTick( GameTime tick, GameTime time )
   {
     //
   }
 
-  void Physics::componentPostUpdate( GameTime delta, GameTime time )
+  void PhysXPhysics::componentPostUpdate( GameTime delta, GameTime time )
   {
     //
   }
 
-  void Physics::physicsShutdown()
+  void PhysXPhysics::shutdown()
   {
     mEngine->getConsole()->printf( Console::srcPhysics,
       L"Shutting down physics..." );
@@ -139,15 +139,15 @@ namespace Glacier {
     SAFE_RELEASE_PHYSX( mFoundation );
   }
 
-  void Physics::physicsRestart()
+  void PhysXPhysics::restart()
   {
-    physicsShutdown();
-    physicsInitialize();
+    shutdown();
+    initialize();
   }
 
-  Physics::~Physics()
+  PhysXPhysics::~PhysXPhysics()
   {
-    physicsShutdown();
+    shutdown();
   }
 
 }

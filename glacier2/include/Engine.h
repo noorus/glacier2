@@ -21,7 +21,7 @@ namespace Glacier {
   class ConCmd;
   class Game;
   class FMODAudio;
-  class Physics;
+  class PhysXPhysics;
   class WindowHandler;
   class Input;
 
@@ -53,6 +53,7 @@ namespace Glacier {
     //! Engine options structure
     struct Options {
       bool noAudio;
+      bool noPhysics;
       Options();
     };
   protected:
@@ -62,7 +63,7 @@ namespace Glacier {
     ConsoleWindowThread* mConsoleWindow;
     Scripting* mScripting;
     Graphics* mGraphics;
-    Physics* mPhysics;
+    PhysXPhysics* mPhysics;
     FMODAudio* mAudio;
     Game* mGame;
     Input* mInput;
@@ -86,7 +87,7 @@ namespace Glacier {
     Console* getConsole() { return mConsole; }
     Scripting* getScripting() { return mScripting; }
     Graphics* getGraphics() { return mGraphics; }
-    Physics* getPhysics() { return mPhysics; }
+    PhysXPhysics* getPhysics() { return mPhysics; }
     FMODAudio* getSound() { return mAudio; }
     Game* getGame() { return mGame; }
     Input* getInput() { return mInput; }

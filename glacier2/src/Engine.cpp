@@ -4,7 +4,7 @@
 #include "ConsoleWindow.h"
 #include "Scripting.h"
 #include "Graphics.h"
-#include "Physics.h"
+#include "PhysXPhysics.h"
 #include "Utilities.h"
 #include "Exception.h"
 #include "FMODAudio.h"
@@ -201,7 +201,14 @@ namespace Glacier {
     mScripting->simpleExecute( L"initialization.js" );
 
     mInput = new Input( this, mInstance, mGraphics->getWindow() );
-    mPhysics = new Physics( this );
+
+    if ( !options.noPhysics )
+    {
+      mPhysics = new PhysXPhysics( this );
+      Locator::providePhysics( mPhysics );
+    }
+    else
+      mConsole->printf( Console::srcEngine, L"Init: Skipping physics" );
 
     if ( !options.noAudio )
     {
@@ -246,7 +253,8 @@ namespace Glacier {
       fTimeAccumulator += fTimeDelta;
       while ( fTimeAccumulator >= fLogicStep )
       {
-        mPhysics->componentTick( fLogicStep, fTime );
+        if ( mPhysics )
+          mPhysics->componentTick( fLogicStep, fTime );
         mInput->componentTick( fLogicStep, fTime );
         mGame->componentTick( fLogicStep, fTime );
         if ( mAudio )
@@ -297,12 +305,16 @@ namespace Glacier {
 
     if ( mAudio )
     {
-      delete mAudio;
-      mAudio = nullptr;
+      SAFE_DELETE( mAudio );
       Locator::provideAudio( nullptr );
     }
 
-    SAFE_DELETE( mPhysics );
+    if ( mPhysics )
+    {
+      SAFE_DELETE( mPhysics );
+      Locator::providePhysics( nullptr );
+    }
+
     SAFE_DELETE( mInput );
     SAFE_DELETE( mScripting );
     SAFE_DELETE( mGraphics );

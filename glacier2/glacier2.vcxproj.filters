@@ -108,9 +108,6 @@
     <ClCompile Include="..\hdrlib\HDRCompositor.cpp">
       <Filter>Source Files\HDRLib</Filter>
     </ClCompile>
-    <ClCompile Include="src\Physics.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\DemoState.cpp">
       <Filter>Source Files\States</Filter>
     </ClCompile>
@@ -171,6 +168,9 @@
     <ClCompile Include="src\NedPoolMemory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\PhysXPhysics.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\StdAfx.h">
@@ -223,9 +223,6 @@
     </ClInclude>
     <ClInclude Include="..\hdrlib\HDRCompositor.h">
       <Filter>Header Files\HDRLib</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Physics.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\DemoState.h">
       <Filter>Header Files\States</Filter>
@@ -285,6 +282,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\NedPoolMemory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\PhysXPhysics.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

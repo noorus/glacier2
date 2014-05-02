@@ -11,6 +11,8 @@ namespace Glacier {
     static Memory* memoryService; //!< Currently provided memory service
     static Audio* audioService; //!< Currently provided audio service
     static NullAudio nullAudioService; //!< Default null audio service
+    static Physics* physicsService; //!< Currently provided physics service
+    static NullPhysics nullPhysicsService; //!< Default null physics service
   public:
     static Memory& getMemory() { return *memoryService; }
 
@@ -25,6 +27,13 @@ namespace Glacier {
     static void provideAudio( Audio* audio )
     {
       audioService = audio ? audio : &nullAudioService;
+    }
+
+    static Physics& getPhysics() { return *physicsService; }
+
+    static void providePhysics( Physics* physics )
+    {
+      physicsService = physics ? physics : &nullPhysicsService;
     }
   };
 

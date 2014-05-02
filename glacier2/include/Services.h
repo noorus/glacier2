@@ -19,6 +19,20 @@ namespace Glacier {
     virtual void restart() { /* Nothing */ }
   };
 
+  class Physics {
+  public:
+    virtual void initialize() = 0;
+    virtual void shutdown() = 0;
+    virtual void restart() = 0;
+  };
+
+  class NullPhysics: public Physics {
+  public:
+    virtual void initialize() { /* Nothing */ }
+    virtual void shutdown() { /* Nothing */ }
+    virtual void restart() { /* Nothing */ }
+  };
+
   class Memory {
   public:
     virtual void* alloc( size_t size, size_t alignment = 0Ui64 ) = 0;

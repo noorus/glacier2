@@ -44,6 +44,8 @@ LPWSTR lpCmdLine, int nCmdShow )
   {
     if ( !_wcsicmp( arguments[i], L"-noaudio" ) ) {
       options.noAudio = true;
+    } else if ( !_wcsicmp( arguments[i], L"-nophysics" ) ) {
+      options.noPhysics = true;
     }
     i++;
   }

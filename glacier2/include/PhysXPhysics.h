@@ -1,13 +1,14 @@
 #pragma once
 #include "Types.h"
 #include "EngineComponent.h"
+#include "ServiceLocator.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
 
 namespace Glacier {
 
-  class Physics: public EngineComponent {
+  class PhysXPhysics: public Physics, public EngineComponent {
   protected:
     class Allocator: public PxAllocatorCallback {
     public:
@@ -21,14 +22,14 @@ namespace Glacier {
     physx::PxCudaContextManager* mCudaContextManager;
     physx::PxControllerManager* mControllerMgr;
   public:
-    Physics( Engine* engine );
-    void physicsInitialize();
-    void physicsShutdown();
-    void physicsRestart();
+    PhysXPhysics( Engine* engine );
+    virtual void initialize();
+    virtual void shutdown();
+    virtual void restart();
     virtual void componentPreUpdate( GameTime time );
     virtual void componentTick( GameTime tick, GameTime time );
     virtual void componentPostUpdate( GameTime delta, GameTime time );
-    virtual ~Physics();
+    virtual ~PhysXPhysics();
   };
 
 }

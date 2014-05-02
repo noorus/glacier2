@@ -3,8 +3,12 @@
 
 namespace Glacier {
 
+  Memory* Locator::memoryService = nullptr;
+
   NullAudio Locator::nullAudioService;
   Audio* Locator::audioService = &Locator::nullAudioService;
-  Memory* Locator::memoryService = nullptr;
+
+  NullPhysics Locator::nullPhysicsService;
+  Physics* Locator::physicsService = &Locator::nullPhysicsService;
 
 }
