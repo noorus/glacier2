@@ -97,7 +97,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;ENABLE_LARGE_PAGES;ENABLE_USERMODEPAGEALLOCATOR;USE_LOCKS;USE_SPIN_LOCKS;DEBUG;_DEBUG;_WINDOWS;WIN64;_ALLOW_MSC_VER_MISMATCH;_ALLOW_ITERATOR_DEBUG_LEVEL_MISMATCH;PHYSX_PROFILE_SDK;PX_DEBUG;PX_CHECKED;PX_SUPPORT_VISUAL_DEBUGGER;PX_NVTX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)include;$(ProjectDir)include;$(SolutionDir)..\SDK\Ogre\include\OGRE;$(SolutionDir)..\SDK\Ogre\include\OGRE\Overlay;$(SolutionDir)..\SDK\Ogre\include\OGRE\Paging;$(SolutionDir)..\SDK\Ogre\include\OGRE\Plugins\PCZSceneManager;$(SolutionDir)..\SDK\Ogre\include\OGRE\RenderSystems\Direct3D9;$(SolutionDir)..\SDK\Ogre\include\OGRE\Terrain;$(SolutionDir)..\SDK\Ogre\include\OGRE\Threading;$(SolutionDir)..\SDK\FMOD SoundSystem\FMOD Programmers API Windows\api\inc;$(SolutionDir)..\SDK\FMOD SoundSystem\FMOD Programmers API Windows\fmoddesignerapi\api\inc;$(SolutionDir)..\v8\include;$(SolutionDir)EASTL\include;$(SolutionDir)nil\include;$(SolutionDir)nedmalloc;$(SolutionDir)hdrlib;$(SolutionDir)..\SDK\PhysX\Include;$(SolutionDir)..\SDK\OgreDependencies\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)include;$(ProjectDir)include;$(SolutionDir)..\SDK\Ogre\include\OGRE;$(SolutionDir)..\SDK\Ogre\include\OGRE\Overlay;$(SolutionDir)..\SDK\Ogre\include\OGRE\Paging;$(SolutionDir)..\SDK\Ogre\include\OGRE\Plugins\PCZSceneManager;$(SolutionDir)..\SDK\Ogre\include\OGRE\RenderSystems\Direct3D9;$(SolutionDir)..\SDK\Ogre\include\OGRE\Terrain;$(SolutionDir)..\SDK\Ogre\include\OGRE\Threading;$(SolutionDir)..\SDK\FMOD SoundSystem\FMOD Programmers API Windows\api\inc;$(SolutionDir)..\SDK\FMOD SoundSystem\FMOD Programmers API Windows\fmoddesignerapi\api\inc;$(SolutionDir)..\v8\include;$(SolutionDir)EASTL\include;$(SolutionDir)nil\include;$(SolutionDir)nedmalloc;$(SolutionDir)hdrlib;$(SolutionDir)..\SDK\PhysX\Include;$(SolutionDir)..\SDK\OgreDependencies\include;$(SolutionDir)shiny\Main;$(SolutionDir)shiny\Platforms\Ogre;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>StdAfx.h</PrecompiledHeaderFile>
       <AdditionalOptions>/Zm512 %(AdditionalOptions)</AdditionalOptions>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -145,7 +145,7 @@
       </FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;ENABLE_LARGE_PAGES;ENABLE_USERMODEPAGEALLOCATOR;USE_LOCKS;USE_SPIN_LOCKS;NDEBUG;_WINDOWS;_ALLOW_MSC_VER_MISMATCH;_ALLOW_ITERATOR_DEBUG_LEVEL_MISMATCH;PHYSX_PROFILE_SDK;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)include;$(ProjectDir)include;$(SolutionDir)..\SDK\Ogre\include\OGRE;$(SolutionDir)..\SDK\Ogre\include\OGRE\Overlay;$(SolutionDir)..\SDK\Ogre\include\OGRE\Paging;$(SolutionDir)..\SDK\Ogre\include\OGRE\Plugins\PCZSceneManager;$(SolutionDir)..\SDK\Ogre\include\OGRE\RenderSystems\Direct3D9;$(SolutionDir)..\SDK\Ogre\include\OGRE\Terrain;$(SolutionDir)..\SDK\Ogre\include\OGRE\Threading;$(SolutionDir)..\SDK\FMOD SoundSystem\FMOD Programmers API Windows\api\inc;$(SolutionDir)..\SDK\FMOD SoundSystem\FMOD Programmers API Windows\fmoddesignerapi\api\inc;$(SolutionDir)..\v8\include;$(SolutionDir)EASTL\include;$(SolutionDir)nil\include;$(SolutionDir)nedmalloc;$(SolutionDir)hdrlib;$(SolutionDir)..\SDK\PhysX\Include;$(SolutionDir)..\SDK\OgreDependencies\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)include;$(ProjectDir)include;$(SolutionDir)..\SDK\Ogre\include\OGRE;$(SolutionDir)..\SDK\Ogre\include\OGRE\Overlay;$(SolutionDir)..\SDK\Ogre\include\OGRE\Paging;$(SolutionDir)..\SDK\Ogre\include\OGRE\Plugins\PCZSceneManager;$(SolutionDir)..\SDK\Ogre\include\OGRE\RenderSystems\Direct3D9;$(SolutionDir)..\SDK\Ogre\include\OGRE\Terrain;$(SolutionDir)..\SDK\Ogre\include\OGRE\Threading;$(SolutionDir)..\SDK\FMOD SoundSystem\FMOD Programmers API Windows\api\inc;$(SolutionDir)..\SDK\FMOD SoundSystem\FMOD Programmers API Windows\fmoddesignerapi\api\inc;$(SolutionDir)..\v8\include;$(SolutionDir)EASTL\include;$(SolutionDir)nil\include;$(SolutionDir)nedmalloc;$(SolutionDir)hdrlib;$(SolutionDir)..\SDK\PhysX\Include;$(SolutionDir)..\SDK\OgreDependencies\include;$(SolutionDir)shiny\Main;$(SolutionDir)shiny\Platforms\Ogre;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>StdAfx.h</PrecompiledHeaderFile>
       <DebugInformationFormat>None</DebugInformationFormat>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
@@ -206,6 +206,70 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\nedmalloc\nedmalloc.cpp" />
+    <ClCompile Include="..\shiny\Main\Factory.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\shiny\Main\MaterialInstance.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\shiny\Main\MaterialInstancePass.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\shiny\Main\MaterialInstanceTextureUnit.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\shiny\Main\Platform.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\shiny\Main\Preprocessor.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\shiny\Main\PropertyBase.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\shiny\Main\ScriptLoader.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\shiny\Main\ShaderInstance.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\shiny\Main\ShaderSet.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\shiny\Platforms\Ogre\OgreGpuProgram.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\shiny\Platforms\Ogre\OgreMaterial.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\shiny\Platforms\Ogre\OgreMaterialSerializer.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\shiny\Platforms\Ogre\OgrePass.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\shiny\Platforms\Ogre\OgrePlatform.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\shiny\Platforms\Ogre\OgreTextureUnitState.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="src\Camera.cpp" />
     <ClCompile Include="src\Console.cpp" />
     <ClCompile Include="src\ConsoleWindow.cpp" />

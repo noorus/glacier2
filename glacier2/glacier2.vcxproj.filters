@@ -82,6 +82,15 @@
     <Filter Include="Source Files\Junk">
       <UniqueIdentifier>{b021b003-a13a-41d6-a06f-09338aec6463}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\shiny">
+      <UniqueIdentifier>{059ab1c0-12e6-46fc-9d66-a71cdec06e38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\shiny\Main">
+      <UniqueIdentifier>{247ffbe7-3562-434c-bf8f-072614158517}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\shiny\Platforms">
+      <UniqueIdentifier>{0890a048-9204-4a53-9f6a-33631216e93d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Main.cpp">
@@ -200,6 +209,54 @@
     </ClCompile>
     <ClCompile Include="src\State.cpp">
       <Filter>Source Files\States</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shiny\Main\ShaderSet.cpp">
+      <Filter>Source Files\shiny\Main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shiny\Main\Factory.cpp">
+      <Filter>Source Files\shiny\Main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shiny\Main\MaterialInstance.cpp">
+      <Filter>Source Files\shiny\Main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shiny\Main\MaterialInstancePass.cpp">
+      <Filter>Source Files\shiny\Main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shiny\Main\MaterialInstanceTextureUnit.cpp">
+      <Filter>Source Files\shiny\Main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shiny\Main\Platform.cpp">
+      <Filter>Source Files\shiny\Main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shiny\Main\Preprocessor.cpp">
+      <Filter>Source Files\shiny\Main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shiny\Main\PropertyBase.cpp">
+      <Filter>Source Files\shiny\Main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shiny\Main\ScriptLoader.cpp">
+      <Filter>Source Files\shiny\Main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shiny\Main\ShaderInstance.cpp">
+      <Filter>Source Files\shiny\Main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shiny\Platforms\Ogre\OgreGpuProgram.cpp">
+      <Filter>Source Files\shiny\Platforms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shiny\Platforms\Ogre\OgreMaterial.cpp">
+      <Filter>Source Files\shiny\Platforms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shiny\Platforms\Ogre\OgreMaterialSerializer.cpp">
+      <Filter>Source Files\shiny\Platforms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shiny\Platforms\Ogre\OgrePass.cpp">
+      <Filter>Source Files\shiny\Platforms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shiny\Platforms\Ogre\OgrePlatform.cpp">
+      <Filter>Source Files\shiny\Platforms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shiny\Platforms\Ogre\OgreTextureUnitState.cpp">
+      <Filter>Source Files\shiny\Platforms</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -107,5 +107,9 @@
 // Nil Headers
 #include <nil.h>
 
+// shiny Headers
+#include <Factory.hpp>
+#include <OgrePlatform.hpp>
+
 // Glacier types
 #include "Types.h"
