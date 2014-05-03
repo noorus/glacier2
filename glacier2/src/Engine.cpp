@@ -21,7 +21,7 @@ Glacier::Engine* gEngine = nullptr;
 namespace Glacier {
 
   Engine::Options::Options():
-  noAudio( false )
+  noAudio( false ), noPhysics( false )
   {
     //
   }
@@ -54,6 +54,8 @@ namespace Glacier {
 
   ENGINE_DECLARE_CONCMD( version,
     L"Print engine version.", Engine::callbackVersion );
+  ENGINE_DECLARE_CONCMD( memstat,
+    L"Print memory usage statistics.", Engine::callbackMemstat );
   ENGINE_DECLARE_CONCMD( screenshot,
     L"Save a screenshot to working directory.", Engine::callbackScreenshot );
   ENGINE_DECLARE_CONCMD( quit,
@@ -281,6 +283,19 @@ namespace Glacier {
       return;
 
     console->printf( Console::srcEngine, gEngine->getVersion().title.c_str() );
+  }
+
+  void Engine::callbackMemstat( Console* console, ConCmd* command,
+  StringVector& arguments )
+  {
+    console->printf( Console::srcEngine, L"Memory provider: %s",
+      Locator::getMemory().getProviderName().c_str() );
+    console->printf( Console::srcEngine, L"Generic usage: %.2fMB",
+      (float)Locator::getMemory().getMemoryUsage( Memory::Sector_Generic ) / 1048576.0f );
+    console->printf( Console::srcEngine, L"Physics usage: %.2fMB",
+      (float)Locator::getMemory().getMemoryUsage( Memory::Sector_Physics ) / 1048576.0f );
+    console->printf( Console::srcEngine, L"Audio usage: %.2fMB",
+      (float)Locator::getMemory().getMemoryUsage( Memory::Sector_Audio ) / 1048576.0f );
   }
 
   void Engine::callbackScreenshot( Console* console, ConCmd* command,

@@ -16,12 +16,12 @@ namespace Glacier {
   void* PhysXPhysics::Allocator::allocate( size_t size, const char* typeName, 
   const char* filename, int line )
   {
-    return Locator::getMemory().alloc( size, 16 );
+    return Locator::getMemory().alloc( Memory::Sector_Physics, size, 16 );
   }
 
   void PhysXPhysics::Allocator::deallocate( void* ptr )
   {
-    Locator::getMemory().free( ptr );
+    Locator::getMemory().free( Memory::Sector_Physics, ptr );
   }
 
   // Physics class ============================================================

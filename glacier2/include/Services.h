@@ -35,9 +35,16 @@ namespace Glacier {
 
   class Memory {
   public:
-    virtual void* alloc( size_t size, size_t alignment = 0Ui64 ) = 0;
-    virtual void* realloc( void* location, size_t size, size_t alignment = 0Ui64 ) = 0;
-    virtual void free( void* location ) = 0;
+    enum Sector {
+      Sector_Generic,
+      Sector_Audio,
+      Sector_Physics
+    };
+    virtual void* alloc( const Sector sector, size_t size, size_t alignment = 0Ui64 ) = 0;
+    virtual void* realloc( const Sector sector, void* location, size_t size, size_t alignment = 0Ui64 ) = 0;
+    virtual void free( const Sector sector, void* location ) = 0;
+    virtual size_t getMemoryUsage( const Sector sector ) = 0;
+    virtual const wstring& getProviderName() = 0;
   };
 
 }

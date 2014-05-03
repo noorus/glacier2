@@ -9,13 +9,25 @@ namespace Glacier {
 
   class NedPoolMemory: public Memory {
   protected:
-    glacier_nedalloc::nedpool* mPool;
+    glacier_nedalloc::nedpool* mGenericPool;
+    glacier_nedalloc::nedpool* mAudioPool;
+    glacier_nedalloc::nedpool* mPhysicsPool;
+    inline glacier_nedalloc::nedpool* resolvePool( const Sector sector )
+    {
+      if ( sector == Sector_Audio )
+        return mAudioPool;
+      if ( sector == Sector_Physics )
+        return mPhysicsPool;
+      return mGenericPool;
+    }
   public:
     NedPoolMemory();
     ~NedPoolMemory();
-    virtual void* alloc( size_t size, size_t alignment = 0Ui64 );
-    virtual void* realloc( void* location, size_t size, size_t alignment = 0Ui64 );
-    virtual void free( void* location );
+    virtual void* alloc( const Sector sector, size_t size, size_t alignment = 0Ui64 );
+    virtual void* realloc( const Sector sector, void* location, size_t size, size_t alignment = 0Ui64 );
+    virtual void free( const Sector sector, void* location );
+    virtual size_t getMemoryUsage( const Sector sector );
+    virtual const wstring& getProviderName();
   };
 
 }

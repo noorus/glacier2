@@ -95,6 +95,8 @@ namespace Glacier {
     // Callbacks
     static void callbackVersion( Console* console,
       ConCmd* command, StringVector& arguments );
+    static void callbackMemstat( Console* console,
+      ConCmd* command, StringVector& arguments );
     static void callbackScreenshot( Console* console,
       ConCmd* command, StringVector& arguments );
     static void callbackQuit( Console* console,

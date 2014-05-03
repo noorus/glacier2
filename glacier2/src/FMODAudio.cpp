@@ -422,19 +422,19 @@ namespace Glacier {
   void* FMODAudio::callbackFMODMemAlloc( unsigned int size,
   FMOD_MEMORY_TYPE type, const char* source )
   {
-    return Locator::getMemory().alloc( size );
+    return Locator::getMemory().alloc( Memory::Sector_Audio, size );
   }
 
   void* FMODAudio::callbackFMODMemRealloc( void* mem, unsigned int size,
   FMOD_MEMORY_TYPE type, const char* source )
   {
-    return Locator::getMemory().realloc( mem, size );
+    return Locator::getMemory().realloc( Memory::Sector_Audio, mem, size );
   }
 
   void FMODAudio::callbackFMODMemFree( void* mem,
   FMOD_MEMORY_TYPE type, const char* source )
   {
-    Locator::getMemory().free( mem );
+    Locator::getMemory().free( Memory::Sector_Audio, mem );
   }
 
   // Conversion utilities =====================================================
