@@ -143,7 +143,7 @@ namespace Glacier {
     auto outputType = stringToOutputType( g_CVar_fm_outputmode.getString() );
     if ( outputType == FMOD_OUTPUTTYPE_MAX )
     {
-      mEngine->getConsole()->errorPrintf(
+      mEngine->getConsole()->errorPrintf( Console::srcSound,
         L"Invalid value for fm_outputmode, reverting to auto!" );
       g_CVar_fm_outputmode.setValue( L"auto" );
     }
@@ -162,7 +162,7 @@ namespace Glacier {
       ENGINE_EXCEPT_FMOD( hr, L"Failed to get driver count" );
     int driver = g_CVar_fm_device.getInt();
     if ( driver > driverCount ) {
-      mEngine->getConsole()->errorPrintf(
+      mEngine->getConsole()->errorPrintf( Console::srcSound,
         L"Invalid value for fm_device, reverting to 0!" );
       g_CVar_fm_device.setValue( 0 );
     } else if ( driver > 0 ) {
@@ -189,7 +189,7 @@ namespace Glacier {
     auto speakerMode = stringToSpeakerMode( g_CVar_fm_speakermode.getString() );
     if ( speakerMode == FMOD_SPEAKERMODE_MAX )
     {
-      mEngine->getConsole()->errorPrintf(
+      mEngine->getConsole()->errorPrintf( Console::srcSound,
         L"Invalid value for fm_speakermode, reverting to auto!" );
       g_CVar_fm_speakermode.setValue( L"auto" );
       speakerMode = mInfo.speakerMode;
@@ -377,7 +377,7 @@ namespace Glacier {
     if ( mode == FMOD_SPEAKERMODE_MAX )
     {
       if ( gEngine && gEngine->getConsole() )
-        gEngine->getConsole()->errorPrintf(
+        gEngine->getConsole()->errorPrintf( Console::srcSound,
           L"Bad value \"%s\" given for fm_speakermode.",
           variable->getString().c_str() );
       return false;
@@ -391,7 +391,7 @@ namespace Glacier {
     if ( type == FMOD_OUTPUTTYPE_MAX )
     {
       if ( gEngine && gEngine->getConsole() )
-        gEngine->getConsole()->errorPrintf(
+        gEngine->getConsole()->errorPrintf( Console::srcSound,
         L"Bad value \"%s\" given for fm_outputmode.",
         variable->getString().c_str() );
       return false;

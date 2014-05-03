@@ -126,7 +126,8 @@ namespace Glacier {
       L"Fixating engine main thread to core %d (out of %d)", core, cores );
 
     if ( !SetThreadAffinityMask( mThread, engineMask ) )
-      getConsole()->errorPrintf( L"Failed to set thread affinity mask" );
+      getConsole()->errorPrintf( Console::srcEngine,
+        L"Failed to set thread affinity mask" );
   }
 
   void Engine::operationSuspendVideo()
@@ -230,6 +231,18 @@ namespace Glacier {
   void Engine::signalStop()
   {
     mSignal = Signal_Stop;
+  }
+
+  void Engine::triggerFatalError( FatalError error )
+  {
+    // TODO: Try to save state and stuff here, before going down
+    if ( mConsole )
+    {
+      mConsole->errorPrintf( Console::srcEngine,
+        L"Shutting down due to a fatal error." );
+    }
+
+    signalStop();
   }
 
   void Engine::run()

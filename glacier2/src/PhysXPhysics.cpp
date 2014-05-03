@@ -11,8 +11,6 @@ namespace Glacier {
 
   using namespace physx;
 
-  static PxDefaultErrorCallback gDefaultErrorCallback;
-
   void* PhysXPhysics::Allocator::allocate( size_t size, const char* typeName, 
   const char* filename, int line )
   {
@@ -33,6 +31,48 @@ namespace Glacier {
     initialize();
   }
 
+  void PhysXPhysics::reportError( PxErrorCode::Enum code,
+  const char* message, const char* file, int line )
+  {
+    switch ( code )
+    {
+      case PxErrorCode::eDEBUG_INFO:
+        mEngine->getConsole()->printf( Console::srcPhysics,
+          L"PhysX Debug info: %S", message );
+      break;
+      case PxErrorCode::eDEBUG_WARNING:
+        mEngine->getConsole()->printf( Console::srcPhysics,
+          L"PhysX Debug warning: %S", message );
+      break;
+      case PxErrorCode::eINVALID_PARAMETER:
+        mEngine->getConsole()->errorPrintf( Console::srcPhysics,
+          L"PhysX Invalid parameter: %S", message );
+      break;
+      case PxErrorCode::eINVALID_OPERATION:
+        mEngine->getConsole()->errorPrintf( Console::srcPhysics,
+          L"PhysX Invalid operation: %S", message );
+      break;
+      case PxErrorCode::eOUT_OF_MEMORY:
+        mEngine->getConsole()->errorPrintf( Console::srcPhysics,
+          L"PhysX Out of memory: %S", message );
+        mEngine->triggerFatalError( Engine::Fatal_MemoryAllocation );
+      break;
+      case PxErrorCode::eINTERNAL_ERROR:
+        mEngine->getConsole()->errorPrintf( Console::srcPhysics,
+          L"PhysX Internal error: %S", message );
+      break;
+      case PxErrorCode::eABORT:
+        mEngine->getConsole()->errorPrintf( Console::srcPhysics,
+          L"PhysX Abort: %S", message );
+        mEngine->triggerFatalError( Engine::Fatal_Generic );
+      break;
+      case PxErrorCode::ePERF_WARNING:
+        mEngine->getConsole()->printf( Console::srcPhysics,
+          L"PhysX Performance warning: %S", message );
+      break;
+    }
+  }
+
   void PhysXPhysics::initialize()
   {
     mEngine->getConsole()->printf( Console::srcPhysics,
@@ -44,9 +84,9 @@ namespace Glacier {
       PX_PHYSICS_VERSION_MAJOR, PX_PHYSICS_VERSION_MINOR,
       PX_PHYSICS_VERSION_BUGFIX );
 
-    // Using default allocator & error callbacks for now
+    // Set memory allocator and error handler
     PxAllocatorCallback* allocator = &mAllocator;
-    PxErrorCallback* error = &gDefaultErrorCallback;
+    PxErrorCallback* error = this;
 
     // Create foundation
     mFoundation = PxCreateFoundation( PX_PHYSICS_VERSION, *allocator, *error );

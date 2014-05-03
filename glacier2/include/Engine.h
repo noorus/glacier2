@@ -38,6 +38,11 @@ namespace Glacier {
       Signal_None = 0,  //!< No signal
       Signal_Stop       //!< Engine stop signal
     };
+    //! Possible fatal errors
+    enum FatalError {
+      Fatal_Generic, //!< Non-specific fatal error case
+      Fatal_MemoryAllocation //!< Memory allocation failure
+    };
     //! Engine version structure
     struct Version {
       uint32_t major;   //!< The major version
@@ -109,6 +114,8 @@ namespace Glacier {
     ~Engine();
     //! Raises a stop signal on the next cycle.
     void signalStop();
+    //! Triggers a "graceful" quit in case of a fatal error.
+    void triggerFatalError( FatalError error );
     //! Shutdown state for gfx restart.
     void operationSuspendVideo();
     //! Continue state after gfx restart.

@@ -14,11 +14,13 @@ namespace Glacier {
 
   // Console constants ========================================================
 
-  const long     cMaxConsoleLine  = 4096;
-  const wchar_t* cConsoleEcho     = L"> %s";
-  const wchar_t* cConsolePrint    = L"[%02d:%02d:%02d] [%s] %s\r\n";
-  const wchar_t* cConsoleVarOut   = L"%s is \"%s\"";
-  const wchar_t* cConsoleUnknown  = L"Unknown command \"%s\"";
+  const long     cMaxConsoleLine    = 4096;
+  const wchar_t* cConsoleEcho       = L"> %s";
+  const wchar_t* cConsolePrint      = L"[%02d:%02d:%02d] [%s] %s\r\n";
+  const wchar_t* cConsoleErrorPrint = L"[%02d:%02d:%02d] [%s] ERROR: %s\r\n";
+  const wchar_t* cConsoleVarOut     = L"%s is \"%s\"";
+  const wchar_t* cConsoleUnknown    = L"Unknown command \"%s\"";
+  COLORREF       cConsoleErrorColor = RGB(255,0,0);
 
   // ConBase class ============================================================
 
@@ -331,7 +333,7 @@ namespace Glacier {
         return;
       }
 
-    console->errorPrintf( cConsoleUnknown, arguments[1].c_str() );
+    console->errorPrintf( srcEngine, cConsoleUnknown, arguments[1].c_str() );
   }
 
   Console::Source Console::registerSource( const wstring& name, COLORREF color )
@@ -410,7 +412,7 @@ namespace Glacier {
     mListeners.remove( listener );
   }
 
-  void Console::errorPrintf( const wchar_t* line, ... )
+  void Console::errorPrintf( Source source_, const wchar_t* line, ... )
   {
     ScopedSRWLock lock( &mLock );
 
@@ -420,19 +422,19 @@ namespace Glacier {
     _vsnwprintf_s( buffer, cMaxConsoleLine, line, va_alist );
     va_end( va_alist );
 
-    ConsoleSource source = mSources[srcEngine];
+    ConsoleSource source = mSources[source_];
 
     WCHAR out[cMaxConsoleLine];
     SYSTEMTIME time;
     GetLocalTime( &time );
-    swprintf_s( out, cMaxConsoleLine, cConsolePrint,
+    swprintf_s( out, cMaxConsoleLine, cConsoleErrorPrint,
       time.wHour, time.wMinute, time.wSecond, source.name.c_str(),
       buffer );
 
     mLines.push_back( out );
 
     for ( ConsoleListener* listener : mListeners )
-      listener->onAddLine( source.color, out );
+      listener->onAddLine( cConsoleErrorColor, out );
 
     if ( mOutFile )
       mOutFile->write( out );
@@ -524,7 +526,7 @@ namespace Glacier {
       }
     }
     lock.unlock();
-    errorPrintf( cConsoleUnknown, command.c_str() );
+    errorPrintf( srcEngine, cConsoleUnknown, command.c_str() );
   }
 
   void Console::executeBuffered( const wstring& commandLine )

@@ -8,7 +8,7 @@
 
 namespace Glacier {
 
-  class PhysXPhysics: public Physics, public EngineComponent {
+  class PhysXPhysics: public Physics, public EngineComponent, public PxErrorCallback {
   protected:
     class Allocator: public PxAllocatorCallback {
     public:
@@ -21,6 +21,8 @@ namespace Glacier {
     physx::PxCooking* mCooking;
     physx::PxCudaContextManager* mCudaContextManager;
     physx::PxControllerManager* mControllerMgr;
+    virtual void reportError( PxErrorCode::Enum code,
+      const char* message, const char* file, int line );
   public:
     PhysXPhysics( Engine* engine );
     virtual void initialize();

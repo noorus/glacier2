@@ -202,7 +202,7 @@ namespace Glacier {
     //! Prints a message.
     void printf( Source source, const wchar_t* line, ... );
     //! Prints an error message.
-    void errorPrintf( const wchar_t* line, ... );
+    void errorPrintf( Source source, const wchar_t* line, ... );
     //! Automatic completion search for given command line.
     void autoComplete( const wstring& line, ConBaseList& matches );
     //! Executes a command line.
