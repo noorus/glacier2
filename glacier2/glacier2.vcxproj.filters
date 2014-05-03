@@ -52,15 +52,39 @@
     <Filter Include="Source Files\Entities">
       <UniqueIdentifier>{29cad3fa-21a2-412b-b36f-603a69225402}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Services">
+      <UniqueIdentifier>{4e715625-1e8b-473f-ac3c-515cdd94fb0c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Services">
+      <UniqueIdentifier>{86cb6c55-a082-4adb-9937-f026c568549d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Services\Audio">
+      <UniqueIdentifier>{7d5044cf-93e0-4f4a-8fc4-ace4997a38de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Services\Audio">
+      <UniqueIdentifier>{23b544d5-bfb6-4f12-b996-ce50107e71a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Services\Memory">
+      <UniqueIdentifier>{cb194cee-15c0-4fc1-87fe-b91eff4f9692}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Services\Memory">
+      <UniqueIdentifier>{97e6686d-898d-4b59-844c-621a9cc1ab91}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Services\Physics">
+      <UniqueIdentifier>{d4ff7056-921c-4c8d-a876-e58011f59b78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Services\Physics">
+      <UniqueIdentifier>{f33bf2ad-20e4-48ef-a029-2d3c16c88df6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Junk">
+      <UniqueIdentifier>{a4c1f2c2-834f-4e1b-a59d-1205963df5d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Junk">
+      <UniqueIdentifier>{b021b003-a13a-41d6-a06f-09338aec6463}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\StdAfx.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Exception.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Engine.cpp">
@@ -87,22 +111,10 @@
     <ClCompile Include="..\EASTL\src\string.cpp">
       <Filter>Source Files\EASTL</Filter>
     </ClCompile>
-    <ClCompile Include="src\TextFile.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Win32.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ThreadController.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\EngineComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Game.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\State.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\hdrlib\HDRCompositor.cpp">
@@ -124,9 +136,6 @@
       <Filter>Source Files\Console</Filter>
     </ClCompile>
     <ClCompile Include="src\GlobalStats.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\WindowHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Input.cpp">
@@ -159,26 +168,41 @@
     <ClCompile Include="src\JSConsole.cpp">
       <Filter>Source Files\Scripting</Filter>
     </ClCompile>
-    <ClCompile Include="src\FMODAudio.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\ServiceLocator.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="src\FMODAudio.cpp">
+      <Filter>Source Files\Services\Audio</Filter>
     </ClCompile>
     <ClCompile Include="src\NedPoolMemory.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Services\Memory</Filter>
     </ClCompile>
     <ClCompile Include="src\PhysXPhysics.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Services\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ThreadController.cpp">
+      <Filter>Source Files\Junk</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TextFile.cpp">
+      <Filter>Source Files\Junk</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Win32.cpp">
+      <Filter>Source Files\Junk</Filter>
+    </ClCompile>
+    <ClCompile Include="src\WindowHandler.cpp">
+      <Filter>Source Files\Junk</Filter>
+    </ClCompile>
+    <ClCompile Include="src\StdAfx.cpp">
+      <Filter>Source Files\Junk</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Exception.cpp">
+      <Filter>Source Files\Junk</Filter>
+    </ClCompile>
+    <ClCompile Include="src\State.cpp">
+      <Filter>Source Files\States</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\StdAfx.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\TargetVer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\CompilerDef.h">
       <Filter>Header Files\Shared</Filter>
     </ClInclude>
@@ -191,31 +215,16 @@
     <ClInclude Include="..\include\Utilities.h">
       <Filter>Header Files\Shared</Filter>
     </ClInclude>
-    <ClInclude Include="include\Exception.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\Engine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Graphics.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\TextFile.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Win32.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ThreadController.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\EngineComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Game.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\State.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="glacier2_resource.h">
@@ -240,9 +249,6 @@
       <Filter>Header Files\Console</Filter>
     </ClInclude>
     <ClInclude Include="include\GlobalStats.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\WindowHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Input.h">
@@ -273,19 +279,43 @@
       <Filter>Header Files\Entities</Filter>
     </ClInclude>
     <ClInclude Include="include\ServiceLocator.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Services</Filter>
     </ClInclude>
     <ClInclude Include="include\Services.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Services</Filter>
     </ClInclude>
     <ClInclude Include="include\FMODAudio.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Services\Audio</Filter>
     </ClInclude>
     <ClInclude Include="include\NedPoolMemory.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Services\Memory</Filter>
     </ClInclude>
     <ClInclude Include="include\PhysXPhysics.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Services\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ThreadController.h">
+      <Filter>Header Files\Junk</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Win32.h">
+      <Filter>Header Files\Junk</Filter>
+    </ClInclude>
+    <ClInclude Include="include\WindowHandler.h">
+      <Filter>Header Files\Junk</Filter>
+    </ClInclude>
+    <ClInclude Include="include\TextFile.h">
+      <Filter>Header Files\Junk</Filter>
+    </ClInclude>
+    <ClInclude Include="include\State.h">
+      <Filter>Header Files\States</Filter>
+    </ClInclude>
+    <ClInclude Include="include\TargetVer.h">
+      <Filter>Header Files\Junk</Filter>
+    </ClInclude>
+    <ClInclude Include="include\StdAfx.h">
+      <Filter>Header Files\Junk</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Exception.h">
+      <Filter>Header Files\Junk</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

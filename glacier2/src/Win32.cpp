@@ -7,7 +7,9 @@
 // All rights reserved.
 
 #pragma warning( push )
-#pragma warning( disable: 4244 ) // warning C4244: 'argument': conversion from 'LONG' to 'Glacier::Win32::Gdiplus::REAL', possible loss of data
+
+// warning C4244: 'argument': conversion from 'LONG' to 'REAL', possible loss of data
+#pragma warning( disable: 4244 )
 
 namespace Glacier {
 

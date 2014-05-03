@@ -26,6 +26,7 @@ namespace Glacier {
   class Input;
 
   ENGINE_EXTERN_CONCMD( version );
+  ENGINE_EXTERN_CONCMD( memstat );
   ENGINE_EXTERN_CONCMD( screenshot );
   ENGINE_EXTERN_CONCMD( quit );
 
