@@ -33,6 +33,8 @@ namespace Glacier {
   GameTime Engine::fTimeAccumulator = 0.0;
   GameTime Engine::fLogicStep = 1.0 / 60.0;
 
+  const char* cMainThreadName = "Gcr2 Main Thread";
+
   // Engine version struct ====================================================
 
   Engine::Version::Version( uint32_t major_, uint32_t minor_, uint32_t build_ ):
@@ -178,6 +180,8 @@ namespace Glacier {
     // Get process & thread handles
     mProcess = GetCurrentProcess();
     mThread = GetCurrentThread();
+
+    Utilities::debugSetThreadName( GetCurrentThreadId(), cMainThreadName );
 
     // Setup console
     mConsole = new Console( this );

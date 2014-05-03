@@ -16,6 +16,7 @@ namespace Glacier {
   const COLORREF cConsoleWindowBackground = RGB( 255, 255, 255 );
   const COLORREF cConsoleWindowForeground = RGB( 10, 13, 20 );
   const wchar_t* cConsoleWindowFont   = L"Trebuchet MS";
+  const char*    cConsoleThreadName   = "Gcr2 Console Thread";
 
   // ConsoleWindowThread class ================================================
 
@@ -52,7 +53,7 @@ namespace Glacier {
     switch ( wait )
     {
     case WAIT_OBJECT_0 + 0:
-      // Thread running OK
+      Utilities::debugSetThreadName( mThreadID, cConsoleThreadName );
       break;
     case WAIT_OBJECT_0 + 1:
       ENGINE_EXCEPT( L"Console window thread failed to start" );

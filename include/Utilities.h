@@ -1,4 +1,5 @@
 #pragma once
+#include <windows.h>
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
@@ -133,6 +134,33 @@ namespace Glacier {
 
   namespace Utilities
   {
+    //! Signal the debugger to give a thread a name
+    inline void debugSetThreadName( DWORD threadID, const char* threadName )
+    {
+#ifdef _DEBUG
+#pragma pack( push, 8 )
+      struct threadNamingStruct
+      {
+        DWORD type;
+        LPCSTR name;
+        DWORD threadID;
+        DWORD flags;
+      } nameSignalStruct;
+#pragma pack( pop )
+      nameSignalStruct.type = 0x1000;
+      nameSignalStruct.name = threadName;
+      nameSignalStruct.threadID = threadID;
+      nameSignalStruct.flags = 0;
+      __try
+      {
+        RaiseException( 0x406D1388, 0,
+          sizeof( nameSignalStruct ) / sizeof( ULONG_PTR ),
+          (const ULONG_PTR*)&nameSignalStruct );
+      }
+      __except( EXCEPTION_EXECUTE_HANDLER ) {}
+#endif
+    }
+
     //! UTF-8 to wide string conversion.
     inline wstring utf8ToWide( const string& in ) throw()
     {
