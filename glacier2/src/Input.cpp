@@ -2,6 +2,8 @@
 #include "Input.h"
 #include "Engine.h"
 #include "Exception.h"
+#include "ActionManager.h"
+#include "ConsoleWindow.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
@@ -31,6 +33,7 @@ namespace Glacier {
 
   void Input::componentTick( GameTime tick, GameTime time )
   {
+    mEngine->getActionManager()->prepare();
     mSystem->update();
   }
 
@@ -46,37 +49,65 @@ namespace Glacier {
   void Input::onMouseEnabled( Nil::Device* device, Nil::Mouse* instance )
   {
     mEngine->getConsole()->printf( Console::srcInput,
-      L"Mouse: %s", device->getName().c_str() );
+      L"Enabled mouse: %s", device->getName().c_str() );
+    instance->addListener( mEngine->getActionManager() );
   }
 
   void Input::onKeyboardEnabled( Nil::Device* device, Nil::Keyboard* instance )
   {
     mEngine->getConsole()->printf( Console::srcInput,
-      L"Keyboard: %s", device->getName().c_str() );
+      L"Enabled keyboard: %s", device->getName().c_str() );
+    instance->addListener( mEngine->getActionManager() );
   }
 
   void Input::onControllerEnabled( Nil::Device* device, Nil::Controller* instance )
   {
     mEngine->getConsole()->printf( Console::srcInput,
-      L"Controller: %s", device->getName().c_str() );
+      L"Enabled controller: %s", device->getName().c_str() );
+    instance->addListener( this );
   }
 
   void Input::onMouseDisabled( Nil::Device* device, Nil::Mouse* instance )
   {
     mEngine->getConsole()->printf( Console::srcInput,
-      L"Disabled: %s", device->getName().c_str() );
+      L"Disabled mouse: %s", device->getName().c_str() );
   }
 
   void Input::onKeyboardDisabled( Nil::Device* device, Nil::Keyboard* instance )
   {
     mEngine->getConsole()->printf( Console::srcInput,
-      L"Disabled: %s", device->getName().c_str() );
+      L"Disabled keyboard: %s", device->getName().c_str() );
   }
 
   void Input::onControllerDisabled( Nil::Device* device, Nil::Controller* instance )
   {
     mEngine->getConsole()->printf( Console::srcInput,
-      L"Disabled: %s", device->getName().c_str() );
+      L"Disabled controller: %s", device->getName().c_str() );
+  }
+
+  void Input::onControllerButtonPressed( Nil::Controller* controller, const Nil::ControllerState& state, size_t button )
+  {
+    // mEngine->getConsole()->printf( Console::srcInput, L"controller button pressed" );
+  }
+
+  void Input::onControllerButtonReleased( Nil::Controller* controller, const Nil::ControllerState& state, size_t button )
+  {
+    // mEngine->getConsole()->printf( Console::srcInput, L"controller button released" );
+  }
+
+  void Input::onControllerAxisMoved( Nil::Controller* controller, const Nil::ControllerState& state, size_t axis )
+  {
+    // mEngine->getConsole()->printf( Console::srcInput, L"controller axis moved" );
+  }
+
+  void Input::onControllerSliderMoved( Nil::Controller* controller, const Nil::ControllerState& state, size_t slider )
+  {
+    // mEngine->getConsole()->printf( Console::srcInput, L"controller slider moved" );
+  }
+
+  void Input::onControllerPOVMoved( Nil::Controller* controller, const Nil::ControllerState& state, size_t pov )
+  {
+    // mEngine->getConsole()->printf( Console::srcInput, L"controller pov moved" );
   }
 
   Input::~Input()

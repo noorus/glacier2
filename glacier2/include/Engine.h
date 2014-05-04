@@ -24,6 +24,7 @@ namespace Glacier {
   class PhysXPhysics;
   class WindowHandler;
   class Input;
+  class ActionManager;
 
   ENGINE_EXTERN_CONCMD( version );
   ENGINE_EXTERN_CONCMD( memstat );
@@ -74,6 +75,7 @@ namespace Glacier {
     Game* mGame;
     Input* mInput;
     WindowHandler* mWindowHandler;
+    ActionManager* mActionManager;
     // Timing
     LARGE_INTEGER mHPCFrequency;        //!< HPC frequency
     static GameTime fTime;              //!< Game time
@@ -97,6 +99,7 @@ namespace Glacier {
     FMODAudio* getSound() { return mAudio; }
     Game* getGame() { return mGame; }
     Input* getInput() { return mInput; }
+    ActionManager* getActionManager() { return mActionManager; }
     inline GameTime getTime() { return fTime; }
     // Callbacks
     static void callbackVersion( Console* console,

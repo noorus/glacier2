@@ -258,6 +258,9 @@
     <ClCompile Include="..\shiny\Platforms\Ogre\OgreTextureUnitState.cpp">
       <Filter>Source Files\shiny\Platforms</Filter>
     </ClCompile>
+    <ClCompile Include="src\ActionManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\CompilerDef.h">
@@ -373,6 +376,9 @@
     </ClInclude>
     <ClInclude Include="include\Exception.h">
       <Filter>Header Files\Junk</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ActionManager.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

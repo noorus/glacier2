@@ -10,7 +10,7 @@ namespace Glacier {
   //! @{
 
   class Graphics;
-  class Camera;
+  class ArcballCamera;
 
   //! \class Director
   //! The director is in charge of managing the viewport,
@@ -19,15 +19,16 @@ namespace Glacier {
   protected:
     Graphics* mGraphics;        //!< The graphics engine
     Ogre::Viewport* mViewport;  //!< My viewport
-    Camera* mCamera;            //!< My camera
+    ArcballCamera* mCamera;            //!< My camera
     HDRlib::HDRCompositor* mHDRCompositor; //!< My HDR compositor
+    Ogre::Light* mLight;
   public:
     //! Constructor.
     Director( Graphics* gfx );
     //! Gets the viewport.
     Ogre::Viewport* getViewport() { return mViewport; }
     //! Gets the camera.
-    Camera* getCamera() { return mCamera; }
+    ArcballCamera* getCamera() { return mCamera; }
     //! Destructor.
     ~Director();
   };

@@ -7,6 +7,7 @@
 #include "OgreD3D9Plugin.h"
 #include "Plugins/CgProgramManager/OgreCgPlugin.h"
 #include "Plugins/PCZSceneManager/OgrePCZPlugin.h"
+#include "Win32.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
@@ -120,7 +121,7 @@ namespace Glacier {
   EngineComponent( engine ),
   mRoot( nullptr ), mRenderer( nullptr ), mSceneManager( nullptr ),
   mOverlaySystem( nullptr ), mWindowHandler( windowHandler ),
-  mShinyPlatform( nullptr )
+  mShinyPlatform( nullptr ), mShinyFactory( nullptr )
   {
     videoInitialize();
   }
@@ -196,10 +197,17 @@ namespace Glacier {
     // Add OverlaySystem as a global renderqueue listener
     mSceneManager->addRenderQueueListener( mOverlaySystem );
 
+    Ogre::TextureManager::getSingleton().setDefaultNumMipmaps( 5 );
+
     // Register & initialize resource groups
     mEngine->registerResources( ResourceGroupManager::getSingleton() );
 
+    // Initialize shiny
     mShinyPlatform = new sh::OgrePlatform( "General", "data/shiny" );
+
+    mShinyFactory = new sh::Factory( mShinyPlatform );
+    mShinyFactory->setCurrentLanguage( sh::Language_CG );
+    mShinyFactory->loadAllFiles();
 
     // Initialize globals
     mGlobals.stats.init();
@@ -222,7 +230,7 @@ namespace Glacier {
     // Shutdown globals
     mGlobals.stats.shutdown();
 
-    SAFE_DELETE( mShinyPlatform );
+    SAFE_DELETE( mShinyFactory );
 
     // If we have a window, remove the associated event listener
     if ( mWindow )
@@ -286,7 +294,9 @@ namespace Glacier {
 
   void Graphics::componentPreUpdate( GameTime time )
   {
-    Ogre::WindowEventUtilities::messagePump();
+    HWND windowHandle = NULL;
+    mWindow->getCustomAttribute( "WINDOW", &windowHandle );
+    Win32::Win32::instance().handleMessagesFor( windowHandle );
   }
 
   void Graphics::componentPostUpdate( GameTime delta, GameTime time )

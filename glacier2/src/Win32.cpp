@@ -46,6 +46,16 @@ namespace Glacier {
       Gdiplus::GdiplusStartup( &mGDIPlusToken, &mGDIPlusStartup, NULL );
     }
 
+    void Win32::handleMessagesFor( HWND window )
+    {
+      MSG  msg;
+      while( PeekMessage( &msg, window, 0U, 0U, PM_REMOVE ) )
+      {
+        TranslateMessage( &msg );
+        DispatchMessage( &msg );
+      }
+    }
+
     void Win32::drawErrorDialog( Gdiplus::Graphics& gfx, RECT area, const ErrorDialog::Context& ctx )
     {
       Gdiplus::SolidBrush gpbrText( Color( 255, 255, 255, 255 ) );

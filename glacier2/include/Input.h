@@ -7,7 +7,7 @@
 
 namespace Glacier {
 
-  class Input: public EngineComponent, public Nil::SystemListener {
+  class Input: public EngineComponent, public Nil::SystemListener, public Nil::ControllerListener {
   protected:
     Nil::System* mSystem;
   protected:
@@ -28,6 +28,16 @@ namespace Glacier {
       Nil::Device* device, Nil::Keyboard* instance );
     virtual void onControllerDisabled(
       Nil::Device* device, Nil::Controller* instance );
+    virtual void onControllerButtonPressed( Nil::Controller* controller,
+      const Nil::ControllerState& state, size_t button );
+    virtual void onControllerButtonReleased( Nil::Controller* controller,
+      const Nil::ControllerState& state, size_t button );
+    virtual void onControllerAxisMoved( Nil::Controller* controller,
+      const Nil::ControllerState& state, size_t axis );
+    virtual void onControllerSliderMoved( Nil::Controller* controller,
+      const Nil::ControllerState& state, size_t slider );
+    virtual void onControllerPOVMoved( Nil::Controller* controller,
+      const Nil::ControllerState& state, size_t pov );
   public:
     Input( Engine* engine, HINSTANCE instance, Ogre::RenderWindow* window );
     virtual void componentTick( GameTime tick, GameTime time );

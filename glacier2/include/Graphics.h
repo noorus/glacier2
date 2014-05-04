@@ -31,6 +31,7 @@ namespace Glacier {
     Ogre::OverlaySystem* mOverlaySystem;
     WindowHandler* mWindowHandler;
     sh::OgrePlatform* mShinyPlatform;
+    sh::Factory* mShinyFactory;
   public:
     struct VideoMode {
       uint32_t mWidth;
