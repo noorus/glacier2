@@ -60,6 +60,8 @@ namespace Glacier {
     void videoShutdown();
     void videoRestart();
     void screenshot();
+    void setRenderWindowTitle( const wstring& title );
+    HWND getRenderWindowHandle();
     Ogre::Root* getRoot() { return mRoot; }
     Ogre::RenderSystem* getRenderer() { return mRenderer; }
     Ogre::RenderWindow* getWindow() { return mWindow; }

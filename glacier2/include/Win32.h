@@ -39,6 +39,7 @@ namespace Glacier {
       Win32();
     public:
       void initialize();
+      bool fileOpenDialog( const wstring& filterName, const wstring& filterExt, wstring& returnValue );
       void handleMessagesFor( HWND window );
       void drawErrorDialog( Gdiplus::Graphics& gfx, RECT area, const ErrorDialog::Context& ctx );
       void drawConsole( Gdiplus::Graphics& gfx, RECT area, const wstring& title, const wstring& subtitle );

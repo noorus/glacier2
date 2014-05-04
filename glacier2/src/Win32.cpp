@@ -2,6 +2,8 @@
 #include "Win32.h"
 #include "Exception.h"
 #include "../glacier2_resource.h"
+#include "ServiceLocator.h"
+#include "Graphics.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
@@ -44,6 +46,43 @@ namespace Glacier {
         ENGINE_EXCEPT_W32( L"Couldn't load RichEdit module" );
 
       Gdiplus::GdiplusStartup( &mGDIPlusToken, &mGDIPlusStartup, NULL );
+    }
+
+    bool Win32::fileOpenDialog( const wstring& filterName, const wstring& filterExt, wstring& returnValue )
+    {
+      IFileDialog* fileDialog;
+      if ( CoCreateInstance( CLSID_FileOpenDialog, NULL, CLSCTX_INPROC_SERVER, IID_PPV_ARGS( &fileDialog ) ) < 0 )
+        ENGINE_EXCEPT( L"CoCreateInstance failed" );
+
+      COMDLG_FILTERSPEC filterSpecs[] = {
+        { filterName.c_str(), filterExt.c_str() },
+        { L"All Files (*.*)", L"*.*" } };
+
+      fileDialog->SetFileTypes( ARRAYSIZE( filterSpecs ), filterSpecs );
+
+      wchar_t currentDirectory[MAX_PATH];
+      if ( !GetCurrentDirectoryW( MAX_PATH, currentDirectory ) )
+        ENGINE_EXCEPT_W32( L"Couldn't fetch current directory" );
+
+      IShellItem* shellItem = NULL;
+      SHCreateItemFromParsingName( currentDirectory, NULL, IID_PPV_ARGS( &shellItem ) );
+      if ( shellItem ) {
+        fileDialog->AddPlace( shellItem, FDAP_BOTTOM );
+        fileDialog->SetFolder( shellItem );
+      }
+      fileDialog->SetOptions( FOS_FILEMUSTEXIST | FOS_PATHMUSTEXIST | FOS_FORCEFILESYSTEM );
+
+      if ( fileDialog->Show( Locator::getGraphics().getRenderWindowHandle() ) != S_OK )
+        return false;
+
+      fileDialog->GetResult( &shellItem );
+
+      wchar_t* returned;
+      shellItem->GetDisplayName( SIGDN_FILESYSPATH, &returned );
+      returnValue = returned;
+      CoTaskMemFree( returned );
+
+      return true;
     }
 
     void Win32::handleMessagesFor( HWND window )

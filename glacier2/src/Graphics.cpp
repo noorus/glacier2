@@ -261,6 +261,18 @@ namespace Glacier {
     }
   }
 
+  void Graphics::setRenderWindowTitle( const wstring& title )
+  {
+    SetWindowTextW( getRenderWindowHandle(), title.c_str() );
+  }
+
+  HWND Graphics::getRenderWindowHandle()
+  {
+    HWND windowHandle = NULL;
+    mWindow->getCustomAttribute( "WINDOW", &windowHandle );
+    return windowHandle;
+  }
+
   void Graphics::screenshot()
   {
     if ( !mWindow )

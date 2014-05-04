@@ -2,7 +2,7 @@
 #include "Game.h"
 #include "Engine.h"
 #include "EngineComponent.h"
-#include "DemoState.h"
+#include "ModelViewerState.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
@@ -11,7 +11,7 @@ namespace Glacier {
 
   Game::Game( Engine* engine ): EngineComponent( engine )
   {
-    changeState( &DemoState::instance() );
+    changeState( &ModelViewerState::instance() );
   }
 
   void Game::componentTick( GameTime tick, GameTime time )

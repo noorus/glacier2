@@ -204,6 +204,7 @@ namespace Glacier {
 
     mWindowHandler = new WindowHandler( this );
     mGraphics = new Graphics( this, mWindowHandler );
+    Locator::provideGraphics( mGraphics );
 
     mScripting = new Scripting( this );
     mScripting->simpleExecute( L"initialization.js" );

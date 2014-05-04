@@ -129,9 +129,6 @@
     <ClCompile Include="..\hdrlib\HDRCompositor.cpp">
       <Filter>Source Files\HDRLib</Filter>
     </ClCompile>
-    <ClCompile Include="src\DemoState.cpp">
-      <Filter>Source Files\States</Filter>
-    </ClCompile>
     <ClCompile Include="src\Director.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -261,6 +258,12 @@
     <ClCompile Include="src\ActionManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\ModelViewerState.cpp">
+      <Filter>Source Files\States</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ModelViewer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\CompilerDef.h">
@@ -292,9 +295,6 @@
     </ClInclude>
     <ClInclude Include="..\hdrlib\HDRCompositor.h">
       <Filter>Header Files\HDRLib</Filter>
-    </ClInclude>
-    <ClInclude Include="include\DemoState.h">
-      <Filter>Header Files\States</Filter>
     </ClInclude>
     <ClInclude Include="include\Director.h">
       <Filter>Header Files</Filter>
@@ -379,6 +379,12 @@
     </ClInclude>
     <ClInclude Include="include\ActionManager.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ModelViewer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ModelViewerState.h">
+      <Filter>Header Files\States</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

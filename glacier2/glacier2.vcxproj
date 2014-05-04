@@ -274,7 +274,8 @@
     <ClCompile Include="src\Camera.cpp" />
     <ClCompile Include="src\Console.cpp" />
     <ClCompile Include="src\ConsoleWindow.cpp" />
-    <ClCompile Include="src\DemoState.cpp" />
+    <ClCompile Include="src\ModelViewer.cpp" />
+    <ClCompile Include="src\ModelViewerState.cpp" />
     <ClCompile Include="src\Director.cpp" />
     <ClCompile Include="src\Engine.cpp" />
     <ClCompile Include="src\EngineComponent.cpp" />
@@ -316,7 +317,7 @@
     <ClInclude Include="include\Camera.h" />
     <ClInclude Include="include\Console.h" />
     <ClInclude Include="include\ConsoleWindow.h" />
-    <ClInclude Include="include\DemoState.h" />
+    <ClInclude Include="include\ModelViewerState.h" />
     <ClInclude Include="include\Director.h" />
     <ClInclude Include="include\Engine.h" />
     <ClInclude Include="include\EngineComponent.h" />
@@ -327,6 +328,7 @@
     <ClInclude Include="include\Game.h" />
     <ClInclude Include="include\GlobalStats.h" />
     <ClInclude Include="include\Graphics.h" />
+    <ClInclude Include="include\ModelViewer.h" />
     <ClInclude Include="include\NedPoolMemory.h" />
     <ClInclude Include="include\Input.h" />
     <ClInclude Include="include\JSNatives.h" />
