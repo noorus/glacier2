@@ -356,14 +356,16 @@ namespace Glacier {
   bool Graphics::callbackCVARTextureFiltering(
   ConVar* variable, ConVar::Value oldValue )
   {
-    Ogre::TextureFilterOptions tfMethod = (Ogre::TextureFilterOptions)variable->getInt();
+    auto method = (Ogre::TextureFilterOptions)variable->getInt();
 
-    if ( tfMethod < Ogre::TFO_NONE )
-      tfMethod = Ogre::TFO_NONE;
-    if ( tfMethod > Ogre::TFO_ANISOTROPIC )
-      tfMethod = Ogre::TFO_ANISOTROPIC;
+    if ( method < Ogre::TFO_NONE )
+      method = Ogre::TFO_NONE;
+    if ( method > Ogre::TFO_ANISOTROPIC )
+      method = Ogre::TFO_ANISOTROPIC;
 
-    Ogre::MaterialManager::getSingleton().setDefaultTextureFiltering( tfMethod );
+    if ( Ogre::MaterialManager::getSingletonPtr() )
+      Ogre::MaterialManager::getSingleton().setDefaultTextureFiltering(
+        method );
 
     return true;
   }
@@ -371,7 +373,9 @@ namespace Glacier {
   bool Graphics::callbackCVARTextureAnisotropy(
   ConVar* variable, ConVar::Value oldValue )
   {
-    Ogre::MaterialManager::getSingleton().setDefaultAnisotropy( variable->getInt() );
+    if ( Ogre::MaterialManager::getSingletonPtr() )
+      Ogre::MaterialManager::getSingleton().setDefaultAnisotropy(
+        variable->getInt() );
 
     return true;
   }
@@ -386,7 +390,8 @@ namespace Glacier {
     else if ( value < 1 )
       value = Ogre::MIP_DEFAULT;
 
-    Ogre::TextureManager::getSingleton().setDefaultNumMipmaps( value );
+    if ( Ogre::TextureManager::getSingletonPtr() )
+      Ogre::TextureManager::getSingleton().setDefaultNumMipmaps( value );
 
     variable->forceValue( value );
 
