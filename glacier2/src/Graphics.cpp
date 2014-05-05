@@ -34,6 +34,16 @@ namespace Glacier {
     L"Restart the renderer to apply changes to display mode.",
     &Graphics::callbackVideoRestart );
 
+  ENGINE_DECLARE_CONVAR_WITH_CB( tex_filtering,
+    L"Texture filtering method. 0 = none, 1 = bilinear, 2 = trilinear, 3 = anisotropic.",
+    3, Graphics::callbackCVARTextureFiltering );
+  ENGINE_DECLARE_CONVAR_WITH_CB( tex_anisotropy,
+    L"Level of anisotropy when using anisotropic texture filtering.",
+    8, Graphics::callbackCVARTextureAnisotropy );
+  ENGINE_DECLARE_CONVAR_WITH_CB( tex_mipmaps,
+    L"Default number of mipmaps used when loading textures.",
+    3, Graphics::callbackCVARTextureMipmaps );
+
   // Graphics engine constants ================================================
 
   const char* cRenderSystemName    = "Direct3D9 Rendering Subsystem";
@@ -202,9 +212,13 @@ namespace Glacier {
     // Add OverlaySystem as a global renderqueue listener
     mSceneManager->addRenderQueueListener( mOverlaySystem );
 
-    Ogre::TextureManager::getSingleton().setDefaultNumMipmaps( 3 );
-    Ogre::MaterialManager::getSingleton().setDefaultTextureFiltering( Ogre::TFO_ANISOTROPIC );
-    Ogre::MaterialManager::getSingleton().setDefaultAnisotropy( 8 );
+    // Set default texture filtering, anisotropy and mipmap count
+    Ogre::MaterialManager::getSingleton().setDefaultTextureFiltering(
+      (Ogre::TextureFilterOptions)g_CVar_tex_filtering.getInt() );
+    Ogre::MaterialManager::getSingleton().setDefaultAnisotropy(
+      g_CVar_tex_anisotropy.getInt() );
+    Ogre::TextureManager::getSingleton().setDefaultNumMipmaps(
+      g_CVar_tex_mipmaps.getInt() );
 
     // Register & initialize resource groups
     mEngine->registerResources( ResourceGroupManager::getSingleton() );
@@ -337,6 +351,46 @@ namespace Glacier {
       return;
 
     gEngine->getGraphics()->videoRestart();
+  }
+
+  bool Graphics::callbackCVARTextureFiltering(
+  ConVar* variable, ConVar::Value oldValue )
+  {
+    Ogre::TextureFilterOptions tfMethod = (Ogre::TextureFilterOptions)variable->getInt();
+
+    if ( tfMethod < Ogre::TFO_NONE )
+      tfMethod = Ogre::TFO_NONE;
+    if ( tfMethod > Ogre::TFO_ANISOTROPIC )
+      tfMethod = Ogre::TFO_ANISOTROPIC;
+
+    Ogre::MaterialManager::getSingleton().setDefaultTextureFiltering( tfMethod );
+
+    return true;
+  }
+
+  bool Graphics::callbackCVARTextureAnisotropy(
+  ConVar* variable, ConVar::Value oldValue )
+  {
+    Ogre::MaterialManager::getSingleton().setDefaultAnisotropy( variable->getInt() );
+
+    return true;
+  }
+
+  bool Graphics::callbackCVARTextureMipmaps(
+  ConVar* variable, ConVar::Value oldValue )
+  {
+    int value = variable->getInt();
+
+    if ( value >= 16 )
+      value = Ogre::MIP_UNLIMITED;
+    else if ( value < 1 )
+      value = Ogre::MIP_DEFAULT;
+
+    Ogre::TextureManager::getSingleton().setDefaultNumMipmaps( value );
+
+    variable->forceValue( value );
+
+    return true;
   }
 
   Graphics::~Graphics()

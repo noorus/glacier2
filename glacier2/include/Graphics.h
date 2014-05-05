@@ -54,6 +54,12 @@ namespace Glacier {
     };
     static void callbackVideoRestart( Console* console,
       ConCmd* command, StringVector& arguments );
+    static bool callbackCVARTextureFiltering(
+      ConVar* variable, ConVar::Value oldValue );
+    static bool callbackCVARTextureAnisotropy(
+      ConVar* variable, ConVar::Value oldValue );
+    static bool callbackCVARTextureMipmaps(
+      ConVar* variable, ConVar::Value oldValue );
   public:
     Graphics( Engine* engine, WindowHandler* windowHandler );
     void preInitialize();

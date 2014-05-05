@@ -592,7 +592,7 @@ namespace Glacier {
       }
 
       if ( !line.empty() )
-        execute( Utilities::utf8ToWide( line ) );
+        execute( Utilities::utf8ToWide( line ), false );
     }
     catch ( Ogre::FileNotFoundException& e )
     {

@@ -105,6 +105,9 @@ namespace Glacier {
       virtual HINSTANCE getInstance() { return mInstance; }
     };
 
+#undef min
+#undef max
+
   }
 
 }
