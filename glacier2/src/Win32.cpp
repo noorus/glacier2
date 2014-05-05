@@ -64,8 +64,11 @@ namespace Glacier {
       if ( !GetCurrentDirectoryW( MAX_PATH, currentDirectory ) )
         ENGINE_EXCEPT_W32( L"Couldn't fetch current directory" );
 
+      wstring browseDirectory( currentDirectory );
+      browseDirectory.append( L"\\data\\bootload" );
+
       IShellItem* shellItem = NULL;
-      SHCreateItemFromParsingName( currentDirectory, NULL, IID_PPV_ARGS( &shellItem ) );
+      SHCreateItemFromParsingName( browseDirectory.c_str(), NULL, IID_PPV_ARGS( &shellItem ) );
       if ( shellItem ) {
         fileDialog->AddPlace( shellItem, FDAP_BOTTOM );
         fileDialog->SetFolder( shellItem );

@@ -197,7 +197,9 @@ namespace Glacier {
     // Add OverlaySystem as a global renderqueue listener
     mSceneManager->addRenderQueueListener( mOverlaySystem );
 
-    Ogre::TextureManager::getSingleton().setDefaultNumMipmaps( 5 );
+    Ogre::TextureManager::getSingleton().setDefaultNumMipmaps( 3 );
+    Ogre::MaterialManager::getSingleton().setDefaultTextureFiltering( Ogre::TFO_ANISOTROPIC );
+    Ogre::MaterialManager::getSingleton().setDefaultAnisotropy( 8 );
 
     // Register & initialize resource groups
     mEngine->registerResources( ResourceGroupManager::getSingleton() );

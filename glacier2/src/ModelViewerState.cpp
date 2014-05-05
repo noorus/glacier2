@@ -29,12 +29,14 @@ namespace Glacier {
 
     mDirector = new Director( &Locator::getGraphics() );
 
-    wstring fileName;
+    /*wstring fileName;
     if ( Win32::Win32::instance().fileOpenDialog(
     L"Ogre Mesh Files (*.mesh)", L"*.mesh", fileName ) )
     {
       mViewer = new ModelViewer( fileName );
-    }
+    }*/
+
+    mViewer = new ModelViewer( L"rotta_01.mesh" );
   }
 
   void ModelViewerState::pause( GameTime time )

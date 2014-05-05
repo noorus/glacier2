@@ -12,6 +12,8 @@ namespace Glacier {
     Ogre::OverlayElement* mValuesText;
     Ogre::Entity* mEntity;
     PCZSceneNode* mModelNode;
+    Ogre::Entity* mFloor;
+    PCZSceneNode* mFloorNode;
   public:
     ModelViewer( wstring meshName );
     void update();

@@ -20,15 +20,16 @@ namespace Glacier {
     Graphics* mGraphics;        //!< The graphics engine
     Ogre::Viewport* mViewport;  //!< My viewport
     ArcballCamera* mCamera;            //!< My camera
-    HDRlib::HDRCompositor* mHDRCompositor; //!< My HDR compositor
     Ogre::Light* mLight;
   public:
+    static HDRlib::HDRCompositor* mHDRCompositor; //!< My HDR compositor
     //! Constructor.
     Director( Graphics* gfx );
     //! Gets the viewport.
     Ogre::Viewport* getViewport() { return mViewport; }
     //! Gets the camera.
     ArcballCamera* getCamera() { return mCamera; }
+    void update( const GameTime delta );
     //! Destructor.
     ~Director();
   };
