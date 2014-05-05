@@ -167,6 +167,20 @@ namespace Glacier {
       mGame->resumeState();
   }
 
+  void Engine::registerUserLocations( ResourceGroupManager& manager )
+  {
+    manager.addResourceLocation(
+      UTFString( Win32::Win32::instance().getCurrentDirectory() ),
+      "FileSystem", "User", false );
+  }
+
+  void Engine::unregisterUserLocations( ResourceGroupManager& manager )
+  {
+    manager.removeResourceLocation(
+      UTFString( Win32::Win32::instance().getCurrentDirectory() ),
+      "User" );
+  }
+
   void Engine::registerResources( ResourceGroupManager& manager )
   {
     Graphics::registerResources( manager );
@@ -205,6 +219,10 @@ namespace Glacier {
     mWindowHandler = new WindowHandler( this );
     mGraphics = new Graphics( this, mWindowHandler );
     Locator::provideGraphics( mGraphics );
+
+    mConsole->executeFile( L"user.cfg" );
+
+    mGraphics->postInitialize();
 
     mScripting = new Scripting( this );
     mScripting->simpleExecute( L"initialization.js" );

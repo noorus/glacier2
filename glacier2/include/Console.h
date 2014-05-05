@@ -206,7 +206,7 @@ namespace Glacier {
     //! Automatic completion search for given command line.
     void autoComplete( const wstring& line, ConBaseList& matches );
     //! Executes a command line.
-    void execute( wstring commandLine );
+    void execute( wstring commandLine, const bool echo = true );
     //! Queues a command for execution on next update call.
     void executeBuffered( const wstring& commandLine );
     //! Executes a file.

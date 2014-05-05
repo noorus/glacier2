@@ -482,7 +482,7 @@ namespace Glacier {
     return nullptr;
   }
 
-  void Console::execute( wstring commandLine )
+  void Console::execute( wstring commandLine, const bool echo )
   {
     boost::trim( commandLine );
     if ( commandLine.empty() )
@@ -492,7 +492,8 @@ namespace Glacier {
     if ( arguments.empty() )
       return;
 
-    printf( srcEngine, cConsoleEcho, commandLine.c_str() );
+    if ( echo )
+      printf( srcEngine, cConsoleEcho, commandLine.c_str() );
 
     ScopedSRWLock lock( &mLock );
 
@@ -525,8 +526,10 @@ namespace Glacier {
         return;
       }
     }
+
     lock.unlock();
-    errorPrintf( srcEngine, cConsoleUnknown, command.c_str() );
+
+    printf( srcEngine, cConsoleUnknown, command.c_str() );
   }
 
   void Console::executeBuffered( const wstring& commandLine )
@@ -542,15 +545,60 @@ namespace Glacier {
 
     while ( !mCommandBuffer.empty() )
     {
-      wstring cmd = mCommandBuffer.front();
-      execute( cmd.c_str() );
+      execute( mCommandBuffer.front() );
       mCommandBuffer.pop();
     }
   }
 
   void Console::executeFile( const wstring& filename )
   {
-    // TODO
+    try
+    {
+      DataStreamPtr stream = Ogre::Root::getSingleton().openFileStream(
+        UTFString( filename ), "User" );
+
+      printf( srcEngine, L"Executing %s", filename.c_str() );
+
+      Ogre::String fullString = stream->getAsString();
+      const char* content = fullString.c_str();
+
+      stream->close();
+
+      size_t i = 0;
+
+      const BYTE utf8BOM[3] = { 0xEF, 0xBB, 0xBF };
+      if ( !memcmp( content, utf8BOM, 3 ) )
+        i = 3;
+
+      std::string line;
+
+      for ( i; i < fullString.length(); i++ )
+      {
+        if ( content[i] != NULL && content[i] != LF && content[i] != CR )
+        {
+          line.append( 1, content[i] );
+        }
+        else if ( content[i] == LF )
+        {
+          if ( !line.empty() )
+            execute( Utilities::utf8ToWide( line ), false );
+
+          line.clear();
+        }
+        else if ( content[i] == NULL )
+        {
+          break;
+        }
+      }
+
+      if ( !line.empty() )
+        execute( Utilities::utf8ToWide( line ) );
+    }
+    catch ( Ogre::FileNotFoundException& e )
+    {
+      printf( srcEngine, L"Unable to execute %s, file not found",
+        filename.c_str() );
+    }
   }
 
 }

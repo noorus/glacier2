@@ -132,11 +132,9 @@ namespace Glacier {
     void operationSuspendPhysics();
     //! Continue state after physics restart.
     void operationContinuePhysics();
-    //! Registers the resources described by manager.
-    //! \param [in,out] manager The resource group manager.
+    void registerUserLocations( ResourceGroupManager& manager );
+    void unregisterUserLocations( ResourceGroupManager& manager );
     void registerResources( ResourceGroupManager& manager );
-    //! Unregisters the resources described by manager.
-    //! \param [in,out] manager The resource group manager.
     void unregisterResources( ResourceGroupManager& manager );
     //! Initializes the Engine.
     void initialize( const Options& options );

@@ -56,7 +56,8 @@ namespace Glacier {
       ConCmd* command, StringVector& arguments );
   public:
     Graphics( Engine* engine, WindowHandler* windowHandler );
-    void videoInitialize();
+    void preInitialize();
+    void postInitialize();
     void videoShutdown();
     void videoRestart();
     void screenshot();

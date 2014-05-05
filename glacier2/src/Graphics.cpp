@@ -123,10 +123,10 @@ namespace Glacier {
   mOverlaySystem( nullptr ), mWindowHandler( windowHandler ),
   mShinyPlatform( nullptr ), mShinyFactory( nullptr )
   {
-    videoInitialize();
+    preInitialize();
   }
 
-  void Graphics::videoInitialize()
+  void Graphics::preInitialize()
   {
     mEngine->getConsole()->printf( Console::srcGfx,
       L"Initializing graphics engine..." );
@@ -140,6 +140,11 @@ namespace Glacier {
     // Create Ogre root
     mRoot = new Ogre::Root( "", "", cOgreLogFile );
 
+    mEngine->registerUserLocations( ResourceGroupManager::getSingleton() );
+  }
+
+  void Graphics::postInitialize()
+  {
     // Create overlay system
     mOverlaySystem = new Ogre::OverlaySystem();
 
@@ -221,7 +226,8 @@ namespace Glacier {
   void Graphics::videoRestart()
   {
     videoShutdown();
-    videoInitialize();
+    preInitialize();
+    postInitialize();
   }
 
   void Graphics::videoShutdown()
@@ -255,6 +261,7 @@ namespace Glacier {
       }
 
       mEngine->unregisterResources( ResourceGroupManager::getSingleton() );
+      mEngine->unregisterUserLocations( ResourceGroupManager::getSingleton() );
 
       SAFE_DELETE( mOverlaySystem );
       mRoot->shutdown();

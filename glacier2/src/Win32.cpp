@@ -48,6 +48,15 @@ namespace Glacier {
       Gdiplus::GdiplusStartup( &mGDIPlusToken, &mGDIPlusStartup, NULL );
     }
 
+    wstring Win32::getCurrentDirectory()
+    {
+      wchar_t currentDirectory[MAX_PATH];
+      if ( !GetCurrentDirectoryW( MAX_PATH, currentDirectory ) )
+        ENGINE_EXCEPT_W32( L"Couldn't fetch current directory" );
+
+      return wstring( currentDirectory );
+    }
+
     bool Win32::fileOpenDialog( const wstring& filterName, const wstring& filterExt, wstring& returnValue )
     {
       IFileDialog* fileDialog;
@@ -60,11 +69,7 @@ namespace Glacier {
 
       fileDialog->SetFileTypes( ARRAYSIZE( filterSpecs ), filterSpecs );
 
-      wchar_t currentDirectory[MAX_PATH];
-      if ( !GetCurrentDirectoryW( MAX_PATH, currentDirectory ) )
-        ENGINE_EXCEPT_W32( L"Couldn't fetch current directory" );
-
-      wstring browseDirectory( currentDirectory );
+      wstring browseDirectory = getCurrentDirectory();
       browseDirectory.append( L"\\data\\bootload" );
 
       IShellItem* shellItem = NULL;
