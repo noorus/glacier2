@@ -85,6 +85,9 @@
 #include <Overlay/OgreOverlay.h>
 #include <Overlay/OgreOverlaySystem.h>
 #include <Overlay/OgreOverlayManager.h>
+#include <Overlay/OgreOverlayElementFactory.h>
+#include <Overlay/OgrePanelOverlayElement.h>
+#include <Overlay/OgreTextAreaOverlayElement.h>
 #include <Overlay/OgreFont.h>
 #include <Overlay/OgreFontManager.h>
 #include <Paging/OgrePaging.h>
@@ -97,6 +100,7 @@
 #include <Plugins/PCZSceneManager/OgrePCZPlugin.h>
 #include <Plugins/PCZSceneManager/OgrePCZSceneManager.h>
 #include <Plugins/PCZSceneManager/OgrePCZSceneNode.h>
+#include <Plugins/PCZSceneManager/OgrePCZCamera.h>
 
 // V8 Headers
 #include <v8.h>
