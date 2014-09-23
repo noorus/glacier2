@@ -44,7 +44,7 @@ namespace Glacier {
   ENGINE_DECLARE_CONVAR_WITH_CB( hdr_phi, L"HDR Phi",
     8.0f, cvarCallbackHDRPhi );
   ENGINE_DECLARE_CONVAR_WITH_CB( hdr_enabled, L"Whether to enable HDR rendering",
-    true, cvarCallbackHDREnabled );
+    false, cvarCallbackHDREnabled );
 
   HDRlib::HDRCompositor* Director::mHDRCompositor = nullptr;
 

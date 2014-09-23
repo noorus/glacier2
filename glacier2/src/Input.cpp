@@ -24,7 +24,8 @@ namespace Glacier {
       ENGINE_EXCEPT( L"Could not retrieve render window handle" );
 
     // Create input system
-    mSystem = new Nil::System( instance, windowHandle, this );
+    mSystem = new Nil::System( instance, windowHandle,
+      Nil::Cooperation_Foreground, this );
 
     // Enable all initially connected devices
     for ( auto device : mSystem->getDevices() )
