@@ -49,25 +49,28 @@ namespace Glacier {
     Player_Crouch_Keyup
   };
 
-  struct KeyBindTable {
-    BindAction nKeyboard[0xFF];
-    BindAction nMouse[8];
-    void reset() {
-      memset( nKeyboard, Action_None, 0xFF * sizeof( BindAction ) );
-      memset( nMouse, Action_None, 8 * sizeof( BindAction ) );
+  struct KeyBindTable
+  {
+    BindAction keyboard[0xFF];
+    BindAction mouse[8];
+    void reset()
+    {
+      memset( keyboard, Action_None, 0xFF * sizeof( BindAction ) );
+      memset( mouse, Action_None, 8 * sizeof( BindAction ) );
     }
-    KeyBindTable() {
+    KeyBindTable()
+    {
       reset();
     }
   };
 
   struct ActionPacket {
   public:
-    PlayerMoveAction nMove;
-    PlayerSidestepAction nSidestep;
-    PlayerJumpAction nJump;
-    PlayerRunAction nRun;
-    PlayerCrouchAction nCrouch;
+    PlayerMoveAction move;
+    PlayerSidestepAction sidestep;
+    PlayerJumpAction jump;
+    PlayerRunAction run;
+    PlayerCrouchAction crouch;
   };
 
   class CameraController: public boost::noncopyable {

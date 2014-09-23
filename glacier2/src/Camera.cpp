@@ -89,44 +89,44 @@ namespace Glacier {
     mCamera->lookAt( pgeTarget->_getDerivedPosition() );
   }
 
-  void ArcballCamera::applyMovement( const Vector3& vecMovement )
+  void ArcballCamera::applyMovement( const Vector3& movement )
   {
     if ( mReverseAxes ) {
-      mMovement.x += vecMovement.x * mSensitivity;
-      mMovement.y += vecMovement.y * mSensitivity;
+      mMovement.x += movement.x * mSensitivity;
+      mMovement.y += movement.y * mSensitivity;
     } else {
-      mMovement.x += -vecMovement.x * mSensitivity;
-      mMovement.y += -vecMovement.y * mSensitivity;
+      mMovement.x += -movement.x * mSensitivity;
+      mMovement.y += -movement.y * mSensitivity;
     }
-    mMovement.z += vecMovement.z;
+    mMovement.z += movement.z;
   }
 
-  void ArcballCamera::update( const float fDelta )
+  void ArcballCamera::update( const float delta )
   {
     // Calculate the local X axis, as it changes with rotation along world Y
-    Vector3 vecAxis = Vector3( -mOffset.z, 0, mOffset.x );
-    vecAxis.normalise();
+    Vector3 axis = Vector3( -mOffset.z, 0, mOffset.x );
+    axis.normalise();
 
     // Handle new X,Y movement
     if ( mMovement.x || mMovement.y ) {
       // Treat the movement input as degrees, and convert to radians
-      Radian rRotX = Radian( Ogre::Math::DegreesToRadians( mMovement.x ) );
-      Radian rRotY = Radian( Ogre::Math::DegreesToRadians( mMovement.y ) );
-      bool bResetRotation = false;
-      if ( rRotY > mOffset.angleBetween( Vector3::UNIT_Y ) - mClampTop ) {
-        rRotY = mOffset.angleBetween( Vector3::UNIT_Y ) - mClampTop;
-        bResetRotation = true;
-      } else if ( rRotY < mOffset.angleBetween( Vector3::UNIT_Y ) - mClampBottom ) {
-        rRotY = mOffset.angleBetween( Vector3::UNIT_Y ) - mClampBottom;
-        bResetRotation = true;
+      Radian radiansX = Radian( Ogre::Math::DegreesToRadians( mMovement.x ) );
+      Radian radiansY = Radian( Ogre::Math::DegreesToRadians( mMovement.y ) );
+      bool resetRotation = false;
+      if ( radiansY > mOffset.angleBetween( Vector3::UNIT_Y ) - mClampTop ) {
+        radiansY = mOffset.angleBetween( Vector3::UNIT_Y ) - mClampTop;
+        resetRotation = true;
+      } else if ( radiansY < mOffset.angleBetween( Vector3::UNIT_Y ) - mClampBottom ) {
+        radiansY = mOffset.angleBetween( Vector3::UNIT_Y ) - mClampBottom;
+        resetRotation = true;
       }
       // Compose the rotation delta and add to existing velocity
-      Quaternion qtRotX( rRotY, vecAxis );
-      Quaternion qtRotY( rRotX, Vector3::UNIT_Y );
-      if ( bResetRotation ) {
-        mRotation = qtRotX * qtRotY;
+      Quaternion rotationX( radiansY, axis );
+      Quaternion rotationY( radiansX, Vector3::UNIT_Y );
+      if ( resetRotation ) {
+        mRotation = rotationX * rotationY;
       } else {
-        mRotation = mRotation * qtRotX * qtRotY;
+        mRotation = mRotation * rotationX * rotationY;
       }
     }
 
@@ -136,15 +136,15 @@ namespace Glacier {
       if( mClampRotProgress > 1) {
         mClampRotating = false;
       } else {
-        Quaternion qtClampRotation = Quaternion::Slerp( mClampRotProgress, 
+        Quaternion clamp = Quaternion::Slerp( mClampRotProgress, 
           mClampRotation, Quaternion::IDENTITY, true );
-        mOffset = qtClampRotation * mOffset;
+        mOffset = clamp * mOffset;
       }
     }
 
     // Handle rotation velocity
     if ( mRotation != Quaternion::IDENTITY ) {
-      mRotation = mRotation.Slerp( mRotDeceleration * fDelta, mRotation,
+      mRotation = mRotation.Slerp( mRotDeceleration * delta, mRotation,
         Quaternion::IDENTITY, true );
       mOffset = mRotation * mOffset;
     }
@@ -155,21 +155,21 @@ namespace Glacier {
     if ( mMovement.z )
       mZoomVelocity += mMovement.z;
     if ( mZoomVelocity ) {
-      mOffset += mDirection * mZoomVelocity * mZoomAcceleration * fDelta;
-      Real fDistance = mOffset.length();
+      mOffset += mDirection * mZoomVelocity * mZoomAcceleration * delta;
+      Real distance = mOffset.length();
       // TODO:MEDIUM - this could be softened a bit
-      if ( fDistance > mMaxDistance ) {
+      if ( distance > mMaxDistance ) {
         mOffset = mDirection * mMaxDistance;
         mZoomVelocity = 0.0f;
-      } else if ( fDistance < mMinDistance ) {
+      } else if ( distance < mMinDistance ) {
         mOffset = mDirection * mMinDistance;
         mZoomVelocity = 0.0f;
       } else {
         if ( mZoomVelocity > 0.0f ) {
-          mZoomVelocity -= fDelta * mZoomDeceleration;
+          mZoomVelocity -= delta * mZoomDeceleration;
           if ( mZoomVelocity < 0.0f ) mZoomVelocity = 0.0f;
         } else {
-          mZoomVelocity += fDelta * mZoomDeceleration;
+          mZoomVelocity += delta * mZoomDeceleration;
           if ( mZoomVelocity > 0.0f ) mZoomVelocity = 0.0f;
         }
       }
@@ -179,24 +179,24 @@ namespace Glacier {
     mMovement = Vector3::ZERO;
 
     // Update camera position
-    Vector3 vecTarget = pgeTarget->_getDerivedPosition();
-    Vector3 vecPosition = vecTarget + mOffset;
+    Vector3 target = pgeTarget->_getDerivedPosition();
+    Vector3 vecPosition = target + mOffset;
     if ( mModifier )
-      mModifier->updatePosition( this, vecTarget, mOffset, vecPosition );
+      mModifier->updatePosition( this, target, mOffset, vecPosition );
     mNode->setPosition( vecPosition );
 
     // Always look at our target
-    mCamera->lookAt( vecTarget );
+    mCamera->lookAt( target );
   }
 
-  void ArcballCamera::setSensitivity( const Real fSensitivity )
+  void ArcballCamera::setSensitivity( const Real sensitivity )
   {
-    mSensitivity = fSensitivity;
+    mSensitivity = sensitivity;
   }
 
-  void ArcballCamera::setMinDistance( const Real fMinDistance )
+  void ArcballCamera::setMinDistance( const Real minimumDistance )
   {
-    mMinDistance = fMinDistance;
+    mMinDistance = minimumDistance;
     Real fDistance = mOffset.length();
     if ( fDistance < mMinDistance ) {
       mOffset = mOffset.normalisedCopy() * mMinDistance;
@@ -204,9 +204,9 @@ namespace Glacier {
     }
   }
 
-  void ArcballCamera::setMaxDistance( const Real fMaxDistance )
+  void ArcballCamera::setMaxDistance( const Real maximumDistance )
   {
-    mMaxDistance = fMaxDistance;
+    mMaxDistance = maximumDistance;
     Real fDistance = mOffset.length();
     if ( fDistance > mMaxDistance ) {
       mOffset = mOffset.normalisedCopy() * mMaxDistance;
@@ -218,12 +218,12 @@ namespace Glacier {
   {
     mClampTop = fClampTop;
     if ( mOffset.angleBetween( Vector3::UNIT_Y ) < mClampTop ) {
-      Radian rRotY = mOffset.angleBetween( Vector3::UNIT_Y ) - mClampTop;
+      Radian radiansY = mOffset.angleBetween( Vector3::UNIT_Y ) - mClampTop;
       // Calculate the local X axis, as it changes with rotation along global Y
-      Vector3 vecAxis = Vector3( -mOffset.z, 0, mOffset.x );
-      vecAxis.normalise();
+      Vector3 axis = Vector3( -mOffset.z, 0, mOffset.x );
+      axis.normalise();
       mClampRotProgress = 0.5f;
-      mClampRotation = Quaternion( rRotY, vecAxis );
+      mClampRotation = Quaternion( radiansY, axis );
       mClampRotating = true;
     }
   }
@@ -232,12 +232,12 @@ namespace Glacier {
   {
     mClampBottom = fClampBottom;
     if ( mOffset.angleBetween( Vector3::UNIT_Y ) > mClampBottom ) {
-      Radian rRotY = mOffset.angleBetween( Vector3::UNIT_Y )- mClampBottom; 
+      Radian radiansY = mOffset.angleBetween( Vector3::UNIT_Y )- mClampBottom; 
       // Calculate the local X axis, as it changes with rotation along global Y
-      Vector3 vecAxis = Vector3( -mOffset.z, 0, mOffset.x );
-      vecAxis.normalise();
+      Vector3 axis = Vector3( -mOffset.z, 0, mOffset.x );
+      axis.normalise();
       mClampRotProgress = 0.5f;
-      mClampRotation = Quaternion( rRotY, vecAxis );
+      mClampRotation = Quaternion( radiansY, axis );
       mClampRotating = true;
     }
   }

@@ -103,23 +103,23 @@ namespace Glacier {
     assert( mEngine );
     mCameraController = new CameraController( mEngine );
     clearActions();
-    mKeyTable.nKeyboard[0x58] = Action_Move_Forward;
-    mKeyTable.nKeyboard[0x53] = Action_Move_Backward;
-    mKeyTable.nKeyboard[0x41] = Action_Sidestep_Left;
-    mKeyTable.nKeyboard[0x44] = Action_Sidestep_Right;
-    mKeyTable.nKeyboard[0x20] = Action_Jump;
-    mKeyTable.nKeyboard[0xA0] = Action_Run;
-    mKeyTable.nKeyboard[0xA2] = Action_Crouch;
-    mKeyTable.nKeyboard[0xDC] = Action_Toggle_Console;
+    mKeyTable.keyboard[0x58] = Action_Move_Forward;
+    mKeyTable.keyboard[0x53] = Action_Move_Backward;
+    mKeyTable.keyboard[0x41] = Action_Sidestep_Left;
+    mKeyTable.keyboard[0x44] = Action_Sidestep_Right;
+    mKeyTable.keyboard[0x20] = Action_Jump;
+    mKeyTable.keyboard[0xA0] = Action_Run;
+    mKeyTable.keyboard[0xA2] = Action_Crouch;
+    mKeyTable.keyboard[0xDC] = Action_Toggle_Console;
   }
 
   void ActionManager::clearActions()
   {
-    mActions.nMove      = Player_Move_None;
-    mActions.nSidestep  = Player_Sidestep_None;
-    mActions.nJump      = Player_Jump_None;
-    mActions.nRun       = Player_Run_None;
-    mActions.nCrouch    = Player_Crouch_None;
+    mActions.move      = Player_Move_None;
+    mActions.sidestep  = Player_Sidestep_None;
+    mActions.jump      = Player_Jump_None;
+    mActions.run       = Player_Run_None;
+    mActions.crouch    = Player_Crouch_None;
   }
 
   void ActionManager::clearActivators()
@@ -130,16 +130,16 @@ namespace Glacier {
   void ActionManager::prepare()
   {
     // Clear these every new frame
-    mActions.nJump = Player_Jump_None;
-    mActions.nRun = Player_Run_None;
-    mActions.nCrouch = Player_Crouch_None;
+    mActions.jump = Player_Jump_None;
+    mActions.run = Player_Run_None;
+    mActions.crouch = Player_Crouch_None;
     mCameraController->prepare();
 
     // HACK HACK HACK
-    if ( !mDirectional.isZeroLength() && mActions.nMove == Player_Move_None )
-      mActions.nMove = Played_Move_Forward;
-    else if ( mDirectional.isZeroLength() && mActions.nMove == Played_Move_Forward )
-      mActions.nMove = Player_Move_None;
+    if ( !mDirectional.isZeroLength() && mActions.move == Player_Move_None )
+      mActions.move = Played_Move_Forward;
+    else if ( mDirectional.isZeroLength() && mActions.move == Played_Move_Forward )
+      mActions.move = Player_Move_None;
   }
 
   void ActionManager::processBindPress( const BindAction& action )
@@ -147,29 +147,29 @@ namespace Glacier {
     switch ( action )
     {
       case Action_Move_Forward:
-        if ( mActions.nMove == Player_Move_None )
-          mActions.nMove = Played_Move_Forward;
+        if ( mActions.move == Player_Move_None )
+          mActions.move = Played_Move_Forward;
       break;
       case Action_Move_Backward:
-        if ( mActions.nMove == Player_Move_None )
-          mActions.nMove = Player_Move_Backward;
+        if ( mActions.move == Player_Move_None )
+          mActions.move = Player_Move_Backward;
       break;
       case Action_Sidestep_Left:
-        if ( mActions.nSidestep == Player_Sidestep_None )
-          mActions.nSidestep = Player_Sidestep_Left;
+        if ( mActions.sidestep == Player_Sidestep_None )
+          mActions.sidestep = Player_Sidestep_Left;
       break;
       case Action_Sidestep_Right:
-        if ( mActions.nSidestep == Player_Sidestep_None )
-          mActions.nSidestep = Player_Sidestep_Right;
+        if ( mActions.sidestep == Player_Sidestep_None )
+          mActions.sidestep = Player_Sidestep_Right;
       break;
       case Action_Jump:
-        mActions.nJump = Player_Jump_Keydown;
+        mActions.jump = Player_Jump_Keydown;
       break;
       case Action_Run:
-        mActions.nRun = Player_Run_Keydown;
+        mActions.run = Player_Run_Keydown;
       break;
       case Action_Crouch:
-        mActions.nCrouch = Player_Crouch_Keydown;
+        mActions.crouch = Player_Crouch_Keydown;
       break;
       case Action_Zoom:
         mCameraController->setZooming( true );
@@ -185,29 +185,29 @@ namespace Glacier {
     switch ( action )
     {
       case Action_Move_Forward:
-        if ( mActions.nMove == Played_Move_Forward )
-          mActions.nMove = Player_Move_None;
+        if ( mActions.move == Played_Move_Forward )
+          mActions.move = Player_Move_None;
       break;
       case Action_Move_Backward:
-        if ( mActions.nMove == Player_Move_Backward )
-          mActions.nMove = Player_Move_None;
+        if ( mActions.move == Player_Move_Backward )
+          mActions.move = Player_Move_None;
       break;
       case Action_Sidestep_Left:
-        if ( mActions.nSidestep == Player_Sidestep_Left )
-          mActions.nSidestep = Player_Sidestep_None;
+        if ( mActions.sidestep == Player_Sidestep_Left )
+          mActions.sidestep = Player_Sidestep_None;
       break;
       case Action_Sidestep_Right:
-        if ( mActions.nSidestep == Player_Sidestep_Right )
-          mActions.nSidestep = Player_Sidestep_None;
+        if ( mActions.sidestep == Player_Sidestep_Right )
+          mActions.sidestep = Player_Sidestep_None;
       break;
       case Action_Jump:
-        mActions.nJump = Player_Jump_Keyup;
+        mActions.jump = Player_Jump_Keyup;
       break;
       case Action_Run:
-        mActions.nRun = Player_Run_Keyup;
+        mActions.run = Player_Run_Keyup;
       break;
       case Action_Crouch:
-        mActions.nCrouch = Player_Crouch_Keyup;
+        mActions.crouch = Player_Crouch_Keyup;
       break;
       case Action_Zoom:
         mCameraController->setZooming( false );
@@ -224,7 +224,7 @@ namespace Glacier {
   void ActionManager::onMouseButtonPressed( Nil::Mouse* mouse,
   const Nil::MouseState& state, size_t button )
   {
-    BindAction nBind = ActionManager::mKeyTable.nMouse[button];
+    BindAction nBind = ActionManager::mKeyTable.mouse[button];
     if ( nBind != Action_None ) {
       processBindPress( nBind );
       return;
@@ -235,7 +235,7 @@ namespace Glacier {
   void ActionManager::onMouseButtonReleased( Nil::Mouse* mouse,
   const Nil::MouseState& state, size_t button )
   {
-    BindAction nBind = ActionManager::mKeyTable.nMouse[button];
+    BindAction nBind = ActionManager::mKeyTable.mouse[button];
     if ( nBind != Action_None ) {
       processBindRelease( nBind );
       return;
@@ -252,7 +252,7 @@ namespace Glacier {
   void ActionManager::onKeyPressed( Nil::Keyboard* keyboard,
   const Nil::VirtualKeyCode keycode )
   {
-    BindAction action = ActionManager::mKeyTable.nKeyboard[keycode];
+    BindAction action = ActionManager::mKeyTable.keyboard[keycode];
     if ( action == Action_None )
       return;
     processBindPress( action );
@@ -267,7 +267,7 @@ namespace Glacier {
   void ActionManager::onKeyReleased( Nil::Keyboard* keyboard,
   const Nil::VirtualKeyCode keycode )
   {
-    BindAction action = ActionManager::mKeyTable.nKeyboard[keycode];
+    BindAction action = ActionManager::mKeyTable.keyboard[keycode];
     if ( action == Action_None )
       return;
     processBindRelease( action );
