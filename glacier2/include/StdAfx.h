@@ -111,5 +111,9 @@
 #include <Factory.hpp>
 #include <OgrePlatform.hpp>
 
+// MyGUI Headers
+#include <MyGUI.h>
+#include <MyGUI_OgrePlatform.h>
+
 // Glacier types
 #include "Types.h"

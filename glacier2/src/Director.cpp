@@ -3,6 +3,8 @@
 #include "Graphics.h"
 #include "Camera.h"
 #include "HDRCompositor.h"
+#include "Engine.h"
+#include "GUI.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
@@ -68,6 +70,8 @@ namespace Glacier {
     mViewport->setClearEveryFrame( true );
     mViewport->setBackgroundColour( ColourValue( 0.62f, 0.78f, 0.88f ) );
 
+    mGraphics->getEngine()->getGUI()->initialize();
+
     mGraphics->getScene()->setAmbientLight( ColourValue( 0.2f, 0.2f, 0.2f, 1.0f ) );
 
     Ogre::Light* w = mGraphics->getScene()->createLight( "doopwhoop" );
@@ -114,6 +118,8 @@ namespace Glacier {
   {
     SAFE_DELETE( mHDRCompositor );
     mGraphics->getScene()->destroyAllLights();
+
+    mGraphics->getEngine()->getGUI()->shutdown();
 
     mGraphics->getWindow()->removeViewport(
       mViewport->getZOrder() );

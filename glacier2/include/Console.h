@@ -154,7 +154,8 @@ namespace Glacier {
       srcPhysics,     //!< Message from the physics subsystem
       srcScripting,   //!< Message from the scripting subsystem
       srcInput,       //!< Message from the input subsystem
-      srcGame         //!< Message from the game logic
+      srcGame,        //!< Message from the game logic
+      srcGUI          //!< Message from the gui subsystem
     };
   protected:
     SRWLOCK mLock; //!< Execution lock

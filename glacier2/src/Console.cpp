@@ -204,6 +204,7 @@ namespace Glacier {
     registerSource( L"scripts", RGB(34,70,197) );
     registerSource( L"input", RGB(219,38,122) );
     registerSource( L"game", RGB(4,127,77) );
+    registerSource( L"gui", RGB(79,115,44) );
 
     // Create core commands
     mCmdList = new ConCmd( L"list", L"List all cvars.", callbackList );

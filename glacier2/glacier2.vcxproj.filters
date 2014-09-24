@@ -88,6 +88,12 @@
     <Filter Include="Header Files\Scripting">
       <UniqueIdentifier>{026a2bdd-f8b7-4b37-abc3-a9f0f42fd01e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\GUI">
+      <UniqueIdentifier>{82bc2e82-8bae-410d-9bfc-5d2398839580}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GUI">
+      <UniqueIdentifier>{b0cd0d81-ed16-4edf-b179-80df49907f0d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Main.cpp">
@@ -246,6 +252,9 @@
     <ClCompile Include="src\ArcballCamera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\GUI.cpp">
+      <Filter>Source Files\GUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\CompilerDef.h">
@@ -367,6 +376,9 @@
     </ClInclude>
     <ClInclude Include="include\ModelViewerState.h">
       <Filter>Header Files\States</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GUI.h">
+      <Filter>Header Files\GUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

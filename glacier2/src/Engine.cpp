@@ -13,6 +13,7 @@
 #include "Input.h"
 #include "ServiceLocator.h"
 #include "ActionManager.h"
+#include "GUI.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
@@ -67,7 +68,8 @@ namespace Glacier {
   mProcess( NULL ), mThread( NULL ), mInstance( instance ),
   mSignal( Signal_None ), mVersion( 0, 1, 1 ), mConsoleWindow( nullptr ),
   mGame( nullptr ), mWindowHandler( nullptr ), mInput( nullptr ),
-  mAudio( nullptr ), mPhysics( nullptr ), mActionManager( nullptr )
+  mAudio( nullptr ), mPhysics( nullptr ), mActionManager( nullptr ),
+  mGUI( nullptr )
   {
   }
 
@@ -185,10 +187,12 @@ namespace Glacier {
   {
     Graphics::registerResources( manager );
     Scripting::registerResources( manager );
+    GUI::registerResources( manager );
   }
 
   void Engine::unregisterResources( ResourceGroupManager& manager )
   {
+    GUI::unregisterResources( manager );
     Scripting::unregisterResources( manager );
     Graphics::unregisterResources( manager );
   }
@@ -224,6 +228,8 @@ namespace Glacier {
 
     mGraphics->postInitialize();
 
+    mGUI = new GUI( this );
+
     mScripting = new Scripting( this );
     mScripting->simpleExecute( L"initialization.js" );
 
@@ -257,6 +263,7 @@ namespace Glacier {
   void Engine::triggerFatalError( FatalError error )
   {
     // TODO: Try to save state and stuff here, before going down
+
     if ( mConsole )
     {
       mConsole->errorPrintf( Console::srcEngine,
@@ -371,6 +378,7 @@ namespace Glacier {
     SAFE_DELETE( mActionManager );
     SAFE_DELETE( mInput );
     SAFE_DELETE( mScripting );
+    SAFE_DELETE( mGUI );
     SAFE_DELETE( mGraphics );
     SAFE_DELETE( mWindowHandler );
     SAFE_DELETE( mConsoleWindow );
