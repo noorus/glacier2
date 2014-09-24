@@ -107,7 +107,9 @@ namespace Glacier {
     // Greetings
     FMOD_RESULT hr;
     mEngine->getConsole()->printf( Console::srcSound,
-      L"Initializing sound system..." );
+      L"Initializing FMOD Ex %x.%x.%x",
+      HIWORD( FMOD_VERSION ), HIBYTE( LOWORD( FMOD_VERSION ) ),
+      LOBYTE( LOWORD( FMOD_VERSION ) ) );
 
     // Create event system instance
     hr = FMOD::EventSystem_Create( &mEventSystem );
@@ -131,13 +133,7 @@ namespace Glacier {
     if ( FMOD_FAILED( hr ) )
       ENGINE_EXCEPT_FMOD( hr, L"Failed to get FMOD System version" );
     if ( version != FMOD_VERSION )
-      ENGINE_EXCEPT( L"Bad FMOD version" );
-
-    // Print some version info
-    mEngine->getConsole()->printf( Console::srcSound,
-      L"Using FMOD Ex %x.%x.%x",
-      HIWORD( version ), HIBYTE( LOWORD( version ) ),
-      LOBYTE( LOWORD( version ) ) );
+      ENGINE_EXCEPT( L"Bad FMOD runtime version" );
 
     // Set output mode
     auto outputType = stringToOutputType( g_CVar_fm_outputmode.getString() );
@@ -273,7 +269,7 @@ namespace Glacier {
   void FMODAudio::shutdown()
   {
     mEngine->getConsole()->printf( Console::srcSound,
-      L"Shutting down FMOD..." );
+      L"Shutting down FMOD" );
 
     mEngine->operationSuspendAudio();
 

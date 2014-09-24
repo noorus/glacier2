@@ -138,14 +138,11 @@ namespace Glacier {
 
   void Graphics::preInitialize()
   {
-    mEngine->getConsole()->printf( Console::srcGfx,
-      L"Initializing graphics engine..." );
-
     // Print some version stuff
     mEngine->getConsole()->printf( Console::srcGfx,
-      L"Using Ogre3D %i.%i.%i%S (%S)",
+      L"Initializing Ogre3D v%i.%i.%i (%S)",
       OGRE_VERSION_MAJOR, OGRE_VERSION_MINOR, OGRE_VERSION_PATCH,
-      OGRE_VERSION_SUFFIX, OGRE_VERSION_NAME );
+      OGRE_VERSION_NAME );
 
     // Create Ogre root
     mRoot = new Ogre::Root( "", "", cOgreLogFile );

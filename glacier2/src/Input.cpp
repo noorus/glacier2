@@ -15,7 +15,7 @@ namespace Glacier {
   {
     // Greetings
     mEngine->getConsole()->printf( Console::srcInput,
-      L"Initializing input system..." );
+      L"Initializing Nice Input Library" );
 
     // Get window handle
     HWND windowHandle = NULL;

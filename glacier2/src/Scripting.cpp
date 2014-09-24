@@ -18,10 +18,7 @@ namespace Glacier {
   mIsolate( nullptr )
   {
     mEngine->getConsole()->printf( Console::srcScripting,
-      L"Initializing scripting..." );
-
-    mEngine->getConsole()->printf( Console::srcScripting,
-      L"Using V8 %S", v8::V8::GetVersion() );
+      L"Initializing V8 v%S", v8::V8::GetVersion() );
 
     v8::V8::InitializeICU();
     v8::V8::SetCaptureStackTraceForUncaughtExceptions(

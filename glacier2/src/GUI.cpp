@@ -24,10 +24,7 @@ namespace Glacier {
   void GUI::initialize()
   {
     mEngine->getConsole()->printf( Console::srcGUI,
-      L"Initializing GUI..." );
-
-    mEngine->getConsole()->printf( Console::srcGUI,
-      L"Using MyGUI %d.%d.%d", MYGUI_VERSION_MAJOR,
+      L"Initializing MyGUI v%d.%d.%d", MYGUI_VERSION_MAJOR,
       MYGUI_VERSION_MINOR, MYGUI_VERSION_PATCH );
 
     mPlatform->initialise(
@@ -42,7 +39,7 @@ namespace Glacier {
   void GUI::shutdown()
   {
     mEngine->getConsole()->printf( Console::srcGUI,
-      L"Shutting down GUI..." );
+      L"Shutting down MyGUI" );
 
     mGUI->shutdown();
 

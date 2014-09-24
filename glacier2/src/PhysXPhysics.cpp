@@ -75,12 +75,9 @@ namespace Glacier {
 
   void PhysXPhysics::initialize()
   {
-    mEngine->getConsole()->printf( Console::srcPhysics,
-      L"Initializing physics engine..." );
-
     // Print some version stuff
     mEngine->getConsole()->printf( Console::srcPhysics,
-      L"Using PhysX %i.%i.%i",
+      L"Initializing PhysX v%i.%i.%i",
       PX_PHYSICS_VERSION_MAJOR, PX_PHYSICS_VERSION_MINOR,
       PX_PHYSICS_VERSION_BUGFIX );
 
@@ -164,7 +161,7 @@ namespace Glacier {
   void PhysXPhysics::shutdown()
   {
     mEngine->getConsole()->printf( Console::srcPhysics,
-      L"Shutting down physics..." );
+      L"Shutting down PhysX" );
 
     mEngine->operationSuspendPhysics();
 
