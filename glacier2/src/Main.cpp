@@ -11,11 +11,6 @@
 
 using namespace Glacier;
 
-int Vsnprintf8(char8_t* pDestination, size_t n, const char8_t* pFormat, va_list arguments)
-{
-  return _vsnprintf(pDestination, n, pFormat, arguments);
-}
-
 int APIENTRY wWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 LPWSTR lpCmdLine, int nCmdShow )
 {

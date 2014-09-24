@@ -48,10 +48,6 @@
 #include <stack>
 #include <cstdint>
 
-// EASTL
-#include "EASTL/hash_map.h"
-#include "EASTL/string.h"
-
 // Boost Headers
 #include <boost/shared_ptr.hpp>
 #include <boost/utility.hpp>

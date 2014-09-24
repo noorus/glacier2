@@ -6,7 +6,6 @@ Some component licensing details before I forget about them;
 * *HDRLib* by Christian Luksch, **LGPL 2+**
 * *SkyX* by Xavier Verguín González, **LGPL 2+**
 * *OgreProcedural* by Michael Broutin, **MIT**
-* *EASTL* by Electronic Arts, ***EA attribution***
 * *V8* by V8 Project, ***V8 attribution***
 * *nedmalloc* by Niall Douglas, **Boost**
 * *Ogre3D* by Ogre3D Project, **MIT**
