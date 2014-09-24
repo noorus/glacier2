@@ -28,7 +28,7 @@ namespace Glacier {
     mRunEvent  = CreateEventW( NULL, TRUE, FALSE, NULL );
     mStopEvent = CreateEventW( NULL, TRUE, FALSE, NULL );
     if ( !mRunEvent || !mStopEvent )
-      ENGINE_EXCEPT_W32( L"Could not create control events" );
+      ENGINE_EXCEPT_WINAPI( L"Could not create control events" );
   }
 
   void ConsoleWindowThread::start()
@@ -39,10 +39,10 @@ namespace Glacier {
       CREATE_SUSPENDED, &mThreadID );
 
     if ( !mThread )
-      ENGINE_EXCEPT_W32( L"Could not create thread" );
+      ENGINE_EXCEPT_WINAPI( L"Could not create thread" );
 
     if ( ResumeThread( mThread ) == (DWORD)-1 )
-      ENGINE_EXCEPT_W32( L"Could not resume thread" );
+      ENGINE_EXCEPT_WINAPI( L"Could not resume thread" );
 
     HANDLE events[2];
     events[0] = mRunEvent;
@@ -59,7 +59,7 @@ namespace Glacier {
       ENGINE_EXCEPT( L"Console window thread failed to start" );
       break;
     case WAIT_FAILED:
-      ENGINE_EXCEPT_W32( L"Wait for console window thread start failed" );
+      ENGINE_EXCEPT_WINAPI( L"Wait for console window thread start failed" );
       break;
     }
   }
@@ -174,7 +174,7 @@ namespace Glacier {
     MSG msg;
     BOOL ret = GetMessageW( &msg, NULL, 0, 0 );
     if ( ret == -1 )
-      ENGINE_EXCEPT_W32( L"GetMessageW returned -1" )
+      ENGINE_EXCEPT_WINAPI( L"GetMessageW returned -1" )
     else if ( ret == 0 )
       return false;
     else {

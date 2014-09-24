@@ -8,6 +8,9 @@ namespace Glacier {
 
   class Game;
 
+  //! \addtogroup Glacier
+  //! @{
+
   class State: boost::noncopyable {
   protected:
     Game* mGame; //!< Game
@@ -26,5 +29,7 @@ namespace Glacier {
   };
 
   typedef vector<State*> StateVector;
+
+  //! @}
 
 }

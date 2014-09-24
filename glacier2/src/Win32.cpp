@@ -39,11 +39,11 @@ namespace Glacier {
       ctrls.dwICC = ICC_STANDARD_CLASSES | ICC_NATIVEFNTCTL_CLASS;
 
       if ( !InitCommonControlsEx( &ctrls ) )
-        ENGINE_EXCEPT_W32( L"Couldn't initialize common controls, missing manifest?" );
+        ENGINE_EXCEPT_WINAPI( L"Couldn't initialize common controls, missing manifest?" );
 
       mRichEdit = LoadLibraryW( cRichEditDLL );
       if ( !mRichEdit )
-        ENGINE_EXCEPT_W32( L"Couldn't load RichEdit module" );
+        ENGINE_EXCEPT_WINAPI( L"Couldn't load RichEdit module" );
 
       Gdiplus::GdiplusStartup( &mGDIPlusToken, &mGDIPlusStartup, NULL );
     }
@@ -52,7 +52,7 @@ namespace Glacier {
     {
       wchar_t currentDirectory[MAX_PATH];
       if ( !GetCurrentDirectoryW( MAX_PATH, currentDirectory ) )
-        ENGINE_EXCEPT_W32( L"Couldn't fetch current directory" );
+        ENGINE_EXCEPT_WINAPI( L"Couldn't fetch current directory" );
 
       return wstring( currentDirectory );
     }
@@ -343,7 +343,7 @@ namespace Glacier {
       mClass = RegisterClassExW( &wndClass );
 
       if ( !mClass )
-        ENGINE_EXCEPT_W32( L"Could not register window class" );
+        ENGINE_EXCEPT_WINAPI( L"Could not register window class" );
     }
 
     void Window::resizeClient( POINT clientSize )
@@ -388,27 +388,27 @@ namespace Glacier {
 
     void Window::create( POINT position, POINT size, const wstring& caption )
     {
-      DWORD dwStyle = WS_CLIPCHILDREN;
-      DWORD dwExStyle = NULL;
+      DWORD style = WS_CLIPCHILDREN;
+      DWORD exStyle = NULL;
 
       if ( mSettings.bToolWindow )
-        dwExStyle = WS_EX_TOOLWINDOW | WS_EX_APPWINDOW;
+        exStyle = WS_EX_TOOLWINDOW | WS_EX_APPWINDOW;
 
       if ( mSettings.bBorder )
       {
-        dwStyle |= WS_OVERLAPPEDWINDOW | WS_POPUP;
-        mSettings.bSizable ? dwStyle |= WS_SIZEBOX : dwStyle &= ~WS_SIZEBOX;
-        mSettings.bMaximizable ? dwStyle |= WS_MAXIMIZEBOX : dwStyle &= ~WS_MAXIMIZEBOX;
+        style |= WS_OVERLAPPEDWINDOW | WS_POPUP;
+        mSettings.bSizable ? style |= WS_SIZEBOX : style &= ~WS_SIZEBOX;
+        mSettings.bMaximizable ? style |= WS_MAXIMIZEBOX : style &= ~WS_MAXIMIZEBOX;
       }
 
-      mSettings.bDisabled ? dwStyle |= WS_DISABLED : dwStyle &= ~WS_DISABLED;
+      mSettings.bDisabled ? style |= WS_DISABLED : style &= ~WS_DISABLED;
 
-      mHandle = CreateWindowExW( dwExStyle, (LPCWSTR)mClass, //-V542
-        caption.c_str(), dwStyle, position.x, position.y,
+      mHandle = CreateWindowExW( exStyle, (LPCWSTR)mClass, //-V542
+        caption.c_str(), style, position.x, position.y,
         size.x, size.y, NULL, NULL, mInstance, mUserData );
 
       if ( !mHandle )
-        ENGINE_EXCEPT_W32( L"Could not create window" );
+        ENGINE_EXCEPT_WINAPI( L"Could not create window" );
 
       resizeClient( size );
 

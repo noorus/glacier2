@@ -40,9 +40,6 @@
     <Filter Include="Source Files\nedmalloc">
       <UniqueIdentifier>{ea18ffd0-63de-4f91-a0f9-95599af5072d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Scripting">
-      <UniqueIdentifier>{026a2bdd-f8b7-4b37-abc3-a9f0f42fd01e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Scripting">
       <UniqueIdentifier>{53e58cd0-4330-4fd0-a57c-d5522f9ce170}</UniqueIdentifier>
     </Filter>
@@ -90,6 +87,9 @@
     </Filter>
     <Filter Include="Source Files\shiny\Platforms">
       <UniqueIdentifier>{0890a048-9204-4a53-9f6a-33631216e93d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Scripting">
+      <UniqueIdentifier>{026a2bdd-f8b7-4b37-abc3-a9f0f42fd01e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -262,6 +262,9 @@
       <Filter>Source Files\States</Filter>
     </ClCompile>
     <ClCompile Include="src\ModelViewer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ArcballCamera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

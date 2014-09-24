@@ -214,7 +214,7 @@ namespace Glacier {
 
     // Fetch HPC frequency
     if ( !QueryPerformanceFrequency( &mHPCFrequency ) )
-      ENGINE_EXCEPT_W32( L"Couldn't query HPC frequency" );
+      ENGINE_EXCEPT_WINAPI( L"Couldn't query HPC frequency" );
 
     mWindowHandler = new WindowHandler( this );
     mGraphics = new Graphics( this, mWindowHandler );

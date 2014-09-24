@@ -8,6 +8,9 @@
 
 namespace Glacier {
 
+  //! \addtogroup Glacier
+  //! @{
+
   //! \class Game
   //! Game state machine
   class Game: public EngineComponent {
@@ -23,5 +26,7 @@ namespace Glacier {
     void resumeState();
     virtual ~Game();
   };
+
+  //! @}
 
 }

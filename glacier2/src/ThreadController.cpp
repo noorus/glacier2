@@ -12,7 +12,7 @@ namespace Glacier {
     mRunEvent  = CreateEventW( NULL, TRUE, FALSE, NULL );
     mStopEvent = CreateEventW( NULL, TRUE, FALSE, NULL );
     if ( !mRunEvent || !mStopEvent )
-      ENGINE_EXCEPT_W32( L"Could not create control events" );
+      ENGINE_EXCEPT_WINAPI( L"Could not create control events" );
   }
 
   void ThreadController::start()
@@ -21,10 +21,10 @@ namespace Glacier {
 
     mThread = CreateThread( NULL, NULL, threadProc, this, CREATE_SUSPENDED, &mThreadID );
     if ( !mThread )
-      ENGINE_EXCEPT_W32( L"Could not create thread" );
+      ENGINE_EXCEPT_WINAPI( L"Could not create thread" );
 
     if ( ResumeThread( mThread ) == (DWORD)-1 )
-      ENGINE_EXCEPT_W32( L"Could not resume thread" );
+      ENGINE_EXCEPT_WINAPI( L"Could not resume thread" );
 
     HANDLE events[2];
     events[0] = mRunEvent;
@@ -41,7 +41,7 @@ namespace Glacier {
         ENGINE_EXCEPT( L"Thread failed to start" );
       break;
       case WAIT_FAILED:
-        ENGINE_EXCEPT_W32( L"Wait for thread start failed" );
+        ENGINE_EXCEPT_WINAPI( L"Wait for thread start failed" );
       break;
     }
   }

@@ -7,6 +7,9 @@
 
 namespace Glacier {
 
+  //! \addtogroup Glacier
+  //! @{
+
   class Input: public EngineComponent, public Nil::SystemListener, public Nil::ControllerListener {
   protected:
     Nil::System* mSystem;
@@ -43,5 +46,7 @@ namespace Glacier {
     virtual void componentTick( GameTime tick, GameTime time );
     virtual ~Input();
   };
+
+  //! @}
 
 }

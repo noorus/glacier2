@@ -15,7 +15,7 @@ namespace Glacier {
       FILE_ATTRIBUTE_NORMAL, 0 );
 
     if ( mFile == INVALID_HANDLE_VALUE )
-      ENGINE_EXCEPT_W32( L"Couldn't create text file" );
+      ENGINE_EXCEPT_WINAPI( L"Couldn't create text file" );
 
     DWORD position = SetFilePointer( mFile, 0, nullptr, FILE_END );
     if ( position == 0 )
@@ -23,7 +23,7 @@ namespace Glacier {
       DWORD written;
       const BYTE UTF8BOM[3] = { 0xEF, 0xBB, 0xBF };
       if ( !WriteFile( mFile, UTF8BOM, 3, &written, nullptr ) )
-        ENGINE_EXCEPT_W32( L"Couldn't write BOM" );
+        ENGINE_EXCEPT_WINAPI( L"Couldn't write BOM" );
     }
   }
 
