@@ -7,35 +7,57 @@
 
 namespace Glacier {
 
-  Exception::Exception( const wstring& description, Type type ):
+  const wchar_t* cNtDLL = L"ntdll.dll";
+
+  Exception::Exception( const wstring& description, const Type type ):
   mDescription( description ), mType( type )
   {
     handleAdditional();
   }
 
-  Exception::Exception( const wstring& description, const wstring& source, Type type ):
+  Exception::Exception( const wstring& description, const wstring& source, const Type type ):
   mDescription( description ), mSource( source ), mType( type )
   {
     handleAdditional();
   }
 
-  Exception::Exception( const wstring& description, const wstring& source, NTSTATUS ntstatus, Type type ):
+  Exception::Exception( const wstring& description, const wstring& source, NTSTATUS ntstatus, const Type type ):
   mDescription( description ), mSource( source ), mType( type )
   {
-    handleAdditional();
-    // TODO handle NTSTATUS
+    if ( mType == Type::NT )
+    {
+      WinAPIError error;
+      LPWSTR message = nullptr;
+      error.code = ntstatus;
+      FormatMessageW(
+        FORMAT_MESSAGE_ALLOCATE_BUFFER |
+        FORMAT_MESSAGE_FROM_SYSTEM |
+        FORMAT_MESSAGE_FROM_HMODULE,
+        GetModuleHandleW( cNtDLL ),
+        ntstatus,
+        MAKELANGID( LANG_NEUTRAL, SUBLANG_DEFAULT ),
+        (LPWSTR)&message, 0, NULL );
+      error.description = message;
+      LocalFree( message );
+      mAdditional = error;
+    }
   }
 
-  Exception::Exception( const wstring& description, const wstring& source, FMOD_RESULT result, Type type ):
+  Exception::Exception( const wstring& description, const wstring& source, FMOD_RESULT result, const Type type ):
   mDescription( description ), mSource( source ), mType( type )
   {
-    handleAdditional();
-    // TODO handle FMOD_RESULT
+    if ( mType == Type::FMOD )
+    {
+      FMODError error;
+      error.code = result;
+      error.description = Utilities::utf8ToWide( FMOD_ErrorString( result ) );
+      mAdditional = error;
+    }
   }
 
   void Exception::handleAdditional()
   {
-    if ( mType == WinAPI )
+    if ( mType == Type::WinAPI )
     {
       WinAPIError error;
       LPWSTR message = nullptr;
@@ -54,16 +76,27 @@ namespace Glacier {
 
   const wstring& Exception::getFullDescription() const
   {
+    // TODO Much prettier formatting!
     if ( mFullDescription.empty() )
     {
       wstringstream stream;
       stream << mDescription;
       if ( !mSource.empty() )
         stream << L"\r\nIn function " << mSource;
-      if ( mType == WinAPI )
+      if ( mType == Type::WinAPI )
       {
         const WinAPIError& error = boost::get<WinAPIError>( mAdditional );
         stream << L"\r\nWinAPI return code " << std::hex << error.code << L":\r\n" << error.description;
+      }
+      else if ( mType == Type::NT )
+      {
+        const WinAPIError& error = boost::get<WinAPIError>( mAdditional );
+        stream << L"\r\nNT return code " << std::hex << error.code << L":\r\n" << error.description;
+      }
+      else if ( mType == Type::FMOD )
+      {
+        const FMODError& error = boost::get<FMODError>( mAdditional );
+        stream << L"\r\nFMOD error code " << std::hex << error.code << L":\r\n" << error.description;
       }
       mFullDescription = stream.str();
     }

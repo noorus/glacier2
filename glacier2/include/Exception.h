@@ -6,8 +6,12 @@
 namespace Glacier {
 
   struct WinAPIError {
-  public:
-    DWORD code;
+    uint32_t code;
+    wstring description;
+  };
+
+  struct FMODError {
+    FMOD_RESULT code;
     wstring description;
   };
 
@@ -20,19 +24,19 @@ namespace Glacier {
       FMOD
     };
   private:
-    Exception() {}
+    Exception(): mType( Type::Generic ) {}
   protected:
-    Type mType;
+    const Type mType;
     wstring mDescription;
     wstring mSource;
     mutable wstring mFullDescription;
-    boost::variant<WinAPIError> mAdditional;
+    boost::variant<WinAPIError,FMODError> mAdditional;
     void handleAdditional();
   public:
-    Exception( const wstring& description, Type type = Generic );
-    Exception( const wstring& description, const wstring& source, Type type = Generic );
-    Exception( const wstring& description, const wstring& source, NTSTATUS ntstatus, Type type = Generic );
-    Exception( const wstring& description, const wstring& source, FMOD_RESULT result, Type type = Generic );
+    Exception( const wstring& description, const Type type = Type::Generic );
+    Exception( const wstring& description, const wstring& source, const Type type = Type::Generic );
+    Exception( const wstring& description, const wstring& source, NTSTATUS ntstatus, const Type type = Type::Generic );
+    Exception( const wstring& description, const wstring& source, FMOD_RESULT result, const Type type = Type::Generic );
     virtual const std::wstring& getFullDescription() const;
     virtual const char* what() const throw();
   };
