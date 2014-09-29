@@ -11,6 +11,7 @@
 #include "ServiceLocator.h"
 #include "Exception.h"
 #include "Win32.h"
+#include "GUI.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
@@ -37,6 +38,8 @@ namespace Glacier {
     }*/
 
     mViewer = new ModelViewer( L"rotta_01.mesh" );
+
+    wnd = new SettingsWindow();
   }
 
   void ModelViewerState::pause( GameTime time )
@@ -63,6 +66,7 @@ namespace Glacier {
 
   void ModelViewerState::shutdown( GameTime time )
   {
+    delete wnd;
     SAFE_DELETE( mViewer );
     SAFE_DELETE( mDirector );
 

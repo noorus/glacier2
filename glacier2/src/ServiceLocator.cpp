@@ -8,6 +8,7 @@ namespace Glacier {
 
   Memory* Locator::memoryService = nullptr;
   Graphics* Locator::graphicsService = nullptr;
+  GUI* Locator::guiService = nullptr;
 
   NullAudio Locator::nullAudioService;
   Audio* Locator::audioService = &Locator::nullAudioService;

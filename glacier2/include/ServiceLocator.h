@@ -7,6 +7,7 @@
 namespace Glacier {
 
   class Graphics;
+  class GUI;
 
   class Locator {
   private:
@@ -16,12 +17,12 @@ namespace Glacier {
     static Physics* physicsService; //!< Currently provided physics service
     static NullPhysics nullPhysicsService; //!< Default null physics service
     static Graphics* graphicsService;
+    static GUI* guiService;
   public:
     static Memory& getMemory() { return *memoryService; }
 
     static void provideMemory( Memory* memory )
     {
-      assert( memory );
       memoryService = memory;
     }
 
@@ -43,8 +44,14 @@ namespace Glacier {
 
     static void provideGraphics( Graphics* graphics )
     {
-      assert( graphics );
       graphicsService = graphics;
+    }
+
+    static GUI& getGUI() { return *guiService; }
+
+    static void provideGUI( GUI* gui )
+    {
+      guiService = gui;
     }
   };
 

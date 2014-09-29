@@ -4,6 +4,7 @@
 #include "Console.h"
 #include "Exception.h"
 #include "Graphics.h"
+#include "Win32.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
@@ -15,7 +16,7 @@ namespace Glacier {
   const std::string cGUICoreFile = "MyGUI_Core.xml";
 
   GUI::GUI( Engine* engine ): EngineComponent( engine ),
-  mPlatform( nullptr ), mGUI( nullptr )
+  mPlatform( nullptr ), mGUI( nullptr ), mMousePosition( 0, 0 )
   {
     mPlatform = new MyGUI::OgrePlatform();
     mGUI = new MyGUI::Gui();
@@ -33,7 +34,42 @@ namespace Glacier {
       cGUIResourceGroup,
       cGUILogFile );
 
+    ShowCursor( FALSE );
+
     mGUI->initialise( cGUICoreFile );
+  }
+
+  bool GUI::injectMouseMove( const Nil::MouseState& state )
+  {
+    POINT position;
+    if ( !Win32::Win32::instance().getCursorPosition(
+      mEngine->getGraphics()->getRenderWindowHandle(), position ) )
+      return false;
+
+    return MyGUI::InputManager::getInstance().injectMouseMove( 
+      position.x, position.y, state.mWheel.relative );
+  }
+
+  bool GUI::injectMousePress( const Nil::MouseState& state, size_t button )
+  {
+    POINT position;
+    if ( !Win32::Win32::instance().getCursorPosition(
+      mEngine->getGraphics()->getRenderWindowHandle(), position ) )
+      return false;
+
+    return MyGUI::InputManager::getInstance().injectMousePress(
+      position.x, position.y, (MyGUI::MouseButton::Enum)button );
+  }
+
+  bool GUI::injectMouseRelease( const Nil::MouseState& state, size_t button )
+  {
+    POINT position;
+    if ( !Win32::Win32::instance().getCursorPosition(
+      mEngine->getGraphics()->getRenderWindowHandle(), position ) )
+      return false;
+
+    return MyGUI::InputManager::getInstance().injectMouseRelease(
+      position.x, position.y, (MyGUI::MouseButton::Enum)button );
   }
 
   void GUI::shutdown()

@@ -310,15 +310,71 @@ namespace Glacier {
       mEffectGroup->setVolume( volume );
   }
 
+  void FMODAudio::refreshDrivers()
+  {
+    mDrivers.clear();
+    int count = 0;
+    if ( mSystem->getNumDrivers( &count ) != FMOD_OK )
+      return;
+    for ( int i = 0; i < count; i++ )
+    {
+      wchar_t deviceName[128];
+      mSystem->getDriverInfoW( i, (short*)deviceName, 128, NULL );
+      Audio::AudioDriverEntry entry;
+      entry.index = i;
+      entry.name = deviceName;
+      mDrivers.push_back( entry );
+    }
+  }
+
+  const Audio::AudioDriverList& FMODAudio::getDrivers()
+  {
+    refreshDrivers();
+    return mDrivers;
+  }
+
+  void FMODAudio::refreshOutputTypes()
+  {
+    mOutputTypes.clear();
+    for ( int i = 0; i < cFMODOutputTypeCount; i++ )
+    {
+      OutputTypeEntry type;
+      type.index = cFMODOutputTypes[i].index;
+      type.name = cFMODOutputTypes[i].name;
+      mOutputTypes.push_back( type );
+    }
+  }
+
+  const Audio::OutputTypeList& FMODAudio::getOutputTypes()
+  {
+    refreshOutputTypes();
+    return mOutputTypes;
+  }
+
+  void FMODAudio::refreshSpeakerModes()
+  {
+    mSpeakerModes.clear();
+    for ( int i = 0; i < cFMODSpeakerModeCount; i++ )
+    {
+      SpeakerModeEntry mode;
+      mode.index = cFMODSpeakerModes[i].index;
+      mode.name = cFMODSpeakerModes[i].name;
+      mSpeakerModes.push_back( mode );
+    }
+  }
+
+  const Audio::SpeakerModeList& FMODAudio::getSpeakerModes()
+  {
+    refreshSpeakerModes();
+    return mSpeakerModes;
+  }
+
   void FMODAudio::printDeviceList( Console* console )
   {
     if ( !mSystem )
       return;
 
-    int count = 0;
     FMOD_OUTPUTTYPE output;
-    if ( mSystem->getNumDrivers( &count ) != FMOD_OK )
-      return;
     if ( mSystem->getOutput( &output ) != FMOD_OK )
       return;
 
@@ -326,12 +382,9 @@ namespace Glacier {
       L"Available audio devices for %s:",
       outputTypeToDisplayString( output ).c_str() );
 
-    for ( int i = 0; i < count; i++ )
-    {
-      wchar_t deviceName[128];
-      mSystem->getDriverInfoW( i, (short*)deviceName, 128, NULL );
-      console->printf( Console::srcSound, L"Device %i: %s", i + 1, deviceName );
-    }
+    for ( auto driver : mDrivers )
+      console->printf( Console::srcSound, L"Device %i: %s",
+      driver.index, driver.name );
   }
 
   // Console command callbacks ================================================

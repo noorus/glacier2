@@ -3,6 +3,8 @@
 #include "Engine.h"
 #include "ActionManager.h"
 #include "Console.h"
+#include "ServiceLocator.h"
+#include "GUI.h"
 
 namespace Glacier {
 
@@ -218,29 +220,36 @@ namespace Glacier {
   void ActionManager::onMouseMoved( Nil::Mouse* mouse,
   const Nil::MouseState& state )
   {
-    mCameraController->applyMouseMovement( state );
+    if ( !Locator::getGUI().injectMouseMove( state ) )
+      mCameraController->applyMouseMovement( state );
   }
 
   void ActionManager::onMouseButtonPressed( Nil::Mouse* mouse,
   const Nil::MouseState& state, size_t button )
   {
-    BindAction nBind = ActionManager::mKeyTable.mouse[button];
-    if ( nBind != Action_None ) {
-      processBindPress( nBind );
-      return;
-    } else
-      mCameraController->onMouseButtonPressed( button );
+    if ( !Locator::getGUI().injectMousePress( state, button ) )
+    {
+      BindAction nBind = ActionManager::mKeyTable.mouse[button];
+      if ( nBind != Action_None ) {
+        processBindPress( nBind );
+        return;
+      } else
+        mCameraController->onMouseButtonPressed( button );
+    }
   }
 
   void ActionManager::onMouseButtonReleased( Nil::Mouse* mouse,
   const Nil::MouseState& state, size_t button )
   {
-    BindAction nBind = ActionManager::mKeyTable.mouse[button];
-    if ( nBind != Action_None ) {
-      processBindRelease( nBind );
-      return;
-    } else
-      mCameraController->onMouseButtonReleased( button );
+    if ( !Locator::getGUI().injectMouseRelease( state, button ) )
+    {
+      BindAction nBind = ActionManager::mKeyTable.mouse[button];
+      if ( nBind != Action_None ) {
+        processBindRelease( nBind );
+        return;
+      } else
+        mCameraController->onMouseButtonReleased( button );
+    }
   }
 
   void ActionManager::onMouseWheelMoved( Nil::Mouse* mouse,

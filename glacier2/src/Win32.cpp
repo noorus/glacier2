@@ -96,11 +96,22 @@ namespace Glacier {
     void Win32::handleMessagesFor( HWND window )
     {
       MSG  msg;
+
       while( PeekMessage( &msg, window, 0U, 0U, PM_REMOVE ) )
       {
         TranslateMessage( &msg );
         DispatchMessage( &msg );
       }
+    }
+
+    bool Win32::getCursorPosition( const HWND window, POINT& position )
+    {
+      if ( !GetCursorPos( &position ) )
+        return false;
+      if ( !ScreenToClient( window, &position ) )
+        return false;
+
+      return true;
     }
 
     void Win32::drawErrorDialog( Gdiplus::Graphics& gfx, RECT area, const ErrorDialog::Context& ctx )

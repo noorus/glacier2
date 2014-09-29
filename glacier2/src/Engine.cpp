@@ -229,6 +229,7 @@ namespace Glacier {
     mGraphics->postInitialize();
 
     mGUI = new GUI( this );
+    Locator::provideGUI( mGUI );
 
     mScripting = new Scripting( this );
     mScripting->simpleExecute( L"initialization.js" );
@@ -379,6 +380,7 @@ namespace Glacier {
     SAFE_DELETE( mInput );
     SAFE_DELETE( mScripting );
     SAFE_DELETE( mGUI );
+    Locator::provideGUI( nullptr );
     SAFE_DELETE( mGraphics );
     SAFE_DELETE( mWindowHandler );
     SAFE_DELETE( mConsoleWindow );

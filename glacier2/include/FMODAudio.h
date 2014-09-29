@@ -41,6 +41,9 @@ namespace Glacier {
     };
   protected:
     Info mInfo;
+    Audio::AudioDriverList mDrivers;
+    Audio::OutputTypeList mOutputTypes;
+    Audio::SpeakerModeList mSpeakerModes;
     FMOD::EventSystem* mEventSystem;
     FMOD::System* mSystem;
     FMOD::ChannelGroup* mMasterGroup;
@@ -66,6 +69,9 @@ namespace Glacier {
     static FMOD_OUTPUTTYPE stringToOutputType( const wstring& type );
     static const wstring& outputTypeToDisplayString(
       const FMOD_OUTPUTTYPE type );
+    void refreshDrivers();
+    void refreshOutputTypes();
+    void refreshSpeakerModes();
   public:
     // Console callbacks
     static void callbackAudioRestart( Console* console, ConCmd* command,
@@ -83,6 +89,9 @@ namespace Glacier {
     virtual void initialize();
     virtual void shutdown();
     virtual void restart();
+    virtual const AudioDriverList& getDrivers();
+    virtual const OutputTypeList& getOutputTypes();
+    virtual const SpeakerModeList& getSpeakerModes();
     const Info& getInfo() { return mInfo; }
     virtual void componentTick( GameTime tick, GameTime time );
     virtual ~FMODAudio();
