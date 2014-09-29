@@ -49,12 +49,27 @@ namespace Glacier {
     mOriginalAudio = Locator::getAudio().getSettings();
     mCurrentAudio = mOriginalAudio;
 
-    mAudioDrivers = mRoot->findWidget( "cbbDevice" )->castType<MyGUI::ComboBox>();
+    mAudioDrivers = mRoot->findWidget( "cbbDrivers" )->castType<MyGUI::ComboBox>();
     mAudioDrivers->eventComboAccept += MyGUI::newDelegate( this, &SettingsWindow::onAudioDriverSelected );
-    mAudioOutputTypes = mRoot->findWidget( "cbbOutputType" )->castType<MyGUI::ComboBox>();
+    mAudioOutputTypes = mRoot->findWidget( "cbbOutputTypes" )->castType<MyGUI::ComboBox>();
     mAudioOutputTypes->eventComboAccept += MyGUI::newDelegate( this, &SettingsWindow::onAudioOutputTypeSelected );
-    mAudioSpeakerModes = mRoot->findWidget( "cbbSpeakerMode" )->castType<MyGUI::ComboBox>();
+    mAudioSpeakerModes = mRoot->findWidget( "cbbSpeakerModes" )->castType<MyGUI::ComboBox>();
     mAudioSpeakerModes->eventComboAccept += MyGUI::newDelegate( this, &SettingsWindow::onAudioSpeakerModeSelected );
+
+    mAudioMasterVolume = mRoot->findWidget( "sbMasterVolume" )->castType<MyGUI::ScrollBar>();
+    mAudioMasterVolume->eventScrollChangePosition += MyGUI::newDelegate(
+      this, &SettingsWindow::onAudioMasterVolumeChanged );
+    mAudioMasterVolume->setScrollPosition( g_CVar_fm_volume.getFloat() * 100 );
+
+    mAudioMusicVolume = mRoot->findWidget( "sbMusicVolume" )->castType<MyGUI::ScrollBar>();
+    mAudioMusicVolume->eventScrollChangePosition += MyGUI::newDelegate(
+      this, &SettingsWindow::onAudioMusicVolumeChanged );
+    mAudioMusicVolume->setScrollPosition( g_CVar_fm_bgvolume.getFloat() * 100 );
+
+    mAudioEffectVolume = mRoot->findWidget( "sbEffectVolume" )->castType<MyGUI::ScrollBar>();
+    mAudioEffectVolume->eventScrollChangePosition += MyGUI::newDelegate(
+      this, &SettingsWindow::onAudioEffectVolumeChanged );
+    mAudioEffectVolume->setScrollPosition( g_CVar_fm_fxvolume.getFloat() * 100 );
 
     refreshAudioDrivers();
     refreshAudioOutputTypes();
@@ -135,6 +150,24 @@ namespace Glacier {
     MyGUI::Button* btn = sender->castType<MyGUI::Button>();
     bool selected = !btn->getStateSelected();
     btn->setStateSelected( selected );
+  }
+
+  void SettingsWindow::onAudioMasterVolumeChanged( MyGUI::ScrollBar* sender, size_t position )
+  {
+    float volume = boost::algorithm::clamp( (float)position / 100.0f, 0.0f, 1.0f );
+    g_CVar_fm_volume.setValue( volume );
+  }
+
+  void SettingsWindow::onAudioMusicVolumeChanged( MyGUI::ScrollBar* sender, size_t position )
+  {
+    float volume = boost::algorithm::clamp( (float)position / 100.0f, 0.0f, 1.0f );
+    g_CVar_fm_bgvolume.setValue( volume );
+  }
+
+  void SettingsWindow::onAudioEffectVolumeChanged( MyGUI::ScrollBar* sender, size_t position )
+  {
+    float volume = boost::algorithm::clamp( (float)position / 100.0f, 0.0f, 1.0f );
+    g_CVar_fm_fxvolume.setValue( volume );
   }
 
   void SettingsWindow::onApplyClicked( MyGUI::Widget* sender )

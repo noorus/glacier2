@@ -16,6 +16,9 @@ namespace Glacier {
     MyGUI::ComboBox* mAudioDrivers;
     MyGUI::ComboBox* mAudioOutputTypes;
     MyGUI::ComboBox* mAudioSpeakerModes;
+    MyGUI::ScrollBar* mAudioMasterVolume;
+    MyGUI::ScrollBar* mAudioMusicVolume;
+    MyGUI::ScrollBar* mAudioEffectVolume;
     Audio::Settings mOriginalAudio;
     Audio::Settings mCurrentAudio;
     void refreshAudioDrivers();
@@ -31,6 +34,9 @@ namespace Glacier {
     void onAudioDriverSelected( MyGUI::ComboBox* sender, size_t index );
     void onAudioOutputTypeSelected( MyGUI::ComboBox* sender, size_t index );
     void onAudioSpeakerModeSelected( MyGUI::ComboBox* sender, size_t index );
+    void onAudioMasterVolumeChanged( MyGUI::ScrollBar* sender, size_t position );
+    void onAudioMusicVolumeChanged( MyGUI::ScrollBar* sender, size_t position );
+    void onAudioEffectVolumeChanged( MyGUI::ScrollBar* sender, size_t position );
   };
 
   //! \class GUI
