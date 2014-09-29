@@ -73,54 +73,54 @@ namespace Glacier {
   {
     mAudioDrivers->removeAllItems();
     
-    for ( auto driver : Locator::getAudio().getDrivers() )
+    const Audio::DriverVector& drivers = Locator::getAudio().getDrivers();
+    for ( size_t i = 0; i < drivers.size(); i++ )
     {
-      mAudioDrivers->insertItemAt( driver->index, driver->name );
-      if ( driver->index == mCurrentAudio.driver )
-        mAudioDrivers->setIndexSelected( driver->index );
+      mAudioDrivers->insertItemAt( i, drivers[i]->name );
+      if ( i == mCurrentAudio.driver )
+        mAudioDrivers->setIndexSelected( i );
     }
   }
 
   void SettingsWindow::onAudioDriverSelected( MyGUI::ComboBox* sender, size_t index )
   {
     mCurrentAudio.driver = index;
-    gEngine->getConsole()->printf( Console::srcGUI, L"Audio driver selected: %d", mCurrentAudio.driver );
   }
 
   void SettingsWindow::refreshAudioOutputTypes()
   {
     mAudioOutputTypes->removeAllItems();
 
-    for ( auto type : Locator::getAudio().getOutputTypes() )
+    const Audio::OutputTypeVector& types = Locator::getAudio().getOutputTypes();
+    for ( size_t i = 0; i < types.size(); i++ )
     {
-      mAudioOutputTypes->insertItemAt( type->index, type->name );
-      if ( type->index == mCurrentAudio.outputType )
-        mAudioOutputTypes->setIndexSelected( type->index );
+      mAudioOutputTypes->insertItemAt( i, types[i]->name );
+      if ( i == mCurrentAudio.outputType )
+        mAudioOutputTypes->setIndexSelected( i );
     }
   }
 
   void SettingsWindow::onAudioOutputTypeSelected( MyGUI::ComboBox* sender, size_t index )
   {
     mCurrentAudio.outputType = index;
-    gEngine->getConsole()->printf( Console::srcGUI, L"Audio output type selected: %d", mCurrentAudio.outputType );
   }
 
   void SettingsWindow::refreshAudioSpeakerModes()
   {
     mAudioSpeakerModes->removeAllItems();
 
-    for ( auto mode : Locator::getAudio().getSpeakerModes() )
+    const Audio::SpeakerModeVector& modes = Locator::getAudio().getSpeakerModes();
+    for ( size_t i = 0; i < modes.size(); i++ )
     {
-      mAudioSpeakerModes->insertItemAt( mode->index, mode->name );
-      if ( mode->index == mCurrentAudio.speakerMode )
-        mAudioSpeakerModes->setIndexSelected( mode->index );
+      mAudioSpeakerModes->insertItemAt( i, modes[i]->name );
+      if ( i == mCurrentAudio.speakerMode )
+        mAudioSpeakerModes->setIndexSelected( i );
     }
   }
 
   void SettingsWindow::onAudioSpeakerModeSelected( MyGUI::ComboBox* sender, size_t index )
   {
     mCurrentAudio.speakerMode = index;
-    gEngine->getConsole()->printf( Console::srcGUI, L"Audio speaker mode selected: %d", mCurrentAudio.speakerMode );
   }
 
   void SettingsWindow::onVerticalSyncClicked( MyGUI::Widget* sender )
@@ -139,7 +139,21 @@ namespace Glacier {
 
   void SettingsWindow::onApplyClicked( MyGUI::Widget* sender )
   {
-    //
+    Locator::getAudio().applySettings( mCurrentAudio );
+
+    bool newOutput   = ( mCurrentAudio.outputType != mOriginalAudio.outputType );
+    bool newDriver   = ( mCurrentAudio.driver != mOriginalAudio.driver );
+    bool newSpeakers = ( mCurrentAudio.speakerMode != mOriginalAudio.speakerMode );
+
+    mOriginalAudio = Locator::getAudio().getSettings();
+    mCurrentAudio = mOriginalAudio;
+
+    if ( newOutput )
+      refreshAudioOutputTypes();
+    if ( newDriver )
+      refreshAudioDrivers();
+    if ( newSpeakers )
+      refreshAudioSpeakerModes();
   }
 
   void SettingsWindow::onCancelClicked( MyGUI::Widget* sender )

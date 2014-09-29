@@ -42,31 +42,14 @@ namespace Glacier {
   FMODAudio::FMODAudio( Engine* engine ): EngineComponent( engine ),
   mEventSystem( nullptr ), mSystem( nullptr )
   {
+    FMOD_RESULT hr;
+
     resetGroups();
 
     FMOD::Memory_Initialize( NULL, 0,
       FMODAudio::callbackFMODMemAlloc,
       FMODAudio::callbackFMODMemRealloc,
       FMODAudio::callbackFMODMemFree, FMOD_MEMORY_NORMAL );
-
-    initialize();
-  }
-
-  void FMODAudio::resetGroups()
-  {
-    mMasterGroup = nullptr;
-    mMusicGroup = nullptr;
-    mEffectGroup = nullptr;
-  }
-
-  void FMODAudio::initialize()
-  {
-    // Greetings
-    FMOD_RESULT hr;
-    mEngine->getConsole()->printf( Console::srcSound,
-      L"Initializing FMOD Ex %x.%x.%x",
-      HIWORD( FMOD_VERSION ), HIBYTE( LOWORD( FMOD_VERSION ) ),
-      LOBYTE( LOWORD( FMOD_VERSION ) ) );
 
     // Create event system instance
     hr = FMOD::EventSystem_Create( &mEventSystem );
@@ -92,25 +75,31 @@ namespace Glacier {
     if ( version != FMOD_VERSION )
       ENGINE_EXCEPT( L"Bad FMOD runtime version" );
 
+    initialize();
+  }
+
+  void FMODAudio::resetGroups()
+  {
+    mMasterGroup = nullptr;
+    mMusicGroup = nullptr;
+    mEffectGroup = nullptr;
+  }
+
+  void FMODAudio::initialize()
+  {
+    FMOD_RESULT hr;
+
+    mEngine->getConsole()->printf( Console::srcSound,
+      L"Initializing FMOD Ex %x.%x.%x",
+      HIWORD( FMOD_VERSION ), HIBYTE( LOWORD( FMOD_VERSION ) ),
+      LOBYTE( LOWORD( FMOD_VERSION ) ) );
+
     refreshDrivers();
     refreshOutputTypes();
     refreshSpeakerModes();
 
-    // Set output mode
-    auto outputType = stringToOutputType( g_CVar_fm_outputmode.getString() );
-    if ( outputType == FMOD_OUTPUTTYPE_MAX )
-    {
-      mEngine->getConsole()->errorPrintf( Console::srcSound,
-        L"Invalid value for fm_outputmode, reverting to auto!" );
-      g_CVar_fm_outputmode.setValue( L"auto" );
-    }
-    else if ( outputType != FMOD_OUTPUTTYPE_MAX + 1 )
-    {
-      // Only call setOutput if value is _not_ "auto"!
-      hr = mSystem->setOutput( outputType );
-      if ( FMOD_FAILED( hr ) )
-        ENGINE_EXCEPT_FMOD( hr, L"Failed to set output mode" );
-    }
+    // Set output type
+    setOutputType( stringToOutputType( g_CVar_fm_outputmode.getString() ) );
 
     // Set output device
     setDriver( g_CVar_fm_device.getInt() );
@@ -129,22 +118,7 @@ namespace Glacier {
     }
 
     // Set speaker mode
-    auto speakerMode = stringToSpeakerMode( g_CVar_fm_speakermode.getString() );
-    if ( speakerMode == FMOD_SPEAKERMODE_MAX )
-    {
-      mEngine->getConsole()->errorPrintf( Console::srcSound,
-        L"Invalid value for fm_speakermode, reverting to auto!" );
-      g_CVar_fm_speakermode.setValue( L"auto" );
-      speakerMode = mInfo.speakerMode;
-    }
-    else if ( speakerMode == FMOD_SPEAKERMODE_MAX + 1 )
-    {
-      // Auto means the speaker mode currently used by the OS.
-      speakerMode = mInfo.speakerMode;
-    }
-    hr = mSystem->setSpeakerMode( speakerMode );
-    if ( FMOD_FAILED( hr ) )
-      ENGINE_EXCEPT_FMOD( hr, L"Failed to set speaker mode" );
+    setSpeakerMode( stringToSpeakerMode( g_CVar_fm_speakermode.getString() ) );
 
     // Prepare flags
     FMOD_INITFLAGS fmodFlags = FMOD_INIT_NORMAL | FMOD_INIT_3D_RIGHTHANDED | FMOD_INIT_OCCLUSION_LOWPASS | FMOD_INIT_HRTF_LOWPASS | FMOD_INIT_GEOMETRY_USECLOSEST;
@@ -165,30 +139,45 @@ namespace Glacier {
       ENGINE_EXCEPT_FMOD( hr, L"Failed to initialize FMOD EventSystem" );
 
     // Fetch realized values
-    mSystem->getSpeakerMode( &mInfo.speakerMode );
-    for ( auto it : mSpeakerModes )
-      if ( ( (FMODSpeakerMode*)it )->fmodValue == mInfo.speakerMode )
-        mSettings.speakerMode = it->index;
-
+    hr = mSystem->getSpeakerMode( &mInfo.speakerMode );
+    if ( FMOD_FAILED( hr ) )
+      ENGINE_EXCEPT_FMOD( hr, L"getSpeakerMode failed" );
     mSystem->getOutput( &mInfo.outputType );
-    for ( auto it : mOutputTypes )
-      if ( ( (FMODOutputType*)it )->fmodValue == mInfo.outputType )
-        mSettings.outputType = it->index;
-
+    if ( FMOD_FAILED( hr ) )
+      ENGINE_EXCEPT_FMOD( hr, L"getOutput failed" );
     mSystem->getDriver( &mInfo.driver );
-    mSettings.driver = mInfo.driver;
+    if ( FMOD_FAILED( hr ) )
+      ENGINE_EXCEPT_FMOD( hr, L"getDriver failed" );
 
-    wchar_t driverName[256] = { '\0' };
-    mSystem->getDriverInfoW( mInfo.driver, (short*)&driverName, 256, NULL );
-    mInfo.driverName = driverName;
+    if ( mSettings.outputType != 0 )
+      for ( size_t i = 0; i < mOutputTypes.size(); i++ )
+        if ( ((FMODOutputType*)mOutputTypes[i])->fmodValue == mInfo.outputType )
+        {
+          mSettings.outputType = i;
+          break;
+        }
+
+    if ( mSettings.driver != 0 )
+      for ( size_t i = 0; i < mDrivers.size(); i++ )
+        if ( ((FMODDriver*)mDrivers[i])->fmodValue == mInfo.driver )
+        {
+          mSettings.driver = i;
+          break;
+        }
+
+    if ( mSettings.speakerMode != 0 )
+      for ( size_t i = 0; i < mSpeakerModes.size(); i++ )
+        if ( ((FMODSpeakerMode*)mSpeakerModes[i])->fmodValue == mInfo.speakerMode )
+        {
+          mSettings.speakerMode = i;
+          break;
+        }
 
     // Log to console for good measure
     mEngine->getConsole()->printf( Console::srcSound,
       L"Speaker mode: %s", speakerModeToDisplayString( mInfo.speakerMode ).c_str() );
     mEngine->getConsole()->printf( Console::srcSound,
       L"Output type: %s", outputTypeToDisplayString( mInfo.outputType ).c_str() );
-    mEngine->getConsole()->printf( Console::srcSound,
-      L"Output device: %s", mInfo.driverName.c_str() );
 
     // Setup channel groups
     hr = mSystem->getMasterChannelGroup( &mMasterGroup );
@@ -217,28 +206,87 @@ namespace Glacier {
     mEngine->operationContinueAudio();
   }
 
-  void FMODAudio::setDriver( const int index )
+  void FMODAudio::setDriver( int index )
   {
     refreshDrivers();
 
-    FMODDriver* driver = nullptr;
-    for ( auto it : mDrivers )
-      if ( it->index == index )
-      {
-        driver = (FMODDriver*)it;
-        break;
-      }
+    if ( index < 0 || index >= mDrivers.size() )
+      index = 0;
 
-    if ( !driver )
-    {
-      mEngine->getConsole()->errorPrintf( Console::srcSound,
-        L"Invalid value for fm_device, reverting to 0!" );
-      g_CVar_fm_device.setValue( 0 );
-    }
+    mSettings.driver = index;
+    auto driver = (FMODDriver*)mDrivers[index];
 
-    FMOD_RESULT hr = mSystem->setDriver( driver ? driver->fmodValue : 0 );
+    FMOD_RESULT hr = mSystem->setDriver( driver->fmodValue );
+    if ( hr == FMOD_OK )
+      return;
+
+    mSettings.driver = 0;
+    hr = mSystem->setDriver( 0 );
     if ( FMOD_FAILED( hr ) )
-      ENGINE_EXCEPT_FMOD( hr, L"Failed to set output device" );
+      ENGINE_EXCEPT_FMOD( hr, L"Failed to set audio driver" );
+  }
+
+  void FMODAudio::setOutputType( int index )
+  {
+    if ( index < 0 || index >= mOutputTypes.size() )
+      index = 0;
+
+    mSettings.outputType = index;
+    auto type = (FMODOutputType*)mOutputTypes[index];
+
+    FMOD_RESULT hr = mSystem->setOutput( type->fmodValue );
+    if ( hr == FMOD_OK )
+      return;
+
+    mSettings.outputType = 0;
+    g_CVar_fm_outputmode.setValue( L"auto" );
+    hr = mSystem->setOutput( FMOD_OUTPUTTYPE_AUTODETECT );
+    if ( FMOD_FAILED( hr ) )
+      ENGINE_EXCEPT_FMOD( hr, L"Failed to set audio output type" );
+  }
+
+  void FMODAudio::setSpeakerMode( int index )
+  {
+    if ( index < 0 || index >= mSpeakerModes.size() )
+      index = 0;
+
+    mSettings.speakerMode = index;
+    auto mode = (FMODSpeakerMode*)mSpeakerModes[index];
+
+    FMOD_RESULT hr = mSystem->setSpeakerMode(
+      mode->fmodValue != FMOD_SPEAKERMODE_MAX ? mode->fmodValue : mInfo.speakerMode );
+    if ( hr == FMOD_OK )
+      return;
+
+    mSettings.speakerMode = 0;
+    g_CVar_fm_speakermode.setValue( L"auto" );
+    hr = mSystem->setSpeakerMode( mInfo.speakerMode );
+    if ( FMOD_FAILED( hr ) )
+      ENGINE_EXCEPT_FMOD( hr, L"Failed to set audio speaker mode" );
+  }
+
+  void FMODAudio::applySettings( const Settings& settings )
+  {
+    bool newOutput = ( settings.outputType != mSettings.outputType );
+    bool newDriver = ( settings.driver != mSettings.driver );
+    bool newSpeakers = ( settings.speakerMode != mSettings.speakerMode );
+
+    if ( newOutput || newDriver || newSpeakers )
+      shutdown();
+
+    if ( newOutput )
+      if ( settings.outputType >= 0 && settings.outputType < mOutputTypes.size() )
+        g_CVar_fm_outputmode.setValue( mOutputTypes[settings.outputType]->shorthand );
+
+    if ( newDriver )
+      g_CVar_fm_device.setValue( settings.driver );
+
+    if ( newSpeakers )
+      if ( settings.speakerMode >= 0 && settings.speakerMode < mSpeakerModes.size() )
+        g_CVar_fm_speakermode.setValue( mSpeakerModes[settings.speakerMode]->shorthand );
+
+    if ( newOutput || newDriver || newSpeakers )
+      initialize();
   }
 
   void FMODAudio::componentTick( GameTime tick, GameTime time )
@@ -256,7 +304,8 @@ namespace Glacier {
     if ( mEventSystem )
       mEventSystem->unload();
 
-    SAFE_RELEASE_FMOD( mEventSystem );
+    if ( mSystem )
+      mSystem->close();
 
     resetGroups();
   }
@@ -270,6 +319,8 @@ namespace Glacier {
   FMODAudio::~FMODAudio()
   {
     shutdown();
+
+    SAFE_RELEASE_FMOD( mEventSystem );
   }
 
   void FMODAudio::setMasterVolume( float volume )
@@ -294,8 +345,7 @@ namespace Glacier {
   {
     clearDrivers();
 
-    int i = 0;
-    mDrivers.push_back( new FMODDriver( i++, 0, L"Automatic" ) );
+    mDrivers.push_back( new FMODDriver( 0, L"Automatic" ) );
 
     int count = 0;
     FMOD_RESULT hr = mSystem->getNumDrivers( &count );
@@ -303,11 +353,11 @@ namespace Glacier {
     if ( FMOD_FAILED( hr ) )
       ENGINE_EXCEPT_FMOD( hr, L"Failed to get driver count" );
 
-    for ( int j = 0; j < count; j++ )
+    for ( int i = 0; i < count; i++ )
     {
       wchar_t deviceName[256];
-      mSystem->getDriverInfoW( j, (short*)deviceName, 256, NULL );
-      mDrivers.push_back( new FMODDriver( i++, j, deviceName ) );
+      mSystem->getDriverInfoW( i, (short*)deviceName, 256, NULL );
+      mDrivers.push_back( new FMODDriver( i, deviceName ) );
     }
   }
 
@@ -315,12 +365,12 @@ namespace Glacier {
   {
     if ( mOutputTypes.empty() )
     {
-      int i = 0;
-      mOutputTypes.push_back( new FMODOutputType( i++, FMOD_OUTPUTTYPE_NOSOUND, L"nosound", L"No sound" ) );
-      mOutputTypes.push_back( new FMODOutputType( i++, FMOD_OUTPUTTYPE_WINMM, L"winmm", L"Windows MultiMedia" ) );
-      mOutputTypes.push_back( new FMODOutputType( i++, FMOD_OUTPUTTYPE_DSOUND, L"dsound", L"DirectSound" ) );
-      mOutputTypes.push_back( new FMODOutputType( i++, FMOD_OUTPUTTYPE_WASAPI, L"wasapi", L"Windows Audio Session API" ) );
-      mOutputTypes.push_back( new FMODOutputType( i++, FMOD_OUTPUTTYPE_ASIO, L"asio", L"ASIO 2.0" ) );
+      mOutputTypes.push_back( new FMODOutputType( FMOD_OUTPUTTYPE_AUTODETECT, L"auto", L"Automatic" ) );
+      mOutputTypes.push_back( new FMODOutputType( FMOD_OUTPUTTYPE_NOSOUND, L"nosound", L"No sound" ) );
+      mOutputTypes.push_back( new FMODOutputType( FMOD_OUTPUTTYPE_WINMM, L"winmm", L"Windows MultiMedia" ) );
+      mOutputTypes.push_back( new FMODOutputType( FMOD_OUTPUTTYPE_DSOUND, L"dsound", L"DirectSound" ) );
+      mOutputTypes.push_back( new FMODOutputType( FMOD_OUTPUTTYPE_WASAPI, L"wasapi", L"Windows Audio Session API" ) );
+      mOutputTypes.push_back( new FMODOutputType( FMOD_OUTPUTTYPE_ASIO, L"asio", L"ASIO 2.0" ) );
     }
   }
 
@@ -328,17 +378,17 @@ namespace Glacier {
   {
     if ( mSpeakerModes.empty() )
     {
-      int i = 0;
-      mSpeakerModes.push_back( new FMODSpeakerMode( i++, FMOD_SPEAKERMODE_RAW, L"raw", L"Raw" ) );
-      mSpeakerModes.push_back( new FMODSpeakerMode( i++, FMOD_SPEAKERMODE_MONO, L"mono", L"Mono (1.0)" ) );
-      mSpeakerModes.push_back( new FMODSpeakerMode( i++, FMOD_SPEAKERMODE_STEREO, L"stereo", L"Stereo (2.0)" ) );
-      mSpeakerModes.push_back( new FMODSpeakerMode( i++, FMOD_SPEAKERMODE_QUAD, L"quad", L"Quad (4.0)" ) );
-      mSpeakerModes.push_back( new FMODSpeakerMode( i++, FMOD_SPEAKERMODE_SURROUND, L"surround", L"Surround (5.0)" ) );
-      mSpeakerModes.push_back( new FMODSpeakerMode( i++, FMOD_SPEAKERMODE_5POINT1, L"surround51", L"Surround (5.1)" ) );
-      mSpeakerModes.push_back( new FMODSpeakerMode( i++, FMOD_SPEAKERMODE_7POINT1, L"surround71", L"Surround (7.1)" ) );
-      mSpeakerModes.push_back( new FMODSpeakerMode( i++, FMOD_SPEAKERMODE_SRS5_1_MATRIX, L"srs51matrix", L"Prologic/SRS Surround (5.1)" ) );
-      mSpeakerModes.push_back( new FMODSpeakerMode( i++, FMOD_SPEAKERMODE_DOLBY5_1_MATRIX, L"dolby51matrix", L"Dolby Surround (5.1)" ) );
-      mSpeakerModes.push_back( new FMODSpeakerMode( i++, FMOD_SPEAKERMODE_MYEARS, L"myears", L"MyEars HRTF Stereo (2.0)" ) );
+      mSpeakerModes.push_back( new FMODSpeakerMode( FMOD_SPEAKERMODE_MAX, L"auto", L"Automatic" ) );
+      mSpeakerModes.push_back( new FMODSpeakerMode( FMOD_SPEAKERMODE_RAW, L"raw", L"Raw" ) );
+      mSpeakerModes.push_back( new FMODSpeakerMode( FMOD_SPEAKERMODE_MONO, L"mono", L"Mono (1.0)" ) );
+      mSpeakerModes.push_back( new FMODSpeakerMode( FMOD_SPEAKERMODE_STEREO, L"stereo", L"Stereo (2.0)" ) );
+      mSpeakerModes.push_back( new FMODSpeakerMode( FMOD_SPEAKERMODE_QUAD, L"quad", L"Quad (4.0)" ) );
+      mSpeakerModes.push_back( new FMODSpeakerMode( FMOD_SPEAKERMODE_SURROUND, L"surround", L"Surround (5.0)" ) );
+      mSpeakerModes.push_back( new FMODSpeakerMode( FMOD_SPEAKERMODE_5POINT1, L"surround51", L"Surround (5.1)" ) );
+      mSpeakerModes.push_back( new FMODSpeakerMode( FMOD_SPEAKERMODE_7POINT1, L"surround71", L"Surround (7.1)" ) );
+      mSpeakerModes.push_back( new FMODSpeakerMode( FMOD_SPEAKERMODE_SRS5_1_MATRIX, L"srs51matrix", L"Prologic/SRS Surround (5.1)" ) );
+      mSpeakerModes.push_back( new FMODSpeakerMode( FMOD_SPEAKERMODE_DOLBY5_1_MATRIX, L"dolby51matrix", L"Dolby Surround (5.1)" ) );
+      mSpeakerModes.push_back( new FMODSpeakerMode( FMOD_SPEAKERMODE_MYEARS, L"myears", L"MyEars HRTF Stereo (2.0)" ) );
     }
   }
 
@@ -355,9 +405,9 @@ namespace Glacier {
       L"Available audio devices for %s:",
       outputTypeToDisplayString( output ).c_str() );
 
-    for ( auto driver : mDrivers )
+    for ( size_t i = 0; i < mDrivers.size(); i++ )
       console->printf( Console::srcSound, L"Device %i: %s",
-      driver->index, driver->name.c_str() );
+        i, mDrivers[i]->name.c_str() );
   }
 
   // Console command callbacks ================================================
@@ -371,35 +421,11 @@ namespace Glacier {
 
   bool FMODAudio::callbackSpeakerMode( ConVar* variable, ConVar::Value oldValue )
   {
-    FMODAudio* self = (FMODAudio*)(&Locator::getAudio());
-    if ( !self )
-      return false;
-    auto mode = self->stringToSpeakerMode( variable->getString() );
-    if ( mode == FMOD_SPEAKERMODE_MAX )
-    {
-      if ( gEngine && gEngine->getConsole() )
-        gEngine->getConsole()->errorPrintf( Console::srcSound,
-          L"Bad value \"%s\" given for fm_speakermode.",
-          variable->getString().c_str() );
-      return false;
-    }
     return true;
   }
 
   bool FMODAudio::callbackOutputMode( ConVar* variable, ConVar::Value oldValue )
   {
-    FMODAudio* self = (FMODAudio*)(&Locator::getAudio());
-    if ( !self )
-      return false;
-    auto type = self->stringToOutputType( variable->getString() );
-    if ( type == FMOD_OUTPUTTYPE_MAX )
-    {
-      if ( gEngine && gEngine->getConsole() )
-        gEngine->getConsole()->errorPrintf( Console::srcSound,
-        L"Bad value \"%s\" given for fm_outputmode.",
-        variable->getString().c_str() );
-      return false;
-    }
     return true;
   }
 
@@ -443,16 +469,14 @@ namespace Glacier {
 
   // Conversion utilities =====================================================
 
-  FMOD_SPEAKERMODE FMODAudio::stringToSpeakerMode( const wstring& mode )
+  int FMODAudio::stringToSpeakerMode( const wstring& mode )
   {
-    if ( boost::iequals( mode, L"auto" ) )
-      return (FMOD_SPEAKERMODE)( FMOD_SPEAKERMODE_MAX + 1 );
-    for ( auto it : mSpeakerModes )
+    for ( size_t i = 0; i < mSpeakerModes.size(); i++ )
     {
-      if ( boost::iequals( mode, it->shorthand ) )
-        return ((FMODSpeakerMode*)it)->fmodValue;
+      if ( boost::iequals( mode, mSpeakerModes[i]->shorthand ) )
+        return i;
     }
-    return FMOD_SPEAKERMODE_MAX;
+    return 0;
   }
 
   const wstring& FMODAudio::speakerModeToDisplayString( const FMOD_SPEAKERMODE mode )
@@ -465,16 +489,14 @@ namespace Glacier {
     return cUnknown;
   }
 
-  FMOD_OUTPUTTYPE FMODAudio::stringToOutputType( const wstring& type )
+  int FMODAudio::stringToOutputType( const wstring& type )
   {
-    if ( boost::iequals( type, L"auto" ) )
-      return (FMOD_OUTPUTTYPE)( FMOD_OUTPUTTYPE_MAX + 1 );
-    for ( auto it : mOutputTypes )
+    for ( size_t i = 0; i < mOutputTypes.size(); i++ )
     {
-      if ( boost::iequals( type, it->shorthand ) )
-        return ((FMODOutputType*)it)->fmodValue;
+      if ( boost::iequals( type, mOutputTypes[i]->shorthand ) )
+        return i;
     }
-    return FMOD_OUTPUTTYPE_MAX;
+    return 0;
   }
 
   const wstring& FMODAudio::outputTypeToDisplayString( const FMOD_OUTPUTTYPE type )

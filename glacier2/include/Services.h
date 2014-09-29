@@ -12,10 +12,11 @@ namespace Glacier {
   public:
     NullAudio()
     {
-      mDrivers.push_back( new Driver( 0, L"None" ) );
-      mOutputTypes.push_back( new OutputType( 0, L"none", L"None" ) );
-      mSpeakerModes.push_back( new SpeakerMode( 0, L"none", L"None" ) );
+      mDrivers.push_back( new Driver( L"None" ) );
+      mOutputTypes.push_back( new OutputType( L"none", L"None" ) );
+      mSpeakerModes.push_back( new SpeakerMode( L"none", L"None" ) );
     }
+    virtual void applySettings( const Settings& settings ) { mSettings = settings; }
     virtual void setMasterVolume( float volume ) { /* Nothing */ }
     virtual void setMusicVolume( float volume ) { /* Nothing */ }
     virtual void setEffectVolume( float volume ) { /* Nothing */ }

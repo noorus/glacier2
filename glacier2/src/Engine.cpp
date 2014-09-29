@@ -147,14 +147,14 @@ namespace Glacier {
 
   void Engine::operationSuspendAudio()
   {
-    if ( mGame )
-      mGame->suspendState();
+    //if ( mGame )
+    //  mGame->suspendState();
   }
 
   void Engine::operationContinueAudio()
   {
-    if ( mGame )
-      mGame->resumeState();
+    //if ( mGame )
+    //  mGame->resumeState();
   }
 
   void Engine::operationSuspendPhysics()

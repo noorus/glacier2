@@ -17,37 +17,33 @@ namespace Glacier {
     // Audio driver entry
     struct Driver {
     public:
-      int index;
       wstring name;
-      Driver( int _index, const wstring& _name ):
-        index( _index ), name( _name ) {}
+      Driver( const wstring& _name ): name( _name ) {}
       virtual ~Driver() {}
     };
-    typedef std::list<Driver*> DriverList;
+    typedef std::vector<Driver*> DriverVector;
 
     // Audio output type entry
     struct OutputType {
     public:
-      int index;
       wstring shorthand;
       wstring name;
-      OutputType( int _index, const wstring& _shorthand, const wstring& _name ):
-        index( _index ), shorthand( _shorthand ), name( _name ) {}
+      OutputType( const wstring& _shorthand, const wstring& _name ):
+        shorthand( _shorthand ), name( _name ) {}
       virtual ~OutputType() {}
     };
-    typedef std::list<OutputType*> OutputTypeList;
+    typedef std::vector<OutputType*> OutputTypeVector;
 
     // Audio speaker mode entry
     struct SpeakerMode {
     public:
-      int index;
       wstring shorthand;
       wstring name;
-      SpeakerMode( int _index, const wstring& _shorthand, const wstring& _name ):
-        index( _index ), shorthand( _shorthand ), name( _name ) {}
+      SpeakerMode( const wstring& _shorthand, const wstring& _name ):
+        shorthand( _shorthand ), name( _name ) {}
       virtual ~SpeakerMode() {}
     };
-    typedef std::list<SpeakerMode*> SpeakerModeList;
+    typedef std::vector<SpeakerMode*> SpeakerModeVector;
 
     // Audio settings entry
     struct Settings {
@@ -57,9 +53,9 @@ namespace Glacier {
       Settings(): driver( 0 ), outputType( 0 ), speakerMode( 0 ) {}
     };
   protected:
-    DriverList mDrivers;
-    OutputTypeList mOutputTypes;
-    SpeakerModeList mSpeakerModes;
+    DriverVector mDrivers;
+    OutputTypeVector mOutputTypes;
+    SpeakerModeVector mSpeakerModes;
     Settings mSettings;
   public:
     virtual void setMasterVolume( float volume ) = 0;
@@ -90,10 +86,11 @@ namespace Glacier {
         delete it;
       mSpeakerModes.clear();
     }
+    virtual void applySettings( const Settings& settings ) = 0;
     virtual const Settings& getSettings() { return mSettings; }
-    virtual const DriverList& getDrivers() { return mDrivers; }
-    virtual const OutputTypeList& getOutputTypes() { return mOutputTypes; }
-    virtual const SpeakerModeList& getSpeakerModes() { return mSpeakerModes; }
+    virtual const DriverVector& getDrivers() { return mDrivers; }
+    virtual const OutputTypeVector& getOutputTypes() { return mOutputTypes; }
+    virtual const SpeakerModeVector& getSpeakerModes() { return mSpeakerModes; }
     virtual ~Audio()
     {
       clearDrivers();

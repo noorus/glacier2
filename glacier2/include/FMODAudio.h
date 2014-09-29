@@ -22,25 +22,24 @@ namespace Glacier {
       FMOD_SPEAKERMODE speakerMode;
       int rate;
       int driver;
-      wstring driverName;
     };
     struct FMODDriver : public Audio::Driver
     {
       int fmodValue;
-      FMODDriver( int _index, int _value, const wstring& _name ):
-        Audio::Driver( _index, _name ), fmodValue( _value ) {}
+      FMODDriver( int _value, const wstring& _name ):
+        Audio::Driver( _name ), fmodValue( _value ) {}
     };
     struct FMODOutputType: public Audio::OutputType
     {
       FMOD_OUTPUTTYPE fmodValue;
-      FMODOutputType( int _index, FMOD_OUTPUTTYPE _value, const wstring& _shorthand, const wstring& _name ):
-        Audio::OutputType( _index, _shorthand, _name ), fmodValue( _value ) {}
+      FMODOutputType( FMOD_OUTPUTTYPE _value, const wstring& _shorthand, const wstring& _name ):
+        Audio::OutputType( _shorthand, _name ), fmodValue( _value ) {}
     };
     struct FMODSpeakerMode: public Audio::SpeakerMode
     {
       FMOD_SPEAKERMODE fmodValue;
-      FMODSpeakerMode( int _index, FMOD_SPEAKERMODE _value, const wstring& _shorthand, const wstring& _name ):
-        Audio::SpeakerMode( _index, _shorthand, _name ), fmodValue( _value ) {}
+      FMODSpeakerMode( FMOD_SPEAKERMODE _value, const wstring& _shorthand, const wstring& _name ):
+        Audio::SpeakerMode( _shorthand, _name ), fmodValue( _value ) {}
     };
   protected:
     Info mInfo;
@@ -60,13 +59,15 @@ namespace Glacier {
     static void F_CALLBACK callbackFMODMemFree( void* mem,
       FMOD_MEMORY_TYPE type, const char* source );
     // Conversion utilities
-    FMOD_SPEAKERMODE stringToSpeakerMode( const wstring& mode );
+    int stringToSpeakerMode( const wstring& mode );
     const wstring& speakerModeToDisplayString(
       const FMOD_SPEAKERMODE mode );
-    FMOD_OUTPUTTYPE stringToOutputType( const wstring& type );
+    int stringToOutputType( const wstring& type );
     const wstring& outputTypeToDisplayString(
       const FMOD_OUTPUTTYPE type );
-    void setDriver( const int index );
+    void setDriver( int index );
+    void setOutputType( int index );
+    void setSpeakerMode( int index );
     void refreshDrivers();
     void refreshOutputTypes();
     void refreshSpeakerModes();
@@ -87,6 +88,7 @@ namespace Glacier {
     virtual void initialize();
     virtual void shutdown();
     virtual void restart();
+    virtual void applySettings( const Settings& settings );
     const Info& getInfo() { return mInfo; }
     virtual void componentTick( GameTime tick, GameTime time );
     virtual ~FMODAudio();
