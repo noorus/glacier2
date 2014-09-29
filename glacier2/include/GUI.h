@@ -1,5 +1,6 @@
 #pragma once
 #include "EngineComponent.h"
+#include "AudioService.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
@@ -12,6 +13,14 @@ namespace Glacier {
   class SettingsWindow {
   protected:
     MyGUI::Widget* mRoot;
+    MyGUI::ComboBox* mAudioDrivers;
+    MyGUI::ComboBox* mAudioOutputTypes;
+    MyGUI::ComboBox* mAudioSpeakerModes;
+    Audio::Settings mOriginalAudio;
+    Audio::Settings mCurrentAudio;
+    void refreshAudioDrivers();
+    void refreshAudioOutputTypes();
+    void refreshAudioSpeakerModes();
   public:
     SettingsWindow();
     ~SettingsWindow();
@@ -19,6 +28,9 @@ namespace Glacier {
     void onFullscreenClicked( MyGUI::Widget* sender );
     void onApplyClicked( MyGUI::Widget* sender );
     void onCancelClicked( MyGUI::Widget* sender );
+    void onAudioDriverSelected( MyGUI::ComboBox* sender, size_t index );
+    void onAudioOutputTypeSelected( MyGUI::ComboBox* sender, size_t index );
+    void onAudioSpeakerModeSelected( MyGUI::ComboBox* sender, size_t index );
   };
 
   //! \class GUI

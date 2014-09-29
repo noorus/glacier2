@@ -248,6 +248,7 @@
     </ClCompile>
     <ClCompile Include="src\ActionManager.cpp" />
     <ClCompile Include="src\ArcballCamera.cpp" />
+    <ClCompile Include="src\AudioService.cpp" />
     <ClCompile Include="src\Camera.cpp" />
     <ClCompile Include="src\Console.cpp" />
     <ClCompile Include="src\ConsoleWindow.cpp" />
@@ -293,6 +294,7 @@
     <ClInclude Include="..\include\Types.h" />
     <ClInclude Include="..\include\Utilities.h" />
     <ClInclude Include="include\ActionManager.h" />
+    <ClInclude Include="include\AudioService.h" />
     <ClInclude Include="include\Camera.h" />
     <ClInclude Include="include\Console.h" />
     <ClInclude Include="include\ConsoleWindow.h" />

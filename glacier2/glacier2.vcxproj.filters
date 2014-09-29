@@ -258,6 +258,9 @@
     <ClCompile Include="src\SettingsWindow.cpp">
       <Filter>Source Files\GUI</Filter>
     </ClCompile>
+    <ClCompile Include="src\AudioService.cpp">
+      <Filter>Source Files\Services\Audio</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\CompilerDef.h">
@@ -382,6 +385,9 @@
     </ClInclude>
     <ClInclude Include="include\GUI.h">
       <Filter>Header Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="include\AudioService.h">
+      <Filter>Header Files\Services\Audio</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -46,26 +46,19 @@ namespace Glacier {
     MyGUI::Button* fullScreen = mRoot->findWidget( "cbFullscreen" )->castType<MyGUI::Button>();
     fullScreen->eventMouseButtonClick += MyGUI::newDelegate( this, &SettingsWindow::onFullscreenClicked );
 
-    // Audio : Driver
-    MyGUI::ComboBox* audioDevice = mRoot->findWidget( "cbbDevice" )->castType<MyGUI::ComboBox>();
-    audioDevice->removeAllItems();
-    for ( auto driver : Locator::getAudio().getDrivers() )
-      audioDevice->addItem( driver.name );
-    audioDevice->setIndexSelected( 0 );
+    mOriginalAudio = Locator::getAudio().getSettings();
+    mCurrentAudio = mOriginalAudio;
 
-    // Audio : Output Type
-    MyGUI::ComboBox* audioOutputType = mRoot->findWidget( "cbbOutputType" )->castType<MyGUI::ComboBox>();
-    audioOutputType->removeAllItems();
-    for ( auto type : Locator::getAudio().getOutputTypes() )
-      audioOutputType->addItem( type.name );
-    audioOutputType->setIndexSelected( 0 );
+    mAudioDrivers = mRoot->findWidget( "cbbDevice" )->castType<MyGUI::ComboBox>();
+    mAudioDrivers->eventComboAccept += MyGUI::newDelegate( this, &SettingsWindow::onAudioDriverSelected );
+    mAudioOutputTypes = mRoot->findWidget( "cbbOutputType" )->castType<MyGUI::ComboBox>();
+    mAudioOutputTypes->eventComboAccept += MyGUI::newDelegate( this, &SettingsWindow::onAudioOutputTypeSelected );
+    mAudioSpeakerModes = mRoot->findWidget( "cbbSpeakerMode" )->castType<MyGUI::ComboBox>();
+    mAudioSpeakerModes->eventComboAccept += MyGUI::newDelegate( this, &SettingsWindow::onAudioSpeakerModeSelected );
 
-    // Audio : Speaker Mode
-    MyGUI::ComboBox* audioSpeakerMode = mRoot->findWidget( "cbbSpeakerMode" )->castType<MyGUI::ComboBox>();
-    audioSpeakerMode->removeAllItems();
-    for ( auto mode : Locator::getAudio().getSpeakerModes() )
-      audioSpeakerMode->addItem( mode.name );
-    audioSpeakerMode->setIndexSelected( 0 );
+    refreshAudioDrivers();
+    refreshAudioOutputTypes();
+    refreshAudioSpeakerModes();
 
     // Apply button
     MyGUI::Button* apply = mRoot->findWidget( "btnApply" )->castType<MyGUI::Button>();
@@ -74,6 +67,60 @@ namespace Glacier {
     // Cancel button
     MyGUI::Button* cancel = mRoot->findWidget( "btnCancel" )->castType<MyGUI::Button>();
     cancel->eventMouseButtonClick += MyGUI::newDelegate( this, &SettingsWindow::onCancelClicked );
+  }
+
+  void SettingsWindow::refreshAudioDrivers()
+  {
+    mAudioDrivers->removeAllItems();
+    
+    for ( auto driver : Locator::getAudio().getDrivers() )
+    {
+      mAudioDrivers->insertItemAt( driver->index, driver->name );
+      if ( driver->index == mCurrentAudio.driver )
+        mAudioDrivers->setIndexSelected( driver->index );
+    }
+  }
+
+  void SettingsWindow::onAudioDriverSelected( MyGUI::ComboBox* sender, size_t index )
+  {
+    mCurrentAudio.driver = index;
+    gEngine->getConsole()->printf( Console::srcGUI, L"Audio driver selected: %d", mCurrentAudio.driver );
+  }
+
+  void SettingsWindow::refreshAudioOutputTypes()
+  {
+    mAudioOutputTypes->removeAllItems();
+
+    for ( auto type : Locator::getAudio().getOutputTypes() )
+    {
+      mAudioOutputTypes->insertItemAt( type->index, type->name );
+      if ( type->index == mCurrentAudio.outputType )
+        mAudioOutputTypes->setIndexSelected( type->index );
+    }
+  }
+
+  void SettingsWindow::onAudioOutputTypeSelected( MyGUI::ComboBox* sender, size_t index )
+  {
+    mCurrentAudio.outputType = index;
+    gEngine->getConsole()->printf( Console::srcGUI, L"Audio output type selected: %d", mCurrentAudio.outputType );
+  }
+
+  void SettingsWindow::refreshAudioSpeakerModes()
+  {
+    mAudioSpeakerModes->removeAllItems();
+
+    for ( auto mode : Locator::getAudio().getSpeakerModes() )
+    {
+      mAudioSpeakerModes->insertItemAt( mode->index, mode->name );
+      if ( mode->index == mCurrentAudio.speakerMode )
+        mAudioSpeakerModes->setIndexSelected( mode->index );
+    }
+  }
+
+  void SettingsWindow::onAudioSpeakerModeSelected( MyGUI::ComboBox* sender, size_t index )
+  {
+    mCurrentAudio.speakerMode = index;
+    gEngine->getConsole()->printf( Console::srcGUI, L"Audio speaker mode selected: %d", mCurrentAudio.speakerMode );
   }
 
   void SettingsWindow::onVerticalSyncClicked( MyGUI::Widget* sender )

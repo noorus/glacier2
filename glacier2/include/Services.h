@@ -1,50 +1,27 @@
 #pragma once
+#include "AudioService.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
 
 namespace Glacier {
 
-  class Audio {
-  public:
-    struct AudioDriverEntry {
-    public:
-      int index;
-      wstring name;
-    };
-    struct OutputTypeEntry {
-    public:
-      int index;
-      wstring name;
-    };
-    struct SpeakerModeEntry {
-    public:
-      int index;
-      wstring name;
-    };
-    typedef std::list<AudioDriverEntry> AudioDriverList;
-    typedef std::list<OutputTypeEntry> OutputTypeList;
-    typedef std::list<SpeakerModeEntry> SpeakerModeList;
-    virtual void initialize() = 0;
-    virtual void shutdown() = 0;
-    virtual void restart() = 0;
-    virtual const AudioDriverList& getDrivers() = 0;
-    virtual const OutputTypeList& getOutputTypes() = 0;
-    virtual const SpeakerModeList& getSpeakerModes() = 0;
-  };
-
   class NullAudio: public Audio {
   protected:
-    AudioDriverList emptyDriverList;
-    OutputTypeList emptyOutputTypeList;
-    SpeakerModeList emptySpeakerModeList;
+    Settings mSettings;
   public:
+    NullAudio()
+    {
+      mDrivers.push_back( new Driver( 0, L"None" ) );
+      mOutputTypes.push_back( new OutputType( 0, L"none", L"None" ) );
+      mSpeakerModes.push_back( new SpeakerMode( 0, L"none", L"None" ) );
+    }
+    virtual void setMasterVolume( float volume ) { /* Nothing */ }
+    virtual void setMusicVolume( float volume ) { /* Nothing */ }
+    virtual void setEffectVolume( float volume ) { /* Nothing */ }
     virtual void initialize() { /* Nothing */ }
     virtual void shutdown() { /* Nothing */ }
     virtual void restart() { /* Nothing */ }
-    virtual const AudioDriverList& getDrivers() { return emptyDriverList; }
-    virtual const OutputTypeList& getOutputTypes() { return emptyOutputTypeList; }
-    virtual const SpeakerModeList& getSpeakerModes() { return emptySpeakerModeList; }
   };
 
   class Physics {
@@ -74,7 +51,5 @@ namespace Glacier {
     virtual size_t getMemoryUsage( const Sector sector ) = 0;
     virtual const wstring& getProviderName() = 0;
   };
-
-  //
 
 }

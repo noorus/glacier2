@@ -16,8 +16,8 @@ namespace Glacier {
     static NullAudio nullAudioService; //!< Default null audio service
     static Physics* physicsService; //!< Currently provided physics service
     static NullPhysics nullPhysicsService; //!< Default null physics service
-    static Graphics* graphicsService;
-    static GUI* guiService;
+    static Graphics* graphicsService; //!< Graphics component
+    static GUI* guiService; //!< GUI component
   public:
     static Memory& getMemory() { return *memoryService; }
 
