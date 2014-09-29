@@ -11,7 +11,7 @@ namespace Glacier {
   TextFile::TextFile( const wstring& filename ): mFile( INVALID_HANDLE_VALUE )
   {
     mFile = CreateFileW( filename.c_str(), GENERIC_WRITE,
-      FILE_SHARE_READ, nullptr, OPEN_ALWAYS,
+      FILE_SHARE_READ, nullptr, CREATE_ALWAYS,
       FILE_ATTRIBUTE_NORMAL, 0 );
 
     if ( mFile == INVALID_HANDLE_VALUE )
