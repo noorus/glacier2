@@ -127,14 +127,6 @@ namespace Glacier {
     // Initialize the system
     int channels = g_CVar_fm_maxchannels.getInt();
     hr =  mEventSystem->init( channels, fmodFlags, nullptr, eventFlags );
-    if ( hr == FMOD_ERR_OUTPUT_CREATEBUFFER )
-    {
-      // Bad speaker mode! Try reverting to stereo.
-      g_CVar_fm_speakermode.setValue( L"stereo" );
-      mSystem->setSpeakerMode( FMOD_SPEAKERMODE_STEREO );
-      hr =  mEventSystem->init( channels, fmodFlags, nullptr, eventFlags );
-    }
-
     if ( FMOD_FAILED( hr ) )
       ENGINE_EXCEPT_FMOD( hr, L"Failed to initialize FMOD EventSystem" );
 
@@ -267,6 +259,8 @@ namespace Glacier {
 
   void FMODAudio::applySettings( const Settings& settings )
   {
+    mEngine->getConsole()->printf( Console::srcSound, L"Applying new sound settings..." );
+
     bool newOutput = ( settings.outputType != mSettings.outputType );
     bool newDriver = ( settings.driver != mSettings.driver );
     bool newSpeakers = ( settings.speakerMode != mSettings.speakerMode );

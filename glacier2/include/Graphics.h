@@ -20,6 +20,12 @@ namespace Glacier {
   class WindowHandler;
 
   class Graphics: public EngineComponent {
+  public:
+    // Graphics settings
+    struct Settings {
+      bool fullScreen;
+      bool verticalSync;
+    };
   protected:
     struct Globals {
       GlobalStats stats;
@@ -32,6 +38,7 @@ namespace Glacier {
     WindowHandler* mWindowHandler;
     sh::OgrePlatform* mShinyPlatform;
     sh::Factory* mShinyFactory;
+    Settings mSettings;
   public:
     struct VideoMode {
       uint32_t mWidth;
@@ -67,6 +74,8 @@ namespace Glacier {
     void videoShutdown();
     void videoRestart();
     void screenshot();
+    void applySettings( const Settings& settings );
+    const Settings& getSettings() { return mSettings; }
     void setRenderWindowTitle( const wstring& title );
     HWND getRenderWindowHandle();
     Ogre::Root* getRoot() { return mRoot; }

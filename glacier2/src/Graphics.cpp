@@ -190,6 +190,12 @@ namespace Glacier {
       videoMode.mWidth, videoMode.mHeight, videoMode.mFullscreen,
       &videoMode.getParams() );
 
+    // Refresh settings & CVARs
+    mSettings.fullScreen = mWindow->isFullScreen();
+    g_CVar_vid_fullscreen.forceValue( mSettings.fullScreen );
+    mSettings.verticalSync = mWindow->isVSyncEnabled();
+    g_CVar_vid_vsync.forceValue( mSettings.verticalSync );
+
     // Add engine-supplied event listener to the render window
     Ogre::WindowEventUtilities::addWindowEventListener(
       mWindow, mWindowHandler );
@@ -232,6 +238,31 @@ namespace Glacier {
 
     // Tell the engine to continue, in case this was a restart
     mEngine->operationContinueVideo();
+  }
+
+  void Graphics::applySettings( const Settings& settings )
+  {
+    mEngine->getConsole()->printf( Console::srcGfx, L"Applying new graphics settings..." );
+
+    bool newFullscreen = ( settings.fullScreen != mSettings.fullScreen );
+    bool newVSync = ( settings.verticalSync != mSettings.verticalSync );
+
+    if ( newFullscreen )
+    {
+      unsigned int width  = g_CVar_vid_screenwidth.getInt();
+      unsigned int height = g_CVar_vid_screenheight.getInt();
+      g_CVar_vid_fullscreen.setValue( settings.fullScreen );
+      mWindow->setFullscreen( settings.fullScreen, width, height );
+    }
+
+    if ( newVSync )
+    {
+      g_CVar_vid_vsync.setValue( settings.verticalSync );
+      mWindow->setVSyncEnabled( settings.verticalSync );
+    }
+
+    // if ( newFullscreen || newVSync )
+    //   videoRestart();
   }
 
   void Graphics::videoRestart()

@@ -1,6 +1,7 @@
 #pragma once
 #include "EngineComponent.h"
 #include "AudioService.h"
+#include "Graphics.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
@@ -21,6 +22,8 @@ namespace Glacier {
     MyGUI::ScrollBar* mAudioEffectVolume;
     Audio::Settings mOriginalAudio;
     Audio::Settings mCurrentAudio;
+    Graphics::Settings mOriginalGraphics;
+    Graphics::Settings mCurrentGraphics;
     void refreshAudioDrivers();
     void refreshAudioOutputTypes();
     void refreshAudioSpeakerModes();

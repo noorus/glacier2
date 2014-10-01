@@ -45,7 +45,7 @@ namespace Glacier {
     };
     typedef std::vector<SpeakerMode*> SpeakerModeVector;
 
-    // Audio settings entry
+    // Audio settings
     struct Settings {
       int driver;
       int outputType;

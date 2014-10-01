@@ -21,6 +21,9 @@ namespace Glacier {
 
     mRoot = root.at( 0 );
 
+    mOriginalGraphics = Locator::getGraphics().getSettings();
+    mCurrentGraphics = mOriginalGraphics;
+
     Ogre::ConfigOptionMap options = Locator::getGraphics().getRenderer()->getConfigOptions();
 
     // Video : Adapter
@@ -142,6 +145,7 @@ namespace Glacier {
   {
     MyGUI::Button* btn = sender->castType<MyGUI::Button>();
     bool selected = !btn->getStateSelected();
+    mCurrentGraphics.verticalSync = selected;
     btn->setStateSelected( selected );
   }
 
@@ -149,6 +153,7 @@ namespace Glacier {
   {
     MyGUI::Button* btn = sender->castType<MyGUI::Button>();
     bool selected = !btn->getStateSelected();
+    mCurrentGraphics.fullScreen = selected;
     btn->setStateSelected( selected );
   }
 
@@ -172,6 +177,12 @@ namespace Glacier {
 
   void SettingsWindow::onApplyClicked( MyGUI::Widget* sender )
   {
+    Locator::getGraphics().applySettings( mCurrentGraphics );
+
+    mOriginalGraphics = Locator::getGraphics().getSettings();
+    mCurrentGraphics = mOriginalGraphics;
+
+    /*
     Locator::getAudio().applySettings( mCurrentAudio );
 
     bool newOutput   = ( mCurrentAudio.outputType != mOriginalAudio.outputType );
@@ -186,7 +197,7 @@ namespace Glacier {
     if ( newDriver )
       refreshAudioDrivers();
     if ( newSpeakers )
-      refreshAudioSpeakerModes();
+      refreshAudioSpeakerModes();*/
   }
 
   void SettingsWindow::onCancelClicked( MyGUI::Widget* sender )
