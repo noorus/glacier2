@@ -33,7 +33,7 @@ namespace Glacier {
       Isolate* isolate = Isolate::GetCurrent();
       HandleScope handleScope( isolate );
 
-      Local<FunctionTemplate> tpl = FunctionTemplate::New( Vector3::create );
+      Local<FunctionTemplate> tpl = FunctionTemplate::New( isolate, Vector3::create );
 
       tpl->SetClassName( Util::allocString( className.c_str() ) );
       tpl->InstanceTemplate()->SetInternalFieldCount( 1 );

@@ -21,12 +21,19 @@ namespace Glacier {
       L"Initializing V8 v%S", v8::V8::GetVersion() );
 
     v8::V8::InitializeICU();
+    mPlatform = v8::platform::CreateDefaultPlatform();
+    v8::V8::InitializePlatform( mPlatform );
+
+    v8::V8::Initialize();
+
+    mIsolate = v8::Isolate::New();
+    if ( !mIsolate )
+      ENGINE_EXCEPT( L"Creating v8 default Isolate failed" );
+
+    mIsolate->Enter();
+
     v8::V8::SetCaptureStackTraceForUncaughtExceptions(
       true, 5, v8::StackTrace::kDetailed );
-
-    mIsolate = v8::Isolate::GetCurrent();
-    if ( !mIsolate )
-      ENGINE_EXCEPT( L"Getting v8 default Isolate failed" );
 
     initialize();
   }
@@ -46,7 +53,7 @@ namespace Glacier {
     v8::HandleScope handleScope( mIsolate );
 
     // Set up global object template
-    v8::Handle<v8::ObjectTemplate> global = v8::ObjectTemplate::New();
+    v8::Handle<v8::ObjectTemplate> global = v8::ObjectTemplate::New( mIsolate );
 
     // Initialize native classes in the global namespace
     JS::Vector3::initialize( global );
@@ -105,7 +112,15 @@ namespace Glacier {
   Scripting::~Scripting()
   {
     shutdown();
+    if ( mIsolate )
+    {
+      mIsolate->Exit();
+      mIsolate->Dispose();
+    }
     v8::V8::Dispose();
+    v8::V8::ShutdownPlatform();
+    if ( mPlatform )
+      delete mPlatform;
   }
 
   DataStreamPtr Scripting::openScriptFile( const Ogre::String& filename )

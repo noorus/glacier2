@@ -35,7 +35,7 @@ namespace Glacier {
         Util::allocString( x ), y, z )
 
 #     define JS_TEMPLATE_SET(tpl,x,y) tpl->PrototypeTemplate()->Set( \
-        Util::allocString( x ), FunctionTemplate::New( y ) )
+        Util::allocString( x ), FunctionTemplate::New( Isolate::GetCurrent(), y ) )
 
       //! Create a local JavaScript String instance from given source string.
       inline Local<v8::String> allocString( const wstring& str, Isolate* isolate = nullptr )

@@ -23,6 +23,7 @@ namespace Glacier {
     v8::Isolate* mIsolate;
     v8::Persistent<v8::Context> mContext;
     v8::Isolate* getIsolate();
+    v8::Platform* mPlatform;
     v8::Persistent<v8::Context>& getContext();
     ScriptList mScripts;
     void initialize();

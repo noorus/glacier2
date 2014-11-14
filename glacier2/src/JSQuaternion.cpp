@@ -31,7 +31,7 @@ namespace Glacier {
       Isolate* isolate = Isolate::GetCurrent();
       HandleScope handleScope( isolate );
 
-      Local<FunctionTemplate> tpl = FunctionTemplate::New( Quaternion::create );
+      Local<FunctionTemplate> tpl = FunctionTemplate::New( isolate, Quaternion::create );
 
       tpl->SetClassName( Util::allocString( className.c_str() ) );
       tpl->InstanceTemplate()->SetInternalFieldCount( 1 );
