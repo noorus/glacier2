@@ -46,8 +46,8 @@ namespace Glacier {
   {
     HandleScope handleScope( mHost.getIsolate() );
 
-    Context::Scope contextScope( Handle<Context>::New(
-      mHost.getIsolate(), mHost.getContext() ) );
+    Local<Context> context = Local<Context>::New( mHost.getIsolate(), mHost.getContext() );
+    Context::Scope contextScope( context );
 
     TryCatch tryCatch;
 
@@ -125,8 +125,8 @@ namespace Glacier {
     changeStatus( Status_Executing );
 
     HandleScope handleScope( isolate );
-    Context::Scope contextScope( Handle<Context>::New(
-      isolate, mHost.getContext() ) );
+    Local<Context> context = Local<Context>::New( isolate, mHost.getContext() );
+    Context::Scope contextScope( context );
 
     TryCatch tryCatch;
 

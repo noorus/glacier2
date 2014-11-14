@@ -100,6 +100,7 @@
 
 // V8 Headers
 #include <v8.h>
+#include <libplatform/libplatform.h>
 
 // PhysX Headers
 #include <PxPhysicsAPI.h>
