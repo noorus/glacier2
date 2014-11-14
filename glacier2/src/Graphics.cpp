@@ -221,11 +221,11 @@ namespace Glacier {
     mEngine->registerResources( ResourceGroupManager::getSingleton() );
 
     // Initialize shiny
-    mShinyPlatform = new sh::OgrePlatform( "General", "data/shiny" );
+    // mShinyPlatform = new sh::OgrePlatform( "General", "data/shiny" );
 
-    mShinyFactory = new sh::Factory( mShinyPlatform );
-    mShinyFactory->setCurrentLanguage( sh::Language_CG );
-    mShinyFactory->loadAllFiles();
+    // mShinyFactory = new sh::Factory( mShinyPlatform );
+    // mShinyFactory->setCurrentLanguage( sh::Language_CG );
+    // mShinyFactory->loadAllFiles();
 
     // Initialize globals
     mGlobals.stats.init();
