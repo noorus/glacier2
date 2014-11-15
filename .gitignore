@@ -33,3 +33,5 @@ _ReSharper*/
 media/
 data/
 screenshot*
+doc/
+ipch/
