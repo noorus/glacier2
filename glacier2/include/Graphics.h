@@ -36,8 +36,6 @@ namespace Glacier {
     Ogre::PCZSceneManager* mSceneManager;
     Ogre::OverlaySystem* mOverlaySystem;
     WindowHandler* mWindowHandler;
-    sh::OgrePlatform* mShinyPlatform;
-    sh::Factory* mShinyFactory;
     Settings mSettings;
   public:
     struct VideoMode {

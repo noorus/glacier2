@@ -108,10 +108,6 @@
 // Nil Headers
 #include <nil.h>
 
-// shiny Headers
-#include <Factory.hpp>
-#include <OgrePlatform.hpp>
-
 // MyGUI Headers
 #include <MyGUI.h>
 #include <MyGUI_OgrePlatform.h>

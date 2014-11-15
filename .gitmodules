@@ -4,6 +4,3 @@
 [submodule "hdrlib"]
 	path = hdrlib
 	url = https://github.com/sldt/hdrlib.git
-[submodule "shiny"]
-	path = shiny
-	url = https://github.com/scrawl/shiny.git

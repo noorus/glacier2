@@ -130,8 +130,7 @@ namespace Glacier {
   Graphics::Graphics( Engine* engine, WindowHandler* windowHandler ):
   EngineComponent( engine ),
   mRoot( nullptr ), mRenderer( nullptr ), mSceneManager( nullptr ),
-  mOverlaySystem( nullptr ), mWindowHandler( windowHandler ),
-  mShinyPlatform( nullptr ), mShinyFactory( nullptr )
+  mOverlaySystem( nullptr ), mWindowHandler( windowHandler )
   {
     preInitialize();
   }
@@ -226,13 +225,6 @@ namespace Glacier {
     // Register & initialize resource groups
     mEngine->registerResources( ResourceGroupManager::getSingleton() );
 
-    // Initialize shiny
-    // mShinyPlatform = new sh::OgrePlatform( "General", "data/shiny" );
-
-    // mShinyFactory = new sh::Factory( mShinyPlatform );
-    // mShinyFactory->setCurrentLanguage( sh::Language_CG );
-    // mShinyFactory->loadAllFiles();
-
     // Initialize globals
     mGlobals.stats.init();
 
@@ -279,8 +271,6 @@ namespace Glacier {
 
     // Shutdown globals
     mGlobals.stats.shutdown();
-
-    SAFE_DELETE( mShinyFactory );
 
     // If we have a window, remove the associated event listener
     if ( mWindow )
