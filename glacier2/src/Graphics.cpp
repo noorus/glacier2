@@ -125,7 +125,9 @@ namespace Glacier {
     return mDX9Ex ? "Yes" : "No";
   }
 
-  // Graphics class ===========================================================
+  // Render window procedure detour ===========================================
+  
+  Win32::WindowProcDetour* Graphics::mRenderWindowDetour = nullptr;
 
   Graphics::Graphics( Engine* engine, WindowHandler* windowHandler ):
   EngineComponent( engine ),
@@ -134,6 +136,34 @@ namespace Glacier {
   {
     preInitialize();
   }
+
+  LRESULT CALLBACK Graphics::renderWindowProcForward( HWND window,
+  UINT message, WPARAM wParam, LPARAM lParam )
+  {
+    Graphics* me = gEngine->getGraphics();
+    return me->renderWindowProc( window, message, wParam, lParam );
+  }
+
+  LRESULT Graphics::renderWindowProc( HWND window, UINT message,
+  WPARAM wParam, LPARAM lParam )
+  {
+    switch ( message )
+    {
+      case WM_SETFOCUS:
+        onRenderWindowFocus( true );
+        return 0;
+      break;
+      case WM_KILLFOCUS:
+        onRenderWindowFocus( false );
+        return 0;
+      break;
+    }
+
+    return CallWindowProcW( mRenderWindowDetour->mRealProc,
+      window, message, wParam, lParam );
+  }
+
+  // Graphics class ===========================================================
 
   void Graphics::preInitialize()
   {
@@ -188,6 +218,10 @@ namespace Glacier {
     mWindow = mRoot->createRenderWindow( cRenderWindowClass,
       videoMode.mWidth, videoMode.mHeight, videoMode.mFullscreen,
       &videoMode.getParams() );
+
+    // Detour the render window procedure so we can hook some events
+    mRenderWindowDetour = new Win32::WindowProcDetour(
+      getRenderWindowHandle(), renderWindowProcForward );
 
     // Refresh settings & CVARs
     mSettings.fullScreen = mWindow->isFullScreen();
@@ -277,6 +311,7 @@ namespace Glacier {
     {
       Ogre::WindowEventUtilities::removeWindowEventListener(
         mWindow, mWindowHandler );
+      SAFE_DELETE( mRenderWindowDetour );
     }
 
     // Destroy Ogre
@@ -312,6 +347,15 @@ namespace Glacier {
     HWND windowHandle = NULL;
     mWindow->getCustomAttribute( "WINDOW", &windowHandle );
     return windowHandle;
+  }
+
+  void Graphics::onRenderWindowFocus( const bool focus )
+  {
+    if ( focus ) {
+      OutputDebugStringW( L"Got render window focus" );
+    } else {
+      OutputDebugStringW( L"Lost render window focus" );
+    }
   }
 
   void Graphics::screenshot()

@@ -264,6 +264,7 @@ namespace Glacier {
     BindAction action = ActionManager::mKeyTable.keyboard[keycode];
     if ( action == Action_None )
       return;
+
     processBindPress( action );
   }
 
@@ -279,6 +280,7 @@ namespace Glacier {
     BindAction action = ActionManager::mKeyTable.keyboard[keycode];
     if ( action == Action_None )
       return;
+
     processBindRelease( action );
   }
 

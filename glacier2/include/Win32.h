@@ -12,6 +12,21 @@ namespace Glacier {
 #   define min(a,b) (((a) < (b)) ? (a) : (b))
 #   include <gdiplus.h>
 
+    class WindowProcDetour: boost::noncopyable {
+    public:
+      HWND mWindow;
+      WNDPROC mRealProc;
+      explicit WindowProcDetour( HWND window, WNDPROC newProc ): mWindow( window )
+      {
+        mRealProc = reinterpret_cast<WNDPROC>( GetWindowLongPtrW( mWindow, GWLP_WNDPROC ) );
+        SetWindowLongPtrW( mWindow, GWLP_WNDPROC, reinterpret_cast<DWORD_PTR>( newProc ) );
+      }
+      ~WindowProcDetour()
+      {
+        SetWindowLongPtrW( mWindow, GWLP_WNDPROC, reinterpret_cast<DWORD_PTR>( mRealProc ) );
+      }
+    };
+
     class ErrorDialog: boost::noncopyable {
     public:
       struct Context {
