@@ -72,13 +72,13 @@ LPWSTR lpCmdLine, int nCmdShow )
   catch ( Exception& e )
   {
     error.subtitle = L"Program fault: Glacier² engine exception";
-    error.body = e.getFullDescription();
+    error.body = Utilities::utf8ToWide( e.getFullDescription() );
     Win32::ErrorDialog dialog( error );
   }
   catch ( Ogre::Exception& e )
   {
     error.subtitle = L"Program fault: Ogre3D runtime exception";
-    error.body = Glacier::Utilities::utf8ToWide( e.getFullDescription() );
+    error.body = Utilities::utf8ToWide( e.getFullDescription() );
     Win32::ErrorDialog dialog( error );
   }
   catch ( Nil::Exception& e )
@@ -90,7 +90,7 @@ LPWSTR lpCmdLine, int nCmdShow )
   catch ( std::exception& e )
   {
     error.subtitle = L"Program fault: StdLib runtime exception";
-    error.body = Glacier::Utilities::utf8ToWide( e.what() );
+    error.body = Utilities::utf8ToWide( e.what() );
     Win32::ErrorDialog dialog( error );
   }
   catch ( ... )

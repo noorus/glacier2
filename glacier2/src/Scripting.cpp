@@ -28,7 +28,7 @@ namespace Glacier {
 
     mIsolate = v8::Isolate::New();
     if ( !mIsolate )
-      ENGINE_EXCEPT( L"Creating v8 default Isolate failed" );
+      ENGINE_EXCEPT( "Creating v8 default Isolate failed" );
 
     mIsolate->Enter();
 
@@ -142,7 +142,7 @@ namespace Glacier {
     }
 
     if ( !script->isSimple() )
-      ENGINE_EXCEPT( L"Script is registered as non-simple" );
+      ENGINE_EXCEPT( "Script is registered as non-simple" );
 
     script->compile();
     script->execute();

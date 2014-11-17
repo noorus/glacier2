@@ -32,7 +32,7 @@ namespace Glacier {
 
     auto it = std::find( Console::mPrecreated.begin(), Console::mPrecreated.end(), this );
     if ( it != Console::mPrecreated.end() )
-      ENGINE_EXCEPT( L"CVAR was declared more than once" );
+      ENGINE_EXCEPT( "CVAR was declared more than once" );
 
     Console::mPrecreated.push_back( this );
   }
@@ -365,7 +365,7 @@ namespace Glacier {
 
     auto it = std::find( mCommands.begin(), mCommands.end(), var );
     if ( it != mCommands.end() || var->isRegistered() )
-      ENGINE_EXCEPT( L"CVAR has already been registered" );
+      ENGINE_EXCEPT( "CVAR has already been registered" );
 
     var->onRegister();
     mCommands.push_back( var );

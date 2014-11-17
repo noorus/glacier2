@@ -54,12 +54,12 @@ namespace Glacier {
     // Create event system instance
     hr = FMOD::EventSystem_Create( &mEventSystem );
     if ( FMOD_FAILED( hr ) )
-      ENGINE_EXCEPT_FMOD( hr, L"Failed to create FMOD EventSystem" );
+      ENGINE_EXCEPT_FMOD( hr, "Failed to create FMOD EventSystem" );
 
     // Fetch underlying oldschool system
     hr = mEventSystem->getSystemObject( &mSystem );
     if ( FMOD_FAILED( hr ) )
-      ENGINE_EXCEPT_FMOD( hr, L"Failed to get FMOD System object" );
+      ENGINE_EXCEPT_FMOD( hr, "Failed to get FMOD System object" );
 
     // Set FMOD log file name
     FMOD_ADVANCEDSETTINGS advancedSettings = { NULL };
@@ -71,9 +71,9 @@ namespace Glacier {
     unsigned int version;
     hr = mSystem->getVersion( &version );
     if ( FMOD_FAILED( hr ) )
-      ENGINE_EXCEPT_FMOD( hr, L"Failed to get FMOD System version" );
+      ENGINE_EXCEPT_FMOD( hr, "Failed to get FMOD System version" );
     if ( version != FMOD_VERSION )
-      ENGINE_EXCEPT( L"Bad FMOD runtime version" );
+      ENGINE_EXCEPT( "Bad FMOD runtime version" );
 
     initialize();
   }
@@ -107,7 +107,7 @@ namespace Glacier {
     // Get driver caps
     hr = mSystem->getDriverCaps( NULL, &mInfo.caps, &mInfo.rate, &mInfo.speakerMode );
     if ( FMOD_FAILED( hr ) )
-      ENGINE_EXCEPT_FMOD( hr, L"Failed to get driver caps" );
+      ENGINE_EXCEPT_FMOD( hr, "Failed to get driver caps" );
 
     // Print a warning and raise the DSP buffer if someone is poor enough to run on emulation
     if ( mInfo.caps & FMOD_CAPS_HARDWARE_EMULATED )
@@ -128,18 +128,18 @@ namespace Glacier {
     int channels = g_CVar_fm_maxchannels.getInt();
     hr =  mEventSystem->init( channels, fmodFlags, nullptr, eventFlags );
     if ( FMOD_FAILED( hr ) )
-      ENGINE_EXCEPT_FMOD( hr, L"Failed to initialize FMOD EventSystem" );
+      ENGINE_EXCEPT_FMOD( hr, "Failed to initialize FMOD EventSystem" );
 
     // Fetch realized values
     hr = mSystem->getSpeakerMode( &mInfo.speakerMode );
     if ( FMOD_FAILED( hr ) )
-      ENGINE_EXCEPT_FMOD( hr, L"getSpeakerMode failed" );
+      ENGINE_EXCEPT_FMOD( hr, "getSpeakerMode failed" );
     mSystem->getOutput( &mInfo.outputType );
     if ( FMOD_FAILED( hr ) )
-      ENGINE_EXCEPT_FMOD( hr, L"getOutput failed" );
+      ENGINE_EXCEPT_FMOD( hr, "getOutput failed" );
     mSystem->getDriver( &mInfo.driver );
     if ( FMOD_FAILED( hr ) )
-      ENGINE_EXCEPT_FMOD( hr, L"getDriver failed" );
+      ENGINE_EXCEPT_FMOD( hr, "getDriver failed" );
 
     if ( mSettings.outputType != 0 )
       for ( size_t i = 0; i < mOutputTypes.size(); i++ )
@@ -174,21 +174,21 @@ namespace Glacier {
     // Setup channel groups
     hr = mSystem->getMasterChannelGroup( &mMasterGroup );
     if ( FMOD_FAILED( hr ) )
-      ENGINE_EXCEPT_FMOD( hr, L"Failed to get master channel group" );
+      ENGINE_EXCEPT_FMOD( hr, "Failed to get master channel group" );
 
     hr = mSystem->createChannelGroup( "music", &mMusicGroup );
     if ( FMOD_FAILED( hr ) )
-      ENGINE_EXCEPT_FMOD( hr, L"Failed to create music channel group" );
+      ENGINE_EXCEPT_FMOD( hr, "Failed to create music channel group" );
     hr = mMasterGroup->addGroup( mMusicGroup );
     if ( FMOD_FAILED( hr ) )
-      ENGINE_EXCEPT_FMOD( hr, L"Failed to assign music channel group" );
+      ENGINE_EXCEPT_FMOD( hr, "Failed to assign music channel group" );
 
     hr = mSystem->createChannelGroup( "effect", &mEffectGroup );
     if ( FMOD_FAILED( hr ) )
-      ENGINE_EXCEPT_FMOD( hr, L"Failed to create effect channel group" );
+      ENGINE_EXCEPT_FMOD( hr, "Failed to create effect channel group" );
     hr = mMasterGroup->addGroup( mEffectGroup );
     if ( FMOD_FAILED( hr ) )
-      ENGINE_EXCEPT_FMOD( hr, L"Failed to assign effect channel group" );
+      ENGINE_EXCEPT_FMOD( hr, "Failed to assign effect channel group" );
 
     // Set initial volumes
     setMasterVolume( g_CVar_fm_volume.getFloat() );
@@ -215,7 +215,7 @@ namespace Glacier {
     mSettings.driver = 0;
     hr = mSystem->setDriver( 0 );
     if ( FMOD_FAILED( hr ) )
-      ENGINE_EXCEPT_FMOD( hr, L"Failed to set audio driver" );
+      ENGINE_EXCEPT_FMOD( hr, "Failed to set audio driver" );
   }
 
   void FMODAudio::setOutputType( int index )
@@ -234,7 +234,7 @@ namespace Glacier {
     g_CVar_fm_outputmode.setValue( L"auto" );
     hr = mSystem->setOutput( FMOD_OUTPUTTYPE_AUTODETECT );
     if ( FMOD_FAILED( hr ) )
-      ENGINE_EXCEPT_FMOD( hr, L"Failed to set audio output type" );
+      ENGINE_EXCEPT_FMOD( hr, "Failed to set audio output type" );
   }
 
   void FMODAudio::setSpeakerMode( int index )
@@ -254,7 +254,7 @@ namespace Glacier {
     g_CVar_fm_speakermode.setValue( L"auto" );
     hr = mSystem->setSpeakerMode( mInfo.speakerMode );
     if ( FMOD_FAILED( hr ) )
-      ENGINE_EXCEPT_FMOD( hr, L"Failed to set audio speaker mode" );
+      ENGINE_EXCEPT_FMOD( hr, "Failed to set audio speaker mode" );
   }
 
   void FMODAudio::applySettings( const Settings& settings )
@@ -345,7 +345,7 @@ namespace Glacier {
     FMOD_RESULT hr = mSystem->getNumDrivers( &count );
 
     if ( FMOD_FAILED( hr ) )
-      ENGINE_EXCEPT_FMOD( hr, L"Failed to get driver count" );
+      ENGINE_EXCEPT_FMOD( hr, "Failed to get driver count" );
 
     for ( int i = 0; i < count; i++ )
     {

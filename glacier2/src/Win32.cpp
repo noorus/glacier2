@@ -39,11 +39,11 @@ namespace Glacier {
       ctrls.dwICC = ICC_STANDARD_CLASSES | ICC_NATIVEFNTCTL_CLASS;
 
       if ( !InitCommonControlsEx( &ctrls ) )
-        ENGINE_EXCEPT_WINAPI( L"Couldn't initialize common controls, missing manifest?" );
+        ENGINE_EXCEPT_WINAPI( "Couldn't initialize common controls, missing manifest?" );
 
       mRichEdit = LoadLibraryW( cRichEditDLL );
       if ( !mRichEdit )
-        ENGINE_EXCEPT_WINAPI( L"Couldn't load RichEdit module" );
+        ENGINE_EXCEPT_WINAPI( "Couldn't load RichEdit module" );
 
       Gdiplus::GdiplusStartup( &mGDIPlusToken, &mGDIPlusStartup, NULL );
     }
@@ -52,7 +52,7 @@ namespace Glacier {
     {
       wchar_t currentDirectory[MAX_PATH];
       if ( !GetCurrentDirectoryW( MAX_PATH, currentDirectory ) )
-        ENGINE_EXCEPT_WINAPI( L"Couldn't fetch current directory" );
+        ENGINE_EXCEPT_WINAPI( "Couldn't fetch current directory" );
 
       return wstring( currentDirectory );
     }
@@ -61,7 +61,7 @@ namespace Glacier {
     {
       IFileDialog* fileDialog;
       if ( CoCreateInstance( CLSID_FileOpenDialog, NULL, CLSCTX_INPROC_SERVER, IID_PPV_ARGS( &fileDialog ) ) < 0 )
-        ENGINE_EXCEPT( L"CoCreateInstance failed" );
+        ENGINE_EXCEPT( "CoCreateInstance failed" );
 
       COMDLG_FILTERSPEC filterSpecs[] = {
         { filterName.c_str(), filterExt.c_str() },
@@ -354,7 +354,7 @@ namespace Glacier {
       mClass = RegisterClassExW( &wndClass );
 
       if ( !mClass )
-        ENGINE_EXCEPT_WINAPI( L"Could not register window class" );
+        ENGINE_EXCEPT_WINAPI( "Could not register window class" );
     }
 
     void Window::resizeClient( POINT clientSize )
@@ -419,7 +419,7 @@ namespace Glacier {
         size.x, size.y, NULL, NULL, mInstance, mUserData );
 
       if ( !mHandle )
-        ENGINE_EXCEPT_WINAPI( L"Could not create window" );
+        ENGINE_EXCEPT_WINAPI( "Could not create window" );
 
       resizeClient( size );
 

@@ -359,7 +359,7 @@ namespace Glacier {
 
     // Render frame
     if ( !mRoot->renderOneFrame( (Ogre::Real)delta ) )
-      ENGINE_EXCEPT( L"Failed to render frame" );
+      ENGINE_EXCEPT( "Failed to render frame" );
   }
 
   void Graphics::callbackVideoRestart( Console* console, ConCmd* command,

@@ -28,7 +28,7 @@ namespace Glacier {
     mRunEvent  = CreateEventW( NULL, TRUE, FALSE, NULL );
     mStopEvent = CreateEventW( NULL, TRUE, FALSE, NULL );
     if ( !mRunEvent || !mStopEvent )
-      ENGINE_EXCEPT_WINAPI( L"Could not create control events" );
+      ENGINE_EXCEPT_WINAPI( "Could not create control events" );
   }
 
   void ConsoleWindowThread::start()
@@ -39,10 +39,10 @@ namespace Glacier {
       CREATE_SUSPENDED, &mThreadID );
 
     if ( !mThread )
-      ENGINE_EXCEPT_WINAPI( L"Could not create thread" );
+      ENGINE_EXCEPT_WINAPI( "Could not create thread" );
 
     if ( ResumeThread( mThread ) == (DWORD)-1 )
-      ENGINE_EXCEPT_WINAPI( L"Could not resume thread" );
+      ENGINE_EXCEPT_WINAPI( "Could not resume thread" );
 
     HANDLE events[2];
     events[0] = mRunEvent;
@@ -56,10 +56,10 @@ namespace Glacier {
       Utilities::debugSetThreadName( mThreadID, cConsoleThreadName );
       break;
     case WAIT_OBJECT_0 + 1:
-      ENGINE_EXCEPT( L"Console window thread failed to start" );
+      ENGINE_EXCEPT( "Console window thread failed to start" );
       break;
     case WAIT_FAILED:
-      ENGINE_EXCEPT_WINAPI( L"Wait for console window thread start failed" );
+      ENGINE_EXCEPT_WINAPI( "Wait for console window thread start failed" );
       break;
     }
   }
@@ -174,7 +174,7 @@ namespace Glacier {
     MSG msg;
     BOOL ret = GetMessageW( &msg, NULL, 0, 0 );
     if ( ret == -1 )
-      ENGINE_EXCEPT_WINAPI( L"GetMessageW returned -1" )
+      ENGINE_EXCEPT_WINAPI( "GetMessageW returned -1" )
     else if ( ret == 0 )
       return false;
     else {
@@ -391,7 +391,7 @@ namespace Glacier {
           window->mWindow->getInstance(), (void*)window );
 
         if ( !window->mLog )
-          ENGINE_EXCEPT( L"Could not create RichEdit5 log window control" );
+          ENGINE_EXCEPT( "Could not create RichEdit5 log window control" );
 
         // Create the command line
         window->mCmdline = CreateWindowExW( WS_EX_LEFT | WS_EX_STATICEDGE,
@@ -400,7 +400,7 @@ namespace Glacier {
           window->mWindow->getInstance(), (void*)window );
 
         if ( !window->mCmdline )
-          ENGINE_EXCEPT( L"Could not create RichEdit5 command line control" );
+          ENGINE_EXCEPT( "Could not create RichEdit5 command line control" );
 
         // Set the command line proc
         SetWindowLongPtrW( window->mCmdline, GWLP_USERDATA, (LONG_PTR)window );

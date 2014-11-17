@@ -21,7 +21,7 @@ namespace Glacier {
     HWND windowHandle = NULL;
     window->getCustomAttribute( "WINDOW", &windowHandle );
     if ( !windowHandle )
-      ENGINE_EXCEPT( L"Could not retrieve render window handle" );
+      ENGINE_EXCEPT( "Could not retrieve render window handle" );
 
     // Create input system
     mSystem = new Nil::System( instance, windowHandle,
@@ -83,7 +83,7 @@ namespace Glacier {
   void Input::onControllerDisabled( Nil::Device* device, Nil::Controller* instance )
   {
     mEngine->getConsole()->printf( Console::srcInput,
-      L"Disabled controller: %s", device->getName().c_str() );
+      L"Disabled controller: %S", device->getName().c_str() );
   }
 
   void Input::onControllerButtonPressed( Nil::Controller* controller, const Nil::ControllerState& state, size_t button )

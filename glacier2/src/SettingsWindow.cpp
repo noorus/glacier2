@@ -17,7 +17,7 @@ namespace Glacier {
   {
     const MyGUI::VectorWidgetPtr& root = MyGUI::LayoutManager::getInstance().loadLayout( "Settings.layout" );
     if ( root.size() != 1 )
-      ENGINE_EXCEPT( L"Settings window layout has != 1 roots" );
+      ENGINE_EXCEPT( "Settings window layout has != 1 roots" );
 
     mRoot = root.at( 0 );
 

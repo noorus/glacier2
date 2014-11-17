@@ -88,7 +88,7 @@ namespace Glacier {
     // Create foundation
     mFoundation = PxCreateFoundation( PX_PHYSICS_VERSION, *allocator, *error );
     if ( !mFoundation )
-      ENGINE_EXCEPT( L"PxCreateFoundation failed" );
+      ENGINE_EXCEPT( "PxCreateFoundation failed" );
 
     // Create CUDA context manager
     PxCudaContextManagerDesc contextMgrDesc;
@@ -108,11 +108,11 @@ namespace Glacier {
     mPhysics = PxCreateBasePhysics( PX_PHYSICS_VERSION, *mFoundation,
       PxTolerancesScale(), false, nullptr );
     if ( !mPhysics )
-      ENGINE_EXCEPT( L"PhysX Physics creation failed" );
+      ENGINE_EXCEPT( "PhysX Physics creation failed" );
 
     // Initialize extensions
     if ( !PxInitExtensions( *mPhysics ) )
-      ENGINE_EXCEPT( L"PhysX Extensions initialization failed" );
+      ENGINE_EXCEPT( "PhysX Extensions initialization failed" );
     PxRegisterHeightFields( *mPhysics );
 
     // Initialize cooking parameters
@@ -126,7 +126,7 @@ namespace Glacier {
     // Create cooker
     mCooking = PxCreateCooking( PX_PHYSICS_VERSION, *mFoundation, cookingParams );
     if ( !mCooking )
-      ENGINE_EXCEPT( L"PhysX Cooking initialization failed" );
+      ENGINE_EXCEPT( "PhysX Cooking initialization failed" );
 
     // Print some CUDA information
     if ( mCudaContextManager )
