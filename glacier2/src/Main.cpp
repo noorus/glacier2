@@ -84,7 +84,7 @@ LPWSTR lpCmdLine, int nCmdShow )
   catch ( Nil::Exception& e )
   {
     error.subtitle = L"Program fault: NIL runtime exception";
-    error.body = e.getFullDescription();
+    error.body = Utilities::utf8ToWide( e.getFullDescription() );
     Win32::ErrorDialog dialog( error );
   }
   catch ( std::exception& e )
