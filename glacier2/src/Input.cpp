@@ -50,34 +50,34 @@ namespace Glacier {
   void Input::onMouseEnabled( Nil::Device* device, Nil::Mouse* instance )
   {
     mEngine->getConsole()->printf( Console::srcInput,
-      L"Enabled mouse: %s", device->getName().c_str() );
+      L"Enabled mouse: %S", device->getName().c_str() );
     instance->addListener( mEngine->getActionManager() );
   }
 
   void Input::onKeyboardEnabled( Nil::Device* device, Nil::Keyboard* instance )
   {
     mEngine->getConsole()->printf( Console::srcInput,
-      L"Enabled keyboard: %s", device->getName().c_str() );
+      L"Enabled keyboard: %S", device->getName().c_str() );
     instance->addListener( mEngine->getActionManager() );
   }
 
   void Input::onControllerEnabled( Nil::Device* device, Nil::Controller* instance )
   {
     mEngine->getConsole()->printf( Console::srcInput,
-      L"Enabled controller: %s", device->getName().c_str() );
+      L"Enabled controller: %S", device->getName().c_str() );
     instance->addListener( this );
   }
 
   void Input::onMouseDisabled( Nil::Device* device, Nil::Mouse* instance )
   {
     mEngine->getConsole()->printf( Console::srcInput,
-      L"Disabled mouse: %s", device->getName().c_str() );
+      L"Disabled mouse: %S", device->getName().c_str() );
   }
 
   void Input::onKeyboardDisabled( Nil::Device* device, Nil::Keyboard* instance )
   {
     mEngine->getConsole()->printf( Console::srcInput,
-      L"Disabled keyboard: %s", device->getName().c_str() );
+      L"Disabled keyboard: %S", device->getName().c_str() );
   }
 
   void Input::onControllerDisabled( Nil::Device* device, Nil::Controller* instance )
