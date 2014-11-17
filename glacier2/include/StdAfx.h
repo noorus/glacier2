@@ -16,6 +16,7 @@
 #include <time.h>             // Time
 #include <psapi.h>            // Process Status API       (psapi.lib)
 #include <dbghelp.h>          // Debug Help Library       (dbghelp.lib)
+#include <avrt.h>             // AVRT                     (avrt.lib)
 
 // nedmalloc Headers
 #include <nedmalloc.h>

@@ -53,6 +53,7 @@ namespace Glacier {
       HMODULE mRichEdit;
       Win32();
     public:
+      void prepareProcess();
       void initialize();
       wstring getCurrentDirectory();
       bool fileOpenDialog( const wstring& filterName, const wstring& filterExt, wstring& returnValue );

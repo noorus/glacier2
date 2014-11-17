@@ -47,6 +47,8 @@ LPWSTR lpCmdLine, int nCmdShow )
 
   LocalFree( arguments );
 
+  Win32::Win32::instance().prepareProcess();
+
   // Initialize & provide the pooled memory service
   NedPoolMemory* memoryService = new NedPoolMemory();
   Locator::provideMemory( memoryService );

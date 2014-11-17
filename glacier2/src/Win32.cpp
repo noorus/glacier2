@@ -32,6 +32,19 @@ namespace Glacier {
     {
     }
 
+    void Win32::prepareProcess()
+    {
+      // Never show those useless, stupid Windows "solution" dialogs
+      SetErrorMode( SEM_FAILCRITICALERRORS | SEM_NOGPFAULTERRORBOX );
+
+      // Up our generic process scheduling priority
+      SetPriorityClass( GetCurrentProcess(), HIGH_PRIORITY_CLASS );
+
+      // Tell MMCSS to prioritise this thread as a game
+      DWORD index = 0;
+      AvSetMmThreadCharacteristicsW( L"Games", &index );
+    }
+
     void Win32::initialize()
     {
       INITCOMMONCONTROLSEX ctrls;
