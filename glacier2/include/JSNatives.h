@@ -35,6 +35,7 @@ namespace Glacier {
     //! \sa ObjectWrapper
     class Console: public ObjectWrapper<Console> {
     protected:
+      static Console* instance;
       Glacier::Console* mConsole;
       explicit Console( Glacier::Console* console );
       //! JavaScript Console.print.
@@ -48,6 +49,7 @@ namespace Glacier {
     public:
       Glacier::Console* getConsole();
       static void initialize( Glacier::Console* console, Handle<v8::Context> context );
+      static void shutdown();
     };
 
     //! \class Vector3

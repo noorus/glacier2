@@ -77,22 +77,6 @@ namespace Glacier {
         persistent().SetWeak( this, weakCallback );
         persistent().MarkIndependent();
       }
-      //! Increases my references.
-      virtual void ref()
-      {
-        assert( !persistent().IsEmpty() );
-        persistent().ClearWeak();
-        mJSReferences++;
-      }
-      //! Decreses my references.
-      virtual void unref()
-      {
-        assert( !persistent().IsEmpty() );
-        assert( !persistent().IsWeak() );
-        assert( mJSReferences > 0 );
-        if ( --mJSReferences == 0 )
-          makeWeak();
-      }
     public:
       //! Default constructor.
       explicit ObjectWrapper( const WrappedType type ):
@@ -105,7 +89,7 @@ namespace Glacier {
       {
         if ( !persistent().IsEmpty() )
         {
-          assert( persistent().IsNearDeath() );
+          // assert( persistent().IsNearDeath() );
           persistent().ClearWeak();
           persistent().Reset();
         }
@@ -124,6 +108,22 @@ namespace Glacier {
       inline Persistent<v8::Object>& persistent()
       {
         return mJSHandle;
+      }
+      //! Increases my references.
+      virtual void ref()
+      {
+        assert( !persistent().IsEmpty() );
+        persistent().ClearWeak();
+        mJSReferences++;
+      }
+      //! Decreses my references.
+      virtual void unref()
+      {
+        assert( !persistent().IsEmpty() );
+        assert( !persistent().IsWeak() );
+        assert( mJSReferences > 0 );
+        if ( --mJSReferences == 0 )
+          makeWeak();
       }
       //! Gets the wrapped type identifier.
       inline const WrappedType getWrappedType()

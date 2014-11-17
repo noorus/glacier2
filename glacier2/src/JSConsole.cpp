@@ -13,6 +13,7 @@ namespace Glacier {
   namespace JS {
 
     string Console::className( "Console" );
+    Console* Console::instance( nullptr );
 
     Console::Console( Glacier::Console* console ): mConsole( console ),
     ObjectWrapper( Wrapped_Console )
@@ -36,11 +37,19 @@ namespace Glacier {
       JS_TEMPLATE_SET( tpl, "setVariable", jsSetVariable );
       JS_TEMPLATE_SET( tpl, "execute", jsExecute );
 
-      Console* console = new Console( console_ );
+      instance = new Console( console_ );
       Local<v8::Object> object = tpl->GetFunction()->NewInstance();
-      console->wrap( object );
+      instance->wrap( object );
 
       context->Global()->Set( Util::allocString( className.c_str() ), object );
+      instance->ref();
+    }
+
+    void Console::shutdown()
+    {
+      if ( instance )
+        instance->unref();
+      SAFE_DELETE( instance );
     }
 
     //! \verbatim

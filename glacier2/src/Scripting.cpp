@@ -81,6 +81,7 @@ namespace Glacier {
   void Scripting::shutdown()
   {
     clearScripts();
+    JS::Console::shutdown();
     mContext.Reset();
   }
 
