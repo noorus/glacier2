@@ -107,6 +107,8 @@
 #include <unicode/ustream.h>
 #include <unicode/ucnv.h>
 #include <unicode/unistr.h>
+#include <unicode/numfmt.h>
+#include <unicode/unum.h>
 
 // V8 Headers
 #include <v8.h>
