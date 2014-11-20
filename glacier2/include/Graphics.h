@@ -19,10 +19,6 @@ namespace Glacier {
 
   class WindowHandler;
 
-  namespace Win32 {
-    class WindowProcDetour;
-  }
-
   class Graphics: public EngineComponent {
   public:
     // Graphics settings
@@ -41,11 +37,6 @@ namespace Glacier {
     Ogre::OverlaySystem* mOverlaySystem;
     WindowHandler* mWindowHandler;
     Settings mSettings;
-    static Win32::WindowProcDetour* mRenderWindowDetour;
-    static LRESULT CALLBACK renderWindowProcForward( HWND window, UINT message,
-      WPARAM wParam, LPARAM lParam );
-    LRESULT renderWindowProc( HWND window, UINT message, WPARAM wParam, LPARAM lParam );
-    void onRenderWindowFocus( const bool focus );
   public:
     struct VideoMode {
       uint32_t mWidth;
