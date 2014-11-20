@@ -144,6 +144,12 @@ namespace Glacier {
       mActions.move = Player_Move_None;
   }
 
+  void ActionManager::cancelAllInput()
+  {
+    mActions.move = Player_Move_None;
+    mActions.sidestep = Player_Sidestep_None;
+  }
+
   void ActionManager::processBindPress( const BindAction& action )
   {
     switch ( action )
@@ -217,15 +223,13 @@ namespace Glacier {
     }
   }
 
-  void ActionManager::onMouseMoved( Nil::Mouse* mouse,
-  const Nil::MouseState& state )
+  void ActionManager::onMouseMoved( const Nil::MouseState& state )
   {
     if ( !Locator::getGUI().injectMouseMove( state ) )
       mCameraController->applyMouseMovement( state );
   }
 
-  void ActionManager::onMouseButtonPressed( Nil::Mouse* mouse,
-  const Nil::MouseState& state, size_t button )
+  void ActionManager::onMouseButtonPressed( const Nil::MouseState& state, size_t button )
   {
     if ( !Locator::getGUI().injectMousePress( state, button ) )
     {
@@ -238,8 +242,7 @@ namespace Glacier {
     }
   }
 
-  void ActionManager::onMouseButtonReleased( Nil::Mouse* mouse,
-  const Nil::MouseState& state, size_t button )
+  void ActionManager::onMouseButtonReleased( const Nil::MouseState& state, size_t button )
   {
     if ( !Locator::getGUI().injectMouseRelease( state, button ) )
     {
@@ -252,14 +255,12 @@ namespace Glacier {
     }
   }
 
-  void ActionManager::onMouseWheelMoved( Nil::Mouse* mouse,
-  const Nil::MouseState& state )
+  void ActionManager::onMouseWheelMoved( const Nil::MouseState& state )
   {
     mCameraController->applyMouseWheel( state );
   }
 
-  void ActionManager::onKeyPressed( Nil::Keyboard* keyboard,
-  const Nil::VirtualKeyCode keycode )
+  void ActionManager::onKeyPressed( const Nil::VirtualKeyCode keycode )
   {
     BindAction action = ActionManager::mKeyTable.keyboard[keycode];
     if ( action == Action_None )
@@ -268,14 +269,12 @@ namespace Glacier {
     processBindPress( action );
   }
 
-  void ActionManager::onKeyRepeat( Nil::Keyboard* keyboard,
-  const Nil::VirtualKeyCode keycode )
+  void ActionManager::onKeyRepeat( const Nil::VirtualKeyCode keycode )
   {
     //
   }
 
-  void ActionManager::onKeyReleased( Nil::Keyboard* keyboard,
-  const Nil::VirtualKeyCode keycode )
+  void ActionManager::onKeyReleased( const Nil::VirtualKeyCode keycode )
   {
     BindAction action = ActionManager::mKeyTable.keyboard[keycode];
     if ( action == Action_None )

@@ -10,11 +10,14 @@ namespace Glacier {
   //! \addtogroup Glacier
   //! @{
 
-  class Input: public EngineComponent, public Nil::SystemListener, public Nil::ControllerListener {
+  class InputManager: public EngineComponent, public Nil::SystemListener,
+    public Nil::MouseListener, public Nil::KeyboardListener,
+    public Nil::ControllerListener {
   protected:
     Nil::System* mSystem;
+    bool mTakingInput;
   protected:
-    // Nil::SystemListener callbacks
+    // System handlers
     virtual void onDeviceConnected(
       Nil::Device* device );
     virtual void onDeviceDisconnected(
@@ -31,6 +34,23 @@ namespace Glacier {
       Nil::Device* device, Nil::Keyboard* instance );
     virtual void onControllerDisabled(
       Nil::Device* device, Nil::Controller* instance );
+    // Mouse handlers
+    virtual void onMouseMoved(
+      Nil::Mouse* mouse, const Nil::MouseState& state );
+    virtual void onMouseButtonPressed(
+      Nil::Mouse* mouse, const Nil::MouseState& state, size_t button );
+    virtual void onMouseButtonReleased(
+      Nil::Mouse* mouse, const Nil::MouseState& state, size_t button );
+    virtual void onMouseWheelMoved(
+      Nil::Mouse* mouse, const Nil::MouseState& state );
+    // Keyboard handlers
+    virtual void onKeyPressed(
+      Nil::Keyboard* keyboard, const Nil::VirtualKeyCode keycode );
+    virtual void onKeyRepeat(
+      Nil::Keyboard* keyboard, const Nil::VirtualKeyCode keycode );
+    virtual void onKeyReleased(
+      Nil::Keyboard* keyboard, const Nil::VirtualKeyCode keycode );
+    // Controller handlers
     virtual void onControllerButtonPressed( Nil::Controller* controller,
       const Nil::ControllerState& state, size_t button );
     virtual void onControllerButtonReleased( Nil::Controller* controller,
@@ -42,9 +62,10 @@ namespace Glacier {
     virtual void onControllerPOVMoved( Nil::Controller* controller,
       const Nil::ControllerState& state, size_t pov );
   public:
-    Input( Engine* engine, HINSTANCE instance, Ogre::RenderWindow* window );
+    InputManager( Engine* engine, HINSTANCE instance, Ogre::RenderWindow* window );
     virtual void componentTick( GameTime tick, GameTime time );
-    virtual ~Input();
+    virtual void onInputFocus( const bool focus );
+    virtual ~InputManager();
   };
 
   //! @}

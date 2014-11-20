@@ -96,8 +96,7 @@ namespace Glacier {
     inline const Vector3& getMovement() throw() { return mMovement; }
   };
 
-  class ActionManager: public boost::noncopyable,
-  public Nil::MouseListener, public Nil::KeyboardListener {
+  class ActionManager: public boost::noncopyable {
   friend class InputHandler;
   friend class GamepadDevice;
   friend class ThumbstickComponent;
@@ -116,24 +115,16 @@ namespace Glacier {
     explicit ActionManager( Engine* pEngine );
     ~ActionManager();
     void prepare(); //!< Prepare for new input calls (new frame)
+    void cancelAllInput(); //!< Cancel all currently active input
     // Mouse handlers
-    virtual void onMouseMoved(
-      Nil::Mouse* mouse, const Nil::MouseState& state );
-    virtual void onMouseButtonPressed(
-      Nil::Mouse* mouse, const Nil::MouseState& state, size_t button );
-    virtual void onMouseButtonReleased(
-      Nil::Mouse* mouse, const Nil::MouseState& state, size_t button );
-    virtual void onMouseWheelMoved(
-      Nil::Mouse* mouse, const Nil::MouseState& state );
+    void onMouseMoved( const Nil::MouseState& state );
+    void onMouseButtonPressed( const Nil::MouseState& state, size_t button );
+    void onMouseButtonReleased( const Nil::MouseState& state, size_t button );
+    void onMouseWheelMoved( const Nil::MouseState& state );
     // Keyboard handlers
-    virtual void onKeyPressed(
-      Nil::Keyboard* keyboard, const Nil::VirtualKeyCode keycode );
-    virtual void onKeyRepeat(
-      Nil::Keyboard* keyboard, const Nil::VirtualKeyCode keycode );
-    virtual void onKeyReleased(
-      Nil::Keyboard* keyboard, const Nil::VirtualKeyCode keycode );
-    void onKeyPressed( const Nil::VirtualKeyCode key );
-    void onKeyReleased( const Nil::VirtualKeyCode key );
+    void onKeyPressed( const Nil::VirtualKeyCode keycode );
+    void onKeyRepeat( const Nil::VirtualKeyCode keycode );
+    void onKeyReleased( const Nil::VirtualKeyCode keycode );
     void clearActions();
     void clearActivators();
     inline const ActionPacket& getActions() throw() { return mActions; }

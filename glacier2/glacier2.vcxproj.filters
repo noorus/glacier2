@@ -120,9 +120,6 @@
     <ClCompile Include="src\GlobalStats.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Input.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\nedmalloc\nedmalloc.cpp">
       <Filter>Source Files\nedmalloc</Filter>
     </ClCompile>
@@ -204,6 +201,9 @@
     <ClCompile Include="src\AudioService.cpp">
       <Filter>Source Files\Services\Audio</Filter>
     </ClCompile>
+    <ClCompile Include="src\InputManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\CompilerDef.h">
@@ -249,9 +249,6 @@
       <Filter>Header Files\Console</Filter>
     </ClInclude>
     <ClInclude Include="include\GlobalStats.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Input.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Script.h">
@@ -331,6 +328,9 @@
     </ClInclude>
     <ClInclude Include="include\AudioService.h">
       <Filter>Header Files\Services\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="include\InputManager.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -126,6 +126,14 @@ namespace Glacier {
   }
 
   // Graphics class ===========================================================
+  
+  Graphics::Graphics( Engine* engine, WindowHandler* windowHandler ):
+  EngineComponent( engine ),
+  mRoot( nullptr ), mRenderer( nullptr ), mSceneManager( nullptr ),
+  mOverlaySystem( nullptr ), mWindowHandler( windowHandler )
+  {
+    preInitialize();
+  }
 
   void Graphics::preInitialize()
   {

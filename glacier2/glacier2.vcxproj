@@ -200,7 +200,7 @@
     <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\GlobalStats.cpp" />
     <ClCompile Include="src\Graphics.cpp" />
-    <ClCompile Include="src\Input.cpp" />
+    <ClCompile Include="src\InputManager.cpp" />
     <ClCompile Include="src\JSConsole.cpp" />
     <ClCompile Include="src\JSQuaternion.cpp" />
     <ClCompile Include="src\JSUtil.cpp" />
@@ -248,7 +248,7 @@
     <ClInclude Include="include\Graphics.h" />
     <ClInclude Include="include\ModelViewer.h" />
     <ClInclude Include="include\NedPoolMemory.h" />
-    <ClInclude Include="include\Input.h" />
+    <ClInclude Include="include\InputManager.h" />
     <ClInclude Include="include\JSNatives.h" />
     <ClInclude Include="include\JSObjectWrapper.h" />
     <ClInclude Include="include\JSUtil.h" />

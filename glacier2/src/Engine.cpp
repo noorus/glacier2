@@ -10,7 +10,7 @@
 #include "FMODAudio.h"
 #include "Game.h"
 #include "WindowHandler.h"
-#include "Input.h"
+#include "InputManager.h"
 #include "ServiceLocator.h"
 #include "ActionManager.h"
 #include "GUI.h"
@@ -235,7 +235,7 @@ namespace Glacier {
     mScripting->simpleExecute( L"initialization.js" );
 
     mActionManager = new ActionManager( this );
-    mInput = new Input( this, mInstance, mGraphics->getWindow() );
+    mInput = new InputManager( this, mInstance, mGraphics->getWindow() );
 
     if ( !options.noPhysics )
     {
