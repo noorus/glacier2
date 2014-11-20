@@ -45,6 +45,39 @@ namespace Glacier {
       AvSetMmThreadCharacteristicsW( L"Games", &index );
     }
 
+    const unsigned long cPrivileges = 1;
+
+    void Win32::adjustPrivileges()
+    {
+      HANDLE process = GetCurrentProcess();
+      HANDLE token;
+
+      if ( !OpenProcessToken( process, TOKEN_ADJUST_PRIVILEGES, &token ) )
+        return;
+
+      LPCWSTR wantedPrivileges[cPrivileges] = {
+        SE_LOCK_MEMORY_NAME
+      };
+
+      auto privileges = (PTOKEN_PRIVILEGES)malloc(
+        FIELD_OFFSET( TOKEN_PRIVILEGES, Privileges[cPrivileges] ) );
+
+      if ( privileges )
+      {
+        privileges->PrivilegeCount = cPrivileges;
+        for ( int i = 0; i < cPrivileges; i++ )
+        {
+          if ( !LookupPrivilegeValueW( NULL, wantedPrivileges[i], &privileges->Privileges[i].Luid ) )
+            return;
+          privileges->Privileges[i].Attributes = SE_PRIVILEGE_ENABLED;
+        }
+        AdjustTokenPrivileges( token, FALSE, privileges, 0, NULL, NULL );
+        free( privileges );
+      }
+
+      CloseHandle( token );
+    }
+
     void Win32::initialize()
     {
       INITCOMMONCONTROLSEX ctrls;

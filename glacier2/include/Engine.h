@@ -89,7 +89,6 @@ namespace Glacier {
     HANDLE mThread;                     //!< Main thread handle
     HINSTANCE mInstance;                //!< Instance handle
     volatile Signal mSignal;            //!< Engine signal
-    void adjustPrivileges();
     void fixupThreadAffinity();
   public:
     // Getters

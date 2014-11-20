@@ -73,33 +73,6 @@ namespace Glacier {
   {
   }
 
-  const unsigned long cPrivileges = 1;
-
-  void Engine::adjustPrivileges()
-  {
-    HANDLE token;
-    if ( !OpenProcessToken( mProcess, TOKEN_ADJUST_PRIVILEGES, &token ) )
-      return;
-    LPCWSTR wantedPrivileges[cPrivileges] = {
-      SE_LOCK_MEMORY_NAME
-    };
-    auto privileges = (PTOKEN_PRIVILEGES)malloc(
-      FIELD_OFFSET( TOKEN_PRIVILEGES, Privileges[cPrivileges] ) );
-    if ( privileges )
-    {
-      privileges->PrivilegeCount = cPrivileges;
-      for ( int i = 0; i < cPrivileges; i++ )
-      {
-        if ( !LookupPrivilegeValueW( NULL, wantedPrivileges[i], &privileges->Privileges[i].Luid ) )
-          return;
-        privileges->Privileges[i].Attributes = SE_PRIVILEGE_ENABLED;
-      }
-      AdjustTokenPrivileges( token, FALSE, privileges, 0, NULL, NULL );
-      free( privileges );
-    }
-    CloseHandle( token );
-  }
-
   void Engine::fixupThreadAffinity()
   {
     DWORD_PTR processMask, systemMask;
@@ -213,8 +186,6 @@ namespace Glacier {
     // Print engine info
     mConsole->printf( Console::srcEngine, getVersion().title.c_str() );
     mConsole->printf( Console::srcEngine, getVersion().subtitle.c_str() );
-
-    adjustPrivileges();
 
     // Fetch HPC frequency
     if ( !QueryPerformanceFrequency( &mHPCFrequency ) )
