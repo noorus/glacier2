@@ -9,7 +9,7 @@
 #include "Plugins/PCZSceneManager/OgrePCZPlugin.h"
 #include "Win32.h"
 
-// Glacier² Game Engine © 2014 noorus
+// GlacierÂ² Game Engine Â© 2014 noorus
 // All rights reserved.
 
 namespace Glacier {
@@ -50,7 +50,7 @@ namespace Glacier {
   const char* cRenderSystemDebug   = "RenderSystem_Direct3D9_d";
   const char* cRenderSystemRelease = "RenderSystem_Direct3D9";
   const char* cRenderWindowClass   = "gcr2_render";
-  const char* cRenderWindowTitle   = "glacier² » renderer";
+  const char* cRenderWindowTitle   = "glacierÂ² Â» renderer";
   const char* cScreenshotPrefix    = "screenshot";
   const char* cScreenshotSuffix    = ".png";
   const char* cOgreLogFile         = "ogre.log";

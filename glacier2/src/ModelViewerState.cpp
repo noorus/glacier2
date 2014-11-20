@@ -13,12 +13,12 @@
 #include "Win32.h"
 #include "GUI.h"
 
-// Glacier² Game Engine © 2014 noorus
+// GlacierÂ² Game Engine Â© 2014 noorus
 // All rights reserved.
 
 namespace Glacier {
 
-  const wstring cModelViewerTitle( L"glacier² » modelviewer" );
+  const wstring cModelViewerTitle( L"glacierÂ² Â» modelviewer" );
 
   ModelViewerState::ModelViewerState(): State( L"ModelViewer" ) {}
 

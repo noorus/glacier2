@@ -1,4 +1,4 @@
-﻿#include "StdAfx.h"
+#include "StdAfx.h"
 #include "Camera.h"
 
 // Glacier² Game Engine © 2014 noorus

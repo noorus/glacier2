@@ -6,7 +6,7 @@
 #include "ServiceLocator.h"
 #include "NedPoolMemory.h"
 
-// Glacier² Game Engine © 2014 noorus
+// GlacierÂ² Game Engine Â© 2014 noorus
 // All rights reserved.
 
 using namespace Glacier;
@@ -74,7 +74,7 @@ LPWSTR lpCmdLine, int nCmdShow )
   }
   catch ( Exception& e )
   {
-    error.subtitle = L"Program fault: Glacier² engine exception";
+    error.subtitle = L"Program fault: GlacierÂ² engine exception";
     error.body = Utilities::utf8ToWide( e.getFullDescription() );
     Win32::ErrorDialog dialog( error );
   }

@@ -4,7 +4,7 @@
 #include "Utilities.h"
 #include "TextFile.h"
 
-// Glacier² Game Engine © 2014 noorus
+// GlacierÂ² Game Engine Â© 2014 noorus
 // All rights reserved.
 
 #pragma warning( disable: 4073 )
@@ -239,7 +239,7 @@ namespace Glacier {
 
   StringVector Console::tokenize( const wstring& str )
   {
-    // OPTIMIZE:LOW This implementation is naïve, but hardly critical so far
+    // OPTIMIZE:LOW This implementation is naÃ¯ve, but hardly critical so far
     bool quoted = false;
     bool escaped = false;
     wstring buffer;

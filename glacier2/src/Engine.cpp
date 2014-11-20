@@ -15,7 +15,7 @@
 #include "ActionManager.h"
 #include "GUI.h"
 
-// Glacier² Game Engine © 2014 noorus
+// GlacierÂ² Game Engine Â© 2014 noorus
 // All rights reserved.
 
 Glacier::Engine* gEngine = nullptr;
@@ -44,7 +44,7 @@ namespace Glacier {
   major( major_ ), minor( minor_ ), build( build_ )
   {
     WCHAR temp[100];
-    swprintf_s( temp, 100, L"Glacier² Game Engine v%d.%d.%d %s", major, minor, build, profile.c_str() );
+    swprintf_s( temp, 100, L"GlacierÂ² Game Engine v%d.%d.%d %s", major, minor, build, profile.c_str() );
     title = temp;
     swprintf_s( temp, 100, L"%S %S", __DATE__, __TIME__ );
     compiled = temp;

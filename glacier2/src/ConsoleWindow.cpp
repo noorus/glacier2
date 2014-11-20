@@ -4,7 +4,7 @@
 #include "Exception.h"
 #include "Engine.h"
 
-// Glacier² Game Engine © 2014 noorus
+// GlacierÂ² Game Engine Â© 2014 noorus
 // All rights reserved.
 
 namespace Glacier {
@@ -12,7 +12,7 @@ namespace Glacier {
   // ConsoleWindow constants ==================================================
 
   const wchar_t* cConsoleWindowClass  = L"gcr2_console";
-  const wchar_t* cConsoleWindowTitle  = L"glacier² » console";
+  const wchar_t* cConsoleWindowTitle  = L"glacierÂ² Â» console";
   const COLORREF cConsoleWindowBackground = RGB( 255, 255, 255 );
   const COLORREF cConsoleWindowForeground = RGB( 10, 13, 20 );
   const wchar_t* cConsoleWindowFont   = L"Trebuchet MS";

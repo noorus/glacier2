@@ -1,6 +1,6 @@
 #pragma once
 
-// Glacier² Game Engine © 2014 noorus
+// GlacierÂ² Game Engine Â© 2014 noorus
 // All rights reserved.
 
 #define NTDDI_VERSION NTDDI_VISTASP1

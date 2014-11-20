@@ -5,7 +5,7 @@
 #include "ServiceLocator.h"
 #include "Graphics.h"
 
-// Glacier² Game Engine © 2014 noorus
+// GlacierÂ² Game Engine Â© 2014 noorus
 // All rights reserved.
 
 #pragma warning( push )
@@ -21,7 +21,7 @@ namespace Glacier {
 
     // Win32 constants ========================================================
 
-    const wchar_t* cErrorDialogTitle  = L"glacier² » error!";
+    const wchar_t* cErrorDialogTitle  = L"glacierÂ² Â» error!";
     const wchar_t* cRichEditDLL       = L"msftedit.dll";
     const wchar_t* cWin32UIFont       = L"Segoe UI";
 

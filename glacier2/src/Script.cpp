@@ -1,4 +1,4 @@
-﻿#include "StdAfx.h"
+#include "StdAfx.h"
 #include "Scripting.h"
 #include "Script.h"
 #include "Engine.h"
