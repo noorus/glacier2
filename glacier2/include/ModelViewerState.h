@@ -9,13 +9,11 @@ namespace Glacier {
 
   class Director;
   class ModelViewer;
-  class SettingsWindow;
 
   class ModelViewerState: public State, public Singleton<ModelViewerState> {
   protected:
     Director* mDirector;
     ModelViewer* mViewer;
-    SettingsWindow* wnd;
   public:
     ModelViewerState();
     virtual void initialize( Game* game, GameTime time );
