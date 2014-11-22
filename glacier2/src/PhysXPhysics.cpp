@@ -170,8 +170,9 @@ namespace Glacier {
   PhysicsScene* PhysXPhysics::createScene()
   {
     PxCpuDispatcher* cpuDispatcher = mCPUDispatcher;
-    PxGpuDispatcher* gpuDispatcher = ( mCudaContextManager
-      ? mCudaContextManager->getGpuDispatcher() : nullptr );
+    //PxGpuDispatcher* gpuDispatcher = ( mCudaContextManager
+    //  ? mCudaContextManager->getGpuDispatcher() : nullptr );
+    PxGpuDispatcher* gpuDispatcher = nullptr;
 
     float gravity = g_CVar_px_gravity.getFloat();
     float restitution = g_CVar_px_restitution.getFloat();
