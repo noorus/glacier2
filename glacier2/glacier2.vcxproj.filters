@@ -204,6 +204,12 @@
     <ClCompile Include="src\InputManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\DemoState.cpp">
+      <Filter>Source Files\States</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PhysicsScene.cpp">
+      <Filter>Source Files\Services\Physics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\CompilerDef.h">
@@ -331,6 +337,15 @@
     </ClInclude>
     <ClInclude Include="include\InputManager.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DemoState.h">
+      <Filter>Header Files\States</Filter>
+    </ClInclude>
+    <ClInclude Include="include\PhysicsScene.h">
+      <Filter>Header Files\Services\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\GlacierMath.h">
+      <Filter>Header Files\Shared</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

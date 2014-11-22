@@ -8,6 +8,10 @@
 
 namespace Glacier {
 
+  ENGINE_EXTERN_CONVAR( px_threads );
+
+  class PhysicsScene;
+
   class PhysXPhysics: public Physics, public EngineComponent, public PxErrorCallback {
   protected:
     class Allocator: public PxAllocatorCallback {
@@ -21,6 +25,8 @@ namespace Glacier {
     physx::PxCooking* mCooking;
     physx::PxCudaContextManager* mCudaContextManager;
     physx::PxControllerManager* mControllerMgr;
+    physx::PxDefaultCpuDispatcher* mCPUDispatcher;
+    std::list<PhysicsScene*> mScenes;
     virtual void reportError( PxErrorCode::Enum code,
       const char* message, const char* file, int line );
   public:
@@ -28,6 +34,9 @@ namespace Glacier {
     virtual void initialize();
     virtual void shutdown();
     virtual void restart();
+    physx::PxPhysics* getPhysics();
+    PhysicsScene* createScene();
+    void destroyScene( PhysicsScene* scene );
     virtual void componentPreUpdate( GameTime time );
     virtual void componentTick( GameTime tick, GameTime time );
     virtual void componentPostUpdate( GameTime delta, GameTime time );

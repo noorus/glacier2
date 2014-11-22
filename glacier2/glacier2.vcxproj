@@ -188,6 +188,7 @@
     <ClCompile Include="src\Camera.cpp" />
     <ClCompile Include="src\Console.cpp" />
     <ClCompile Include="src\ConsoleWindow.cpp" />
+    <ClCompile Include="src\DemoState.cpp" />
     <ClCompile Include="src\GUI.cpp" />
     <ClCompile Include="src\ModelViewer.cpp" />
     <ClCompile Include="src\ModelViewerState.cpp" />
@@ -207,6 +208,7 @@
     <ClCompile Include="src\JSVector3.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\NedPoolMemory.cpp" />
+    <ClCompile Include="src\PhysicsScene.cpp" />
     <ClCompile Include="src\PhysXPhysics.cpp" />
     <ClCompile Include="src\Script.cpp" />
     <ClCompile Include="src\Scripting.cpp" />
@@ -227,6 +229,7 @@
     <ClInclude Include="..\hdrlib\HDRCompositor.h" />
     <ClInclude Include="..\include\CompilerDef.h" />
     <ClInclude Include="..\include\Defines.h" />
+    <ClInclude Include="..\include\GlacierMath.h" />
     <ClInclude Include="..\include\Types.h" />
     <ClInclude Include="..\include\Utilities.h" />
     <ClInclude Include="include\ActionManager.h" />
@@ -234,6 +237,7 @@
     <ClInclude Include="include\Camera.h" />
     <ClInclude Include="include\Console.h" />
     <ClInclude Include="include\ConsoleWindow.h" />
+    <ClInclude Include="include\DemoState.h" />
     <ClInclude Include="include\GUI.h" />
     <ClInclude Include="include\ModelViewerState.h" />
     <ClInclude Include="include\Director.h" />
@@ -252,6 +256,7 @@
     <ClInclude Include="include\JSNatives.h" />
     <ClInclude Include="include\JSObjectWrapper.h" />
     <ClInclude Include="include\JSUtil.h" />
+    <ClInclude Include="include\PhysicsScene.h" />
     <ClInclude Include="include\PhysXPhysics.h" />
     <ClInclude Include="include\Script.h" />
     <ClInclude Include="include\Scripting.h" />
