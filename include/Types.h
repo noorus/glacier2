@@ -66,6 +66,4 @@ namespace Glacier {
   using Ogre::DataStreamPtr;
   using Ogre::UTFString;
 
-  using Ogre::Math;
-
 }

@@ -60,7 +60,7 @@ namespace Glacier {
       "defaultcamera",
       (PCZSceneNode*)mGraphics->getScene()->getRootSceneNode(),
       Vector3( 0.0f, 0.08f, -0.25f ),
-      Radian( Math::DegreesToRadians( 70.0f ) ),
+      Radian( Ogre::Math::DegreesToRadians( 70.0f ) ),
       zone,
       true,
       0.25f, 0.1f, 2.0f, 10.0f, 2.0f, 10.0f );
