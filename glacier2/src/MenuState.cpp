@@ -1,0 +1,59 @@
+#include "StdAfx.h"
+#include "MenuState.h"
+#include "Engine.h"
+#include "Game.h"
+#include "Director.h"
+#include "Camera.h"
+#include "Graphics.h"
+#include "Engine.h"
+#include "ActionManager.h"
+#include "ServiceLocator.h"
+#include "Exception.h"
+#include "Win32.h"
+#include "GUI.h"
+
+// Glacier² Game Engine © 2014 noorus
+// All rights reserved.
+
+namespace Glacier {
+
+  const wstring cMenuWindowTitle( L"glacier² » menu" );
+
+  MenuState::MenuState(): State( L"Menu" ) {}
+
+  void MenuState::initialize( Game* game, GameTime time )
+  {
+    State::initialize( game, time );
+
+    Locator::getGraphics().setRenderWindowTitle( cMenuWindowTitle );
+
+    mDirector = new Director( &Locator::getGraphics() );
+  }
+
+  void MenuState::pause( GameTime time )
+  {
+    State::pause( time );
+  }
+
+  void MenuState::resume( GameTime time )
+  {
+    State::resume( time );
+  }
+
+  void MenuState::update( GameTime tick, GameTime time )
+  {
+    mDirector->getCamera()->applyMovement(
+      gEngine->getActionManager()->getCameraController()->getMovement()
+    );
+
+    mDirector->getCamera()->update( tick );
+  }
+
+  void MenuState::shutdown( GameTime time )
+  {
+    SAFE_DELETE( mDirector );
+
+    State::shutdown( time );
+  }
+
+}

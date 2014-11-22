@@ -213,6 +213,9 @@
     <ClCompile Include="src\PhysicsDebugVisualizer.cpp">
       <Filter>Source Files\Services\Physics</Filter>
     </ClCompile>
+    <ClCompile Include="src\MenuState.cpp">
+      <Filter>Source Files\States</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\CompilerDef.h">
@@ -352,6 +355,9 @@
     </ClInclude>
     <ClInclude Include="include\PhysicsDebugVisualizer.h">
       <Filter>Header Files\Services\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MenuState.h">
+      <Filter>Header Files\States</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

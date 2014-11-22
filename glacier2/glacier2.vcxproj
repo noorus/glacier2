@@ -190,6 +190,7 @@
     <ClCompile Include="src\ConsoleWindow.cpp" />
     <ClCompile Include="src\DemoState.cpp" />
     <ClCompile Include="src\GUI.cpp" />
+    <ClCompile Include="src\MenuState.cpp" />
     <ClCompile Include="src\ModelViewer.cpp" />
     <ClCompile Include="src\ModelViewerState.cpp" />
     <ClCompile Include="src\Director.cpp" />
@@ -240,6 +241,7 @@
     <ClInclude Include="include\ConsoleWindow.h" />
     <ClInclude Include="include\DemoState.h" />
     <ClInclude Include="include\GUI.h" />
+    <ClInclude Include="include\MenuState.h" />
     <ClInclude Include="include\ModelViewerState.h" />
     <ClInclude Include="include\Director.h" />
     <ClInclude Include="include\Engine.h" />
