@@ -13,6 +13,7 @@
 #include "Win32.h"
 #include "PhysXPhysics.h"
 #include "PhysicsScene.h"
+#include "PhysicsDebugVisualizer.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
@@ -31,6 +32,8 @@ namespace Glacier {
 
     mDirector = new Director( &Locator::getGraphics() );
     mPhysics = gEngine->getPhysics()->createScene();
+    mPhysics->setDebugVisuals( true );
+    mVisuals = new PhysicsDebugVisualizer( gEngine );
   }
 
   void DemoState::pause( GameTime time )
@@ -45,6 +48,9 @@ namespace Glacier {
 
   void DemoState::update( GameTime tick, GameTime time )
   {
+    mVisuals->clearDebugScene();
+    mVisuals->drawDebugScene( &mPhysics->fetchDebugVisuals() );
+
     mDirector->getCamera()->applyMovement(
       gEngine->getActionManager()->getCameraController()->getMovement()
       );
@@ -54,6 +60,7 @@ namespace Glacier {
 
   void DemoState::shutdown( GameTime time )
   {
+    SAFE_DELETE( mVisuals );
     gEngine->getPhysics()->destroyScene( mPhysics );
     SAFE_DELETE( mDirector );
 

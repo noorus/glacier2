@@ -208,6 +208,7 @@
     <ClCompile Include="src\JSVector3.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\NedPoolMemory.cpp" />
+    <ClCompile Include="src\PhysicsDebugVisualizer.cpp" />
     <ClCompile Include="src\PhysicsScene.cpp" />
     <ClCompile Include="src\PhysXPhysics.cpp" />
     <ClCompile Include="src\Script.cpp" />
@@ -256,6 +257,7 @@
     <ClInclude Include="include\JSNatives.h" />
     <ClInclude Include="include\JSObjectWrapper.h" />
     <ClInclude Include="include\JSUtil.h" />
+    <ClInclude Include="include\PhysicsDebugVisualizer.h" />
     <ClInclude Include="include\PhysicsScene.h" />
     <ClInclude Include="include\PhysXPhysics.h" />
     <ClInclude Include="include\Script.h" />

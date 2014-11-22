@@ -210,6 +210,9 @@
     <ClCompile Include="src\PhysicsScene.cpp">
       <Filter>Source Files\Services\Physics</Filter>
     </ClCompile>
+    <ClCompile Include="src\PhysicsDebugVisualizer.cpp">
+      <Filter>Source Files\Services\Physics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\CompilerDef.h">
@@ -346,6 +349,9 @@
     </ClInclude>
     <ClInclude Include="..\include\GlacierMath.h">
       <Filter>Header Files\Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="include\PhysicsDebugVisualizer.h">
+      <Filter>Header Files\Services\Physics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

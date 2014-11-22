@@ -37,6 +37,12 @@ namespace Glacier {
 
     mDefaultMaterial = mPhysics->getPhysics()->createMaterial(
       staticFriction, dynamicFriction, restitution );
+
+    PxBoxGeometry geometry( 0.5f, 0.5f, 0.5f );
+    PxShape* shape = mPhysics->getPhysics()->createShape( geometry, *mDefaultMaterial );
+    physx::PxTransform transform( PxVec3( 0.0, 0.0, 0.0 ) );
+    PxRigidStatic* actor = PxCreateStatic( *mPhysics->getPhysics(), transform, *shape );
+    mScene->addActor( *actor );
   }
 
   void PhysicsScene::simulationStep( const GameTime delta, const GameTime time )
@@ -48,6 +54,31 @@ namespace Glacier {
   {
     mScene->fetchResults( true );
     mScene->getSimulationStatistics( mStatistics );
+  }
+
+  void PhysicsScene::setDebugVisuals( const bool visuals )
+  {
+    if ( visuals )
+    {
+      mScene->setVisualizationParameter( PxVisualizationParameter::eSCALE, 1.0f );
+      mScene->setVisualizationParameter( PxVisualizationParameter::eWORLD_AXES, 1.0f );
+      mScene->setVisualizationParameter( PxVisualizationParameter::eACTOR_AXES, 1.0f );
+      mScene->setVisualizationParameter( PxVisualizationParameter::eBODY_MASS_AXES, 1.0f );
+      mScene->setVisualizationParameter( PxVisualizationParameter::eCOLLISION_EDGES, 1.0f );
+      mScene->setVisualizationParameter( PxVisualizationParameter::eCOLLISION_AABBS, 1.0f );
+      //mScene->setVisualizationParameter( PxVisualizationParameter::eCOLLISION_SHAPES, 1.0f );
+      mScene->setVisualizationParameter( PxVisualizationParameter::eCONTACT_POINT, 1.0f );
+      mScene->setVisualizationParameter( PxVisualizationParameter::eCONTACT_FORCE, 1.0f );
+      mScene->setVisualizationParameter( PxVisualizationParameter::eBODY_LIN_VELOCITY, 1.0f );
+      mScene->setVisualizationParameter( PxVisualizationParameter::eBODY_ANG_VELOCITY, 1.0f );
+    }
+    else
+      mScene->setVisualizationParameter( PxVisualizationParameter::eSCALE, 0.0f );
+  }
+
+  const PxRenderBuffer& PhysicsScene::fetchDebugVisuals()
+  {
+    return mScene->getRenderBuffer();
   }
 
   float PhysicsScene::setGravity( const float gravity )

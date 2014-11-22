@@ -9,11 +9,13 @@ namespace Glacier {
 
   class Director;
   class PhysicsScene;
+  class PhysicsDebugVisualizer;
 
   class DemoState: public State, public Singleton <DemoState> {
   protected:
     Director* mDirector;
     PhysicsScene* mPhysics;
+    PhysicsDebugVisualizer* mVisuals;
   public:
     DemoState();
     virtual void initialize( Game* game, GameTime time );

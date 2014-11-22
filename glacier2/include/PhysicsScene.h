@@ -28,6 +28,8 @@ namespace Glacier {
     void simulationFetchResults();
     void debugFetchVisualization();
   public:
+    void setDebugVisuals( const bool visuals );
+    const physx::PxRenderBuffer& fetchDebugVisuals();
     inline physx::PxScene* getScene() { return mScene; }
     float setGravity( const float gravity );
     physx::PxMaterial* getDefaultMaterial() const { return mDefaultMaterial; }
