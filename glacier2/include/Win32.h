@@ -56,6 +56,7 @@ namespace Glacier {
       void prepareProcess();
       void adjustPrivileges();
       void initialize();
+      bool windowHasFocus( const HWND window );
       wstring getCurrentDirectory();
       bool fileOpenDialog( const wstring& filterName, const wstring& filterExt, wstring& returnValue );
       void handleMessagesFor( HWND window );

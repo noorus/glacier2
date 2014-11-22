@@ -103,6 +103,11 @@ namespace Glacier {
       return wstring( currentDirectory );
     }
 
+    bool Win32::windowHasFocus( const HWND window )
+    {
+      return ( GetFocus() == window );
+    }
+
     bool Win32::fileOpenDialog( const wstring& filterName, const wstring& filterExt, wstring& returnValue )
     {
       IFileDialog* fileDialog;

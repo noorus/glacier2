@@ -11,7 +11,7 @@
 namespace Glacier {
 
   InputManager::InputManager( Engine* engine, HINSTANCE instance, Ogre::RenderWindow* window ):
-  EngineComponent( engine ), mSystem( nullptr ), mTakingInput( true )
+  EngineComponent( engine ), mSystem( nullptr ), mTakingInput( false )
   {
     // Greetings
     mEngine->getConsole()->printf( Console::srcInput,

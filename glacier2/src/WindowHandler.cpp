@@ -2,6 +2,7 @@
 #include "Engine.h"
 #include "WindowHandler.h"
 #include "InputManager.h"
+#include "Win32.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
@@ -39,7 +40,7 @@ namespace Glacier {
     // the GetFocus() return hasn't yet changed. So the statuses act reversed.
     HWND windowHandle = NULL;
     rw->getCustomAttribute( "WINDOW", &windowHandle );
-    if ( GetFocus() != windowHandle )
+    if ( !Win32::Win32::instance().windowHasFocus( windowHandle ) )
       mEngine->getInput()->onInputFocus( true );
     else
       mEngine->getInput()->onInputFocus( false );

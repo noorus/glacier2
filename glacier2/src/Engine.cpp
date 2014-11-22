@@ -225,6 +225,9 @@ namespace Glacier {
       mConsole->printf( Console::srcEngine, L"Init: Skipping audio" );
 
     mGame = new Game( this );
+
+    SetFocus( mGraphics->getRenderWindowHandle() );
+    mInput->onInputFocus( true );
   }
 
   void Engine::signalStop()
