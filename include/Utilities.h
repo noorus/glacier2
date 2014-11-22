@@ -135,7 +135,7 @@ namespace Glacier {
   namespace Utilities
   {
     //! Signal the debugger to give a thread a name
-    inline void debugSetThreadName( DWORD threadID, const char* threadName )
+    inline void debugSetThreadName( DWORD threadID, const std::string& threadName )
     {
 #ifdef _DEBUG
 #pragma pack( push, 8 )
@@ -148,7 +148,7 @@ namespace Glacier {
       } nameSignalStruct;
 #pragma pack( pop )
       nameSignalStruct.type = 0x1000;
-      nameSignalStruct.name = threadName;
+      nameSignalStruct.name = threadName.c_str();
       nameSignalStruct.threadID = threadID;
       nameSignalStruct.flags = 0;
       __try

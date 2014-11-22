@@ -35,7 +35,7 @@ namespace Glacier {
   GameTime Engine::fTimeAccumulator = 0.0;
   GameTime Engine::fLogicStep = 1.0 / 60.0;
 
-  const char* cMainThreadName = "Gcr2 Main Thread";
+  const std::string cMainThreadName = "Gcr2 Main Thread";
 
   // Engine version struct ====================================================
 

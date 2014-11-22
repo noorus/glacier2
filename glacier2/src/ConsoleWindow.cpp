@@ -11,12 +11,12 @@ namespace Glacier {
 
   // ConsoleWindow constants ==================================================
 
-  const wchar_t* cConsoleWindowClass  = L"gcr2_console";
-  const wchar_t* cConsoleWindowTitle  = L"glacier² » console";
+  const std::string cConsoleWindowClass   = "gcr2_console";
+  const std::string cConsoleWindowTitle   = "glacier² » console";
   const COLORREF cConsoleWindowBackground = RGB( 255, 255, 255 );
   const COLORREF cConsoleWindowForeground = RGB( 10, 13, 20 );
-  const wchar_t* cConsoleWindowFont   = L"Trebuchet MS";
-  const char*    cConsoleThreadName   = "Gcr2 Console Thread";
+  const std::string cConsoleWindowFont    = "Trebuchet MS";
+  const std::string cConsoleThreadName    = "Gcr2 Console Thread";
 
   // ConsoleWindowThread class ================================================
 
@@ -130,11 +130,12 @@ namespace Glacier {
     mConsole->addListener( this );
     mWindow = new Win32::Window( instance, wndProc,
       Win32::Window::Settings::toolWindow( 420, 280,
-      cConsoleWindowClass, cConsoleWindowTitle ),
-      this );
+        Utilities::utf8ToWide( cConsoleWindowClass ),
+        Utilities::utf8ToWide( cConsoleWindowTitle )
+      ), this );
     POINT pos = { 0, 0 };
     POINT size = { 420, 280 };
-    mWindow->create( pos, size, cConsoleWindowTitle );
+    mWindow->create( pos, size, Utilities::utf8ToWide( cConsoleWindowTitle ) );
     mWindow->setVisible( true );
   }
 
@@ -425,7 +426,8 @@ namespace Glacier {
         format.crBackColor = cConsoleWindowBackground;
         format.bCharSet = DEFAULT_CHARSET;
         format.bUnderlineType = CFU_UNDERLINENONE;
-        wcscpy_s( format.szFaceName, LF_FACESIZE, cConsoleWindowFont );
+        wcscpy_s( format.szFaceName, LF_FACESIZE,
+          Utilities::utf8ToWide( cConsoleWindowFont ).c_str() );
 
         // Set character format
         SendMessageW( window->mLog, EM_SETCHARFORMAT, SCF_ALL, (LPARAM)&format );

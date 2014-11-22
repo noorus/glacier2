@@ -74,7 +74,7 @@ namespace Glacier {
     void screenshot();
     void applySettings( const Settings& settings );
     const Settings& getSettings() { return mSettings; }
-    void setRenderWindowTitle( const wstring& title );
+    void setRenderWindowTitle( const string& title );
     HWND getRenderWindowHandle();
     Ogre::Root* getRoot() { return mRoot; }
     Ogre::RenderSystem* getRenderer() { return mRenderer; }

@@ -302,9 +302,9 @@ namespace Glacier {
     }
   }
 
-  void Graphics::setRenderWindowTitle( const wstring& title )
+  void Graphics::setRenderWindowTitle( const string& title )
   {
-    SetWindowTextW( getRenderWindowHandle(), title.c_str() );
+    SetWindowTextW( getRenderWindowHandle(), Utilities::utf8ToWide( title ).c_str() );
   }
 
   HWND Graphics::getRenderWindowHandle()

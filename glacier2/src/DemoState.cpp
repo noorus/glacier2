@@ -20,7 +20,7 @@
 
 namespace Glacier {
 
-  const wstring cDemoStateTitle( L"glacier² » demo" );
+  const string cDemoStateTitle( "glacier² » demo" );
 
   DemoState::DemoState(): State( L"Demo" ) {}
 

@@ -17,7 +17,7 @@
 
 namespace Glacier {
 
-  const wstring cMenuWindowTitle( L"glacier² » menu" );
+  const string cMenuWindowTitle( "glacier² » menu" );
 
   MenuState::MenuState(): State( L"Menu" ) {}
 

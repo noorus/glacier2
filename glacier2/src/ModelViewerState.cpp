@@ -17,7 +17,7 @@
 
 namespace Glacier {
 
-  const wstring cModelViewerTitle( L"glacier² » modelviewer" );
+  const string cModelViewerTitle( "glacier² » modelviewer" );
 
   ModelViewerState::ModelViewerState(): State( L"ModelViewer" ) {}
 
