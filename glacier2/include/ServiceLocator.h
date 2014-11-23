@@ -21,6 +21,8 @@ namespace Glacier {
     static GUI* guiService; //!< GUI component
     static EntityManager* entityManager; //!< World entities manager
   public:
+    static const bool hasMemory() { return ( memoryService ? true : false ); }
+
     static Memory& getMemory() { return *memoryService; }
 
     static void provideMemory( Memory* memory )

@@ -1,5 +1,7 @@
 #include "StdAfx.h"
 #include "NedPoolMemory.h"
+#include "ServiceLocator.h"
+#include <cstdlib>
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
@@ -52,3 +54,27 @@ namespace Glacier {
   }
 
 }
+
+#ifdef GLACIER_OVERRIDE_NEW
+
+// Override global new operator to utilise nedmalloc
+void* operator new ( size_t size )
+{
+  if ( Glacier::Locator::hasMemory() )
+  return Glacier::Locator::getMemory().alloc( Glacier::Memory::Sector_Generic, size );
+  else
+    return malloc( size );
+}
+
+// Override global delete operator to utilise nedmalloc
+void operator delete ( void* ptr )
+{
+  int isForeign;
+  glacier_nedalloc::nedblksize( &isForeign, ptr );
+  if ( !isForeign )
+    return Glacier::Locator::getMemory().free( Glacier::Memory::Sector_Generic, ptr );
+
+  return free( ptr );
+}
+
+#endif

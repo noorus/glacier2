@@ -25,6 +25,10 @@ LPWSTR lpCmdLine, int nCmdShow )
 
   // CRT memory allocation breakpoints can be set here
   // _CrtSetBreakAlloc( x );
+  
+  // Initialize & provide the pooled memory service
+  NedPoolMemory memoryService;
+  Locator::provideMemory( &memoryService );
 
   // Parse command line arguments into engine options
   int argCount;
@@ -49,10 +53,6 @@ LPWSTR lpCmdLine, int nCmdShow )
 
   Win32::Win32::instance().prepareProcess();
   Win32::Win32::instance().adjustPrivileges();
-
-  // Initialize & provide the pooled memory service
-  NedPoolMemory* memoryService = new NedPoolMemory();
-  Locator::provideMemory( memoryService );
 
   // Init generic win32 stuff and our error dialog context
   Win32::Win32::instance().initialize();
@@ -105,8 +105,6 @@ LPWSTR lpCmdLine, int nCmdShow )
 #endif
 
   Win32::Win32::instance().shutdown();
-
-  SAFE_DELETE( memoryService );
 
   return EXIT_SUCCESS;
 }
