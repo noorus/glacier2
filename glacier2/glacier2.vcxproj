@@ -97,7 +97,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;ENABLE_LARGE_PAGES;ENABLE_USERMODEPAGEALLOCATOR;USE_LOCKS;USE_SPIN_LOCKS;_CRT_SECURE_NO_WARNINGS;DEBUG;_DEBUG;_WINDOWS;WIN64;_ALLOW_MSC_VER_MISMATCH;_ALLOW_ITERATOR_DEBUG_LEVEL_MISMATCH;PHYSX_PROFILE_SDK;PX_DEBUG;PX_CHECKED;PX_SUPPORT_VISUAL_DEBUGGER;PX_NVTX;V8_TARGET_ARCH_X64;V8_DEPRECATION_WARNINGS;V8_I18N_SUPPORT;U_USING_ICU_NAMESPACE=0;U_ENABLE_DYLOAD=0;U_STATIC_IMPLEMENTATION;U_CHARSET_IS_UTF8=1;ENABLE_HANDLE_ZAPPING;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)include;$(ProjectDir)include;$(SolutionDir)..\SDK\Ogre\include\OGRE;$(SolutionDir)..\SDK\Ogre\include\OGRE\Overlay;$(SolutionDir)..\SDK\Ogre\include\OGRE\Paging;$(SolutionDir)..\SDK\Ogre\include\OGRE\Plugins\PCZSceneManager;$(SolutionDir)..\SDK\Ogre\include\OGRE\RenderSystems\Direct3D9;$(SolutionDir)..\SDK\Ogre\include\OGRE\Terrain;$(SolutionDir)..\SDK\Ogre\include\OGRE\Threading;$(SolutionDir)..\SDK\FMOD SoundSystem\FMOD Programmers API Windows\api\inc;$(SolutionDir)..\SDK\FMOD SoundSystem\FMOD Programmers API Windows\fmoddesignerapi\api\inc;$(SolutionDir)..\v8\include;$(SolutionDir)..\v8;$(SolutionDir)nil\include;$(SolutionDir)nedmalloc;$(SolutionDir)hdrlib;$(SolutionDir)..\SDK\PhysX\Include;$(SolutionDir)..\SDK\OgreDependencies\include;$(SolutionDir)shiny\Main;$(SolutionDir)shiny\Platforms\Ogre;$(SolutionDir)..\SDK\MyGUI\include\MYGUI;$(SolutionDir)..\v8\third_party\icu\source\common;$(SolutionDir)..\v8\third_party\icu\source\i18n;$(SolutionDir)..\v8\third_party\icu\source\io;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)include;$(ProjectDir)include;$(SolutionDir)..\SDK\Ogre\include\OGRE;$(SolutionDir)..\SDK\Ogre\include\OGRE\Overlay;$(SolutionDir)..\SDK\Ogre\include\OGRE\Paging;$(SolutionDir)..\SDK\Ogre\include\OGRE\Plugins\PCZSceneManager;$(SolutionDir)..\SDK\Ogre\include\OGRE\RenderSystems\Direct3D9;$(SolutionDir)..\SDK\Ogre\include\OGRE\Terrain;$(SolutionDir)..\SDK\Ogre\include\OGRE\Threading;$(SolutionDir)..\SDK\FMOD SoundSystem\FMOD Programmers API Windows\api\inc;$(SolutionDir)..\SDK\FMOD SoundSystem\FMOD Programmers API Windows\fmoddesignerapi\api\inc;$(SolutionDir)..\v8\include;$(SolutionDir)..\v8;$(SolutionDir)nil\include;$(SolutionDir)nedmalloc;$(SolutionDir)hdrlib;$(SolutionDir)..\SDK\PhysX\Include;$(SolutionDir)..\SDK\OgreDependencies\include;$(SolutionDir)shiny\Main;$(SolutionDir)shiny\Platforms\Ogre;$(SolutionDir)..\SDK\MyGUI\include\MYGUI;$(SolutionDir)..\v8\third_party\icu\source\common;$(SolutionDir)..\v8\third_party\icu\source\i18n;$(SolutionDir)..\v8\third_party\icu\source\io;$(SolutionDir)ogre-procedural\library\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>StdAfx.h</PrecompiledHeaderFile>
       <AdditionalOptions>/Zm512 %(AdditionalOptions)</AdditionalOptions>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -145,7 +145,7 @@
       </FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;ENABLE_LARGE_PAGES;ENABLE_USERMODEPAGEALLOCATOR;USE_LOCKS;USE_SPIN_LOCKS;_CRT_SECURE_NO_WARNINGS;NDEBUG;_WINDOWS;_ALLOW_MSC_VER_MISMATCH;_ALLOW_ITERATOR_DEBUG_LEVEL_MISMATCH;PHYSX_PROFILE_SDK;V8_TARGET_ARCH_X64;V8_DEPRECATION_WARNINGS;V8_I18N_SUPPORT;U_USING_ICU_NAMESPACE=0;U_ENABLE_DYLOAD=0;U_STATIC_IMPLEMENTATION;U_CHARSET_IS_UTF8=1;ENABLE_HANDLE_ZAPPING;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)include;$(ProjectDir)include;$(SolutionDir)..\SDK\Ogre\include\OGRE;$(SolutionDir)..\SDK\Ogre\include\OGRE\Overlay;$(SolutionDir)..\SDK\Ogre\include\OGRE\Paging;$(SolutionDir)..\SDK\Ogre\include\OGRE\Plugins\PCZSceneManager;$(SolutionDir)..\SDK\Ogre\include\OGRE\RenderSystems\Direct3D9;$(SolutionDir)..\SDK\Ogre\include\OGRE\Terrain;$(SolutionDir)..\SDK\Ogre\include\OGRE\Threading;$(SolutionDir)..\SDK\FMOD SoundSystem\FMOD Programmers API Windows\api\inc;$(SolutionDir)..\SDK\FMOD SoundSystem\FMOD Programmers API Windows\fmoddesignerapi\api\inc;$(SolutionDir)..\v8\include;$(SolutionDir)..\v8;$(SolutionDir)nil\include;$(SolutionDir)nedmalloc;$(SolutionDir)hdrlib;$(SolutionDir)..\SDK\PhysX\Include;$(SolutionDir)..\SDK\OgreDependencies\include;$(SolutionDir)shiny\Main;$(SolutionDir)shiny\Platforms\Ogre;$(SolutionDir)..\SDK\MyGUI\include\MYGUI;$(SolutionDir)..\v8\third_party\icu\source\common;$(SolutionDir)..\v8\third_party\icu\source\i18n;$(SolutionDir)..\v8\third_party\icu\source\io;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)include;$(ProjectDir)include;$(SolutionDir)..\SDK\Ogre\include\OGRE;$(SolutionDir)..\SDK\Ogre\include\OGRE\Overlay;$(SolutionDir)..\SDK\Ogre\include\OGRE\Paging;$(SolutionDir)..\SDK\Ogre\include\OGRE\Plugins\PCZSceneManager;$(SolutionDir)..\SDK\Ogre\include\OGRE\RenderSystems\Direct3D9;$(SolutionDir)..\SDK\Ogre\include\OGRE\Terrain;$(SolutionDir)..\SDK\Ogre\include\OGRE\Threading;$(SolutionDir)..\SDK\FMOD SoundSystem\FMOD Programmers API Windows\api\inc;$(SolutionDir)..\SDK\FMOD SoundSystem\FMOD Programmers API Windows\fmoddesignerapi\api\inc;$(SolutionDir)..\v8\include;$(SolutionDir)..\v8;$(SolutionDir)nil\include;$(SolutionDir)nedmalloc;$(SolutionDir)hdrlib;$(SolutionDir)..\SDK\PhysX\Include;$(SolutionDir)..\SDK\OgreDependencies\include;$(SolutionDir)shiny\Main;$(SolutionDir)shiny\Platforms\Ogre;$(SolutionDir)..\SDK\MyGUI\include\MYGUI;$(SolutionDir)..\v8\third_party\icu\source\common;$(SolutionDir)..\v8\third_party\icu\source\i18n;$(SolutionDir)..\v8\third_party\icu\source\io;$(SolutionDir)ogre-procedural\library\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>StdAfx.h</PrecompiledHeaderFile>
       <DebugInformationFormat>None</DebugInformationFormat>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
@@ -182,6 +182,39 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\nedmalloc\nedmalloc.cpp" />
+    <ClCompile Include="..\ogre-procedural\library\src\ProceduralBoolean.cpp" />
+    <ClCompile Include="..\ogre-procedural\library\src\ProceduralBoxGenerator.cpp" />
+    <ClCompile Include="..\ogre-procedural\library\src\ProceduralCapsuleGenerator.cpp" />
+    <ClCompile Include="..\ogre-procedural\library\src\ProceduralConeGenerator.cpp" />
+    <ClCompile Include="..\ogre-procedural\library\src\ProceduralCylinderGenerator.cpp" />
+    <ClCompile Include="..\ogre-procedural\library\src\ProceduralDebugRendering.cpp" />
+    <ClCompile Include="..\ogre-procedural\library\src\ProceduralExtruder.cpp" />
+    <ClCompile Include="..\ogre-procedural\library\src\ProceduralGeometryHelpers.cpp" />
+    <ClCompile Include="..\ogre-procedural\library\src\ProceduralIcoSphereGenerator.cpp" />
+    <ClCompile Include="..\ogre-procedural\library\src\ProceduralLathe.cpp" />
+    <ClCompile Include="..\ogre-procedural\library\src\ProceduralMeshModifiers.cpp" />
+    <ClCompile Include="..\ogre-procedural\library\src\ProceduralMultiShape.cpp" />
+    <ClCompile Include="..\ogre-procedural\library\src\ProceduralMultiShapeGenerators.cpp" />
+    <ClCompile Include="..\ogre-procedural\library\src\ProceduralNoise.cpp" />
+    <ClCompile Include="..\ogre-procedural\library\src\ProceduralPath.cpp" />
+    <ClCompile Include="..\ogre-procedural\library\src\ProceduralPathGenerators.cpp" />
+    <ClCompile Include="..\ogre-procedural\library\src\ProceduralPlaneGenerator.cpp" />
+    <ClCompile Include="..\ogre-procedural\library\src\ProceduralRoundedBoxGenerator.cpp" />
+    <ClCompile Include="..\ogre-procedural\library\src\ProceduralShape.cpp" />
+    <ClCompile Include="..\ogre-procedural\library\src\ProceduralShapeGenerators.cpp" />
+    <ClCompile Include="..\ogre-procedural\library\src\ProceduralSphereGenerator.cpp" />
+    <ClCompile Include="..\ogre-procedural\library\src\ProceduralSpringGenerator.cpp" />
+    <ClCompile Include="..\ogre-procedural\library\src\ProceduralSVG.cpp" />
+    <ClCompile Include="..\ogre-procedural\library\src\ProceduralTextureBuffer.cpp" />
+    <ClCompile Include="..\ogre-procedural\library\src\ProceduralTextureGenerator.cpp" />
+    <ClCompile Include="..\ogre-procedural\library\src\ProceduralTextureModifiers.cpp" />
+    <ClCompile Include="..\ogre-procedural\library\src\ProceduralTorusGenerator.cpp" />
+    <ClCompile Include="..\ogre-procedural\library\src\ProceduralTorusKnotGenerator.cpp" />
+    <ClCompile Include="..\ogre-procedural\library\src\ProceduralTrack.cpp" />
+    <ClCompile Include="..\ogre-procedural\library\src\ProceduralTriangleBuffer.cpp" />
+    <ClCompile Include="..\ogre-procedural\library\src\ProceduralTriangulator.cpp" />
+    <ClCompile Include="..\ogre-procedural\library\src\ProceduralTubeGenerator.cpp" />
+    <ClCompile Include="..\ogre-procedural\library\src\ProceduralUtils.cpp" />
     <ClCompile Include="src\ActionManager.cpp" />
     <ClCompile Include="src\ArcballCamera.cpp" />
     <ClCompile Include="src\AudioService.cpp" />
@@ -236,6 +269,46 @@
     <ClInclude Include="..\include\GlacierMath.h" />
     <ClInclude Include="..\include\Types.h" />
     <ClInclude Include="..\include\Utilities.h" />
+    <ClInclude Include="..\ogre-procedural\library\include\Procedural.h" />
+    <ClInclude Include="..\ogre-procedural\library\include\ProceduralBoolean.h" />
+    <ClInclude Include="..\ogre-procedural\library\include\ProceduralBoxGenerator.h" />
+    <ClInclude Include="..\ogre-procedural\library\include\ProceduralCapsuleGenerator.h" />
+    <ClInclude Include="..\ogre-procedural\library\include\ProceduralConeGenerator.h" />
+    <ClInclude Include="..\ogre-procedural\library\include\ProceduralCylinderGenerator.h" />
+    <ClInclude Include="..\ogre-procedural\library\include\ProceduralDebugRendering.h" />
+    <ClInclude Include="..\ogre-procedural\library\include\ProceduralExtruder.h" />
+    <ClInclude Include="..\ogre-procedural\library\include\ProceduralGeometryHelpers.h" />
+    <ClInclude Include="..\ogre-procedural\library\include\ProceduralIcoSphereGenerator.h" />
+    <ClInclude Include="..\ogre-procedural\library\include\ProceduralLathe.h" />
+    <ClInclude Include="..\ogre-procedural\library\include\ProceduralMeshGenerator.h" />
+    <ClInclude Include="..\ogre-procedural\library\include\ProceduralMeshModifiers.h" />
+    <ClInclude Include="..\ogre-procedural\library\include\ProceduralMultiShape.h" />
+    <ClInclude Include="..\ogre-procedural\library\include\ProceduralMultiShapeGenerators.h" />
+    <ClInclude Include="..\ogre-procedural\library\include\ProceduralNoise.h" />
+    <ClInclude Include="..\ogre-procedural\library\include\ProceduralPath.h" />
+    <ClInclude Include="..\ogre-procedural\library\include\ProceduralPathGenerators.h" />
+    <ClInclude Include="..\ogre-procedural\library\include\ProceduralPathGeneratorsBase.h" />
+    <ClInclude Include="..\ogre-procedural\library\include\ProceduralPlaneGenerator.h" />
+    <ClInclude Include="..\ogre-procedural\library\include\ProceduralPlatform.h" />
+    <ClInclude Include="..\ogre-procedural\library\include\ProceduralRoundedBoxGenerator.h" />
+    <ClInclude Include="..\ogre-procedural\library\include\ProceduralShape.h" />
+    <ClInclude Include="..\ogre-procedural\library\include\ProceduralShapeGenerators.h" />
+    <ClInclude Include="..\ogre-procedural\library\include\ProceduralShapeGeneratorsBase.h" />
+    <ClInclude Include="..\ogre-procedural\library\include\ProceduralSphereGenerator.h" />
+    <ClInclude Include="..\ogre-procedural\library\include\ProceduralSplines.h" />
+    <ClInclude Include="..\ogre-procedural\library\include\ProceduralSpringGenerator.h" />
+    <ClInclude Include="..\ogre-procedural\library\include\ProceduralStableHeaders.h" />
+    <ClInclude Include="..\ogre-procedural\library\include\ProceduralSVG.h" />
+    <ClInclude Include="..\ogre-procedural\library\include\ProceduralTextureBuffer.h" />
+    <ClInclude Include="..\ogre-procedural\library\include\ProceduralTextureGenerator.h" />
+    <ClInclude Include="..\ogre-procedural\library\include\ProceduralTextureModifiers.h" />
+    <ClInclude Include="..\ogre-procedural\library\include\ProceduralTorusGenerator.h" />
+    <ClInclude Include="..\ogre-procedural\library\include\ProceduralTorusKnotGenerator.h" />
+    <ClInclude Include="..\ogre-procedural\library\include\ProceduralTrack.h" />
+    <ClInclude Include="..\ogre-procedural\library\include\ProceduralTriangleBuffer.h" />
+    <ClInclude Include="..\ogre-procedural\library\include\ProceduralTriangulator.h" />
+    <ClInclude Include="..\ogre-procedural\library\include\ProceduralTubeGenerator.h" />
+    <ClInclude Include="..\ogre-procedural\library\include\ProceduralUtils.h" />
     <ClInclude Include="include\ActionManager.h" />
     <ClInclude Include="include\AudioService.h" />
     <ClInclude Include="include\Camera.h" />

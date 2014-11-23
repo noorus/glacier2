@@ -59,11 +59,11 @@ namespace Glacier {
       mGraphics->getScene(),
       "defaultcamera",
       (PCZSceneNode*)mGraphics->getScene()->getRootSceneNode(),
-      Vector3( 0.0f, 0.08f, -0.25f ),
+      Vector3( 0.0f, 4.0f, -4.75f ),
       Radian( Ogre::Math::DegreesToRadians( 70.0f ) ),
       zone,
       true,
-      0.25f, 0.1f, 2.0f, 10.0f, 2.0f, 10.0f );
+      0.25f, 1.0f, 10.0f, 10.0f, 2.0f, 10.0f );
 
     mViewport = mGraphics->getWindow()->addViewport(
       mCamera->getCamera(), 0 );
@@ -111,7 +111,7 @@ namespace Glacier {
 
   void Director::update( const GameTime delta )
   {
-    mHDRCompositor->setFrameTime( delta );
+    mHDRCompositor->setFrameTime( (float)delta );
   }
 
   Director::~Director()

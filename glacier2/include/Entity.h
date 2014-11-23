@@ -5,8 +5,9 @@
 
 namespace Glacier {
 
+  class PhysicsScene;
   class EntityManager;
-  class EntityBaseData;
+  struct EntityBaseData;
 
   class Entity {
   friend class EntityManager;
@@ -22,6 +23,7 @@ namespace Glacier {
   public:
     inline const string& getName() const throw( ) { return mName; }
     inline const bool isRemoval() const throw( ) { return mRemoval; }
+    virtual void spawn( PhysicsScene* scene, const Vector3& position ) = 0;
     virtual void think() = 0;
   };
 
