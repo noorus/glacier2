@@ -6,7 +6,7 @@
 
 namespace Glacier {
 
-  /*Entity::Entity( const EntityBaseData* baseData ): mBaseData( baseData )
+  Entity::Entity( const EntityBaseData* baseData ): mBaseData( baseData )
   {
     //
   }
@@ -14,6 +14,6 @@ namespace Glacier {
   Entity::~Entity()
   {
     //
-  }*/
+  }
 
 }

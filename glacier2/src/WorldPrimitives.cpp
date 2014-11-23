@@ -78,16 +78,6 @@ namespace Glacier {
     mScene->getScene()->removeActor( *mActor );
   }
 
-  Entity::Entity( const EntityBaseData* baseData ): mBaseData( baseData )
-  {
-    //
-  }
-
-  Entity::~Entity()
-  {
-    //
-  }
-
   namespace World {
 
     Plane::Plane( PhysicsScene* scene, const Ogre::Plane& plane,
