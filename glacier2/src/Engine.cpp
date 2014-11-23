@@ -226,6 +226,8 @@ namespace Glacier {
       mConsole->printf( Console::srcEngine, L"Init: Skipping audio" );
 
     mEntities = new EntityManager( this );
+    Locator::provideEntities( mEntities );
+
     mGame = new Game( this );
 
     SetFocus( mGraphics->getRenderWindowHandle() );

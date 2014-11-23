@@ -116,7 +116,10 @@ namespace Glacier {
   {
     removeMarked();
     for ( auto entity : mEntities )
-      remove( entity );
+    {
+      removeThinker( entity );
+      delete entity;
+    }
     mEntities.clear();
     mNamingCounter = 0;
   }
