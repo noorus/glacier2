@@ -26,6 +26,7 @@ namespace Glacier {
   class InputManager;
   class ActionManager;
   class GUI;
+  class EntityManager;
 
   ENGINE_EXTERN_CONCMD( version );
   ENGINE_EXTERN_CONCMD( memstat );
@@ -78,6 +79,7 @@ namespace Glacier {
     WindowHandler* mWindowHandler;
     ActionManager* mActionManager;
     GUI* mGUI;
+    EntityManager* mEntities;
     // Timing
     LARGE_INTEGER mHPCFrequency;        //!< HPC frequency
     static GameTime fTime;              //!< Game time
@@ -102,6 +104,7 @@ namespace Glacier {
     InputManager* getInput() { return mInput; }
     ActionManager* getActionManager() { return mActionManager; }
     GUI* getGUI() { return mGUI; }
+    EntityManager* getEntities() { return mEntities; }
     inline GameTime getTime() { return fTime; }
     // Callbacks
     static void callbackVersion( Console* console,

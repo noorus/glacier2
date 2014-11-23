@@ -14,6 +14,7 @@
 #include "ServiceLocator.h"
 #include "ActionManager.h"
 #include "GUI.h"
+#include "EntityManager.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
@@ -69,7 +70,7 @@ namespace Glacier {
   mSignal( Signal_None ), mVersion( 0, 1, 1 ), mConsoleWindow( nullptr ),
   mGame( nullptr ), mWindowHandler( nullptr ), mInput( nullptr ),
   mAudio( nullptr ), mPhysics( nullptr ), mActionManager( nullptr ),
-  mGUI( nullptr )
+  mGUI( nullptr ), mEntities( nullptr )
   {
   }
 
@@ -224,6 +225,7 @@ namespace Glacier {
     else
       mConsole->printf( Console::srcEngine, L"Init: Skipping audio" );
 
+    mEntities = new EntityManager( this );
     mGame = new Game( this );
 
     SetFocus( mGraphics->getRenderWindowHandle() );
@@ -279,6 +281,7 @@ namespace Glacier {
           mPhysics->componentTick( fLogicStep, fTime );
         mInput->componentTick( fLogicStep, fTime );
         mGame->componentTick( fLogicStep, fTime );
+        mEntities->componentTick( fLogicStep, fTime );
         if ( mAudio )
           mAudio->componentTick( fLogicStep, fTime );
         fTime += fLogicStep;
@@ -337,6 +340,7 @@ namespace Glacier {
   void Engine::shutdown()
   {
     SAFE_DELETE( mGame );
+    SAFE_DELETE( mEntities );
 
     if ( mAudio )
     {

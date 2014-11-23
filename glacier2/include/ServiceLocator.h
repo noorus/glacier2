@@ -8,6 +8,7 @@ namespace Glacier {
 
   class Graphics;
   class GUI;
+  class EntityManager;
 
   class Locator {
   private:
@@ -18,6 +19,7 @@ namespace Glacier {
     static NullPhysics nullPhysicsService; //!< Default null physics service
     static Graphics* graphicsService; //!< Graphics component
     static GUI* guiService; //!< GUI component
+    static EntityManager* entityManager; //!< World entities manager
   public:
     static Memory& getMemory() { return *memoryService; }
 
@@ -52,6 +54,13 @@ namespace Glacier {
     static void provideGUI( GUI* gui )
     {
       guiService = gui;
+    }
+
+    static EntityManager& getEntities() { return *entityManager; }
+
+    static void provideEntities( EntityManager* entities )
+    {
+      entityManager = entities;
     }
   };
 

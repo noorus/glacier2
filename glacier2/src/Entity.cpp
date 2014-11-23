@@ -6,6 +6,14 @@
 
 namespace Glacier {
 
+  Entity::Entity( const EntityBaseData* baseData ): mBaseData( baseData )
+  {
+    //
+  }
 
+  Entity::~Entity()
+  {
+    //
+  }
 
 }

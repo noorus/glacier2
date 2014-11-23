@@ -189,6 +189,7 @@
     <ClCompile Include="src\Console.cpp" />
     <ClCompile Include="src\ConsoleWindow.cpp" />
     <ClCompile Include="src\DemoState.cpp" />
+    <ClCompile Include="src\EntityRegistry.cpp" />
     <ClCompile Include="src\GUI.cpp" />
     <ClCompile Include="src\MenuState.cpp" />
     <ClCompile Include="src\ModelViewer.cpp" />
