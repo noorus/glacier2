@@ -85,6 +85,12 @@
     <Filter Include="Source Files\GUI">
       <UniqueIdentifier>{b0cd0d81-ed16-4edf-b179-80df49907f0d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\World">
+      <UniqueIdentifier>{451a9487-1f4a-4949-9d31-24d739581d43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\World">
+      <UniqueIdentifier>{69c24dc0-2c8a-437a-97fd-faa5dd9bf24c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Main.cpp">
@@ -215,6 +221,9 @@
     </ClCompile>
     <ClCompile Include="src\MenuState.cpp">
       <Filter>Source Files\States</Filter>
+    </ClCompile>
+    <ClCompile Include="src\WorldPrimitives.cpp">
+      <Filter>Source Files\World</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -358,6 +367,9 @@
     </ClInclude>
     <ClInclude Include="include\MenuState.h">
       <Filter>Header Files\States</Filter>
+    </ClInclude>
+    <ClInclude Include="include\WorldPrimitives.h">
+      <Filter>Header Files\World</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

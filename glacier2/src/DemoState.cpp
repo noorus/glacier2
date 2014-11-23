@@ -14,6 +14,7 @@
 #include "PhysXPhysics.h"
 #include "PhysicsScene.h"
 #include "PhysicsDebugVisualizer.h"
+#include "WorldPrimitives.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
@@ -34,6 +35,11 @@ namespace Glacier {
     mPhysics = gEngine->getPhysics()->createScene();
     mPhysics->setDebugVisuals( true );
     mVisuals = new PhysicsDebugVisualizer( gEngine );
+    
+    Ogre::Plane plane( Vector3::UNIT_Y, 0.0f );
+    Real width = 8.0f;
+    Real height = 8.0f;
+    mGround = new World::Plane( mPhysics, plane, width, height, Vector3::ZERO );
   }
 
   void DemoState::pause( GameTime time )
@@ -60,6 +66,7 @@ namespace Glacier {
 
   void DemoState::shutdown( GameTime time )
   {
+    SAFE_DELETE( mGround );
     SAFE_DELETE( mVisuals );
     gEngine->getPhysics()->destroyScene( mPhysics );
     SAFE_DELETE( mDirector );

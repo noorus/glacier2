@@ -37,12 +37,6 @@ namespace Glacier {
 
     mDefaultMaterial = mPhysics->getPhysics()->createMaterial(
       staticFriction, dynamicFriction, restitution );
-
-    PxBoxGeometry geometry( 0.5f, 0.5f, 0.5f );
-    PxShape* shape = mPhysics->getPhysics()->createShape( geometry, *mDefaultMaterial );
-    physx::PxTransform transform( PxVec3( 0.0, 0.0, 0.0 ) );
-    PxRigidStatic* actor = PxCreateStatic( *mPhysics->getPhysics(), transform, *shape );
-    mScene->addActor( *actor );
   }
 
   void PhysicsScene::simulationStep( const GameTime delta, const GameTime time )
