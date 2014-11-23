@@ -62,17 +62,17 @@ namespace Glacier {
     mAudioMasterVolume = mRoot->findWidget( "sbMasterVolume" )->castType<MyGUI::ScrollBar>();
     mAudioMasterVolume->eventScrollChangePosition += MyGUI::newDelegate(
       this, &SettingsWindow::onAudioMasterVolumeChanged );
-    mAudioMasterVolume->setScrollPosition( g_CVar_fm_volume.getFloat() * 100 );
+    mAudioMasterVolume->setScrollPosition( (size_t)( g_CVar_fm_volume.getFloat() * 100.0f ) );
 
     mAudioMusicVolume = mRoot->findWidget( "sbMusicVolume" )->castType<MyGUI::ScrollBar>();
     mAudioMusicVolume->eventScrollChangePosition += MyGUI::newDelegate(
       this, &SettingsWindow::onAudioMusicVolumeChanged );
-    mAudioMusicVolume->setScrollPosition( g_CVar_fm_bgvolume.getFloat() * 100 );
+    mAudioMusicVolume->setScrollPosition( (size_t)( g_CVar_fm_bgvolume.getFloat() * 100.0f ) );
 
     mAudioEffectVolume = mRoot->findWidget( "sbEffectVolume" )->castType<MyGUI::ScrollBar>();
     mAudioEffectVolume->eventScrollChangePosition += MyGUI::newDelegate(
       this, &SettingsWindow::onAudioEffectVolumeChanged );
-    mAudioEffectVolume->setScrollPosition( g_CVar_fm_fxvolume.getFloat() * 100 );
+    mAudioEffectVolume->setScrollPosition( (size_t)( g_CVar_fm_fxvolume.getFloat() * 100.0f ) );
 
     refreshAudioDrivers();
     refreshAudioOutputTypes();
@@ -102,7 +102,7 @@ namespace Glacier {
 
   void SettingsWindow::onAudioDriverSelected( MyGUI::ComboBox* sender, size_t index )
   {
-    mCurrentAudio.driver = index;
+    mCurrentAudio.driver = (int)index;
   }
 
   void SettingsWindow::refreshAudioOutputTypes()
@@ -120,7 +120,7 @@ namespace Glacier {
 
   void SettingsWindow::onAudioOutputTypeSelected( MyGUI::ComboBox* sender, size_t index )
   {
-    mCurrentAudio.outputType = index;
+    mCurrentAudio.outputType = (int)index;
   }
 
   void SettingsWindow::refreshAudioSpeakerModes()
@@ -138,7 +138,7 @@ namespace Glacier {
 
   void SettingsWindow::onAudioSpeakerModeSelected( MyGUI::ComboBox* sender, size_t index )
   {
-    mCurrentAudio.speakerMode = index;
+    mCurrentAudio.speakerMode = (int)index;
   }
 
   void SettingsWindow::onVerticalSyncClicked( MyGUI::Widget* sender )

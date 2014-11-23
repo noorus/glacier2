@@ -145,7 +145,7 @@ namespace Glacier {
       for ( size_t i = 0; i < mOutputTypes.size(); i++ )
         if ( ((FMODOutputType*)mOutputTypes[i])->fmodValue == mInfo.outputType )
         {
-          mSettings.outputType = i;
+          mSettings.outputType = (int)i;
           break;
         }
 
@@ -153,7 +153,7 @@ namespace Glacier {
       for ( size_t i = 0; i < mDrivers.size(); i++ )
         if ( ((FMODDriver*)mDrivers[i])->fmodValue == mInfo.driver )
         {
-          mSettings.driver = i;
+          mSettings.driver = (int)i;
           break;
         }
 
@@ -161,7 +161,7 @@ namespace Glacier {
       for ( size_t i = 0; i < mSpeakerModes.size(); i++ )
         if ( ((FMODSpeakerMode*)mSpeakerModes[i])->fmodValue == mInfo.speakerMode )
         {
-          mSettings.speakerMode = i;
+          mSettings.speakerMode = (int)i;
           break;
         }
 
@@ -468,7 +468,7 @@ namespace Glacier {
     for ( size_t i = 0; i < mSpeakerModes.size(); i++ )
     {
       if ( boost::iequals( mode, mSpeakerModes[i]->shorthand ) )
-        return i;
+        return (int)i;
     }
     return 0;
   }
@@ -488,7 +488,7 @@ namespace Glacier {
     for ( size_t i = 0; i < mOutputTypes.size(); i++ )
     {
       if ( boost::iequals( type, mOutputTypes[i]->shorthand ) )
-        return i;
+        return (int)i;
     }
     return 0;
   }

@@ -41,7 +41,7 @@ namespace Glacier {
 
   void PhysicsScene::simulationStep( const GameTime delta, const GameTime time )
   {
-    mScene->simulate( delta );
+    mScene->simulate( (PxReal)delta );
   }
 
   void PhysicsScene::simulationFetchResults()

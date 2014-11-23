@@ -79,8 +79,8 @@ namespace Glacier {
     //! Work out the position for a fixed-size box centered in a viewport.
     inline Vector2 viewportCenteredBox( const Viewport* v, int w, int h )
     {
-      int vw = v->getActualWidth();
-      int vh = v->getActualHeight();
+      auto vw = (Real)v->getActualWidth();
+      auto vh = (Real)v->getActualHeight();
       Vector2 vec( ( vw / 2 ) - ( w / 2 ), ( vh / 2 ) - ( h / 2 ) );
       return vec;
     }

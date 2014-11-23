@@ -46,7 +46,7 @@ namespace Glacier {
       gEngine->getActionManager()->getCameraController()->getMovement()
     );
 
-    mDirector->getCamera()->update( tick );
+    mDirector->getCamera()->update( (float)tick );
   }
 
   void MenuState::shutdown( GameTime time )
