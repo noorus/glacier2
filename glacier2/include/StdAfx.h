@@ -124,5 +124,11 @@
 #include <MyGUI.h>
 #include <MyGUI_OgrePlatform.h>
 
+// OgreProcedural Headers
+#pragma warning( push )
+#pragma warning( disable: 4267 ) // warning C4267: '=' : conversion from 'size_t' to 'unsigned int', possible loss of data
+#include <Procedural.h>
+#pragma warning( pop )
+
 // Glacier types
 #include "Types.h"
