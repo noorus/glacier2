@@ -13,6 +13,7 @@ namespace Glacier {
     World* mWorld;
     Real mHeight;
     Real mRadius;
+    physx::PxScene* mScene;
     physx::PxCapsuleController* mController;
     physx::PxMaterial* mMaterial;
     Vector3 mPosition;
@@ -24,7 +25,8 @@ namespace Glacier {
     virtual PxMaterial* const getMaterial() const throw() { return mMaterial; }
     virtual const Vector3& getPosition() const throw() { return mPosition; }
     virtual void setPosition( const Vector3& position );
-    virtual void move( const Vector3& displacement, const GameTime delta );
+    PxControllerCollisionFlags move( const Vector3& displacement, const GameTime delta );
+    virtual void update();
     virtual ~CharacterPhysicsComponent();
   };
 

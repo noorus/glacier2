@@ -20,6 +20,10 @@ namespace Glacier {
   CharacterPhysicsComponent::CharacterPhysicsComponent( World* world, const Vector3& position ):
   mPosition( position ), mController( nullptr ), mMaterial( nullptr ), mWorld( world )
   {
+    mScene = mWorld->getPhysics()->getScene();
+
+    mMaterial = mScene->getPhysics().createMaterial( 0.5f, 0.5f, 0.1f );
+
     PxCapsuleControllerDesc descriptor;
     descriptor.setToDefault();
     descriptor.position = Math::ogreVec3ToPxExt( mPosition );
@@ -39,8 +43,9 @@ namespace Glacier {
       ENGINE_EXCEPT( "Invalid character controller descriptor" );
 
     mController = static_cast<PxCapsuleController*>(
-      world->getPhysics()->getControllerManager()->createController( descriptor )
+      mWorld->getPhysics()->getControllerManager()->createController( descriptor )
     );
+
     if ( !mController )
       ENGINE_EXCEPT( "Could not create character controller" );
   }
@@ -48,21 +53,25 @@ namespace Glacier {
   void CharacterPhysicsComponent::setPosition( const Vector3& position )
   {
     mPosition = position;
-    if ( mController )
-      mController->setPosition( Math::ogreVec3ToPxExt( mPosition ) );
+    mController->setPosition( Math::ogreVec3ToPxExt( mPosition ) );
   }
 
-  void CharacterPhysicsComponent::move( const Vector3& displacement, const GameTime delta )
+  PxControllerCollisionFlags CharacterPhysicsComponent::move(
+  const Vector3& displacement, const GameTime delta )
   {
-    if ( !mController )
-      return;
-
     const PxF32 minimumDistance = 0.001f;
 
     PxControllerFilters filters;
     auto flags = mController->move(
       Math::ogreVec3ToPx( displacement ),
       minimumDistance, (PxF32)delta, filters, nullptr );
+
+    return flags;
+  }
+
+  void CharacterPhysicsComponent::update()
+  {
+    mPosition = Math::pxExtVec3ToOgre( mController->getPosition() );
   }
 
   CharacterPhysicsComponent::~CharacterPhysicsComponent()
