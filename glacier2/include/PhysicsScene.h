@@ -21,6 +21,7 @@ namespace Glacier {
     physx::PxCpuDispatcher* mCPUDispatcher;
     physx::PxGpuDispatcher* mGPUDispatcher;
     physx::PxSimulationStatistics mStatistics;
+    physx::PxControllerManager* mControllerMgr;
     PhysicsDebugVisualizer* mVisualizer;
     PhysicsScene( PhysXPhysics* physics,
       physx::PxCpuDispatcher* cpuDispatcher, physx::PxGpuDispatcher* gpuDispatcher,
@@ -33,11 +34,12 @@ namespace Glacier {
   public:
     void setDebugVisuals( const bool visuals );
     const physx::PxRenderBuffer& fetchDebugVisuals();
-    inline physx::PxScene* getScene() { return mScene; }
+    inline physx::PxScene* getScene() const throw() { return mScene; }
+    inline physx::PxControllerManager* getControllerManager() const throw() { return mControllerMgr; }
     float setGravity( const float gravity );
     physx::PxMaterial* getDefaultMaterial() const { return mDefaultMaterial; }
-    const float getGravity() const { return -mGravity.y; }
-    const Vector3& getGravityVector() const { return mGravity; }
+    const float getGravity() const throw() { return -mGravity.y; }
+    const Vector3& getGravityVector() const throw() { return mGravity; }
     float setRestitution( const float restitution );
     float setStaticFriction( const float staticFriction );
     float setDynamicFriction( const float dynamicFriction );

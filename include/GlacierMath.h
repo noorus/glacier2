@@ -24,6 +24,20 @@ namespace Glacier {
       return physx::PxVec3( v.x, v.y, v.z );
     }
 
+    //! \fn pxExtendedVec3ToOgre
+    //! Convert from PhysX PxExtendedVec3 to Ogre Vector3.
+    inline Vector3 pxExtVec3ToOgre( const physx::PxExtendedVec3& v )
+    {
+      return Vector3( (Real)v.x, (Real)v.y, (Real)v.z );
+    }
+
+    //! \fn ogreVec3ToPxExt
+    //! Convert from Ogre Vector3 to PhysX PxExtendedVec3.
+    inline PxExtendedVec3 ogreVec3ToPxExt( const Vector3& v )
+    {
+      return physx::PxExtendedVec3( v.x, v.y, v.z );
+    }
+
     //! \fn ogreVec3ToFMOD
     //! Convert from Ogre Vector3 to FMod FMOD_VECTOR.
     inline FMOD_VECTOR ogreVec3ToFMOD( const Vector3& v )

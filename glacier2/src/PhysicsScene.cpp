@@ -16,11 +16,11 @@ namespace Glacier {
 
   PhysicsScene::PhysicsScene( PhysXPhysics* physics,
   PxCpuDispatcher* cpuDispatcher, PxGpuDispatcher* gpuDispatcher,
-  const float gravity,
-  const float restitution, const float staticFriction,
+  const float gravity, const float restitution, const float staticFriction,
   const float dynamicFriction ):
   mPhysics( physics ), mScene( nullptr ), mCPUDispatcher( cpuDispatcher ),
-  mGPUDispatcher( gpuDispatcher ), mVisualizer( nullptr )
+  mGPUDispatcher( gpuDispatcher ), mVisualizer( nullptr ),
+  mControllerMgr( nullptr )
   {
     PxSceneDesc sceneDescriptor( mPhysics->getPhysics()->getTolerancesScale() );
 
@@ -38,6 +38,10 @@ namespace Glacier {
 
     mDefaultMaterial = mPhysics->getPhysics()->createMaterial(
       staticFriction, dynamicFriction, restitution );
+
+    mControllerMgr = PxCreateControllerManager( *mScene );
+    if ( !mControllerMgr )
+      ENGINE_EXCEPT( "Couldn't create character controller manager" );
   }
 
   void PhysicsScene::simulationStep( const GameTime delta, const GameTime time )
@@ -120,6 +124,11 @@ namespace Glacier {
   PhysicsScene::~PhysicsScene()
   {
     SAFE_DELETE( mVisualizer );
+    if ( mControllerMgr )
+    {
+      mControllerMgr->purgeControllers();
+      mControllerMgr->release();
+    }
     SAFE_RELEASE_PHYSX( mScene );
   }
 

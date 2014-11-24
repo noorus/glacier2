@@ -42,7 +42,7 @@ namespace Glacier {
 
   PhysXPhysics::PhysXPhysics( Engine* engine ): EngineComponent( engine ),
     mFoundation( nullptr ), mPhysics( nullptr ), mCooking( nullptr ),
-    mCudaContextManager( nullptr ), mControllerMgr( nullptr ), mCPUDispatcher( nullptr )
+    mCudaContextManager( nullptr ), mCPUDispatcher( nullptr )
   {
     initialize();
   }
@@ -224,12 +224,6 @@ namespace Glacier {
     assert( mScenes.empty() );
 
     SAFE_RELEASE_PHYSX( mCPUDispatcher );
-
-    if ( mControllerMgr )
-    {
-      mControllerMgr->purgeControllers();
-      mControllerMgr->release();
-    }
 
     if ( mPhysics )
     {

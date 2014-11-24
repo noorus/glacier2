@@ -24,7 +24,6 @@ namespace Glacier {
     physx::PxPhysics* mPhysics;
     physx::PxCooking* mCooking;
     physx::PxCudaContextManager* mCudaContextManager;
-    physx::PxControllerManager* mControllerMgr;
     physx::PxDefaultCpuDispatcher* mCPUDispatcher;
     std::list<PhysicsScene*> mScenes;
     virtual void reportError( PxErrorCode::Enum code,
