@@ -42,7 +42,7 @@ namespace Glacier {
 
     for ( int i = 1; i < 11; i++ )
     {
-      auto cube = Locator::getEntities().create( "cube" );
+      auto cube = Locator::getEntities().create( "dev_cube" );
       cube->spawn( Vector3( 0.0f, i * 15.0f, 0.0f ), Quaternion::IDENTITY );
     }
   }

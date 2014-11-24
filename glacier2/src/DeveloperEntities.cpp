@@ -20,55 +20,59 @@ namespace Glacier {
 
   using namespace physx;
 
-  ENGINE_DECLARE_ENTITY( cube, Cube );
+  namespace Entities {
 
-  Cube::Cube( World* world ): Entity( world, &baseData )
-  {
-    //
-  }
+    ENGINE_DECLARE_ENTITY( dev_cube, DevCube );
 
-  void Cube::spawn( const Vector3& position, const Quaternion& orientation )
-  {
-    Entity::spawn( position, orientation );
+    DevCube::DevCube( World* world ): Entity( world, &baseData )
+    {
+      //
+    }
 
-    PxPhysics& physics = mWorld->getPhysics()->getScene()->getPhysics();
-    auto scene = mWorld->getPhysics();
+    void DevCube::spawn( const Vector3& position, const Quaternion& orientation )
+    {
+      Entity::spawn( position, orientation );
 
-    PxTransform transform;
-    transform.p = Math::ogreVec3ToPx( mPosition );
-    transform.q = Math::ogreQtToPx( mOrientation );
+      PxPhysics& physics = mWorld->getPhysics()->getScene()->getPhysics();
+      auto scene = mWorld->getPhysics();
 
-    PxBoxGeometry geometry;
-    geometry.halfExtents.x = 0.125f;
-    geometry.halfExtents.y = 0.125f;
-    geometry.halfExtents.z = 0.125f;
-    mActor = PxCreateDynamic( physics, transform, geometry, *scene->getDefaultMaterial(), 10.0f );
-    if ( !mActor )
-      ENGINE_EXCEPT( "Could not create physics plane actor" );
+      PxTransform transform;
+      transform.p = Math::ogreVec3ToPx( mPosition );
+      transform.q = Math::ogreQtToPx( mOrientation );
 
-    scene->getScene()->addActor( *mActor );
+      PxBoxGeometry geometry;
+      geometry.halfExtents.x = 0.125f;
+      geometry.halfExtents.y = 0.125f;
+      geometry.halfExtents.z = 0.125f;
+      mActor = PxCreateDynamic( physics, transform, geometry, *scene->getDefaultMaterial(), 10.0f );
+      if ( !mActor )
+        ENGINE_EXCEPT( "Could not create physics plane actor" );
 
-    mMesh = Procedural::BoxGenerator().setSizeX( 0.25f ).setSizeY( 0.25f ).setSizeZ( 0.25f ).realizeMesh();
+      scene->getScene()->addActor( *mActor );
 
-    mEntity = Locator::getGraphics().getScene()->createEntity( mMesh );
-    mEntity->setMaterialName( "Developer/Cube025" );
-    mEntity->setCastShadows( false );
-    mNode->attachObject( mEntity );
-  }
+      mMesh = Procedural::BoxGenerator().setSizeX( 0.25f ).setSizeY( 0.25f ).setSizeZ( 0.25f ).realizeMesh();
 
-  void Cube::think()
-  {
-    PxTransform& transform = mActor->getGlobalPose();
-    mNode->setPosition( Math::pxVec3ToOgre( transform.p ) );
-    mNode->setOrientation( Math::pxQtToOgre( transform.q ) );
-  }
+      mEntity = Locator::getGraphics().getScene()->createEntity( mMesh );
+      mEntity->setMaterialName( "Developer/Cube025" );
+      mEntity->setCastShadows( false );
+      mNode->attachObject( mEntity );
+    }
 
-  Cube::~Cube()
-  {
-    if ( mEntity )
-      Locator::getGraphics().getScene()->destroyEntity( mEntity );
+    void DevCube::think()
+    {
+      PxTransform& transform = mActor->getGlobalPose();
+      mNode->setPosition( Math::pxVec3ToOgre( transform.p ) );
+      mNode->setOrientation( Math::pxQtToOgre( transform.q ) );
+    }
 
-    mWorld->getPhysics()->getScene()->removeActor( *mActor );
+    DevCube::~DevCube()
+    {
+      if ( mEntity )
+        Locator::getGraphics().getScene()->destroyEntity( mEntity );
+
+      mWorld->getPhysics()->getScene()->removeActor( *mActor );
+    }
+
   }
 
 }
