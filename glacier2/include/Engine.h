@@ -64,6 +64,7 @@ namespace Glacier {
     struct Options {
       bool noAudio;
       bool noPhysics;
+      StringList additionalExecs;
       Options();
     };
   protected:

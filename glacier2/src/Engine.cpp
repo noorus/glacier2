@@ -198,6 +198,8 @@ namespace Glacier {
     Locator::provideGraphics( mGraphics );
 
     mConsole->executeFile( L"user.cfg" );
+    for ( auto exec : options.additionalExecs )
+      mConsole->executeFile( exec );
 
     mGraphics->postInitialize();
 

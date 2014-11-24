@@ -41,10 +41,14 @@ LPWSTR lpCmdLine, int nCmdShow )
   int i = 0;
   while ( i < argCount )
   {
-    if ( !_wcsicmp( arguments[i], L"-noaudio" ) ) {
+    if ( _wcsicmp( arguments[i], L"-noaudio" ) == 0 ) {
       options.noAudio = true;
-    } else if ( !_wcsicmp( arguments[i], L"-nophysics" ) ) {
+    } else if ( _wcsicmp( arguments[i], L"-nophysics" ) == 0 ) {
       options.noPhysics = true;
+    } else if ( _wcsicmp( arguments[i], L"-exec" ) == 0 ) {
+      i++;
+      if ( i < argCount )
+        options.additionalExecs.push_back( arguments[i] );
     }
     i++;
   }
