@@ -291,11 +291,8 @@ namespace Glacier {
         fTime += fLogicStep;
         fTimeAccumulator -= fLogicStep;
       }
-      fTimeDelta -= fTimeAccumulator;
       if ( fTimeDelta > 0.0 )
-      {
         mGraphics->componentPostUpdate( fTimeDelta, fTime );
-      }
     }
   }
 
