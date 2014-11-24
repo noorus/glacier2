@@ -39,19 +39,19 @@ namespace Glacier {
     transform.q = Math::ogreQtToPx( mOrientation );
 
     PxBoxGeometry geometry;
-    geometry.halfExtents.x = 0.5f;
-    geometry.halfExtents.y = 0.5f;
-    geometry.halfExtents.z = 0.5f;
-    mActor = PxCreateDynamic( physics, transform, geometry, *scene->getDefaultMaterial(), 25.0f );
+    geometry.halfExtents.x = 0.125f;
+    geometry.halfExtents.y = 0.125f;
+    geometry.halfExtents.z = 0.125f;
+    mActor = PxCreateDynamic( physics, transform, geometry, *scene->getDefaultMaterial(), 10.0f );
     if ( !mActor )
       ENGINE_EXCEPT( "Could not create physics plane actor" );
 
     scene->getScene()->addActor( *mActor );
 
-    mMesh = Procedural::BoxGenerator().setSizeX( 1.0f ).setSizeY( 1.0f ).setSizeZ( 1.0f ).realizeMesh();
+    mMesh = Procedural::BoxGenerator().setSizeX( 0.25f ).setSizeY( 0.25f ).setSizeZ( 0.25f ).realizeMesh();
 
     mEntity = Locator::getGraphics().getScene()->createEntity( mMesh );
-    mEntity->setMaterialName( "ModelViewer/Floor" );
+    mEntity->setMaterialName( "Developer/Cube025" );
     mEntity->setCastShadows( false );
     mNode->attachObject( mEntity );
   }

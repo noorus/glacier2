@@ -72,12 +72,12 @@ namespace Glacier {
 
     mGraphics->getEngine()->getGUI()->initialize();
 
-    mGraphics->getScene()->setAmbientLight( ColourValue( 0.2f, 0.2f, 0.2f, 1.0f ) );
+    mGraphics->getScene()->setAmbientLight( ColourValue( 0.25f, 0.25f, 0.25f, 1.0f ) );
 
     Ogre::Light* w = mGraphics->getScene()->createLight( "doopwhoop" );
     w->setType( Ogre::Light::LT_DIRECTIONAL );
     w->setDirection( Vector3( 0.0f, -1.0f, 0.0f ) );
-    w->setPowerScale( 0.5f );
+    w->setPowerScale( 1.0f );
     w->setDiffuseColour( ColourValue::White );
     w->setSpecularColour( ColourValue::Red );
 

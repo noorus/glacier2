@@ -46,7 +46,7 @@ namespace Glacier {
       scm->addPCZSceneNode( mNode, scm->getDefaultZone() );
 
       mEntity = Locator::getGraphics().getScene()->createEntity( mMesh );
-      mEntity->setMaterialName( "ModelViewer/Floor" );
+      mEntity->setMaterialName( "Developer/Floor" );
       mEntity->setCastShadows( false );
       mNode->attachObject( mEntity );
       mNode->setPosition( position );
