@@ -30,6 +30,7 @@ namespace Glacier {
     inline const bool isRemoval() const throw( ) { return mRemoval; }
     inline const Vector3& getPosition() const throw( ) { return mPosition; }
     inline const Quaternion& getOrientation() const throw( ) { return mOrientation; }
+    inline const PCZSceneNode* getNode() const throw( ) { return mNode; }
     virtual void spawn( const Vector3& position, const Quaternion& orientation );
     virtual void think() = 0;
     void remove();

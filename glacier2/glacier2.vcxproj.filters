@@ -339,6 +339,9 @@
     <ClCompile Include="src\World.cpp">
       <Filter>Source Files\World</Filter>
     </ClCompile>
+    <ClCompile Include="src\CharacterPhysicsComponent.cpp">
+      <Filter>Source Files\Services\Physics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\CompilerDef.h">
@@ -610,6 +613,9 @@
     </ClInclude>
     <ClInclude Include="include\World.h">
       <Filter>Header Files\World</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CharacterPhysicsComponent.h">
+      <Filter>Header Files\Services\Physics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
