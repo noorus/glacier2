@@ -5,6 +5,7 @@
 #include "ServiceLocator.h"
 #include "PhysicsScene.h"
 #include "GlacierMath.h"
+#include "PhysicsDebugVisualizer.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
@@ -19,7 +20,7 @@ namespace Glacier {
   const float restitution, const float staticFriction,
   const float dynamicFriction ):
   mPhysics( physics ), mScene( nullptr ), mCPUDispatcher( cpuDispatcher ),
-  mGPUDispatcher( gpuDispatcher )
+  mGPUDispatcher( gpuDispatcher ), mVisualizer( nullptr )
   {
     PxSceneDesc sceneDescriptor( mPhysics->getPhysics()->getTolerancesScale() );
 
@@ -50,6 +51,15 @@ namespace Glacier {
     mScene->getSimulationStatistics( mStatistics );
   }
 
+  void PhysicsScene::post()
+  {
+    if ( mVisualizer )
+    {
+      mVisualizer->clearDebugScene();
+      mVisualizer->drawDebugScene( &mScene->getRenderBuffer() );
+    }
+  }
+
   void PhysicsScene::setDebugVisuals( const bool visuals )
   {
     if ( visuals )
@@ -65,9 +75,14 @@ namespace Glacier {
       mScene->setVisualizationParameter( PxVisualizationParameter::eCONTACT_FORCE, 1.0f );
       mScene->setVisualizationParameter( PxVisualizationParameter::eBODY_LIN_VELOCITY, 1.0f );
       mScene->setVisualizationParameter( PxVisualizationParameter::eBODY_ANG_VELOCITY, 1.0f );
+
+      mVisualizer = new PhysicsDebugVisualizer( mPhysics->getEngine() );
     }
     else
+    {
+      SAFE_DELETE( mVisualizer );
       mScene->setVisualizationParameter( PxVisualizationParameter::eSCALE, 0.0f );
+    }
   }
 
   const PxRenderBuffer& PhysicsScene::fetchDebugVisuals()
@@ -104,6 +119,7 @@ namespace Glacier {
 
   PhysicsScene::~PhysicsScene()
   {
+    SAFE_DELETE( mVisualizer );
     SAFE_RELEASE_PHYSX( mScene );
   }
 

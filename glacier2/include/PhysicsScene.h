@@ -9,6 +9,7 @@
 namespace Glacier {
 
   class PhysXPhysics;
+  class PhysicsDebugVisualizer;
 
   class PhysicsScene {
   friend class PhysXPhysics;
@@ -20,6 +21,7 @@ namespace Glacier {
     physx::PxCpuDispatcher* mCPUDispatcher;
     physx::PxGpuDispatcher* mGPUDispatcher;
     physx::PxSimulationStatistics mStatistics;
+    PhysicsDebugVisualizer* mVisualizer;
     PhysicsScene( PhysXPhysics* physics,
       physx::PxCpuDispatcher* cpuDispatcher, physx::PxGpuDispatcher* gpuDispatcher,
       const float gravity, const float restitution,
@@ -27,6 +29,7 @@ namespace Glacier {
     void simulationStep( const GameTime delta, const GameTime time );
     void simulationFetchResults();
     void debugFetchVisualization();
+    void post();
   public:
     void setDebugVisuals( const bool visuals );
     const physx::PxRenderBuffer& fetchDebugVisuals();

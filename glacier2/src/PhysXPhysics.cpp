@@ -205,6 +205,7 @@ namespace Glacier {
     {
       scene->simulationStep( tick, time );
       scene->simulationFetchResults();
+      scene->post();
     }
   }
 
