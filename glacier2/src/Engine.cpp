@@ -15,6 +15,7 @@
 #include "ActionManager.h"
 #include "GUI.h"
 #include "EntityManager.h"
+#include "World.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
@@ -225,7 +226,8 @@ namespace Glacier {
     else
       mConsole->printf( Console::srcEngine, L"Init: Skipping audio" );
 
-    mEntities = new EntityManager( this );
+    mWorld = new World( this );
+    mEntities = mWorld->getEntities();
     Locator::provideEntities( mEntities );
 
     mGame = new Game( this );
@@ -342,7 +344,9 @@ namespace Glacier {
   void Engine::shutdown()
   {
     SAFE_DELETE( mGame );
-    SAFE_DELETE( mEntities );
+    SAFE_DELETE( mWorld );
+    mEntities = nullptr;
+    Locator::provideEntities( mEntities );
 
     if ( mAudio )
     {

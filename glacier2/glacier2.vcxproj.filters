@@ -333,6 +333,12 @@
     <ClCompile Include="..\ogre-procedural\library\src\ProceduralUtils.cpp">
       <Filter>Source Files\Procedural</Filter>
     </ClCompile>
+    <ClCompile Include="src\DeveloperEntities.cpp">
+      <Filter>Source Files\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\World.cpp">
+      <Filter>Source Files\World</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\CompilerDef.h">
@@ -598,6 +604,12 @@
     </ClInclude>
     <ClInclude Include="..\ogre-procedural\library\include\ProceduralPlatform.h">
       <Filter>Header Files\Procedural</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DeveloperEntities.h">
+      <Filter>Header Files\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="include\World.h">
+      <Filter>Header Files\World</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

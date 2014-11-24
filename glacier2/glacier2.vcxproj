@@ -222,6 +222,7 @@
     <ClCompile Include="src\Console.cpp" />
     <ClCompile Include="src\ConsoleWindow.cpp" />
     <ClCompile Include="src\DemoState.cpp" />
+    <ClCompile Include="src\DeveloperEntities.cpp" />
     <ClCompile Include="src\EntityRegistry.cpp" />
     <ClCompile Include="src\GUI.cpp" />
     <ClCompile Include="src\MenuState.cpp" />
@@ -260,6 +261,7 @@
     <ClCompile Include="src\ThreadController.cpp" />
     <ClCompile Include="src\Win32.cpp" />
     <ClCompile Include="src\WindowHandler.cpp" />
+    <ClCompile Include="src\World.cpp" />
     <ClCompile Include="src\WorldPrimitives.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -315,6 +317,7 @@
     <ClInclude Include="include\Console.h" />
     <ClInclude Include="include\ConsoleWindow.h" />
     <ClInclude Include="include\DemoState.h" />
+    <ClInclude Include="include\DeveloperEntities.h" />
     <ClInclude Include="include\GUI.h" />
     <ClInclude Include="include\MenuState.h" />
     <ClInclude Include="include\ModelViewerState.h" />
@@ -350,6 +353,7 @@
     <ClInclude Include="include\Win32.h" />
     <ClInclude Include="glacier2_resource.h" />
     <ClInclude Include="include\WindowHandler.h" />
+    <ClInclude Include="include\World.h" />
     <ClInclude Include="include\WorldPrimitives.h" />
   </ItemGroup>
   <ItemGroup>

@@ -8,9 +8,10 @@
 
 namespace Glacier {
 
+  class World;
   class Entity;
 
-  typedef Entity* ( *fnEntityFactory )();
+  typedef Entity* ( *fnEntityFactory )( World* world );
 
   //! \struct EntityBaseData
   //! \brief Static base data for every derived entity class.
@@ -49,6 +50,8 @@ namespace Glacier {
     void clear();
   };
 
+  class World;
+
   //! \class EntityFactories
   //! \brief Contains entity factory functions for all entities.
   //! \brief Must be a friend of all registered entity classes!
@@ -56,8 +59,8 @@ namespace Glacier {
   class EntityFactories {
   public:
     template <class T>
-    static Entity* factory() {
-      return static_cast<Entity*>( new T );
+    static Entity* factory( World* world ) {
+      return static_cast<Entity*>( new T( world ) );
     }
   };
 

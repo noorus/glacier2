@@ -4,14 +4,16 @@
 #include "EntityManager.h"
 #include "EntityRegistry.h"
 #include "Entity.h"
+#include "World.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
 
 namespace Glacier {
 
-  EntityManager::EntityManager( Engine* engine ): EngineComponent( engine ),
-  mNamingCounter( 0 )
+  EntityManager::EntityManager( Engine* engine, World* world ):
+  EngineComponent( engine ),
+  mNamingCounter( 0 ), mWorld( world )
   {
     //
   }
@@ -33,7 +35,7 @@ namespace Glacier {
     if ( findByName( name ) )
       ENGINE_EXCEPT( "Cannot create entity, name is already in use" );
 
-    auto entity = record->factory();
+    auto entity = record->factory( mWorld );
     entity->setName( name );
     mEntities.push_back( entity );
 

@@ -11,16 +11,14 @@ namespace Glacier {
   class PhysicsScene;
   class PhysicsDebugVisualizer;
 
-  namespace World {
+  namespace WorldPrimitives {
     class Plane;
   }
 
   class DemoState: public State, public Singleton <DemoState> {
   protected:
     Director* mDirector;
-    PhysicsScene* mPhysics;
-    PhysicsDebugVisualizer* mVisuals;
-    World::Plane* mGround;
+    WorldPrimitives::Plane* mGround;
   public:
     DemoState();
     virtual void initialize( Game* game, GameTime time );
