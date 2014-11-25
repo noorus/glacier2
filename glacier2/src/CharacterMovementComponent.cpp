@@ -1,0 +1,147 @@
+#include "StdAfx.h"
+#include "PhysXPhysics.h"
+#include "Engine.h"
+#include "Exception.h"
+#include "ServiceLocator.h"
+#include "PhysicsScene.h"
+#include "PhysicsDebugVisualizer.h"
+#include "Graphics.h"
+#include "GlacierMath.h"
+#include "CharacterPhysicsComponent.h"
+#include "World.h"
+#include "Entity.h"
+
+// Glacier² Game Engine © 2014 noorus
+// All rights reserved.
+
+namespace Glacier {
+
+  const Real cStickyTerrainExtraGravity = 8.0f;
+
+  CharacterMovementComponent::CharacterMovementComponent( Character* character ):
+  mCharacter( character )
+  {
+    //
+  }
+
+  void CharacterMovementComponent::generate(
+  CharacterMoveData& move, const GameTime time, CharacterPhysicsComponent* physics )
+  {
+    // Reset displacement
+    mDisplacement = Vector3::ZERO;
+
+    // Add gravity
+    Vector3 gravity = mCharacter->getWorld()->getPhysics()->getGravityVector();
+    gravity *= (Real)time;
+    mVelocity += gravity;
+
+    // Make forward vector
+    Vector3 forward = move.direction;
+    forward.y = 0.0f;
+    forward.normalise();
+
+    // Copy forward vector as facing direction
+    move.facing = forward;
+
+    // Make up vector
+    static Vector3 up( Vector3::UNIT_Y );
+
+    // Make right vector
+    Vector3 right = forward.crossProduct( up );
+    right.normalise();
+
+    // Calculate directional impulse
+    Vector3 directional( Vector3::ZERO );
+
+    if ( move.mode == CharacterMoveData::ControlMode_Impulse )
+    {
+      if ( move.affectors[CharacterMoveData::Affector_Forward] )
+        directional += ( forward * move.forward );
+      if ( move.affectors[CharacterMoveData::Affector_Backward] )
+        directional -= ( forward * move.backward );
+      if ( move.affectors[CharacterMoveData::Affector_Right] )
+        directional += ( right * move.right );
+      if ( move.affectors[CharacterMoveData::Affector_Left] )
+        directional -= ( right * move.left );
+    }
+    else if ( move.mode == CharacterMoveData::ControlMode_Directional )
+    {
+      if ( !move.directional.isZeroLength() && move.affectors[CharacterMoveData::Affector_Forward] )
+      {
+        Vector2 dir2d = move.directional.normalisedCopy();
+        dir2d.y = -dir2d.y;
+        Vector2 fwd( Vector2::UNIT_Y );
+        Radian r = dir2d.angleTo( fwd );
+        Quaternion rot( r, Vector3::NEGATIVE_UNIT_Y );
+        directional = rot * forward;
+        directional *= move.directional.length();
+        directional *= move.forward;
+      }
+    }
+
+    // Normalise if length > 1
+    Real length = directional.length();
+    if ( length > 1.0f )
+      directional /= length;
+
+    // Multiply by speed
+    directional *= move.speed;
+
+    // Handle jumping here
+    
+    // Final change in velocity
+    Vector3 velocityDelta( Vector3::ZERO );
+
+    // Do sticky terrain magic
+    {
+      Vector3 position = physics->getPosition();
+      Vector3 newPosition = position + ( directional * (Real)time );
+      auto query = physics->groundQuery( newPosition );
+      if ( query.hit )
+      {
+        Vector3 target = query.position;
+        target.y += physics->getOffsetFromGround();
+        Vector3 stickyDirectional = directional;
+        stickyDirectional.y = target.y - position.y;
+        if ( length < 1.0f )
+          stickyDirectional *= length;
+        velocityDelta = stickyDirectional;
+      }
+      else
+        velocityDelta = directional;
+      // Throw in some extra gravity to avoid stuttering issues
+      velocityDelta.y -= cStickyTerrainExtraGravity;
+      // Update velocity
+      mVelocity += velocityDelta;
+    }
+    
+    // Make displacement
+    mDisplacement = mVelocity * (Real)time;
+
+    // Send to physical controller, get results
+    auto lastFlags = physics->getLastCollisionFlags();
+    auto flags = physics->move( mDisplacement, time );
+
+    // On ground, subtract directional impulse for infinite friction
+    if ( mCharacter->isOnGround() )
+      mVelocity -= velocityDelta;
+
+    // Hit something below
+    if ( flags & physx::PxControllerFlag::eCOLLISION_DOWN )
+    {
+      if ( !( lastFlags & physx::PxControllerFlag::eCOLLISION_DOWN ) )
+      {
+        mCharacter->onHitGround();
+      }
+      mVelocity = 0.0f;
+    }
+    else if ( lastFlags & physx::PxControllerFlag::eCOLLISION_DOWN )
+    {
+      mCharacter->onLeaveGround();
+    }
+
+    // Copy velocity to movedata
+    move.velocity = mVelocity;
+  }
+
+}

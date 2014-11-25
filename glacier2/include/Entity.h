@@ -26,6 +26,7 @@ namespace Glacier {
     void setName( const string& name ) { mName = name; }
     void markForRemoval() { mRemoval = true; }
   public:
+    inline const World* getWorld() const throw( ) { return mWorld; }
     inline const string& getName() const throw( ) { return mName; }
     inline const bool isRemoval() const throw( ) { return mRemoval; }
     inline const Vector3& getPosition() const throw( ) { return mPosition; }

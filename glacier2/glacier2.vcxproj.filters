@@ -342,6 +342,12 @@
     <ClCompile Include="src\CharacterPhysicsComponent.cpp">
       <Filter>Source Files\Services\Physics</Filter>
     </ClCompile>
+    <ClCompile Include="src\CharacterMovementComponent.cpp">
+      <Filter>Source Files\Services\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Character.cpp">
+      <Filter>Source Files\Services\Physics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\CompilerDef.h">

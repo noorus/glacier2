@@ -219,6 +219,8 @@
     <ClCompile Include="src\ArcballCamera.cpp" />
     <ClCompile Include="src\AudioService.cpp" />
     <ClCompile Include="src\Camera.cpp" />
+    <ClCompile Include="src\Character.cpp" />
+    <ClCompile Include="src\CharacterMovementComponent.cpp" />
     <ClCompile Include="src\CharacterPhysicsComponent.cpp" />
     <ClCompile Include="src\Console.cpp" />
     <ClCompile Include="src\ConsoleWindow.cpp" />

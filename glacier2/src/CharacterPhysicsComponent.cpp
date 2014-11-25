@@ -17,8 +17,12 @@ namespace Glacier {
 
   using namespace physx;
 
-  CharacterPhysicsComponent::CharacterPhysicsComponent( World* world, const Vector3& position ):
-  mPosition( position ), mController( nullptr ), mMaterial( nullptr ), mWorld( world )
+  const Real cMaxSlopeDelta = 10.0f;
+
+  CharacterPhysicsComponent::CharacterPhysicsComponent(
+  World* world, const Vector3& position, const Real height, const Real radius ):
+  mPosition( position ), mController( nullptr ), mMaterial( nullptr ),
+  mWorld( world ), mHeight( height ), mRadius( radius )
   {
     mScene = mWorld->getPhysics()->getScene();
 
@@ -56,17 +60,41 @@ namespace Glacier {
     mController->setPosition( Math::ogreVec3ToPxExt( mPosition ) );
   }
 
-  PxControllerCollisionFlags CharacterPhysicsComponent::move(
+  const Real CharacterPhysicsComponent::getOffsetFromGround()
+  {
+    return ( mHeight * 0.5f );
+  }
+
+  CharacterPhysicsComponent::GroundQuery CharacterPhysicsComponent::groundQuery( const Vector3& position )
+  {
+    GroundQuery query;
+    PxRaycastHit hit;
+
+    PxVec3 origin( position.x, position.y + cMaxSlopeDelta, position.z );
+    PxVec3 direction( 0.0f, -1.0f, 0.0f );
+
+    const PxHitFlags flags = PxHitFlag::eDEFAULT;
+    PxQueryFilterData filter( PxQueryFlag::eSTATIC | PxQueryFlag::eDYNAMIC );
+    if ( mScene->raycastSingle( origin, direction, cMaxSlopeDelta * 2.0f, flags, hit, filter ) )
+    {
+      query.hit = true;
+      query.position = Math::pxVec3ToOgre( hit.position );
+    }
+
+    return query;
+  }
+
+  const PxControllerCollisionFlags& CharacterPhysicsComponent::move(
   const Vector3& displacement, const GameTime delta )
   {
     const PxF32 minimumDistance = 0.001f;
 
     PxControllerFilters filters;
-    auto flags = mController->move(
+    mCollisionFlags = mController->move(
       Math::ogreVec3ToPx( displacement ),
       minimumDistance, (PxF32)delta, filters, nullptr );
 
-    return flags;
+    return mCollisionFlags;
   }
 
   void CharacterPhysicsComponent::update()
