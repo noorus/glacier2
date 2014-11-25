@@ -21,6 +21,22 @@ namespace Glacier {
     virtual const bool isOnGround();
   };
 
+  class CharacterJump {
+  protected:
+    bool mJumping;
+    bool mInAir;
+    Vector3 mBaseVelocity;
+    Vector3 mVelocity;
+  public:
+    CharacterJump(): mJumping( false ), mInAir( false ) {}
+    virtual void begin( Vector3& velocity, Vector3& directional, const GameTime time );
+    virtual void generate( Vector3& velocity, const GameTime time );
+    virtual void landed( Vector3& velocity );
+    virtual void end();
+    inline const bool jumping() const throw() { return mJumping; }
+    inline const bool inAir() const throw() { return mInAir; }
+  };
+
   struct CharacterMoveData {
   public:
     enum ControlMode {
@@ -59,6 +75,7 @@ namespace Glacier {
       Crouch_Crouched
     } crouchStatus;
     bool jumpImpulse;
+    CharacterJump jump;
   };
 
   class CharacterPhysicsComponent {

@@ -18,6 +18,34 @@ namespace Glacier {
 
   const Real cStickyTerrainExtraGravity = 8.0f;
 
+  void CharacterJump::begin( Vector3& velocity, Vector3& directional, const GameTime time )
+  {
+    mJumping = true;
+    mInAir = true;
+    if ( velocity.y > 0.0f )
+      velocity.y = 0.0f;
+    mBaseVelocity = directional;
+    velocity += Vector3( 0.0f, 4.0f, 0.0f );
+    velocity += directional;
+  }
+
+  void CharacterJump::generate( Vector3& velocity, const GameTime time )
+  {
+    //
+  }
+
+  void CharacterJump::landed( Vector3& velocity )
+  {
+    velocity -= mBaseVelocity;
+    mInAir = false;
+    end();
+  }
+
+  void CharacterJump::end()
+  {
+    mJumping = false;
+  }
+
   CharacterMovementComponent::CharacterMovementComponent( Character* character ):
   mCharacter( character )
   {
@@ -87,12 +115,20 @@ namespace Glacier {
     // Multiply by speed
     directional *= move.speed;
 
-    // Handle jumping here
+    // Handle jumping
+    if ( move.jump.jumping() ) {
+      move.jump.generate( mVelocity, time );
+    } else {
+      if ( move.jumpImpulse ) {
+        move.jump.begin( mVelocity, directional, time );
+      }
+    }
     
     // Final change in velocity
     Vector3 velocityDelta( Vector3::ZERO );
 
     // Do sticky terrain magic
+    if ( mCharacter->isOnGround() && !move.jump.jumping() )
     {
       Vector3 position = physics->getPosition();
       Vector3 newPosition = position + ( directional * (Real)time );
@@ -132,6 +168,8 @@ namespace Glacier {
       if ( !( lastFlags & physx::PxControllerFlag::eCOLLISION_DOWN ) )
       {
         mCharacter->onHitGround();
+        if ( move.jump.jumping() )
+          move.jump.landed( mVelocity );
       }
       mVelocity = 0.0f;
     }
