@@ -11,6 +11,9 @@
 #include "World.h"
 #include "Entity.h"
 #include "ActionManager.h"
+#include "DemoState.h"
+#include "Director.h"
+#include "Camera.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
@@ -24,6 +27,10 @@ namespace Glacier {
   const Real cTimeToSlowdown = 0.2f;
   const Real cTimeToCrouch = 0.4f;
   const Real cTimeToUncrouch = 0.2f;
+
+  const Real cWalkSpeed = 2.86f;
+  const Real cRunSpeed = 3.62f;
+  const Real cCrouchSpeed = 1.21f;
 
   inline Real quickSpline( Real value )
   {
@@ -42,8 +49,8 @@ namespace Glacier {
   {
     CharacterMoveData& move = mCharacter->mMove;
 
-    float accelerator = cAcceleration * delta;
-    float decelerator = cDeceleration * delta;
+    float accelerator = cAcceleration * (Real)delta;
+    float decelerator = cDeceleration * (Real)delta;
 
     // forward & backward
     switch ( action.move )
@@ -130,9 +137,9 @@ namespace Glacier {
     }
 
     if ( mCrouchKeyed )
-      mCrouchTime += delta;
+      mCrouchTime += (Real)delta;
     else if ( mCrouchTime > 0.0f )
-      mCrouchTime -= delta;
+      mCrouchTime -= (Real)delta;
     if ( mCrouchTime < 0.0f )
       mCrouchTime = 0.0f;
   }
@@ -153,9 +160,9 @@ namespace Glacier {
         mRunTime = cTimeToSlowdown;
     }
     if ( mRunKeyed )
-      mRunTime += delta;
+      mRunTime += (Real)delta;
     else if ( mRunTime > 0.0f )
-      mRunTime -= delta;
+      mRunTime -= (Real)delta;
     if ( mRunTime < 0.0f )
       mRunTime = 0.0f;
   }
@@ -168,17 +175,71 @@ namespace Glacier {
       move.jumpImpulse = true;
   }
 
+  void CharacterInputComponent::updateMoveStatus()
+  {
+    CharacterMoveData& move = mCharacter->mMove;
+
+    if ( !mCharacter->isOnGround() )
+    {
+      move.moveStatus = CharacterMoveData::Move_In_Air;
+      return;
+    }
+
+    if ( move.affectors[CharacterMoveData::Affector_Forward]
+      || move.affectors[CharacterMoveData::Affector_Backward]
+      || move.affectors[CharacterMoveData::Affector_Left]
+      || move.affectors[CharacterMoveData::Affector_Right] )
+    {
+      if ( move.affectors[CharacterMoveData::Affector_Run] )
+        move.moveStatus = CharacterMoveData::Move_Running;
+      else
+        move.moveStatus = CharacterMoveData::Move_Walking;
+      return;
+    }
+
+    if ( move.moveStatus != CharacterMoveData::Move_Idle )
+      move.moveStatus = CharacterMoveData::Move_Idle;
+  }
+
+  void CharacterInputComponent::updateCrouchStatus()
+  {
+    //
+  }
+
+  void CharacterInputComponent::calculateSpeed()
+  {
+    CharacterMoveData& move = mCharacter->mMove;
+
+    if ( move.crouchStatus == CharacterMoveData::Crouch_Crouched )
+      move.speed = cCrouchSpeed;
+    else if ( move.crouchStatus == CharacterMoveData::Crouch_None && move.run == 1.0f )
+      move.speed = cRunSpeed;
+    else
+    {
+      if ( move.affectors[CharacterMoveData::Affector_Run] )
+        move.speed = Math::interpolateLinear( cWalkSpeed, cRunSpeed, move.run );
+      else
+        move.speed = cWalkSpeed;
+      if ( move.affectors[CharacterMoveData::Affector_Crouch] )
+        move.speed = Math::interpolateLinear( move.speed, cCrouchSpeed, move.crouch );
+    }
+  }
+
   void CharacterInputComponent::update( const ActionPacket& action, GameTime delta )
   {
     CharacterMoveData& move = mCharacter->mMove;
 
-    move.direction = Vector3::UNIT_X;
+    // HACK HACK HACK
+    move.direction = DemoState::instance().getDirector()->getCamera()->getCamera()->getDirection();
     move.mode = CharacterMoveData::ControlMode_Impulse;
 
     handleCrouching( action, delta );
     handleRunning( action, delta );
     calculateAffectors( action, delta );
     handleJumping( action );
+    updateMoveStatus();
+    updateCrouchStatus();
+    calculateSpeed();
   }
 
   CharacterInputComponent::~CharacterInputComponent()

@@ -130,6 +130,9 @@ namespace Glacier {
     void handleRunning( const ActionPacket& action, const GameTime delta );
     void calculateAffectors( const ActionPacket& action, GameTime delta );
     void handleJumping( const ActionPacket& action );
+    void updateMoveStatus();
+    void updateCrouchStatus();
+    void calculateSpeed();
   public:
     CharacterInputComponent( Character* character );
     virtual void update( const ActionPacket& action, GameTime delta );

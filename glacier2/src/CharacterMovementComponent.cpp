@@ -47,7 +47,7 @@ namespace Glacier {
   }
 
   CharacterMovementComponent::CharacterMovementComponent( Character* character ):
-  mCharacter( character )
+  mCharacter( character ), mVelocity( Vector3::ZERO )
   {
     //
   }
@@ -121,6 +121,7 @@ namespace Glacier {
     } else {
       if ( move.jumpImpulse ) {
         move.jump.begin( mVelocity, directional, delta );
+        move.jumpImpulse = false;
       }
     }
     
