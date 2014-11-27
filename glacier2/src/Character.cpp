@@ -19,6 +19,9 @@ namespace Glacier {
 
   ENGINE_DECLARE_ENTITY( player, Character );
 
+  const Real cPlayerHeight = 1.0f;
+  const Real cPlayerRadius = 0.25f;
+
   Character::Character( World* world ): Entity( world, &baseData ),
   mInput( nullptr ), mPhysics( nullptr ), mMovement( nullptr )
   {
@@ -29,14 +32,14 @@ namespace Glacier {
   {
     Entity::spawn( position, orientation );
 
-    mMesh = Procedural::BoxGenerator().setSizeX( 0.25f ).setSizeY( 0.25f ).setSizeZ( 0.25f ).realizeMesh();
+    mMesh = Procedural::CapsuleGenerator().setHeight( cPlayerHeight ).setRadius( cPlayerRadius ).realizeMesh( "playerStandCapsule" );
 
     mEntity = Locator::getGraphics().getScene()->createEntity( mMesh );
-    mEntity->setMaterialName( "Developer/Cube025" );
+    mEntity->setMaterialName( "Debug/PlayerPhysicsCapsule" );
     mEntity->setCastShadows( false );
     mNode->attachObject( mEntity );
 
-    mPhysics = new CharacterPhysicsComponent( mWorld, position, 1.5f, 0.25f );
+    mPhysics = new CharacterPhysicsComponent( mWorld, position, cPlayerHeight, cPlayerRadius );
     mMovement = new CharacterMovementComponent( this );
   }
 
