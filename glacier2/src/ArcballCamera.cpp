@@ -8,16 +8,16 @@ namespace Glacier {
 
   // ArcballCamera class ======================================================
 
-  ArcballCamera::ArcballCamera( PCZSceneManager* pgeScene,
-    const Ogre::String& sName, PCZSceneNode* pgeTarget_,
-    const Vector3& vecOffset, const Radian& rFOVy, PCZone* pgeHomeZone,
-    bool bReverseAxes, Real fSensitivity, Real fMinDistance, Real fMaxDistance,
-    Real fRotationDecel, Real fZoomAccel, Real fZoomDecel ):
-  Camera( pgeScene, sName, pgeTarget_->_getDerivedPosition() + vecOffset,
-    rFOVy, pgeHomeZone, bReverseAxes ), mSensitivity( fSensitivity ),
-    pgeTarget( pgeTarget_ ), mOffset( vecOffset ),mMinDistance( fMinDistance ),
-    mMaxDistance( fMaxDistance ), mRotDeceleration( fRotationDecel ),
-    mZoomAcceleration( fZoomAccel ), mZoomDeceleration( fZoomDecel ),
+  ArcballCamera::ArcballCamera( PCZSceneManager* scene,
+    const Ogre::String& name, const PCZSceneNode* target,
+    const Vector3& offset, const Radian& fovy, PCZone* homeZone,
+    bool reverseAxes, Real sensitivity, Real minDistance, Real maxDistance,
+    Real rotationDecel, Real zoomAccel, Real zoomDecel ):
+  Camera( scene, name, target->_getDerivedPosition() + offset,
+    fovy, homeZone, reverseAxes ), mSensitivity( sensitivity ),
+    pgeTarget( target ), mOffset( offset ),mMinDistance( minDistance ),
+    mMaxDistance( maxDistance ), mRotDeceleration( rotationDecel ),
+    mZoomAcceleration( zoomAccel ), mZoomDeceleration( zoomDecel ),
     mRotation( Quaternion::IDENTITY ), mMovement( Vector3::ZERO ),
     mZoomVelocity( 0.0f ), mClampTop( 0.17f ), mClampBottom( 2.0f ),
     mClampRotation( Quaternion::IDENTITY ), mClampRotating( false )
@@ -134,8 +134,8 @@ namespace Glacier {
   void ArcballCamera::setMinDistance( const Real minimumDistance )
   {
     mMinDistance = minimumDistance;
-    Real fDistance = mOffset.length();
-    if ( fDistance < mMinDistance ) {
+    Real distance = mOffset.length();
+    if ( distance < mMinDistance ) {
       mOffset = mOffset.normalisedCopy() * mMinDistance;
       mZoomVelocity = 0.0f;
     }
@@ -144,16 +144,16 @@ namespace Glacier {
   void ArcballCamera::setMaxDistance( const Real maximumDistance )
   {
     mMaxDistance = maximumDistance;
-    Real fDistance = mOffset.length();
-    if ( fDistance > mMaxDistance ) {
+    Real distance = mOffset.length();
+    if ( distance > mMaxDistance ) {
       mOffset = mOffset.normalisedCopy() * mMaxDistance;
       mZoomVelocity = 0.0f;
     }
   }
 
-  void ArcballCamera::setClampTop( const Radian fClampTop )
+  void ArcballCamera::setClampTop( const Radian clampTop )
   {
-    mClampTop = fClampTop;
+    mClampTop = clampTop;
     if ( mOffset.angleBetween( Vector3::UNIT_Y ) < mClampTop ) {
       Radian radiansY = mOffset.angleBetween( Vector3::UNIT_Y ) - mClampTop;
       // Calculate the local X axis, as it changes with rotation along global Y
@@ -165,9 +165,9 @@ namespace Glacier {
     }
   }
 
-  void ArcballCamera::setClampBottom( const Radian fClampBottom )
+  void ArcballCamera::setClampBottom( const Radian clampBottom )
   {
-    mClampBottom = fClampBottom;
+    mClampBottom = clampBottom;
     if ( mOffset.angleBetween( Vector3::UNIT_Y ) > mClampBottom ) {
       Radian radiansY = mOffset.angleBetween( Vector3::UNIT_Y )- mClampBottom; 
       // Calculate the local X axis, as it changes with rotation along global Y

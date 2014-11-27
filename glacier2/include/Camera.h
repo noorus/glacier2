@@ -50,7 +50,7 @@ namespace Glacier {
   class ArcballCamera: public Camera {
   friend class CameraModifier;
   protected:
-    PCZSceneNode* pgeTarget;
+    const PCZSceneNode* pgeTarget;
     Vector3 mOffset;
     Vector3 mDirection;
     Vector3 mMovement;
@@ -68,25 +68,25 @@ namespace Glacier {
     Radian mClampTop;
     Radian mClampBottom;
   public:
-    explicit ArcballCamera( PCZSceneManager* pgeScene,
-      const Ogre::String& sName, PCZSceneNode* pgeTarget,
-      const Vector3& vecOffset, const Radian& rFOVy, PCZone* pgeHomeZone,
-      bool bReverseAxes, Real fSensitivity, Real fMinDistance,
-      Real fMaxDistance, Real fRotationDeceleration = 20.0f,
-      Real fZoomAcceleration = 150.0f, Real fZoomDeceleration = 15.0f );
-    virtual void applyMovement( const Vector3& vecMovement );
-    virtual void update( const float fDelta );
+    explicit ArcballCamera( PCZSceneManager* scene,
+      const Ogre::String& name, const PCZSceneNode* target,
+      const Vector3& offset, const Radian& fovy, PCZone* homeZone,
+      bool reverseAxes, Real sensitivity, Real minDistance,
+      Real maxDistance, Real rotationDeceleration = 20.0f,
+      Real zoomAcceleration = 150.0f, Real zoomDeceleration = 15.0f );
+    virtual void applyMovement( const Vector3& movement );
+    virtual void update( const float delta );
     virtual const Vector3& getDirection() const throw() { return mDirection; }
     virtual Real getSensitivity() { return mSensitivity; }
     virtual Real getMinDistance() { return mMinDistance; }
     virtual Real getMaxDistance() { return mMaxDistance; }
     virtual Radian getClampTop() { return mClampTop; }
     virtual Radian getClampBottom() { return mClampBottom; }
-    virtual void setSensitivity( const Real fSensitivity );
-    virtual void setMinDistance( const Real fMinDistance );
-    virtual void setMaxDistance( const Real fMaxDistance );
-    virtual void setClampTop( const Radian fClampTop );
-    virtual void setClampBottom( const Radian fClampBottom );
+    virtual void setSensitivity( const Real sensitivity );
+    virtual void setMinDistance( const Real minDistance );
+    virtual void setMaxDistance( const Real maxDistance );
+    virtual void setClampTop( const Radian clampTop );
+    virtual void setClampBottom( const Radian clampBottom );
     ~ArcballCamera();
   };
 
