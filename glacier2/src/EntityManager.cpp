@@ -60,7 +60,7 @@ namespace Glacier {
     removeMarked();
     // Run entity think functions
     for ( auto entity : mThinkers )
-      entity->think();
+      entity->think( tick );
   }
 
   void EntityManager::componentPostUpdate( GameTime delta, GameTime time )

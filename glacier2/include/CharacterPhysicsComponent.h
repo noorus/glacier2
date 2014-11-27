@@ -1,6 +1,7 @@
 #pragma once
 #include "Types.h"
 #include "Entity.h"
+#include "EntityRegistry.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
@@ -9,17 +10,10 @@ namespace Glacier {
 
   class World;
 
-  class Character: public Entity {
-  protected:
-    enum Flags {
-      Flag_On_Ground = 0
-    };
-    std::bitset<8> mFlags;
-  public:
-    virtual void onHitGround();
-    virtual void onLeaveGround();
-    virtual const bool isOnGround();
-  };
+  class CharacterInputComponent;
+  class CharacterMovementComponent;
+  class CharacterPhysicsComponent;
+  struct ActionPacket;
 
   class CharacterJump {
   protected:
@@ -33,8 +27,8 @@ namespace Glacier {
     virtual void generate( Vector3& velocity, const GameTime time );
     virtual void landed( Vector3& velocity );
     virtual void end();
-    inline const bool jumping() const throw() { return mJumping; }
-    inline const bool inAir() const throw() { return mInAir; }
+    inline const bool jumping() const throw( ) { return mJumping; }
+    inline const bool inAir() const throw( ) { return mInAir; }
   };
 
   struct CharacterMoveData {
@@ -76,6 +70,64 @@ namespace Glacier {
     } crouchStatus;
     bool jumpImpulse;
     CharacterJump jump;
+    inline void updateBits() throw( ) {
+      affectors.reset();
+      if ( forward > 0.0f )
+        affectors.set( Affector_Forward );
+      if ( backward > 0.0f )
+        affectors.set( Affector_Backward );
+      if ( left > 0.0f )
+        affectors.set( Affector_Left );
+      if ( right > 0.0f )
+        affectors.set( Affector_Right );
+      if ( run > 0.0f )
+        affectors.set( Affector_Run );
+      if ( crouch > 0.0f )
+        affectors.set( Affector_Crouch );
+    }
+  };
+
+  class Character: public Entity {
+  friend class EntityFactories;
+  friend class CharacterInputComponent;
+  private:
+    static EntityBaseData baseData;
+  protected:
+    enum Flags {
+      Flag_On_Ground = 0
+    };
+    std::bitset<8> mFlags;
+    CharacterInputComponent* mInput;
+    CharacterMovementComponent* mMovement;
+    CharacterPhysicsComponent* mPhysics;
+    CharacterMoveData mMove;
+    Ogre::Entity* mEntity;
+    Ogre::MeshPtr mMesh;
+    Character( World* world );
+    virtual ~Character();
+  public:
+    virtual void spawn( const Vector3& position, const Quaternion& orientation );
+    virtual void think( const GameTime delta );
+    virtual void onHitGround();
+    virtual void onLeaveGround();
+    virtual const bool isOnGround();
+  };
+
+  class CharacterInputComponent {
+  protected:
+    Character* mCharacter;
+    bool mRunKeyed;
+    bool mCrouchKeyed;
+    Real mRunTime;
+    Real mCrouchTime;
+    void handleCrouching( const ActionPacket& action, const GameTime delta );
+    void handleRunning( const ActionPacket& action, const GameTime delta );
+    void calculateAffectors( const ActionPacket& action, GameTime delta );
+    void handleJumping( const ActionPacket& action );
+  public:
+    CharacterInputComponent( Character* character );
+    virtual void update( const ActionPacket& action, GameTime delta );
+    virtual ~CharacterInputComponent();
   };
 
   class CharacterPhysicsComponent {
@@ -117,7 +169,7 @@ namespace Glacier {
     Vector3 mVelocity;
   public:
     CharacterMovementComponent( Character* character );
-    void generate( CharacterMoveData& move, const GameTime time, CharacterPhysicsComponent* physics );
+    void generate( CharacterMoveData& move, const GameTime delta, CharacterPhysicsComponent* physics );
   };
 
 }

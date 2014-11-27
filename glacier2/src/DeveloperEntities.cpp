@@ -58,7 +58,7 @@ namespace Glacier {
       mNode->attachObject( mEntity );
     }
 
-    void DevCube::think()
+    void DevCube::think( const GameTime delta )
     {
       PxTransform& transform = mActor->getGlobalPose();
       mNode->setPosition( Math::pxVec3ToOgre( transform.p ) );

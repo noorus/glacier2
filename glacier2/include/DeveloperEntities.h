@@ -23,7 +23,7 @@ namespace Glacier {
       virtual ~DevCube();
     public:
       virtual void spawn( const Vector3& position, const Quaternion& orientation );
-      virtual void think();
+      virtual void think( const GameTime delta );
     };
 
   }

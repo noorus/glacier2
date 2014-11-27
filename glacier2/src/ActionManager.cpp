@@ -139,8 +139,8 @@ namespace Glacier {
 
     // HACK HACK HACK
     if ( !mDirectional.isZeroLength() && mActions.move == Player_Move_None )
-      mActions.move = Played_Move_Forward;
-    else if ( mDirectional.isZeroLength() && mActions.move == Played_Move_Forward )
+      mActions.move = Player_Move_Forward;
+    else if ( mDirectional.isZeroLength() && mActions.move == Player_Move_Forward )
       mActions.move = Player_Move_None;
   }
 
@@ -156,7 +156,7 @@ namespace Glacier {
     {
       case Action_Move_Forward:
         if ( mActions.move == Player_Move_None )
-          mActions.move = Played_Move_Forward;
+          mActions.move = Player_Move_Forward;
       break;
       case Action_Move_Backward:
         if ( mActions.move == Player_Move_None )
@@ -193,7 +193,7 @@ namespace Glacier {
     switch ( action )
     {
       case Action_Move_Forward:
-        if ( mActions.move == Played_Move_Forward )
+        if ( mActions.move == Player_Move_Forward )
           mActions.move = Player_Move_None;
       break;
       case Action_Move_Backward:

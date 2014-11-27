@@ -220,6 +220,7 @@
     <ClCompile Include="src\AudioService.cpp" />
     <ClCompile Include="src\Camera.cpp" />
     <ClCompile Include="src\Character.cpp" />
+    <ClCompile Include="src\CharacterInputComponent.cpp" />
     <ClCompile Include="src\CharacterMovementComponent.cpp" />
     <ClCompile Include="src\CharacterPhysicsComponent.cpp" />
     <ClCompile Include="src\Console.cpp" />

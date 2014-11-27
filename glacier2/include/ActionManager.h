@@ -21,7 +21,7 @@ namespace Glacier {
 
   enum PlayerMoveAction {
     Player_Move_None = 0,
-    Played_Move_Forward,
+    Player_Move_Forward,
     Player_Move_Backward
   };
 

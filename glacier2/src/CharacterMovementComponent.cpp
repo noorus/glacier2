@@ -53,14 +53,14 @@ namespace Glacier {
   }
 
   void CharacterMovementComponent::generate(
-  CharacterMoveData& move, const GameTime time, CharacterPhysicsComponent* physics )
+  CharacterMoveData& move, const GameTime delta, CharacterPhysicsComponent* physics )
   {
     // Reset displacement
     mDisplacement = Vector3::ZERO;
 
     // Add gravity
     Vector3 gravity = mCharacter->getWorld()->getPhysics()->getGravityVector();
-    gravity *= (Real)time;
+    gravity *= (Real)delta;
     mVelocity += gravity;
 
     // Make forward vector
@@ -117,10 +117,10 @@ namespace Glacier {
 
     // Handle jumping
     if ( move.jump.jumping() ) {
-      move.jump.generate( mVelocity, time );
+      move.jump.generate( mVelocity, delta );
     } else {
       if ( move.jumpImpulse ) {
-        move.jump.begin( mVelocity, directional, time );
+        move.jump.begin( mVelocity, directional, delta );
       }
     }
     
@@ -131,7 +131,7 @@ namespace Glacier {
     if ( mCharacter->isOnGround() && !move.jump.jumping() )
     {
       Vector3 position = physics->getPosition();
-      Vector3 newPosition = position + ( directional * (Real)time );
+      Vector3 newPosition = position + ( directional * (Real)delta );
       auto query = physics->groundQuery( newPosition );
       if ( query.hit )
       {
@@ -152,11 +152,11 @@ namespace Glacier {
     }
     
     // Make displacement
-    mDisplacement = mVelocity * (Real)time;
+    mDisplacement = mVelocity * (Real)delta;
 
     // Send to physical controller, get results
     auto lastFlags = physics->getLastCollisionFlags();
-    auto flags = physics->move( mDisplacement, time );
+    auto flags = physics->move( mDisplacement, delta );
 
     // On ground, subtract directional impulse for infinite friction
     if ( mCharacter->isOnGround() )
