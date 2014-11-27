@@ -105,7 +105,7 @@ namespace Glacier {
     assert( mEngine );
     mCameraController = new CameraController( mEngine );
     clearActions();
-    mKeyTable.keyboard[0x58] = Action_Move_Forward;
+    mKeyTable.keyboard[0x57] = Action_Move_Forward;
     mKeyTable.keyboard[0x53] = Action_Move_Backward;
     mKeyTable.keyboard[0x41] = Action_Sidestep_Left;
     mKeyTable.keyboard[0x44] = Action_Sidestep_Right;
@@ -138,10 +138,10 @@ namespace Glacier {
     mCameraController->prepare();
 
     // HACK HACK HACK
-    if ( !mDirectional.isZeroLength() && mActions.move == Player_Move_None )
+    /*if ( !mDirectional.isZeroLength() && mActions.move == Player_Move_None )
       mActions.move = Player_Move_Forward;
     else if ( mDirectional.isZeroLength() && mActions.move == Player_Move_Forward )
-      mActions.move = Player_Move_None;
+      mActions.move = Player_Move_None;*/
   }
 
   void ActionManager::cancelAllInput()
