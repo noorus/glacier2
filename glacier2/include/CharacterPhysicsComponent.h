@@ -85,6 +85,12 @@ namespace Glacier {
       if ( crouch > 0.0f )
         affectors.set( Affector_Crouch );
     }
+    CharacterMoveData():
+      mode( ControlMode_Impulse ),
+      forward( 0.0f ), backward( 0.0f ), left( 0.0f ), right( 0.0f ),
+      run( 0.0f ), crouch( 0.0f ), speed( 0.0f ), direction( Vector3::ZERO ),
+      directional( Vector2::ZERO ), facing( Vector3::ZERO ), moveStatus( Move_Idle ), crouchStatus( Crouch_None ),
+      jumpImpulse( false ) {}
   };
 
   class Character: public Entity {
@@ -165,7 +171,6 @@ namespace Glacier {
   protected:
     Character* mCharacter;
     Vector3 mDisplacement;
-    Vector3 mPosition;
     Vector3 mVelocity;
   public:
     CharacterMovementComponent( Character* character );
