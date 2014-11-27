@@ -27,7 +27,7 @@ namespace Glacier {
 
     Locator::getGraphics().setRenderWindowTitle( cMenuWindowTitle );
 
-    mDirector = new Director( &Locator::getGraphics() );
+//    mDirector = new Director( &Locator::getGraphics() );
   }
 
   void MenuState::pause( GameTime time )
@@ -42,11 +42,11 @@ namespace Glacier {
 
   void MenuState::update( GameTime tick, GameTime time )
   {
-    mDirector->getCamera()->applyMovement(
-      gEngine->getActionManager()->getCameraController()->getMovement()
-    );
-
-    mDirector->getCamera()->update( (float)tick );
+//     mDirector->getCamera()->applyMovement(
+//       gEngine->getActionManager()->getCameraController()->getMovement()
+//     );
+// 
+//     mDirector->getCamera()->update( (float)tick );
   }
 
   void MenuState::shutdown( GameTime time )

@@ -33,8 +33,6 @@ namespace Glacier {
 
     Locator::getGraphics().setRenderWindowTitle( cDemoStateTitle );
 
-    mDirector = new Director( &Locator::getGraphics() );
-    
     Ogre::Plane plane( Vector3::UNIT_Y, 0.0f );
     Real width = 64.0f;
     Real height = 64.0f;
@@ -48,6 +46,8 @@ namespace Glacier {
       auto cube = Locator::getEntities().create( "dev_cube" );
       cube->spawn( Vector3( 10.0f, i * 15.0f, 0.0f ), Quaternion::IDENTITY );
     }
+
+    mDirector = new Director( &Locator::getGraphics(), player->getNode() );
   }
 
   void DemoState::pause( GameTime time )

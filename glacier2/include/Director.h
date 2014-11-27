@@ -24,7 +24,7 @@ namespace Glacier {
   public:
     static HDRlib::HDRCompositor* mHDRCompositor; //!< My HDR compositor
     //! Constructor.
-    Director( Graphics* gfx );
+    Director( Graphics* gfx, const PCZSceneNode* target );
     //! Gets the viewport.
     Ogre::Viewport* getViewport() { return mViewport; }
     //! Gets the camera.

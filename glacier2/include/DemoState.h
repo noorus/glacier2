@@ -15,12 +15,13 @@ namespace Glacier {
     class Plane;
   }
 
-  class DemoState: public State, public Singleton <DemoState> {
+  class DemoState: public State, public Singleton<DemoState> {
   protected:
     Director* mDirector;
     WorldPrimitives::Plane* mGround;
   public:
     DemoState();
+    Director* getDirector() { return mDirector; }
     virtual void initialize( Game* game, GameTime time );
     virtual void pause( GameTime time );
     virtual void update( GameTime tick, GameTime time );

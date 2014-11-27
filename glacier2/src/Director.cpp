@@ -50,7 +50,8 @@ namespace Glacier {
 
   HDRlib::HDRCompositor* Director::mHDRCompositor = nullptr;
 
-  Director::Director( Graphics* gfx ): mGraphics( gfx ), mViewport( nullptr ),
+  Director::Director( Graphics* gfx, const PCZSceneNode* target ):
+  mGraphics( gfx ), mViewport( nullptr ),
   mCamera( nullptr ), mLight( nullptr )
   {
     auto zone = mGraphics->getScene()->getDefaultZone();
@@ -58,7 +59,7 @@ namespace Glacier {
     mCamera = new ArcballCamera(
       mGraphics->getScene(),
       "defaultcamera",
-      (PCZSceneNode*)mGraphics->getScene()->getRootSceneNode(),
+      target,
       Vector3( 0.0f, 4.0f, -4.75f ),
       Radian( Ogre::Math::DegreesToRadians( 70.0f ) ),
       zone,

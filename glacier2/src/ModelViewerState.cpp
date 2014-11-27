@@ -27,7 +27,7 @@ namespace Glacier {
 
     Locator::getGraphics().setRenderWindowTitle( cModelViewerTitle );
 
-    mDirector = new Director( &Locator::getGraphics() );
+//    mDirector = new Director( &Locator::getGraphics() );
 
     /*wstring fileName;
     if ( Win32::Win32::instance().fileOpenDialog(
@@ -54,11 +54,11 @@ namespace Glacier {
     if ( mViewer )
       mViewer->update();
 
-    mDirector->getCamera()->applyMovement(
-      gEngine->getActionManager()->getCameraController()->getMovement()
-    );
-
-    mDirector->getCamera()->update( (float)tick );
+//     mDirector->getCamera()->applyMovement(
+//       gEngine->getActionManager()->getCameraController()->getMovement()
+//     );
+// 
+//     mDirector->getCamera()->update( (float)tick );
   }
 
   void ModelViewerState::shutdown( GameTime time )
