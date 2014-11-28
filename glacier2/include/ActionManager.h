@@ -109,11 +109,11 @@ namespace Glacier {
     ActionPacket mActions;
     CameraController* mCameraController;
     Vector2 mDirectional; // hack hack hack...
-    void processBindPress( const BindAction& nBind );
-    void processBindRelease( const BindAction& nBind );
   public:
     explicit ActionManager( Engine* pEngine );
     ~ActionManager();
+    void processBindPress( const BindAction& nBind );
+    void processBindRelease( const BindAction& nBind );
     void prepare(); //!< Prepare for new input calls (new frame)
     void cancelAllInput(); //!< Cancel all currently active input
     // Mouse handlers

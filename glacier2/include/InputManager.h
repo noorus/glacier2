@@ -50,17 +50,6 @@ namespace Glacier {
       Nil::Keyboard* keyboard, const Nil::VirtualKeyCode keycode );
     virtual void onKeyReleased(
       Nil::Keyboard* keyboard, const Nil::VirtualKeyCode keycode );
-    // Controller handlers
-    virtual void onControllerButtonPressed( Nil::Controller* controller,
-      const Nil::ControllerState& state, size_t button );
-    virtual void onControllerButtonReleased( Nil::Controller* controller,
-      const Nil::ControllerState& state, size_t button );
-    virtual void onControllerAxisMoved( Nil::Controller* controller,
-      const Nil::ControllerState& state, size_t axis );
-    virtual void onControllerSliderMoved( Nil::Controller* controller,
-      const Nil::ControllerState& state, size_t slider );
-    virtual void onControllerPOVMoved( Nil::Controller* controller,
-      const Nil::ControllerState& state, size_t pov );
   public:
     InputManager( Engine* engine, HINSTANCE instance, Ogre::RenderWindow* window );
     virtual void componentTick( GameTime tick, GameTime time );

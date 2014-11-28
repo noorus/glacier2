@@ -75,8 +75,6 @@ namespace Glacier {
   {
     mEngine->getConsole()->printf( Console::srcInput,
       L"Enabled controller: %S", device->getName().c_str() );
-
-    instance->addListener( this );
   }
 
   void InputManager::onMouseDisabled( Nil::Device* device, Nil::Mouse* instance )
@@ -162,53 +160,6 @@ namespace Glacier {
       return;
 
     mEngine->getActionManager()->onKeyReleased( keycode );
-  }
-
-  // Controller
-
-  void InputManager::onControllerButtonPressed( Nil::Controller* controller,
-  const Nil::ControllerState& state, size_t button )
-  {
-    if ( !mTakingInput )
-      return;
-
-    // mEngine->getConsole()->printf( Console::srcInput, L"controller button pressed" );
-  }
-
-  void InputManager::onControllerButtonReleased( Nil::Controller* controller,
-  const Nil::ControllerState& state, size_t button )
-  {
-    if ( !mTakingInput )
-      return;
-
-    // mEngine->getConsole()->printf( Console::srcInput, L"controller button released" );
-  }
-
-  void InputManager::onControllerAxisMoved( Nil::Controller* controller,
-  const Nil::ControllerState& state, size_t axis )
-  {
-    if ( !mTakingInput )
-      return;
-
-    // mEngine->getConsole()->printf( Console::srcInput, L"controller axis moved" );
-  }
-
-  void InputManager::onControllerSliderMoved( Nil::Controller* controller,
-  const Nil::ControllerState& state, size_t slider )
-  {
-    if ( !mTakingInput )
-      return;
-
-    // mEngine->getConsole()->printf( Console::srcInput, L"controller slider moved" );
-  }
-
-  void InputManager::onControllerPOVMoved( Nil::Controller* controller,
-  const Nil::ControllerState& state, size_t pov )
-  {
-    if ( !mTakingInput )
-      return;
-
-    // mEngine->getConsole()->printf( Console::srcInput, L"controller pov moved" );
   }
 
   InputManager::~InputManager()

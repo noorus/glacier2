@@ -97,6 +97,12 @@
     <Filter Include="Source Files\Procedural">
       <UniqueIdentifier>{ac0cc9e0-9a75-4e03-b684-cbf36f790cfd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Input">
+      <UniqueIdentifier>{7f15172e-a2fa-4119-ab86-8f4bd8f33ac5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Input">
+      <UniqueIdentifier>{9c96e6c4-bb4a-4549-b94e-c41ec18d2e50}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Main.cpp">
@@ -192,9 +198,6 @@
     <ClCompile Include="src\State.cpp">
       <Filter>Source Files\States</Filter>
     </ClCompile>
-    <ClCompile Include="src\ActionManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\ModelViewerState.cpp">
       <Filter>Source Files\States</Filter>
     </ClCompile>
@@ -212,9 +215,6 @@
     </ClCompile>
     <ClCompile Include="src\AudioService.cpp">
       <Filter>Source Files\Services\Audio</Filter>
-    </ClCompile>
-    <ClCompile Include="src\InputManager.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\DemoState.cpp">
       <Filter>Source Files\States</Filter>
@@ -351,6 +351,15 @@
     <ClCompile Include="src\CharacterInputComponent.cpp">
       <Filter>Source Files\Services\Physics</Filter>
     </ClCompile>
+    <ClCompile Include="src\Gamepad.cpp">
+      <Filter>Source Files\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="src\InputManager.cpp">
+      <Filter>Source Files\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ActionManager.cpp">
+      <Filter>Source Files\Input</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\CompilerDef.h">
@@ -461,9 +470,6 @@
     <ClInclude Include="include\Exception.h">
       <Filter>Header Files\Junk</Filter>
     </ClInclude>
-    <ClInclude Include="include\ActionManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\ModelViewer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -475,9 +481,6 @@
     </ClInclude>
     <ClInclude Include="include\AudioService.h">
       <Filter>Header Files\Services\Audio</Filter>
-    </ClInclude>
-    <ClInclude Include="include\InputManager.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\DemoState.h">
       <Filter>Header Files\States</Filter>
@@ -625,6 +628,15 @@
     </ClInclude>
     <ClInclude Include="include\CharacterPhysicsComponent.h">
       <Filter>Header Files\Services\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\InputManager.h">
+      <Filter>Header Files\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ActionManager.h">
+      <Filter>Header Files\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Gamepad.h">
+      <Filter>Header Files\Input</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -228,6 +228,7 @@
     <ClCompile Include="src\DemoState.cpp" />
     <ClCompile Include="src\DeveloperEntities.cpp" />
     <ClCompile Include="src\EntityRegistry.cpp" />
+    <ClCompile Include="src\Gamepad.cpp" />
     <ClCompile Include="src\GUI.cpp" />
     <ClCompile Include="src\MenuState.cpp" />
     <ClCompile Include="src\ModelViewer.cpp" />
@@ -323,6 +324,7 @@
     <ClInclude Include="include\ConsoleWindow.h" />
     <ClInclude Include="include\DemoState.h" />
     <ClInclude Include="include\DeveloperEntities.h" />
+    <ClInclude Include="include\Gamepad.h" />
     <ClInclude Include="include\GUI.h" />
     <ClInclude Include="include\MenuState.h" />
     <ClInclude Include="include\ModelViewerState.h" />
