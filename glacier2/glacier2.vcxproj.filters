@@ -360,6 +360,12 @@
     <ClCompile Include="src\ActionManager.cpp">
       <Filter>Source Files\Input</Filter>
     </ClCompile>
+    <ClCompile Include="src\Keyboard.cpp">
+      <Filter>Source Files\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Mouse.cpp">
+      <Filter>Source Files\Input</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\CompilerDef.h">
@@ -636,6 +642,12 @@
       <Filter>Header Files\Input</Filter>
     </ClInclude>
     <ClInclude Include="include\Gamepad.h">
+      <Filter>Header Files\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Keyboard.h">
+      <Filter>Header Files\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Mouse.h">
       <Filter>Header Files\Input</Filter>
     </ClInclude>
   </ItemGroup>

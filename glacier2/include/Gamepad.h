@@ -100,7 +100,6 @@ namespace Glacier {
     };
 
     class Device: public Nil::ControllerListener {
-    friend class InputHandler;
     public:
       typedef std::list<Component*> ComponentList;
       typedef std::map<size_t, Button*> ButtonMap;
@@ -133,7 +132,7 @@ namespace Glacier {
         const Nil::ControllerState& state, size_t slider );
       virtual void onControllerPOVMoved( Nil::Controller* controller,
         const Nil::ControllerState& state, size_t pov );
-    protected:
+    public:
       Device( Nil::Controller* controller );
       virtual ~Device();
     };

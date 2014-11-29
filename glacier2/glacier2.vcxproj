@@ -230,6 +230,7 @@
     <ClCompile Include="src\EntityRegistry.cpp" />
     <ClCompile Include="src\Gamepad.cpp" />
     <ClCompile Include="src\GUI.cpp" />
+    <ClCompile Include="src\Keyboard.cpp" />
     <ClCompile Include="src\MenuState.cpp" />
     <ClCompile Include="src\ModelViewer.cpp" />
     <ClCompile Include="src\ModelViewerState.cpp" />
@@ -248,6 +249,7 @@
     <ClCompile Include="src\JSUtil.cpp" />
     <ClCompile Include="src\JSVector3.cpp" />
     <ClCompile Include="src\Main.cpp" />
+    <ClCompile Include="src\Mouse.cpp" />
     <ClCompile Include="src\NedPoolMemory.cpp" />
     <ClCompile Include="src\PhysicsDebugVisualizer.cpp" />
     <ClCompile Include="src\PhysicsScene.cpp" />
@@ -326,6 +328,7 @@
     <ClInclude Include="include\DeveloperEntities.h" />
     <ClInclude Include="include\Gamepad.h" />
     <ClInclude Include="include\GUI.h" />
+    <ClInclude Include="include\Keyboard.h" />
     <ClInclude Include="include\MenuState.h" />
     <ClInclude Include="include\ModelViewerState.h" />
     <ClInclude Include="include\Director.h" />
@@ -339,6 +342,7 @@
     <ClInclude Include="include\GlobalStats.h" />
     <ClInclude Include="include\Graphics.h" />
     <ClInclude Include="include\ModelViewer.h" />
+    <ClInclude Include="include\Mouse.h" />
     <ClInclude Include="include\NedPoolMemory.h" />
     <ClInclude Include="include\InputManager.h" />
     <ClInclude Include="include\JSNatives.h" />

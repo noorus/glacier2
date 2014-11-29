@@ -29,10 +29,7 @@ namespace Glacier {
 
     void Button::onButtonInput( const ButtonInput& input )
     {
-      if ( input == Button_Pressed )
-        gEngine->getActionManager()->processBindPress( mAction );
-      else if ( input == Button_Released )
-        gEngine->getActionManager()->processBindRelease( mAction );
+      //
     }
 
     Thumbstick::Thumbstick( Device* device, ThumbstickType type, float multiplier, float threshold ):
@@ -54,11 +51,11 @@ namespace Glacier {
 
       if ( mType == Thumbstick_Camera )
       {
-        gEngine->getActionManager()->getCameraController()->setPersistentMovement( mMultiplier * mDirectional );
+        // gEngine->getActionManager()->getCameraController()->setPersistentMovement( mMultiplier * mDirectional );
       }
       else if ( mType == Thumbstick_Movement )
       {
-        gEngine->getActionManager()->setDirectional( mDirectional );
+        // gEngine->getActionManager()->setDirectional( mDirectional );
       }
     }
 
@@ -136,9 +133,11 @@ namespace Glacier {
     void Device::onControllerButtonPressed( Nil::Controller* controller,
     const Nil::ControllerState& state, size_t button )
     {
+      gEngine->getConsole()->printf( Console::srcInput, L"Controller press: %d", button );
+
       auto it = mButtonMap.find( button );
       if ( it != mButtonMap.end() )
-        ( *it ).second->onButtonInput( Button_Pressed );
+        (*it).second->onButtonInput( Button_Pressed );
     }
 
     void Device::onControllerButtonReleased( Nil::Controller* controller,
@@ -146,7 +145,7 @@ namespace Glacier {
     {
       auto it = mButtonMap.find( button );
       if ( it != mButtonMap.end() )
-        ( *it ).second->onButtonInput( Button_Released );
+        (*it).second->onButtonInput( Button_Released );
     }
 
     void Device::onControllerAxisMoved( Nil::Controller* controller,
@@ -168,7 +167,7 @@ namespace Glacier {
     {
       auto it = mPovMap.find( pov );
       if ( it != mPovMap.end() )
-        ( *it ).second->onPovInput( state.mPOVs[pov].direction );
+        (*it).second->onPovInput( state.mPOVs[pov].direction );
     }
 
     Device::~Device()
