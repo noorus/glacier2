@@ -29,16 +29,19 @@ namespace Glacier {
 
     void Button::onButtonInput( const ButtonInput& input )
     {
-      //
+      if ( input == Button_Pressed )
+        gEngine->getActionManager()->beginAction( mAction );
+      else if ( input == Button_Released )
+        gEngine->getActionManager()->endAction( mAction );
     }
 
-    Thumbstick::Thumbstick( Device* device, ThumbstickType type, float multiplier, float threshold ):
-    BaseAxisComponent( device ), mType( type ), mMultiplier( multiplier ), mThreshold( threshold ), mDirectional( Vector2::ZERO )
+    Thumbstick::Thumbstick( Device* device, ThumbstickType type, Real multiplier ):
+    BaseAxisComponent( device ), mType( type ), mMultiplier( multiplier ), mDirectional( Vector2::ZERO )
     {
       //
     }
 
-    void Thumbstick::onAxisInput( float value, ThumbstickAxis axis )
+    void Thumbstick::onAxisInput( Real value, ThumbstickAxis axis )
     {
       if ( axis == Axis_X )
         mDirectional.x = value;
@@ -51,11 +54,11 @@ namespace Glacier {
 
       if ( mType == Thumbstick_Camera )
       {
-        // gEngine->getActionManager()->getCameraController()->setPersistentMovement( mMultiplier * mDirectional );
+        gEngine->getActionManager()->getCameraController()->setPersistentMovement( mDirectional * mMultiplier );
       }
       else if ( mType == Thumbstick_Movement )
       {
-        // gEngine->getActionManager()->setDirectional( mDirectional );
+        gEngine->getActionManager()->setDirectional( mDirectional );
       }
     }
 
@@ -74,14 +77,14 @@ namespace Glacier {
       //
     }
 
-    void Trigger::onAxisInput( float value, ThumbstickAxis axis )
+    void Trigger::onAxisInput( Real value, ThumbstickAxis axis )
     {
       //
     }
 
     // Device
     
-    Device::Device( Nil::Controller* controller ): mController( controller )
+    Device::Device( Nil::Controller* controller ): mController( controller ), mFocused( true )
     {
       nButtons = mController->getState().mButtons.size();
       nAxes = mController->getState().mAxes.size();
@@ -89,12 +92,22 @@ namespace Glacier {
       nSliders = mController->getState().mSliders.size();
 
       // 360
-      defineButton( 8, Action_Jump );
-      defineButton( 6, Action_Crouch );
-      defineButton( 7, Action_Run );
-      defineThumbstick( 1, 0, Thumbstick_Camera );
-      defineThumbstick( 3, 2, Thumbstick_Movement );
+      defineButton( 6, Action_Jump );
+      defineButton( 4, Action_Crouch );
+      defineButton( 8, Action_Run );
+      defineThumbstick( 0, 1, Thumbstick_Movement, 1.0f );
+      defineThumbstick( 2, 3, Thumbstick_Camera, 4.0f );
       defineDirectional( 0 );
+    }
+
+    void Device::prepare()
+    {
+      //
+    }
+
+    void Device::onFocus( const bool focus )
+    {
+      mFocused = focus;
     }
 
     Button* Device::defineButton( size_t button, const BindAction& action )
@@ -105,9 +118,9 @@ namespace Glacier {
       return component;
     }
 
-    Thumbstick* Device::defineThumbstick( size_t axisX, size_t axisY, const ThumbstickType& type )
+    Thumbstick* Device::defineThumbstick( size_t axisX, size_t axisY, const ThumbstickType& type, const Real multiplier )
     {
-      Thumbstick* component = new Thumbstick( this, type, 14.0f, 0.25f );
+      Thumbstick* component = new Thumbstick( this, type, multiplier );
       mAxisMap[axisX] = AxisDefinition( component, Axis_X );
       mAxisMap[axisY] = AxisDefinition( component, Axis_Y );
       mComponents.push_back( component );
@@ -133,7 +146,8 @@ namespace Glacier {
     void Device::onControllerButtonPressed( Nil::Controller* controller,
     const Nil::ControllerState& state, size_t button )
     {
-      gEngine->getConsole()->printf( Console::srcInput, L"Controller press: %d", button );
+      if ( !mFocused )
+        return;
 
       auto it = mButtonMap.find( button );
       if ( it != mButtonMap.end() )
@@ -143,6 +157,9 @@ namespace Glacier {
     void Device::onControllerButtonReleased( Nil::Controller* controller,
     const Nil::ControllerState& state, size_t button )
     {
+      if ( !mFocused )
+        return;
+
       auto it = mButtonMap.find( button );
       if ( it != mButtonMap.end() )
         (*it).second->onButtonInput( Button_Released );
@@ -151,6 +168,9 @@ namespace Glacier {
     void Device::onControllerAxisMoved( Nil::Controller* controller,
     const Nil::ControllerState& state, size_t axis )
     {
+      if ( !mFocused )
+        return;
+
       auto it = mAxisMap.find( axis );
       if ( it != mAxisMap.end() )
         (*it).second.component->onAxisInput( state.mAxes[axis].absolute, (*it).second.axis );
@@ -159,12 +179,16 @@ namespace Glacier {
     void Device::onControllerSliderMoved( Nil::Controller* controller,
     const Nil::ControllerState& state, size_t slider )
     {
-      //
+      if ( !mFocused )
+        return;
     }
 
     void Device::onControllerPOVMoved( Nil::Controller* controller,
     const Nil::ControllerState& state, size_t pov )
     {
+      if ( !mFocused )
+        return;
+
       auto it = mPovMap.find( pov );
       if ( it != mPovMap.end() )
         (*it).second->onPovInput( state.mPOVs[pov].direction );

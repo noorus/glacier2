@@ -33,10 +33,6 @@ namespace Glacier {
 
   struct CharacterMoveData {
   public:
-    enum ControlMode {
-      ControlMode_Impulse,
-      ControlMode_Directional
-    } mode;
     enum Affector {
       Affector_Forward = 0,
       Affector_Backward,
@@ -86,7 +82,6 @@ namespace Glacier {
         affectors.set( Affector_Crouch );
     }
     CharacterMoveData():
-      mode( ControlMode_Impulse ),
       forward( 0.0f ), backward( 0.0f ), left( 0.0f ), right( 0.0f ),
       run( 0.0f ), crouch( 0.0f ), speed( 0.0f ), direction( Vector3::ZERO ),
       directional( Vector2::ZERO ), facing( Vector3::ZERO ), moveStatus( Move_Idle ), crouchStatus( Crouch_None ),

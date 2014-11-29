@@ -11,11 +11,11 @@ namespace Glacier {
 
   namespace Keyboard {
 
-    class Device: public Nil::KeyboardListener {
+    class Device: public InputDevice, public Nil::KeyboardListener {
     protected:
       Nil::Keyboard* mKeyboard;
       BindAction mKeyBindTable[0xFF];
-      ActionPacket mActions;
+      bool mFocused;
     protected:
       void onKeyPressed(
         Nil::Keyboard* keyboard, const Nil::VirtualKeyCode keycode );
@@ -25,9 +25,8 @@ namespace Glacier {
         Nil::Keyboard* keyboard, const Nil::VirtualKeyCode keycode );
     public:
       Device( Nil::Keyboard* keyboard );
-      void prepare();
-      void cancelAllInput();
-      void clearActions();
+      virtual void prepare();
+      virtual void onFocus( const bool focus );
       void resetBinds();
       virtual ~Device();
     };

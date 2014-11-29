@@ -49,21 +49,6 @@ namespace Glacier {
     Player_Crouch_Keyup
   };
 
-  struct KeyBindTable
-  {
-    BindAction keyboard[0xFF];
-    BindAction mouse[8];
-    void reset()
-    {
-      memset( keyboard, Action_None, 0xFF * sizeof( BindAction ) );
-      memset( mouse, Action_None, 8 * sizeof( BindAction ) );
-    }
-    KeyBindTable()
-    {
-      reset();
-    }
-  };
-
   struct ActionPacket {
   public:
     PlayerMoveAction move;
@@ -97,13 +82,6 @@ namespace Glacier {
   };
 
   class ActionManager: public boost::noncopyable {
-  friend class InputHandler;
-  friend class GamepadDevice;
-  friend class ThumbstickComponent;
-  friend class ButtonComponent;
-  friend class DirectionalComponent;
-  public:
-    static KeyBindTable mKeyTable;
   protected:
     Engine* mEngine;
     ActionPacket mActions;
@@ -111,26 +89,16 @@ namespace Glacier {
     Vector2 mDirectional; // hack hack hack...
   public:
     explicit ActionManager( Engine* pEngine );
+    void resetActions();
+    void prepare();
+    void beginAction( const BindAction& action );
+    void endAction( const BindAction& action );
+    void applyZoom( const Real zoom );
     ~ActionManager();
-    void processBindPress( const BindAction& nBind );
-    void processBindRelease( const BindAction& nBind );
-    void prepare(); //!< Prepare for new input calls (new frame)
-    void cancelAllInput(); //!< Cancel all currently active input
-    // Mouse handlers
-    void onMouseMoved( const Nil::MouseState& state );
-    void onMouseButtonPressed( const Nil::MouseState& state, size_t button );
-    void onMouseButtonReleased( const Nil::MouseState& state, size_t button );
-    void onMouseWheelMoved( const Nil::MouseState& state );
-    // Keyboard handlers
-    void onKeyPressed( const Nil::VirtualKeyCode keycode );
-    void onKeyRepeat( const Nil::VirtualKeyCode keycode );
-    void onKeyReleased( const Nil::VirtualKeyCode keycode );
-    void clearActions();
-    void clearActivators();
     inline const ActionPacket& getActions() throw() { return mActions; }
     CameraController* getCameraController() throw() { return mCameraController; }
     // hack hack hack...
-    void setDirectional( const Vector2& vecDirecitonal ) { mDirectional = vecDirecitonal; }
+    void setDirectional( const Vector2& directional ) { mDirectional = directional; }
     inline const Vector2& getDirectional() throw() { return mDirectional; }
   };
 

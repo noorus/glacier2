@@ -8,10 +8,6 @@
 
 namespace Glacier {
 
-  // ActionManager globals ====================================================
-
-  KeyBindTable ActionManager::mKeyTable;
-
   // CameraController class ===================================================
 
   CameraController::CameraController( Engine* engine ):
@@ -81,7 +77,7 @@ namespace Glacier {
 
   void CameraController::setPersistentMovement( const Vector2& vecMovement )
   {
-    mPersistentMovement.x = vecMovement.x;
+    mPersistentMovement.x = -vecMovement.x;
     mPersistentMovement.y = vecMovement.y;
     updateMovement();
   }
@@ -104,183 +100,103 @@ namespace Glacier {
   {
     assert( mEngine );
     mCameraController = new CameraController( mEngine );
-    clearActions();
-    mKeyTable.keyboard[0x57] = Action_Move_Forward;
-    mKeyTable.keyboard[0x53] = Action_Move_Backward;
-    mKeyTable.keyboard[0x41] = Action_Sidestep_Left;
-    mKeyTable.keyboard[0x44] = Action_Sidestep_Right;
-    mKeyTable.keyboard[0x20] = Action_Jump;
-    mKeyTable.keyboard[0xA0] = Action_Run;
-    mKeyTable.keyboard[0xA2] = Action_Crouch;
-    mKeyTable.keyboard[0xDC] = Action_Toggle_Console;
+    resetActions();
   }
 
-  void ActionManager::clearActions()
+  void ActionManager::resetActions()
   {
-    mActions.move      = Player_Move_None;
-    mActions.sidestep  = Player_Sidestep_None;
-    mActions.jump      = Player_Jump_None;
-    mActions.run       = Player_Run_None;
-    mActions.crouch    = Player_Crouch_None;
-  }
-
-  void ActionManager::clearActivators()
-  {
-    //
+    mActions.move = Player_Move_None;
+    mActions.sidestep = Player_Sidestep_None;
+    mActions.jump = Player_Jump_None;
+    mActions.run = Player_Run_None;
+    mActions.crouch = Player_Crouch_None;
   }
 
   void ActionManager::prepare()
   {
-    // Clear these every new frame
+    mCameraController->prepare();
+
     mActions.jump = Player_Jump_None;
     mActions.run = Player_Run_None;
     mActions.crouch = Player_Crouch_None;
-    mCameraController->prepare();
 
-    // HACK HACK HACK
-    /*if ( !mDirectional.isZeroLength() && mActions.move == Player_Move_None )
+    if ( !mDirectional.isZeroLength() && mActions.move == Player_Move_None )
       mActions.move = Player_Move_Forward;
     else if ( mDirectional.isZeroLength() && mActions.move == Player_Move_Forward )
-      mActions.move = Player_Move_None;*/
+      mActions.move = Player_Move_None;
   }
 
-  void ActionManager::cancelAllInput()
+  void ActionManager::beginAction( const BindAction& action )
   {
-    mActions.move = Player_Move_None;
-    mActions.sidestep = Player_Sidestep_None;
-  }
+    // TODO need counter 
 
-  void ActionManager::processBindPress( const BindAction& action )
-  {
     switch ( action )
     {
       case Action_Move_Forward:
         if ( mActions.move == Player_Move_None )
           mActions.move = Player_Move_Forward;
-      break;
+        break;
       case Action_Move_Backward:
         if ( mActions.move == Player_Move_None )
           mActions.move = Player_Move_Backward;
-      break;
+        break;
       case Action_Sidestep_Left:
         if ( mActions.sidestep == Player_Sidestep_None )
           mActions.sidestep = Player_Sidestep_Left;
-      break;
+        break;
       case Action_Sidestep_Right:
         if ( mActions.sidestep == Player_Sidestep_None )
           mActions.sidestep = Player_Sidestep_Right;
-      break;
+        break;
       case Action_Jump:
         mActions.jump = Player_Jump_Keydown;
-      break;
+        break;
       case Action_Run:
         mActions.run = Player_Run_Keydown;
-      break;
+        break;
       case Action_Crouch:
         mActions.crouch = Player_Crouch_Keydown;
-      break;
-      case Action_Zoom:
-        mCameraController->setZooming( true );
-      break;
-      case Action_Toggle_Console:
-        //mEngine->toggleConsole();
-      break;
+        break;
     }
   }
 
-  void ActionManager::processBindRelease( const BindAction& action )
+  void ActionManager::endAction( const BindAction& action )
   {
+    // TODO need counter 
+
     switch ( action )
     {
       case Action_Move_Forward:
         if ( mActions.move == Player_Move_Forward )
           mActions.move = Player_Move_None;
-      break;
+        break;
       case Action_Move_Backward:
         if ( mActions.move == Player_Move_Backward )
           mActions.move = Player_Move_None;
-      break;
+        break;
       case Action_Sidestep_Left:
         if ( mActions.sidestep == Player_Sidestep_Left )
           mActions.sidestep = Player_Sidestep_None;
-      break;
+        break;
       case Action_Sidestep_Right:
         if ( mActions.sidestep == Player_Sidestep_Right )
           mActions.sidestep = Player_Sidestep_None;
-      break;
+        break;
       case Action_Jump:
         mActions.jump = Player_Jump_Keyup;
-      break;
+        break;
       case Action_Run:
         mActions.run = Player_Run_Keyup;
-      break;
+        break;
       case Action_Crouch:
         mActions.crouch = Player_Crouch_Keyup;
-      break;
-      case Action_Zoom:
-        mCameraController->setZooming( false );
-      break;
+        break;
     }
   }
 
-  void ActionManager::onMouseMoved( const Nil::MouseState& state )
-  {
-    if ( !Locator::getGUI().injectMouseMove( state ) )
-      mCameraController->applyMouseMovement( state );
-  }
-
-  void ActionManager::onMouseButtonPressed( const Nil::MouseState& state, size_t button )
-  {
-    if ( !Locator::getGUI().injectMousePress( state, button ) )
-    {
-      BindAction nBind = ActionManager::mKeyTable.mouse[button];
-      if ( nBind != Action_None ) {
-        processBindPress( nBind );
-        return;
-      } else
-        mCameraController->onMouseButtonPressed( button );
-    }
-  }
-
-  void ActionManager::onMouseButtonReleased( const Nil::MouseState& state, size_t button )
-  {
-    if ( !Locator::getGUI().injectMouseRelease( state, button ) )
-    {
-      BindAction nBind = ActionManager::mKeyTable.mouse[button];
-      if ( nBind != Action_None ) {
-        processBindRelease( nBind );
-        return;
-      } else
-        mCameraController->onMouseButtonReleased( button );
-    }
-  }
-
-  void ActionManager::onMouseWheelMoved( const Nil::MouseState& state )
-  {
-    mCameraController->applyMouseWheel( state );
-  }
-
-  void ActionManager::onKeyPressed( const Nil::VirtualKeyCode keycode )
-  {
-    BindAction action = ActionManager::mKeyTable.keyboard[keycode];
-    if ( action == Action_None )
-      return;
-
-    processBindPress( action );
-  }
-
-  void ActionManager::onKeyRepeat( const Nil::VirtualKeyCode keycode )
+  void ActionManager::applyZoom( const Real zoom )
   {
     //
-  }
-
-  void ActionManager::onKeyReleased( const Nil::VirtualKeyCode keycode )
-  {
-    BindAction action = ActionManager::mKeyTable.keyboard[keycode];
-    if ( action == Action_None )
-      return;
-
-    processBindRelease( action );
   }
 
   ActionManager::~ActionManager()

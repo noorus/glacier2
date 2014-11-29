@@ -34,8 +34,8 @@ namespace Glacier {
     Locator::getGraphics().setRenderWindowTitle( cDemoStateTitle );
 
     Ogre::Plane plane( Vector3::UNIT_Y, 0.0f );
-    Real width = 64.0f;
-    Real height = 64.0f;
+    Real width = 512.0f;
+    Real height = 512.0f;
     mGround = new WorldPrimitives::Plane( gEngine->getWorld()->getPhysics(), plane, width, height, Vector3::ZERO );
 
     auto player = Locator::getEntities().create( "player" );

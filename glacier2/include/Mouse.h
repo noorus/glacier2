@@ -11,13 +11,14 @@ namespace Glacier {
 
   namespace Mouse {
 
-    class Device: public Nil::MouseListener {
+    class Device: public InputDevice, public Nil::MouseListener {
     public:
       typedef std::vector<BindAction> ButtonVector;
     protected:
       Nil::Mouse* mMouse;
       ButtonVector mButtons;
       ActionPacket mActions;
+      bool mFocused;
     protected:
       void onMouseMoved(
         Nil::Mouse* mouse, const Nil::MouseState& state );
@@ -29,6 +30,8 @@ namespace Glacier {
         Nil::Mouse* mouse, const Nil::MouseState& state );
     public:
       Device( Nil::Mouse* mouse );
+      virtual void prepare();
+      virtual void onFocus( const bool focus );
       virtual ~Device();
     };
 

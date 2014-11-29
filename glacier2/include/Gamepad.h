@@ -53,7 +53,7 @@ namespace Glacier {
     protected:
       BaseAxisComponent( Device* device ): Component( device ) {}
     public:
-      virtual void onAxisInput( float value, ThumbstickAxis axis ) = 0;
+      virtual void onAxisInput( Real value, ThumbstickAxis axis ) = 0;
     };
 
     enum ThumbstickType {
@@ -64,13 +64,12 @@ namespace Glacier {
     class Thumbstick: public BaseAxisComponent {
     protected:
       ThumbstickType mType; //!< Type of control
-      float mThreshold; //!< Minimum value to treat as non-zero
-      float mMultiplier; //!< Applied multiplier
-      Vector2 mDirectional;
+      Real mMultiplier; //!< Applied multiplier
+      Vector2 mDirectional; //!< Value
     public:
-      Thumbstick( Device* device, ThumbstickType type, float multiplier, float threshold = 0.1f );
+      Thumbstick( Device* device, ThumbstickType type, Real multiplier );
       virtual const ComponentType getType() { return Component_Thumbstick; }
-      virtual void onAxisInput( float value, ThumbstickAxis axis );
+      virtual void onAxisInput( Real value, ThumbstickAxis axis );
     };
 
     class Trigger: public BaseAxisComponent {
@@ -79,7 +78,7 @@ namespace Glacier {
     public:
       Trigger( Device* device );
       virtual const ComponentType getType() { return Component_Trigger; }
-      virtual void onAxisInput( float value, ThumbstickAxis axis );
+      virtual void onAxisInput( Real value, ThumbstickAxis axis );
     };
 
     class Directional: public Component {
@@ -99,7 +98,7 @@ namespace Glacier {
       AxisDefinition( Trigger* c ): component( c ), axis( Axis_Trigger ) {}
     };
 
-    class Device: public Nil::ControllerListener {
+    class Device: public InputDevice, public Nil::ControllerListener {
     public:
       typedef std::list<Component*> ComponentList;
       typedef std::map<size_t, Button*> ButtonMap;
@@ -116,9 +115,10 @@ namespace Glacier {
       size_t nPovs;
       size_t nSliders;
       size_t nVectors;
+      bool mFocused;
     protected:
       Button* defineButton( size_t button, const BindAction& action );
-      Thumbstick* defineThumbstick( size_t axisX, size_t axisY, const ThumbstickType& type );
+      Thumbstick* defineThumbstick( size_t axisX, size_t axisY, const ThumbstickType& type, const Real multiplier );
       Directional* defineDirectional( size_t pov );
       Trigger* defineTrigger( size_t axis );
     protected:
@@ -134,6 +134,8 @@ namespace Glacier {
         const Nil::ControllerState& state, size_t pov );
     public:
       Device( Nil::Controller* controller );
+      virtual void prepare();
+      virtual void onFocus( const bool focus );
       virtual ~Device();
     };
 

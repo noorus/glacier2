@@ -49,8 +49,8 @@ namespace Glacier {
   {
     CharacterMoveData& move = mCharacter->mMove;
 
-    float accelerator = cAcceleration * (Real)delta;
-    float decelerator = cDeceleration * (Real)delta;
+    Real accelerator = cAcceleration * (Real)delta;
+    Real decelerator = cDeceleration * (Real)delta;
 
     // forward & backward
     switch ( action.move )
@@ -229,9 +229,9 @@ namespace Glacier {
   {
     CharacterMoveData& move = mCharacter->mMove;
 
-    // HACK HACK HACK
+    // TODO properly
     move.direction = DemoState::instance().getDirector()->getCamera()->getCamera()->getDirection();
-    move.mode = CharacterMoveData::ControlMode_Impulse;
+    move.directional = gEngine->getActionManager()->getDirectional();
 
     handleCrouching( action, delta );
     handleRunning( action, delta );

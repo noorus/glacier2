@@ -17,6 +17,7 @@
 namespace Glacier {
 
   const Real cStickyTerrainExtraGravity = 8.0f;
+  const Real cJumpVelocity = 4.0f;
 
   void CharacterJump::begin( Vector3& velocity, Vector3& directional, const GameTime time )
   {
@@ -25,7 +26,7 @@ namespace Glacier {
     if ( velocity.y > 0.0f )
       velocity.y = 0.0f;
     mBaseVelocity = directional;
-    velocity += Vector3( 0.0f, 4.0f, 0.0f );
+    velocity += Vector3( 0.0f, cJumpVelocity, 0.0f );
     velocity += directional;
   }
 
@@ -81,30 +82,25 @@ namespace Glacier {
     // Calculate directional impulse
     Vector3 directional( Vector3::ZERO );
 
-    if ( move.mode == CharacterMoveData::ControlMode_Impulse )
+    // Impulse movements
+    if ( move.affectors[CharacterMoveData::Affector_Forward] )
+      directional += ( forward * move.forward );
+    if ( move.affectors[CharacterMoveData::Affector_Backward] )
+      directional -= ( forward * move.backward );
+    if ( move.affectors[CharacterMoveData::Affector_Right] )
+      directional += ( right * move.right );
+    if ( move.affectors[CharacterMoveData::Affector_Left] )
+      directional -= ( right * move.left );
+
+    // Directional movements
+    if ( !move.directional.isZeroLength() && move.affectors[CharacterMoveData::Affector_Forward] )
     {
-      if ( move.affectors[CharacterMoveData::Affector_Forward] )
-        directional += ( forward * move.forward );
-      if ( move.affectors[CharacterMoveData::Affector_Backward] )
-        directional -= ( forward * move.backward );
-      if ( move.affectors[CharacterMoveData::Affector_Right] )
-        directional += ( right * move.right );
-      if ( move.affectors[CharacterMoveData::Affector_Left] )
-        directional -= ( right * move.left );
-    }
-    else if ( move.mode == CharacterMoveData::ControlMode_Directional )
-    {
-      if ( !move.directional.isZeroLength() && move.affectors[CharacterMoveData::Affector_Forward] )
-      {
-        Vector2 dir2d = move.directional.normalisedCopy();
-        dir2d.y = -dir2d.y;
-        Vector2 fwd( Vector2::UNIT_Y );
-        Radian r = dir2d.angleTo( fwd );
-        Quaternion rot( r, Vector3::NEGATIVE_UNIT_Y );
-        directional = rot * forward;
-        directional *= move.directional.length();
-        directional *= move.forward;
-      }
+      Vector2 dir2d = move.directional.normalisedCopy();
+      Vector2 fwd2d( Vector2::UNIT_Y );
+      Quaternion rotation( dir2d.angleTo( fwd2d ), Vector3::NEGATIVE_UNIT_Y );
+      directional = rotation * forward;
+      directional *= move.directional.length();
+      directional *= move.forward;
     }
 
     // Normalise if length > 1

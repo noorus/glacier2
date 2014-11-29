@@ -10,14 +10,28 @@ namespace Glacier {
   //! \addtogroup Glacier
   //! @{
 
-  class InputManager: public EngineComponent, public Nil::SystemListener,
-    public Nil::MouseListener, public Nil::KeyboardListener,
-    public Nil::ControllerListener {
+  class InputDevice {
+  public:
+    virtual void prepare() = 0;
+    virtual void onFocus( const bool focus ) = 0;
+  };
+
+  namespace Mouse { class Device; }
+  namespace Keyboard { class Device; }
+  namespace Gamepad { class Device; }
+
+  typedef std::map<Nil::DeviceID, Mouse::Device*> MouseMap;
+  typedef std::map<Nil::DeviceID, Keyboard::Device*> KeyboardMap;
+  typedef std::map<Nil::DeviceID, Gamepad::Device*> GamepadMap;
+
+  class InputManager: public EngineComponent, public Nil::SystemListener {
   protected:
     Nil::System* mSystem;
+    MouseMap mMice;
+    KeyboardMap mKeyboards;
+    GamepadMap mGamepads;
     bool mTakingInput;
   protected:
-    // System handlers
     virtual void onDeviceConnected(
       Nil::Device* device );
     virtual void onDeviceDisconnected(
@@ -34,22 +48,6 @@ namespace Glacier {
       Nil::Device* device, Nil::Keyboard* instance );
     virtual void onControllerDisabled(
       Nil::Device* device, Nil::Controller* instance );
-    // Mouse handlers
-    virtual void onMouseMoved(
-      Nil::Mouse* mouse, const Nil::MouseState& state );
-    virtual void onMouseButtonPressed(
-      Nil::Mouse* mouse, const Nil::MouseState& state, size_t button );
-    virtual void onMouseButtonReleased(
-      Nil::Mouse* mouse, const Nil::MouseState& state, size_t button );
-    virtual void onMouseWheelMoved(
-      Nil::Mouse* mouse, const Nil::MouseState& state );
-    // Keyboard handlers
-    virtual void onKeyPressed(
-      Nil::Keyboard* keyboard, const Nil::VirtualKeyCode keycode );
-    virtual void onKeyRepeat(
-      Nil::Keyboard* keyboard, const Nil::VirtualKeyCode keycode );
-    virtual void onKeyReleased(
-      Nil::Keyboard* keyboard, const Nil::VirtualKeyCode keycode );
   public:
     InputManager( Engine* engine, HINSTANCE instance, Ogre::RenderWindow* window );
     virtual void componentTick( GameTime tick, GameTime time );
