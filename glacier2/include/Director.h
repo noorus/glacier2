@@ -19,10 +19,10 @@ namespace Glacier {
   protected:
     Graphics* mGraphics;        //!< The graphics engine
     Ogre::Viewport* mViewport;  //!< My viewport
-    ArcballCamera* mCamera;     //!< My camera
     Ogre::Light* mLight;
   public:
     static HDRlib::HDRCompositor* mHDRCompositor; //!< My HDR compositor
+    static ArcballCamera* mCamera; //!< My camera
     //! Constructor.
     Director( Graphics* gfx, const PCZSceneNode* target );
     //! Gets the viewport.

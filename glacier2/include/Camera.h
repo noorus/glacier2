@@ -1,6 +1,8 @@
 #pragma once
 #include "StdAfx.h"
 #include "Types.h"
+#include "Console.h"
+#include "Director.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
@@ -9,6 +11,8 @@ namespace Glacier {
 
   //! \addtogroup Glacier
   //! @{
+
+  ENGINE_EXTERN_CONVAR( cam_fov );
 
   class CameraModifier {
   friend class Camera;
@@ -29,6 +33,8 @@ namespace Glacier {
     explicit Camera( PCZSceneManager* scene,
       const Ogre::String& name, const Vector3& position,
       const Radian& fovy, PCZone* homeZone, bool reverseAxes );
+    virtual void setOrthographic( const bool orthographic );
+    virtual void setOrthographicWindow( const Real units );
     virtual void lookAt( const Vector3& position );
     virtual PCZCamera* getCamera() { return mCamera; }
     virtual PCZSceneNode* getNode() { return mNode; }

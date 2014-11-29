@@ -49,10 +49,10 @@ namespace Glacier {
     false, cvarCallbackHDREnabled );
 
   HDRlib::HDRCompositor* Director::mHDRCompositor = nullptr;
+  ArcballCamera* Director::mCamera = nullptr;
 
   Director::Director( Graphics* gfx, const PCZSceneNode* target ):
-  mGraphics( gfx ), mViewport( nullptr ),
-  mCamera( nullptr ), mLight( nullptr )
+  mGraphics( gfx ), mViewport( nullptr ), mLight( nullptr )
   {
     auto zone = mGraphics->getScene()->getDefaultZone();
 
@@ -61,7 +61,7 @@ namespace Glacier {
       "defaultcamera",
       target,
       Vector3( 0.0f, 4.0f, -4.75f ),
-      Radian( Ogre::Math::DegreesToRadians( 70.0f ) ),
+      Radian( Ogre::Math::DegreesToRadians( g_CVar_cam_fov.getFloat() ) ),
       zone,
       true,
       0.25f, 1.0f, 10.0f, 10.0f, 2.0f, 10.0f );

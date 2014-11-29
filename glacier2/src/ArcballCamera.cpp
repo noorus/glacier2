@@ -19,7 +19,7 @@ namespace Glacier {
     mMaxDistance( maxDistance ), mRotDeceleration( rotationDecel ),
     mZoomAcceleration( zoomAccel ), mZoomDeceleration( zoomDecel ),
     mRotation( Quaternion::IDENTITY ), mMovement( Vector3::ZERO ),
-    mZoomVelocity( 0.0f ), mClampTop( 0.17f ), mClampBottom( 2.0f ),
+    mZoomVelocity( 0.0f ), mClampTop( 0.6f ), mClampBottom( 1.0f ),
     mClampRotation( Quaternion::IDENTITY ), mClampRotating( false )
   {
     assert( mOffset.length() > mMinDistance && mOffset.length() < mMaxDistance );

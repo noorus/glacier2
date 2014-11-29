@@ -57,8 +57,8 @@ namespace Glacier {
       mouse.second->onFocus( focus );
     for ( auto keyboard : mKeyboards )
       keyboard.second->onFocus( focus );
-    for ( auto gamepad : mGamepads )
-      gamepad.second->onFocus( focus );
+    // for ( auto gamepad : mGamepads )
+    //   gamepad.second->onFocus( focus );
   }
 
   void InputManager::onDeviceConnected( Nil::Device* device )
