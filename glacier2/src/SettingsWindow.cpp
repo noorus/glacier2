@@ -13,7 +13,7 @@
 
 namespace Glacier {
 
-  SettingsWindow::SettingsWindow(): mRoot( nullptr )
+  /*SettingsWindow::SettingsWindow(): mRoot( nullptr )
   {
     const MyGUI::VectorWidgetPtr& root = MyGUI::LayoutManager::getInstance().loadLayout( "Settings.layout" );
     if ( root.size() != 1 )
@@ -182,22 +182,21 @@ namespace Glacier {
     mOriginalGraphics = Locator::getGraphics().getSettings();
     mCurrentGraphics = mOriginalGraphics;
 
-    /*
-    Locator::getAudio().applySettings( mCurrentAudio );
-
-    bool newOutput   = ( mCurrentAudio.outputType != mOriginalAudio.outputType );
-    bool newDriver   = ( mCurrentAudio.driver != mOriginalAudio.driver );
-    bool newSpeakers = ( mCurrentAudio.speakerMode != mOriginalAudio.speakerMode );
-
-    mOriginalAudio = Locator::getAudio().getSettings();
-    mCurrentAudio = mOriginalAudio;
-
-    if ( newOutput )
-      refreshAudioOutputTypes();
-    if ( newDriver )
-      refreshAudioDrivers();
-    if ( newSpeakers )
-      refreshAudioSpeakerModes();*/
+//     Locator::getAudio().applySettings( mCurrentAudio );
+// 
+//     bool newOutput   = ( mCurrentAudio.outputType != mOriginalAudio.outputType );
+//     bool newDriver   = ( mCurrentAudio.driver != mOriginalAudio.driver );
+//     bool newSpeakers = ( mCurrentAudio.speakerMode != mOriginalAudio.speakerMode );
+// 
+//     mOriginalAudio = Locator::getAudio().getSettings();
+//     mCurrentAudio = mOriginalAudio;
+// 
+//     if ( newOutput )
+//       refreshAudioOutputTypes();
+//     if ( newDriver )
+//       refreshAudioDrivers();
+//     if ( newSpeakers )
+//       refreshAudioSpeakerModes();
   }
 
   void SettingsWindow::onCancelClicked( MyGUI::Widget* sender )
@@ -208,6 +207,6 @@ namespace Glacier {
   SettingsWindow::~SettingsWindow()
   {
     //
-  }
+  }*/
 
 }

@@ -11,7 +11,7 @@ namespace Glacier {
   //! \addtogroup Glacier
   //! @{
 
-  class SettingsWindow {
+  /*class SettingsWindow {
   protected:
     MyGUI::Widget* mRoot;
     MyGUI::ComboBox* mAudioDrivers;
@@ -40,7 +40,7 @@ namespace Glacier {
     void onAudioMasterVolumeChanged( MyGUI::ScrollBar* sender, size_t position );
     void onAudioMusicVolumeChanged( MyGUI::ScrollBar* sender, size_t position );
     void onAudioEffectVolumeChanged( MyGUI::ScrollBar* sender, size_t position );
-  };
+  };*/
 
   //! \class GUI
   //! Engine component responsible for graphical user interface concerns
