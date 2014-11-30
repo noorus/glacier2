@@ -14,7 +14,10 @@ namespace Glacier {
   ENGINE_EXTERN_CONVAR( fm_outputmode );
   ENGINE_EXTERN_CONCMD( fm_restart );
 
+  class FMODMusic;
+
   class FMODAudio: public Audio, public EngineComponent {
+  friend class FMODMusic;
   public:
     struct Info {
       FMOD_CAPS caps;
@@ -48,6 +51,7 @@ namespace Glacier {
     FMOD::ChannelGroup* mMasterGroup;
     FMOD::ChannelGroup* mMusicGroup;
     FMOD::ChannelGroup* mEffectGroup;
+    FMODMusic* mMusic;
     void resetGroups();
     void printDeviceList( Console* console );
   protected:
@@ -91,6 +95,7 @@ namespace Glacier {
     virtual void applySettings( const Settings& settings );
     const Info& getInfo() { return mInfo; }
     virtual void componentTick( GameTime tick, GameTime time );
+    FMOD::System* getSystem() throw() { return mSystem; }
     virtual ~FMODAudio();
   };
 

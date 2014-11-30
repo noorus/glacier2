@@ -4,6 +4,7 @@
 #include "Console.h"
 #include "Exception.h"
 #include "ServiceLocator.h"
+#include "FMODMusic.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
@@ -40,7 +41,7 @@ namespace Glacier {
   // Sound engine =============================================================
 
   FMODAudio::FMODAudio( Engine* engine ): EngineComponent( engine ),
-  mEventSystem( nullptr ), mSystem( nullptr )
+  mEventSystem( nullptr ), mSystem( nullptr ), mMusic( nullptr )
   {
     FMOD_RESULT hr;
 
@@ -195,6 +196,9 @@ namespace Glacier {
     setMusicVolume( g_CVar_fm_bgvolume.getFloat() );
     setEffectVolume( g_CVar_fm_fxvolume.getFloat() );
 
+    mMusic = new FMODMusic( this );
+    Locator::provideMusic( mMusic );
+
     mEngine->operationContinueAudio();
   }
 
@@ -285,6 +289,7 @@ namespace Glacier {
 
   void FMODAudio::componentTick( GameTime tick, GameTime time )
   {
+    mMusic->update( tick );
     mEventSystem->update();
   }
 
@@ -294,6 +299,9 @@ namespace Glacier {
       L"Shutting down FMOD" );
 
     mEngine->operationSuspendAudio();
+
+    SAFE_DELETE( mMusic );
+    Locator::provideMusic( nullptr );
 
     if ( mEventSystem )
       mEventSystem->unload();

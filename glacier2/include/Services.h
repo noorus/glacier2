@@ -25,6 +25,12 @@ namespace Glacier {
     virtual void restart() { /* Nothing */ }
   };
 
+  class Music {
+  public:
+    virtual void beginScene() = 0;
+    virtual void endScene() = 0;
+  };
+
   class Physics {
   public:
     virtual void initialize() = 0;

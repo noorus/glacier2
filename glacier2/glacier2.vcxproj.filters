@@ -366,6 +366,9 @@
     <ClCompile Include="src\Mouse.cpp">
       <Filter>Source Files\Input</Filter>
     </ClCompile>
+    <ClCompile Include="src\FMODMusic.cpp">
+      <Filter>Source Files\Services\Audio</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\CompilerDef.h">
@@ -649,6 +652,9 @@
     </ClInclude>
     <ClInclude Include="include\Mouse.h">
       <Filter>Header Files\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="include\FMODMusic.h">
+      <Filter>Header Files\Services\Audio</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

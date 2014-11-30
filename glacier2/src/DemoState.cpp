@@ -17,6 +17,7 @@
 #include "WorldPrimitives.h"
 #include "EntityManager.h"
 #include "World.h"
+#include "FMODMusic.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
@@ -48,6 +49,8 @@ namespace Glacier {
     }
 
     mDirector = new Director( &Locator::getGraphics(), player->getNode() );
+
+    Locator::getMusic().beginScene();
   }
 
   void DemoState::pause( GameTime time )
@@ -72,6 +75,7 @@ namespace Glacier {
   void DemoState::shutdown( GameTime time )
   {
     Locator::getEntities().clear();
+    Locator::getMusic().endScene();
     SAFE_DELETE( mGround );
     SAFE_DELETE( mDirector );
 

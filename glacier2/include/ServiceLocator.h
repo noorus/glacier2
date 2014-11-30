@@ -9,6 +9,7 @@ namespace Glacier {
   class Graphics;
   class GUI;
   class EntityManager;
+  class Music;
 
   class Locator {
   private:
@@ -20,6 +21,7 @@ namespace Glacier {
     static Graphics* graphicsService; //!< Graphics component
     static GUI* guiService; //!< GUI component
     static EntityManager* entityManager; //!< World entities manager
+    static Music* musicPlayer; //!< Music player
   public:
     static const bool hasMemory() { return ( memoryService ? true : false ); }
 
@@ -63,6 +65,13 @@ namespace Glacier {
     static void provideEntities( EntityManager* entities )
     {
       entityManager = entities;
+    }
+
+    static Music& getMusic() { return *musicPlayer; }
+
+    static void provideMusic( Music* player )
+    {
+      musicPlayer = player;
     }
   };
 

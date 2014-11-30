@@ -13,7 +13,7 @@ namespace Glacier {
   ENGINE_DECLARE_CONVAR_WITH_CB( fm_volume, L"Master volume.",
     1.0f, Audio::callbackMasterVolume );
   ENGINE_DECLARE_CONVAR_WITH_CB( fm_bgvolume, L"Background music volume.",
-    1.0f, Audio::callbackMusicVolume );
+    0.8f, Audio::callbackMusicVolume );
   ENGINE_DECLARE_CONVAR_WITH_CB( fm_fxvolume, L"Sound effect volume.",
     1.0f, Audio::callbackEffectVolume );
 

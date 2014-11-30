@@ -250,6 +250,7 @@
     <ClCompile Include="src\JSVector3.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\Mouse.cpp" />
+    <ClCompile Include="src\FMODMusic.cpp" />
     <ClCompile Include="src\NedPoolMemory.cpp" />
     <ClCompile Include="src\PhysicsDebugVisualizer.cpp" />
     <ClCompile Include="src\PhysicsScene.cpp" />
@@ -343,6 +344,7 @@
     <ClInclude Include="include\Graphics.h" />
     <ClInclude Include="include\ModelViewer.h" />
     <ClInclude Include="include\Mouse.h" />
+    <ClInclude Include="include\FMODMusic.h" />
     <ClInclude Include="include\NedPoolMemory.h" />
     <ClInclude Include="include\InputManager.h" />
     <ClInclude Include="include\JSNatives.h" />
