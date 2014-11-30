@@ -230,6 +230,7 @@ namespace Glacier {
     CharacterMoveData& move = mCharacter->mMove;
 
     // TODO properly
+    move.moveMode = CharacterMoveData::Mode_Directional;
     move.direction = DemoState::instance().getDirector()->getCamera()->getCamera()->getDirection();
     move.directional = gEngine->getActionManager()->getDirectional();
 

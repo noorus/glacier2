@@ -82,25 +82,30 @@ namespace Glacier {
     // Calculate directional impulse
     Vector3 directional( Vector3::ZERO );
 
-    // Impulse movements
-    if ( move.affectors[CharacterMoveData::Affector_Forward] )
-      directional += ( forward * move.forward );
-    if ( move.affectors[CharacterMoveData::Affector_Backward] )
-      directional -= ( forward * move.backward );
-    if ( move.affectors[CharacterMoveData::Affector_Right] )
-      directional += ( right * move.right );
-    if ( move.affectors[CharacterMoveData::Affector_Left] )
-      directional -= ( right * move.left );
-
-    // Directional movements
-    if ( !move.directional.isZeroLength() && move.affectors[CharacterMoveData::Affector_Forward] )
+    if ( move.moveMode == CharacterMoveData::Mode_Impulse )
     {
-      Vector2 dir2d = move.directional.normalisedCopy();
-      Vector2 fwd2d( Vector2::UNIT_Y );
-      Quaternion rotation( dir2d.angleTo( fwd2d ), Vector3::NEGATIVE_UNIT_Y );
-      directional = rotation * forward;
-      directional *= move.directional.length();
-      directional *= move.forward;
+      // Impulse movements
+      if ( move.affectors[CharacterMoveData::Affector_Forward] )
+        directional += ( forward * move.forward );
+      if ( move.affectors[CharacterMoveData::Affector_Backward] )
+        directional -= ( forward * move.backward );
+      if ( move.affectors[CharacterMoveData::Affector_Right] )
+        directional += ( right * move.right );
+      if ( move.affectors[CharacterMoveData::Affector_Left] )
+        directional -= ( right * move.left );
+    }
+    else if ( move.moveMode == CharacterMoveData::Mode_Directional )
+    {
+      // Directional movements
+      if ( !move.directional.isZeroLength() && move.affectors[CharacterMoveData::Affector_Forward] )
+      {
+        Vector2 dir2d = move.directional.normalisedCopy();
+        Vector2 fwd2d( Vector2::UNIT_Y );
+        Quaternion rotation( dir2d.angleTo( fwd2d ), Vector3::NEGATIVE_UNIT_Y );
+        directional = rotation * forward;
+        directional *= move.directional.length();
+        directional *= move.forward;
+      }
     }
 
     // Normalise if length > 1

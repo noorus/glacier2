@@ -33,6 +33,10 @@ namespace Glacier {
 
   struct CharacterMoveData {
   public:
+    enum MoveMode {
+      Mode_Impulse,
+      Mode_Directional
+    } moveMode;
     enum Affector {
       Affector_Forward = 0,
       Affector_Backward,
