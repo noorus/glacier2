@@ -22,6 +22,7 @@ namespace Glacier {
       DevCube( World* world );
       virtual ~DevCube();
     public:
+      virtual const Ogre::MovableObject* getMovable() const throw( );
       virtual void spawn( const Vector3& position, const Quaternion& orientation );
       virtual void think( const GameTime delta );
     };

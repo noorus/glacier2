@@ -32,6 +32,7 @@ namespace Glacier {
     inline const Vector3& getPosition() const throw( ) { return mPosition; }
     inline const Quaternion& getOrientation() const throw( ) { return mOrientation; }
     inline const PCZSceneNode* getNode() const throw( ) { return mNode; }
+    virtual const Ogre::MovableObject* getMovable() const throw( ) = 0;
     virtual void spawn( const Vector3& position, const Quaternion& orientation );
     virtual void think( const GameTime delta ) = 0;
     void remove();

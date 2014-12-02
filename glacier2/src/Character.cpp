@@ -28,6 +28,11 @@ namespace Glacier {
     mInput = new CharacterInputComponent( this );
   }
 
+  const Ogre::MovableObject* Character::getMovable() const
+  {
+    return mEntity;
+  }
+
   void Character::spawn( const Vector3& position, const Quaternion& orientation )
   {
     Entity::spawn( position, orientation );

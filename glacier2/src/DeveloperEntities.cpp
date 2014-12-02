@@ -29,6 +29,11 @@ namespace Glacier {
       //
     }
 
+    const Ogre::MovableObject* DevCube::getMovable() const
+    {
+      return mEntity;
+    }
+
     void DevCube::spawn( const Vector3& position, const Quaternion& orientation )
     {
       Entity::spawn( position, orientation );

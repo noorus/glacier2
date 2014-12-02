@@ -111,6 +111,7 @@ namespace Glacier {
     Character( World* world );
     virtual ~Character();
   public:
+    virtual const Ogre::MovableObject* getMovable() const throw();
     virtual void spawn( const Vector3& position, const Quaternion& orientation );
     virtual void think( const GameTime delta );
     virtual void onHitGround();
