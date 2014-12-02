@@ -18,11 +18,17 @@ namespace Glacier {
 
   using namespace physx;
 
-  namespace WorldPrimitives {
+  namespace Primitives {
+
+    Primitive::Primitive( PhysicsScene* scene ):
+    mScene( scene ), mActor( nullptr ), mNode( nullptr )
+    {
+      //
+    }
 
     Plane::Plane( PhysicsScene* scene, const Ogre::Plane& plane,
     const Real width, const Real height, const Vector3& position ):
-    mScene( scene ), mActor( nullptr )
+    Primitive( scene )
     {
       PxPhysics& physics = mScene->getScene()->getPhysics();
 
