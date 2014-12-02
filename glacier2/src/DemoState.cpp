@@ -52,11 +52,12 @@ namespace Glacier {
 
     mDirector = new Director( &Locator::getGraphics(), player->getNode() );
 
-    mOverlay = new MovableTextOverlay( "characternamefieldtest", "character!",
-      player->getMovable(),
-      gEngine->getGraphics()->getScene()->getCamera( "defaultcamera" ) );
+    auto attrs = new MovableTextOverlayAttributes( gEngine->getGraphics()->getScene()->getCamera( "defaultcamera" ),
+      "Banksia", 17, ColourValue::White, "Debug/EntityNameRect" );
+
+    mOverlay = new MovableTextOverlay( "charname", "character!",
+      player->getMovable(), attrs );
     mOverlay->enable( true );
-    mOverlay->setCaption( "long caption is long" );
 
     Locator::getMusic().beginScene();
   }

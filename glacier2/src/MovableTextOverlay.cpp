@@ -10,16 +10,76 @@
 
 namespace Glacier {
 
-  const Real cCharacterHeight = 32.0f;
-  const Ogre::String cMaterialName = "Debug/EntityNameRect";
-  const ColourValue cColor = ColourValue::White;
-  const Ogre::String cFontName = "Banksia";
+  MovableTextOverlayAttributes::MovableTextOverlayAttributes(
+    const Ogre::Camera* camera, const Ogre::String& font, const Real height,
+    const ColourValue& color, const Ogre::String& material ):
+    mCamera( camera ), mFont( nullptr ), mHeight( height ), mColor( color )
+  {
+    setFontName( font );
+    setMaterialName( material );
+    setColor( color );
+  }
+
+  void MovableTextOverlayAttributes::setFontName( const Ogre::String& name )
+  {
+    if ( mFontName == name && mFont )
+      return;
+
+    if ( mFont )
+    {
+      mFont->unload();
+      mFont = nullptr;
+    }
+
+    mFontName = name;
+    if ( !mFontName.empty() )
+    {
+      mFont = (Ogre::Font*)Ogre::FontManager::getSingleton().getByName( mFontName ).getPointer();
+      if ( !mFont )
+        Ogre::Exception( Ogre::Exception::ERR_ITEM_NOT_FOUND, "Could not find font " + name, __FUNCTION__ );
+      mFont->load();
+    }
+  }
+
+  void MovableTextOverlayAttributes::setMaterialName( const Ogre::String& name )
+  {
+    if ( mMaterialName == name )
+      return;
+
+    if ( mMaterialName.length() )
+      Ogre::MaterialManager::getSingleton().getByName( mMaterialName ).getPointer()->unload();
+
+    mMaterialName = name;
+    if ( !mMaterialName.empty() )
+    {
+      Ogre::Material* material = (Ogre::Material*)Ogre::MaterialManager::getSingleton().getByName( mMaterialName ).getPointer();
+      if ( !material )
+        Ogre::Exception( Ogre::Exception::ERR_ITEM_NOT_FOUND, "Could not find material " + name, __FUNCTION__ );
+      material->load();
+    }
+  }
+
+  void MovableTextOverlayAttributes::setColor( const ColourValue& color )
+  {
+    mColor = color;
+  }
+
+  void MovableTextOverlayAttributes::setHeight( const Real height )
+  {
+    mHeight = height;
+  }
+
+  MovableTextOverlayAttributes::~MovableTextOverlayAttributes()
+  {
+    setFontName( "" );
+    setMaterialName( "" );
+  }
 
   MovableTextOverlay::MovableTextOverlay( const Ogre::String& name,
   const Ogre::String& caption, const Ogre::MovableObject* target,
-  const Ogre::Camera* camera ):
+  MovableTextOverlayAttributes* attributes ):
   mName( name ), mTarget( target ), mDirty( true ), mOnScreen( false ),
-  mEnabled( false ), mCamera( camera )
+  mEnabled( false ), mAttributes( attributes )
   {
     Ogre::OverlayManager& manager = Ogre::OverlayManager::getSingleton();
 
@@ -38,9 +98,6 @@ namespace Glacier {
     mElement->setDimensions( 1.0f, 1.0f );
     mElement->setMetricsMode( Ogre::GMM_PIXELS );
     mElement->setPosition( 0.0f, 0.0f );
-
-    mFont = Ogre::FontManager::getSingleton().getByName( cFontName );
-    mFont->load();
 
     updateOverlay();
     setCaption( caption );
@@ -67,13 +124,14 @@ namespace Glacier {
 
   void MovableTextOverlay::computeTextWidth()
   {
-    Real spaceWidth = mFont->getGlyphAspectRatio( 0x0030 );
+    Real spaceWidth = mAttributes->getFont()->getGlyphAspectRatio( 0x0030 );
     mTextWidth = spaceWidth;
 
     for ( auto character : mCaption )
-      mTextWidth += ( character == 0x0020 ) ? spaceWidth : mFont->getGlyphAspectRatio( character );
+      mTextWidth += ( character == 0x0020 ) ? spaceWidth : mAttributes->getFont()->getGlyphAspectRatio( character );
 
-    mTextWidth *= cCharacterHeight;
+    mTextWidth *= mAttributes->getHeight();
+    mTextWidth *= 1.1f;
   }
 
   void MovableTextOverlay::getMinMaxEdgesOfTopAABBIn2D( Real& minX, Real& minY, Real& maxX, Real& maxY )
@@ -94,8 +152,8 @@ namespace Glacier {
       aabb.getCorner( AxisAlignedBox::NEAR_RIGHT_TOP )
     };
 
-    Vector3 cameraPlaneNormal = mCamera->getDerivedOrientation().zAxis();
-    auto cameraPlane = Ogre::Plane( cameraPlaneNormal, mCamera->getDerivedPosition() );
+    Vector3 cameraPlaneNormal = mAttributes->getCamera()->getDerivedOrientation().zAxis();
+    auto cameraPlane = Ogre::Plane( cameraPlaneNormal, mAttributes->getCamera()->getDerivedPosition() );
 
     for ( size_t i = 0; i < 4; i++ )
     {
@@ -136,7 +194,7 @@ namespace Glacier {
   void MovableTextOverlay::getScreenCoordinates( const Vector3& position,
   Real& x, Real& y )
   {
-    Vector3 projected = mCamera->getProjectionMatrix() * ( mCamera->getViewMatrix() * position );
+    Vector3 projected = mAttributes->getCamera()->getProjectionMatrix() * ( mAttributes->getCamera()->getViewMatrix() * position );
 
     x = 1.0f - ( ( projected.x * 0.5f ) + 0.5f );
     y = ( ( projected.y * 0.5f ) + 0.5f );
@@ -144,10 +202,10 @@ namespace Glacier {
 
   void MovableTextOverlay::updateOverlay()
   {
-    mContainer->setMaterialName( cMaterialName );
-    mElement->setColour( cColor );
-    mElement->setParameter( "font_name", cFontName );
-    mElement->setParameter( "char_height", Ogre::StringConverter::toString( cCharacterHeight ) );
+    mContainer->setMaterialName( mAttributes->getMaterialName() );
+    mElement->setColour( mAttributes->getColor() );
+    mElement->setParameter( "font_name", mAttributes->getFontName() );
+    mElement->setParameter( "char_height", Ogre::StringConverter::toString( mAttributes->getHeight() ) );
     mElement->setParameter( "horz_align", "center" );
     mElement->setParameter( "vert_align", "top" );
     mElement->setParameter( "alignment", "center" );
@@ -169,11 +227,11 @@ namespace Glacier {
     }
 
     Real textWidth = mTextWidth / manager.getViewportWidth();
-    Real textHeight = cCharacterHeight / manager.getViewportHeight();
+    Real textHeight = ( mAttributes->getHeight() * 1.1f ) / manager.getViewportHeight();
 
     mContainer->setPosition(
       1.0f - ( minX + maxX + textWidth ) / 2.0f,
-      1.0f - maxY );
+      1.0f - ( maxY + textHeight * 0.5f ) );
     mContainer->setDimensions( textWidth, textHeight );
   }
 

@@ -6,16 +6,40 @@
 
 namespace Glacier {
 
+  class MovableTextOverlayAttributes {
+  protected:
+    const Ogre::Camera* mCamera;
+    Ogre::Font* mFont;
+    Ogre::String mFontName;
+    Ogre::String mMaterialName;
+    ColourValue mColor;
+    Real mHeight;
+  public:
+    MovableTextOverlayAttributes( const Ogre::Camera* camera,
+      const Ogre::String& font, const Real height, const ColourValue& color,
+      const Ogre::String& material );
+    ~MovableTextOverlayAttributes();
+    const Ogre::Camera* getCamera() const { return mCamera; }
+    const Ogre::Font* getFont() const { return mFont; }
+    const Ogre::String& getFontName() const { return mFontName; }
+    const Ogre::String& getMaterialName() const { return mMaterialName; }
+    const ColourValue& getColor() const { return mColor; }
+    const Real getHeight() const { return mHeight; }
+    void setFontName( const Ogre::String& name );
+    void setMaterialName( const Ogre::String& name );
+    void setColor( const ColourValue& color );
+    void setHeight( const Real height );
+  };
+
   class MovableTextOverlay {
   protected:
     const Ogre::String mName;
     const Ogre::MovableObject* mTarget;
-    const Ogre::Camera* mCamera;
-    Ogre::FontPtr mFont;
     Ogre::String mCaption;
     Ogre::Overlay* mOverlay;
     Ogre::OverlayContainer* mContainer;
     Ogre::OverlayElement* mElement;
+    MovableTextOverlayAttributes* mAttributes;
     bool mEnabled;
     bool mDirty;
     Real mTextWidth;
@@ -28,7 +52,7 @@ namespace Glacier {
     MovableTextOverlay( const Ogre::String& name,
       const Ogre::String& caption,
       const Ogre::MovableObject* target,
-      const Ogre::Camera* camera );
+      MovableTextOverlayAttributes* attributes );
     virtual ~MovableTextOverlay();
     void setCaption( const Ogre::String& caption );
     const Ogre::String& getName() const { return mName; }
