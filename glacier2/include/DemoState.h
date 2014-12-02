@@ -11,14 +11,14 @@ namespace Glacier {
   class PhysicsScene;
   class PhysicsDebugVisualizer;
 
-  namespace WorldPrimitives {
+  namespace Primitives {
     class Plane;
   }
 
   class DemoState: public State, public Singleton<DemoState> {
   protected:
     Director* mDirector;
-    WorldPrimitives::Plane* mGround;
+    Primitives::Plane* mGround;
   public:
     DemoState();
     Director* getDirector() { return mDirector; }

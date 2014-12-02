@@ -103,15 +103,18 @@
     <Filter Include="Source Files\Input">
       <UniqueIdentifier>{9c96e6c4-bb4a-4549-b94e-c41ec18d2e50}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Graphics">
+      <UniqueIdentifier>{62c2a74f-cc2d-4240-81c9-7fb700e86619}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Graphics">
+      <UniqueIdentifier>{2fc9a269-c653-4ce8-8db7-2723c3070ab9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Engine.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Graphics.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\EngineComponent.cpp">
@@ -369,6 +372,12 @@
     <ClCompile Include="src\FMODMusic.cpp">
       <Filter>Source Files\Services\Audio</Filter>
     </ClCompile>
+    <ClCompile Include="src\Graphics.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MovableTextOverlay.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\CompilerDef.h">
@@ -384,9 +393,6 @@
       <Filter>Header Files\Shared</Filter>
     </ClInclude>
     <ClInclude Include="include\Engine.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Graphics.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\EngineComponent.h">
@@ -655,6 +661,12 @@
     </ClInclude>
     <ClInclude Include="include\FMODMusic.h">
       <Filter>Header Files\Services\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Graphics.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MovableTextOverlay.h">
+      <Filter>Header Files\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

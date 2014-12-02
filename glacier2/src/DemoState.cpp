@@ -18,6 +18,7 @@
 #include "EntityManager.h"
 #include "World.h"
 #include "FMODMusic.h"
+#include "MovableTextOverlay.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
@@ -25,6 +26,7 @@
 namespace Glacier {
 
   const string cDemoStateTitle( "glacier² » demo" );
+  MovableTextOverlay* mOverlay = nullptr;
 
   DemoState::DemoState(): State( L"Demo" ) {}
 
@@ -37,7 +39,7 @@ namespace Glacier {
     Ogre::Plane plane( Vector3::UNIT_Y, 0.0f );
     Real width = 512.0f;
     Real height = 512.0f;
-    mGround = new WorldPrimitives::Plane( gEngine->getWorld()->getPhysics(), plane, width, height, Vector3::ZERO );
+    mGround = new Primitives::Plane( gEngine->getWorld()->getPhysics(), plane, width, height, Vector3::ZERO );
 
     auto player = Locator::getEntities().create( "player" );
     player->spawn( Vector3( 0.0f, 1.0f, 0.0f ), Quaternion::IDENTITY );
@@ -49,6 +51,12 @@ namespace Glacier {
     }
 
     mDirector = new Director( &Locator::getGraphics(), player->getNode() );
+
+    mOverlay = new MovableTextOverlay( "characternamefieldtest", "character!",
+      player->getMovable(),
+      gEngine->getGraphics()->getScene()->getCamera( "defaultcamera" ) );
+    mOverlay->enable( true );
+    mOverlay->setCaption( "long caption is long" );
 
     Locator::getMusic().beginScene();
   }
@@ -70,10 +78,13 @@ namespace Glacier {
       );
 
     mDirector->getCamera()->update( (float)tick );
+
+    mOverlay->update();
   }
 
   void DemoState::shutdown( GameTime time )
   {
+    SAFE_DELETE( mOverlay );
     Locator::getEntities().clear();
     Locator::getMusic().endScene();
     SAFE_DELETE( mGround );
