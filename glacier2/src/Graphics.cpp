@@ -8,6 +8,7 @@
 #include "Plugins/CgProgramManager/OgreCgPlugin.h"
 #include "Plugins/PCZSceneManager/OgrePCZPlugin.h"
 #include "Win32.h"
+#include "CascadedShadowMapping.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
@@ -130,7 +131,8 @@ namespace Glacier {
   Graphics::Graphics( Engine* engine, WindowHandler* windowHandler ):
   EngineComponent( engine ),
   mRoot( nullptr ), mRenderer( nullptr ), mSceneManager( nullptr ),
-  mOverlaySystem( nullptr ), mWindowHandler( windowHandler )
+  mOverlaySystem( nullptr ), mWindowHandler( windowHandler ),
+  mShadowConstants( nullptr )
   {
     preInitialize();
   }
@@ -222,6 +224,8 @@ namespace Glacier {
     Ogre::TextureManager::getSingleton().setDefaultNumMipmaps(
       g_CVar_tex_mipmaps.getInt() );
 
+    mShadowConstants = new CSMGpuConstants( 4 );
+
     // Register & initialize resource groups
     mEngine->registerResources( ResourceGroupManager::getSingleton() );
 
@@ -294,6 +298,8 @@ namespace Glacier {
 
       mEngine->unregisterResources( ResourceGroupManager::getSingleton() );
       mEngine->unregisterUserLocations( ResourceGroupManager::getSingleton() );
+
+      SAFE_DELETE( mShadowConstants );
 
       SAFE_DELETE( mOverlaySystem );
       mRoot->shutdown();

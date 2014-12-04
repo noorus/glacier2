@@ -18,6 +18,7 @@ namespace Glacier {
   ENGINE_EXTERN_CONCMD( vid_restart );
 
   class WindowHandler;
+  class CSMGpuConstants;
 
   class Graphics: public EngineComponent {
   public:
@@ -37,6 +38,7 @@ namespace Glacier {
     Ogre::OverlaySystem* mOverlaySystem;
     WindowHandler* mWindowHandler;
     Settings mSettings;
+    CSMGpuConstants* mShadowConstants;
   public:
     struct VideoMode {
       uint32_t mWidth;
@@ -73,7 +75,8 @@ namespace Glacier {
     void videoRestart();
     void screenshot();
     void applySettings( const Settings& settings );
-    const Settings& getSettings() { return mSettings; }
+    const Settings& getSettings() throw() { return mSettings; }
+    CSMGpuConstants* getShadowConstants() throw() { return mShadowConstants; }
     void setRenderWindowTitle( const string& title );
     HWND getRenderWindowHandle();
     Ogre::Root* getRoot() { return mRoot; }
