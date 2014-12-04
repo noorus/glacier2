@@ -21,6 +21,7 @@ namespace Glacier {
     static Graphics* graphicsService; //!< Graphics component
     static GUI* guiService; //!< GUI component
     static EntityManager* entityManager; //!< World entities manager
+    static NullMusic nullMusic; //!< Default null music service
     static Music* musicPlayer; //!< Music player
   public:
     static const bool hasMemory() { return ( memoryService ? true : false ); }

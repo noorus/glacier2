@@ -31,6 +31,12 @@ namespace Glacier {
     virtual void endScene() = 0;
   };
 
+  class NullMusic: public Music {
+  public:
+    virtual void beginScene() { /* Nothing */ }
+    virtual void endScene() { /* Nothing */ }
+  };
+
   class Physics {
   public:
     virtual void initialize() = 0;
