@@ -24,7 +24,7 @@ namespace Glacier {
 
     ENGINE_DECLARE_ENTITY( dev_cube, DevCube );
 
-    DevCube::DevCube( World* world ): Entity( world, &baseData )
+    DevCube::DevCube( World* world ): Entity( world, &baseData ), mType( DevCube_025 )
     {
       //
     }
@@ -32,6 +32,11 @@ namespace Glacier {
     const Ogre::MovableObject* DevCube::getMovable() const
     {
       return mEntity;
+    }
+
+    void DevCube::setType( const Type type )
+    {
+      mType = type;
     }
 
     void DevCube::spawn( const Vector3& position, const Quaternion& orientation )
@@ -45,21 +50,40 @@ namespace Glacier {
       transform.p = Math::ogreVec3ToPx( mPosition );
       transform.q = Math::ogreQtToPx( mOrientation );
 
-      PxBoxGeometry geometry;
-      geometry.halfExtents.x = 0.125f;
-      geometry.halfExtents.y = 0.125f;
-      geometry.halfExtents.z = 0.125f;
-      mActor = PxCreateDynamic( physics, transform, geometry, *scene->getDefaultMaterial(), 10.0f );
-      if ( !mActor )
-        ENGINE_EXCEPT( "Could not create physics plane actor" );
+      if ( mType == DevCube_025 )
+      {
+        PxBoxGeometry geometry;
+        geometry.halfExtents.x = 0.125f;
+        geometry.halfExtents.y = 0.125f;
+        geometry.halfExtents.z = 0.125f;
+        mActor = PxCreateDynamic( physics, transform, geometry, *scene->getDefaultMaterial(), 10.0f );
+        if ( !mActor )
+          ENGINE_EXCEPT( "Could not create physics plane actor" );
 
-      scene->getScene()->addActor( *mActor );
+        scene->getScene()->addActor( *mActor );
 
-      mMesh = Procedural::BoxGenerator().setSizeX( 0.25f ).setSizeY( 0.25f ).setSizeZ( 0.25f ).realizeMesh();
+        mMesh = Procedural::BoxGenerator().setSizeX( 0.25f ).setSizeY( 0.25f ).setSizeZ( 0.25f ).realizeMesh();
+        mEntity = Locator::getGraphics().getScene()->createEntity( mMesh );
+        mEntity->setMaterialName( "Developer/Cube025" );
+      }
+      else if ( mType == DevCube_050 )
+      {
+        PxBoxGeometry geometry;
+        geometry.halfExtents.x = 0.25f;
+        geometry.halfExtents.y = 0.25f;
+        geometry.halfExtents.z = 0.25f;
+        mActor = PxCreateDynamic( physics, transform, geometry, *scene->getDefaultMaterial(), 40.0f );
+        if ( !mActor )
+          ENGINE_EXCEPT( "Could not create physics plane actor" );
 
-      mEntity = Locator::getGraphics().getScene()->createEntity( mMesh );
-      mEntity->setMaterialName( "Developer/Cube025" );
-      mEntity->setCastShadows( false );
+        scene->getScene()->addActor( *mActor );
+
+        mMesh = Procedural::BoxGenerator().setSizeX( 0.5f ).setSizeY( 0.5f ).setSizeZ( 0.5f ).realizeMesh();
+        mEntity = Locator::getGraphics().getScene()->createEntity( mMesh );
+        mEntity->setMaterialName( "Developer/Cube050" );
+      }
+
+      mEntity->setCastShadows( true );
       mNode->attachObject( mEntity );
     }
 
