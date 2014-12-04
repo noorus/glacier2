@@ -67,5 +67,9 @@ namespace Glacier {
   using Ogre::UTFString;
   using Ogre::ManualObject;
   using Ogre::MaterialPtr;
+  using Ogre::GpuSharedParametersPtr;
+  using Ogre::StringConverter;
+  using Ogre::SceneManager;
+  using Ogre::GpuProgramManager;
 
 }

@@ -5,6 +5,7 @@
 #include "HDRCompositor.h"
 #include "Engine.h"
 #include "GUI.h"
+#include "CascadedShadowMapping.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
@@ -52,7 +53,8 @@ namespace Glacier {
   ArcballCamera* Director::mCamera = nullptr;
 
   Director::Director( Graphics* gfx, const PCZSceneNode* target ):
-  mGraphics( gfx ), mViewport( nullptr ), mLight( nullptr )
+  mGraphics( gfx ), mViewport( nullptr ), mLight( nullptr ), mShadowConstants( nullptr ),
+  mShadowSetup( nullptr )
   {
     auto zone = mGraphics->getScene()->getDefaultZone();
 
@@ -73,25 +75,27 @@ namespace Glacier {
 
     mGraphics->getEngine()->getGUI()->initialize();
 
-    mGraphics->getScene()->setAmbientLight( ColourValue( 0.25f, 0.25f, 0.25f, 1.0f ) );
+    mGraphics->getScene()->setAmbientLight( ColourValue( 0.25f, 0.25f, 0.25f ) );
 
     Ogre::Light* w = mGraphics->getScene()->createLight( "doopwhoop" );
     w->setType( Ogre::Light::LT_DIRECTIONAL );
-    w->setDirection( Vector3( 0.0f, -1.0f, 0.0f ) );
-    w->setPowerScale( 1.0f );
-    w->setDiffuseColour( ColourValue::White );
-    w->setSpecularColour( ColourValue::Red );
+    w->setDirection( Vector3( 0.3f, -1.0f, 0.4f ).normalisedCopy() );
+    w->setCastShadows( true );
+    w->setShadowFarClipDistance( 100.0f );
 
-    /*mLight = mGraphics->getScene()->createLight( "whatever" );
-    mLight->setCastShadows( true );
-    mLight->setType( Ogre::Light::LT_POINT );
-    mLight->setDiffuseColour( ColourValue::White );
-    mLight->setSpecularColour( ColourValue::White );
-    mLight->setShadowFarClipDistance( 12000 );
-    mLight->setAttenuation( 1.0f, 0.1f, 1.0f, 1.0f );
-    mLight->setPowerScale( 0.5f );
-    mLight->setVisible( true );
-    mCamera->getNode()->attachObject( mLight );*/
+    auto scene = gEngine->getGraphics()->getScene();
+    scene->setShadowTechnique( Ogre::SHADOWTYPE_TEXTURE_MODULATIVE_INTEGRATED );
+    scene->setShadowCasterRenderBackFaces( false );
+    scene->setShadowTextureCount( 4 );
+    scene->setShadowTextureCountPerLightType( Ogre::Light::LT_DIRECTIONAL, 4 );
+    for ( int i = 0; i < 4; i++ )
+      scene->setShadowTextureConfig( i, 1024, 1024, Ogre::PF_FLOAT32_R );
+    mShadowSetup = new StableCSMShadowCameraSetup( gEngine->getGraphics()->getShadowConstants() );
+    mShadowSetup->calculateSplitPoints( 4, 0.5f, 20.0f, 0.93f );
+    auto points = mShadowSetup->getSplitPoints();
+    mShadowSetup->setSplitPoints( points );
+    mShadowSetup->setSplitPadding( 1.0f );
+    scene->setShadowCameraSetup( Ogre::ShadowCameraSetupPtr( mShadowSetup ) );
 
     mHDRCompositor = new HDRlib::HDRCompositor(
       mGraphics->getWindow(), mCamera->getCamera() );

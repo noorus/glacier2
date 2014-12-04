@@ -40,8 +40,8 @@ namespace Glacier {
     mMesh = Procedural::CapsuleGenerator().setHeight( cPlayerHeight ).setRadius( cPlayerRadius ).realizeMesh( "playerStandCapsule" );
 
     mEntity = Locator::getGraphics().getScene()->createEntity( mMesh );
-    mEntity->setMaterialName( "Debug/PlayerPhysicsCapsule" );
-    mEntity->setCastShadows( false );
+    mEntity->setMaterialName( "Developer/Placeholder/Player" );
+    mEntity->setCastShadows( true );
     mNode->attachObject( mEntity );
 
     mPhysics = new CharacterPhysicsComponent( mWorld, position, cPlayerHeight, cPlayerRadius );

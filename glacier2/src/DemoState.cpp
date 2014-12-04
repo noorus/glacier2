@@ -19,6 +19,7 @@
 #include "World.h"
 #include "FMODMusic.h"
 #include "MovableTextOverlay.h"
+#include "DeveloperEntities.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
@@ -46,8 +47,15 @@ namespace Glacier {
 
     for ( int i = 1; i < 11; i++ )
     {
-      auto cube = Locator::getEntities().create( "dev_cube" );
-      cube->spawn( Vector3( 10.0f, i * 15.0f, 0.0f ), Quaternion::IDENTITY );
+      auto cube = (Entities::DevCube*)Locator::getEntities().create( "dev_cube" );
+      cube->setType( Entities::DevCube::DevCube_025 );
+      cube->spawn( Vector3( 5.0f, i * 15.0f, 0.0f ), Quaternion::IDENTITY );
+    }
+    for ( int i = 1; i < 11; i++ )
+    {
+      auto cube = ( Entities::DevCube* )Locator::getEntities().create( "dev_cube" );
+      cube->setType( Entities::DevCube::DevCube_050 );
+      cube->spawn( Vector3( -5.0f, i * 15.0f, 0.0f ), Quaternion::IDENTITY );
     }
 
     mDirector = new Director( &Locator::getGraphics(), player->getNode() );
@@ -55,7 +63,7 @@ namespace Glacier {
     auto attrs = new MovableTextOverlayAttributes( gEngine->getGraphics()->getScene()->getCamera( "defaultcamera" ),
       "Banksia", 17, ColourValue::White, "Debug/EntityNameRect" );
 
-    mOverlay = new MovableTextOverlay( "charname", "character!",
+    mOverlay = new MovableTextOverlay( "charname", "player",
       player->getMovable(), attrs );
     mOverlay->enable( true );
 

@@ -219,6 +219,7 @@
     <ClCompile Include="src\ArcballCamera.cpp" />
     <ClCompile Include="src\AudioService.cpp" />
     <ClCompile Include="src\Camera.cpp" />
+    <ClCompile Include="src\CascadedShadowMapping.cpp" />
     <ClCompile Include="src\Character.cpp" />
     <ClCompile Include="src\CharacterInputComponent.cpp" />
     <ClCompile Include="src\CharacterMovementComponent.cpp" />
@@ -323,6 +324,7 @@
     <ClInclude Include="include\ActionManager.h" />
     <ClInclude Include="include\AudioService.h" />
     <ClInclude Include="include\Camera.h" />
+    <ClInclude Include="include\CascadedShadowMapping.h" />
     <ClInclude Include="include\CharacterPhysicsComponent.h" />
     <ClInclude Include="include\Console.h" />
     <ClInclude Include="include\ConsoleWindow.h" />

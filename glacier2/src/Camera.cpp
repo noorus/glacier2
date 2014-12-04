@@ -30,7 +30,7 @@ namespace Glacier {
     return true;
   }
 
-  ENGINE_DECLARE_CONVAR_WITH_CB( cam_fov, L"Camera field of view", 180.0f, cam_setfov );
+  ENGINE_DECLARE_CONVAR_WITH_CB( cam_fov, L"Camera field of view", 70.0f, cam_setfov );
   ENGINE_DECLARE_CONVAR_WITH_CB( cam_orthographic, L"Camera orthographic mode", true, cam_setortho );
   ENGINE_DECLARE_CONVAR_WITH_CB( cam_window, L"Camera orthographic window size", 24.0f, cam_setwindow );
 
@@ -45,13 +45,14 @@ namespace Glacier {
     mCamera = (PCZCamera*)mScene->createCamera( name );
 
     if ( g_CVar_cam_orthographic.getBool() )
+    {
       mCamera->setProjectionType( Ogre::PT_ORTHOGRAPHIC );
+      mCamera->setOrthoWindowWidth( g_CVar_cam_window.getFloat() );
+    }
 
     mCamera->setPosition( Vector3::ZERO );
     mCamera->setAutoAspectRatio( true );
     mCamera->setFOVy( fovy );
-
-    mCamera->setOrthoWindowWidth( g_CVar_cam_window.getFloat() );
 
     // Create node, attach the camera
     mNode = (PCZSceneNode*)mScene->getRootSceneNode()->createChildSceneNode();
@@ -60,7 +61,7 @@ namespace Glacier {
     mNode->setFixedYawAxis( true, Vector3::UNIT_Y );
     mNode->setHomeZone( mZone );
 
-    mCamera->setNearClipDistance( 0.00001f );
+    mCamera->setNearClipDistance( 0.01f );
     mCamera->setFarClipDistance( 1024.0f );
   }
 

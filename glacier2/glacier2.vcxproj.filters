@@ -378,6 +378,9 @@
     <ClCompile Include="src\MovableTextOverlay.cpp">
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="src\CascadedShadowMapping.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\CompilerDef.h">
@@ -666,6 +669,9 @@
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="include\MovableTextOverlay.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CascadedShadowMapping.h">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
   </ItemGroup>

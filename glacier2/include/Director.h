@@ -11,6 +11,8 @@ namespace Glacier {
 
   class Graphics;
   class ArcballCamera;
+  class CSMGpuConstants;
+  class StableCSMShadowCameraSetup;
 
   //! \class Director
   //! The director is in charge of managing the viewport,
@@ -20,6 +22,8 @@ namespace Glacier {
     Graphics* mGraphics;        //!< The graphics engine
     Ogre::Viewport* mViewport;  //!< My viewport
     Ogre::Light* mLight;
+    CSMGpuConstants* mShadowConstants;
+    StableCSMShadowCameraSetup* mShadowSetup;
   public:
     static HDRlib::HDRCompositor* mHDRCompositor; //!< My HDR compositor
     static ArcballCamera* mCamera; //!< My camera
