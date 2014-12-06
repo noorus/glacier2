@@ -4,3 +4,6 @@
 [submodule "hdrlib"]
 	path = hdrlib
 	url = https://github.com/sldt/hdrlib.git
+[submodule "recastnavigation"]
+	path = recastnavigation
+	url = https://github.com/memononen/recastnavigation.git
