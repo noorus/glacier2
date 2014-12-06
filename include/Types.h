@@ -72,4 +72,10 @@ namespace Glacier {
   using Ogre::SceneManager;
   using Ogre::GpuProgramManager;
 
+  using physx::PxVec2;
+  using physx::PxVec3;
+  using physx::PxVec4;
+  using physx::PxQuat;
+  using physx::PxExtendedVec3;
+
 }

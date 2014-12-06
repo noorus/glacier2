@@ -19,7 +19,7 @@ namespace Glacier {
 
     //! \fn ogreVec3ToPx
     //! Convert from Ogre Vector3 to PhysX PxVec3.
-    inline PxVec3 ogreVec3ToPx( const Vector3& v )
+    inline physx::PxVec3 ogreVec3ToPx( const Vector3& v )
     {
       return physx::PxVec3( v.x, v.y, v.z );
     }
@@ -33,7 +33,7 @@ namespace Glacier {
 
     //! \fn ogreVec3ToPxExt
     //! Convert from Ogre Vector3 to PhysX PxExtendedVec3.
-    inline PxExtendedVec3 ogreVec3ToPxExt( const Vector3& v )
+    inline physx::PxExtendedVec3 ogreVec3ToPxExt( const Vector3& v )
     {
       return physx::PxExtendedVec3( v.x, v.y, v.z );
     }
@@ -51,14 +51,14 @@ namespace Glacier {
 
     //! \fn pxQtToOgre
     //! Convert from PhysX NxQuat to Ogre Quaternion.
-    inline Quaternion pxQtToOgre( const PxQuat& q )
+    inline Quaternion pxQtToOgre( const physx::PxQuat& q )
     {
       return Quaternion( q.w, q.x, q.y, q.z );
     }
 
     //! \fn ogreQtToPx
     //! Convert from Ogre Quaternion to PhysX NxQuat.
-    inline PxQuat ogreQtToPx( const Quaternion& q )
+    inline physx::PxQuat ogreQtToPx( const Quaternion& q )
     {
       physx::PxQuat qt;
       qt.x = q.x;

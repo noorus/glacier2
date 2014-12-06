@@ -12,9 +12,9 @@ namespace Glacier {
 
   class PhysicsScene;
 
-  class PhysXPhysics: public Physics, public EngineComponent, public PxErrorCallback {
+  class PhysXPhysics: public Physics, public EngineComponent, public physx::PxErrorCallback {
   protected:
-    class Allocator: public PxAllocatorCallback {
+    class Allocator: public physx::PxAllocatorCallback {
     public:
       virtual void* allocate( size_t size, const char* typeName,
         const char* filename, int line );
@@ -26,7 +26,7 @@ namespace Glacier {
     physx::PxCudaContextManager* mCudaContextManager;
     physx::PxDefaultCpuDispatcher* mCPUDispatcher;
     std::list<PhysicsScene*> mScenes;
-    virtual void reportError( PxErrorCode::Enum code,
+    virtual void reportError( physx::PxErrorCode::Enum code,
       const char* message, const char* file, int line );
   public:
     PhysXPhysics( Engine* engine );
