@@ -130,5 +130,16 @@
 #include <Procedural.h>
 #pragma warning( pop )
 
+// Recast/Detour Headers
+#include <RecastAlloc.h>
+#include <Recast.h>
+#include <DetourAlloc.h>
+#include <DetourCommon.h>
+#include <DetourMath.h>
+#include <DetourNavMesh.h>
+#include <DetourNavMeshBuilder.h>
+#include <DetourNavMeshQuery.h>
+#include <DetourNode.h>
+
 // Glacier types
 #include "Types.h"

@@ -109,6 +109,24 @@
     <Filter Include="Source Files\Graphics">
       <UniqueIdentifier>{2fc9a269-c653-4ce8-8db7-2723c3070ab9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Recast &amp; Detour">
+      <UniqueIdentifier>{242a714c-e4a9-4c95-ad5b-897a1d679682}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Recast &amp; Detour\Recast">
+      <UniqueIdentifier>{4660444b-5741-48bb-a8c0-4d13d2dd9a3b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Recast &amp; Detour\Detour">
+      <UniqueIdentifier>{a3b9eecf-c444-423a-8279-fe9af2967d25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Recast &amp; Detour\DebugUtils">
+      <UniqueIdentifier>{bbadd820-93a8-4a58-bda2-86360f94d09a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Recast &amp; Detour\DetourCrowd">
+      <UniqueIdentifier>{b5b6c00f-758a-4b98-ac17-bf7ff67c7e53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Recast &amp; Detour\DetourTileCache">
+      <UniqueIdentifier>{b65da0d3-7b34-429a-87a3-52cf521af1d7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Main.cpp">
@@ -380,6 +398,90 @@
     </ClCompile>
     <ClCompile Include="src\CascadedShadowMapping.cpp">
       <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\recastnavigation\Recast\Source\Recast.cpp">
+      <Filter>Source Files\Recast &amp; Detour\Recast</Filter>
+    </ClCompile>
+    <ClCompile Include="..\recastnavigation\Recast\Source\RecastAlloc.cpp">
+      <Filter>Source Files\Recast &amp; Detour\Recast</Filter>
+    </ClCompile>
+    <ClCompile Include="..\recastnavigation\Recast\Source\RecastArea.cpp">
+      <Filter>Source Files\Recast &amp; Detour\Recast</Filter>
+    </ClCompile>
+    <ClCompile Include="..\recastnavigation\Recast\Source\RecastContour.cpp">
+      <Filter>Source Files\Recast &amp; Detour\Recast</Filter>
+    </ClCompile>
+    <ClCompile Include="..\recastnavigation\Recast\Source\RecastFilter.cpp">
+      <Filter>Source Files\Recast &amp; Detour\Recast</Filter>
+    </ClCompile>
+    <ClCompile Include="..\recastnavigation\Recast\Source\RecastLayers.cpp">
+      <Filter>Source Files\Recast &amp; Detour\Recast</Filter>
+    </ClCompile>
+    <ClCompile Include="..\recastnavigation\Recast\Source\RecastMesh.cpp">
+      <Filter>Source Files\Recast &amp; Detour\Recast</Filter>
+    </ClCompile>
+    <ClCompile Include="..\recastnavigation\Recast\Source\RecastMeshDetail.cpp">
+      <Filter>Source Files\Recast &amp; Detour\Recast</Filter>
+    </ClCompile>
+    <ClCompile Include="..\recastnavigation\Recast\Source\RecastRasterization.cpp">
+      <Filter>Source Files\Recast &amp; Detour\Recast</Filter>
+    </ClCompile>
+    <ClCompile Include="..\recastnavigation\Recast\Source\RecastRegion.cpp">
+      <Filter>Source Files\Recast &amp; Detour\Recast</Filter>
+    </ClCompile>
+    <ClCompile Include="..\recastnavigation\Detour\Source\DetourAlloc.cpp">
+      <Filter>Source Files\Recast &amp; Detour\Detour</Filter>
+    </ClCompile>
+    <ClCompile Include="..\recastnavigation\Detour\Source\DetourCommon.cpp">
+      <Filter>Source Files\Recast &amp; Detour\Detour</Filter>
+    </ClCompile>
+    <ClCompile Include="..\recastnavigation\Detour\Source\DetourNavMesh.cpp">
+      <Filter>Source Files\Recast &amp; Detour\Detour</Filter>
+    </ClCompile>
+    <ClCompile Include="..\recastnavigation\Detour\Source\DetourNavMeshBuilder.cpp">
+      <Filter>Source Files\Recast &amp; Detour\Detour</Filter>
+    </ClCompile>
+    <ClCompile Include="..\recastnavigation\Detour\Source\DetourNavMeshQuery.cpp">
+      <Filter>Source Files\Recast &amp; Detour\Detour</Filter>
+    </ClCompile>
+    <ClCompile Include="..\recastnavigation\Detour\Source\DetourNode.cpp">
+      <Filter>Source Files\Recast &amp; Detour\Detour</Filter>
+    </ClCompile>
+    <ClCompile Include="..\recastnavigation\DebugUtils\Source\DebugDraw.cpp">
+      <Filter>Source Files\Recast &amp; Detour\DebugUtils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\recastnavigation\DebugUtils\Source\DetourDebugDraw.cpp">
+      <Filter>Source Files\Recast &amp; Detour\DebugUtils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\recastnavigation\DebugUtils\Source\RecastDebugDraw.cpp">
+      <Filter>Source Files\Recast &amp; Detour\DebugUtils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\recastnavigation\DebugUtils\Source\RecastDump.cpp">
+      <Filter>Source Files\Recast &amp; Detour\DebugUtils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\recastnavigation\DetourCrowd\Source\DetourCrowd.cpp">
+      <Filter>Source Files\Recast &amp; Detour\DetourCrowd</Filter>
+    </ClCompile>
+    <ClCompile Include="..\recastnavigation\DetourCrowd\Source\DetourLocalBoundary.cpp">
+      <Filter>Source Files\Recast &amp; Detour\DetourCrowd</Filter>
+    </ClCompile>
+    <ClCompile Include="..\recastnavigation\DetourCrowd\Source\DetourObstacleAvoidance.cpp">
+      <Filter>Source Files\Recast &amp; Detour\DetourCrowd</Filter>
+    </ClCompile>
+    <ClCompile Include="..\recastnavigation\DetourCrowd\Source\DetourPathCorridor.cpp">
+      <Filter>Source Files\Recast &amp; Detour\DetourCrowd</Filter>
+    </ClCompile>
+    <ClCompile Include="..\recastnavigation\DetourCrowd\Source\DetourPathQueue.cpp">
+      <Filter>Source Files\Recast &amp; Detour\DetourCrowd</Filter>
+    </ClCompile>
+    <ClCompile Include="..\recastnavigation\DetourCrowd\Source\DetourProximityGrid.cpp">
+      <Filter>Source Files\Recast &amp; Detour\DetourCrowd</Filter>
+    </ClCompile>
+    <ClCompile Include="..\recastnavigation\DetourTileCache\Source\DetourTileCache.cpp">
+      <Filter>Source Files\Recast &amp; Detour\DetourTileCache</Filter>
+    </ClCompile>
+    <ClCompile Include="..\recastnavigation\DetourTileCache\Source\DetourTileCacheBuilder.cpp">
+      <Filter>Source Files\Recast &amp; Detour\DetourTileCache</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
