@@ -40,7 +40,11 @@ namespace Glacier {
     Ogre::Plane plane( Vector3::UNIT_Y, 0.0f );
     Real width = 512.0f;
     Real height = 512.0f;
-    mGround = new Primitives::Plane( gEngine->getWorld()->getPhysics(), plane, width, height, Vector3::ZERO );
+    mPrimitives.push_back( new Primitives::Plane( gEngine->getWorld()->getPhysics(), plane, width, height, Vector3::ZERO ) );
+    mPrimitives.push_back( new Primitives::Box( gEngine->getWorld()->getPhysics(), Vector3( 1.0f, 10.0f, 1.0f ), Vector3( -5.5f, 5.0f, 5.5f ), Quaternion::IDENTITY ) );
+    mPrimitives.push_back( new Primitives::Box( gEngine->getWorld()->getPhysics(), Vector3( 1.0f, 10.0f, 1.0f ), Vector3( 5.5f, 5.0f, -5.5f ), Quaternion::IDENTITY ) );
+    mPrimitives.push_back( new Primitives::Box( gEngine->getWorld()->getPhysics(), Vector3( 1.0f, 10.0f, 1.0f ), Vector3( 5.5f, 5.0f, 5.5f ), Quaternion::IDENTITY ) );
+    mPrimitives.push_back( new Primitives::Box( gEngine->getWorld()->getPhysics(), Vector3( 1.0f, 10.0f, 1.0f ), Vector3( -5.5f, 5.0f, -5.5f ), Quaternion::IDENTITY ) );
 
     auto player = Locator::getEntities().create( "player" );
     player->spawn( Vector3( 0.0f, 1.0f, 0.0f ), Quaternion::IDENTITY );
@@ -61,7 +65,7 @@ namespace Glacier {
     mDirector = new Director( &Locator::getGraphics(), player->getNode() );
 
     auto attrs = new MovableTextOverlayAttributes( gEngine->getGraphics()->getScene()->getCamera( "defaultcamera" ),
-      "Banksia", 17, ColourValue::White, "Debug/EntityNameRect" );
+      "Banksia", 17, Locator::getColors().base( Colors::Color_Text_Warning ), "Debug/EntityNameRect" );
 
     mOverlay = new MovableTextOverlay( "charname", "player",
       player->getMovable(), attrs );
@@ -96,7 +100,8 @@ namespace Glacier {
     SAFE_DELETE( mOverlay );
     Locator::getEntities().clear();
     Locator::getMusic().endScene();
-    SAFE_DELETE( mGround );
+    for ( auto primitive : mPrimitives )
+      delete primitive;
     SAFE_DELETE( mDirector );
 
     State::shutdown( time );

@@ -32,6 +32,10 @@ namespace Glacier {
 
     class Box: public Primitive {
     protected:
+      Ogre::MeshPtr mMesh;
+    public:
+      Box( PhysicsScene* scene, const Vector3& size, const Vector3& position, const Quaternion& orientation );
+      ~Box();
     };
 
   }

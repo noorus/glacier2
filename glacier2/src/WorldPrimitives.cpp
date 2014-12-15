@@ -68,6 +68,45 @@ namespace Glacier {
       mScene->getScene()->removeActor( *mActor );
     }
 
+    Box::Box( PhysicsScene* scene, const Vector3& size, const Vector3& position, const Quaternion& orientation ): Primitive( scene )
+    {
+      PxPhysics& physics = mScene->getScene()->getPhysics();
+
+      PxTransform transform;
+      transform.p = Math::ogreVec3ToPx( position );
+      transform.q = Math::ogreQtToPx( orientation );
+
+      PxBoxGeometry geometry;
+      geometry.halfExtents = Math::ogreVec3ToPx( size / 2.0f );
+      mActor = PxCreateStatic( physics, transform, geometry, *scene->getDefaultMaterial() );
+      if ( !mActor )
+        ENGINE_EXCEPT( "Could not create physics box actor" );
+
+      mScene->getScene()->addActor( *mActor );
+
+      mMesh = Procedural::BoxGenerator().setSize( size ).realizeMesh();
+
+      auto scm = Locator::getGraphics().getScene();
+      mNode = (PCZSceneNode*)scm->getRootSceneNode()->createChildSceneNode();
+      scm->addPCZSceneNode( mNode, scm->getDefaultZone() );
+
+      mEntity = Locator::getGraphics().getScene()->createEntity( mMesh );
+      mEntity->setMaterialName( "Developer/Floor" );
+      mEntity->setCastShadows( true );
+      mNode->attachObject( mEntity );
+      mNode->setPosition( position );
+      mNode->setOrientation( orientation );
+    }
+
+    Box::~Box()
+    {
+      if ( mEntity )
+        Locator::getGraphics().getScene()->destroyEntity( mEntity );
+      if ( mNode )
+        Locator::getGraphics().getScene()->destroySceneNode( mNode );
+      mScene->getScene()->removeActor( *mActor );
+    }
+
   }
 
 

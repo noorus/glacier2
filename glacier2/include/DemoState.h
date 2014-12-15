@@ -12,13 +12,13 @@ namespace Glacier {
   class PhysicsDebugVisualizer;
 
   namespace Primitives {
-    class Plane;
+    class Primitive;
   }
 
   class DemoState: public State, public Singleton<DemoState> {
   protected:
     Director* mDirector;
-    Primitives::Plane* mGround;
+    std::list<Primitives::Primitive*> mPrimitives;
   public:
     DemoState();
     Director* getDirector() { return mDirector; }
