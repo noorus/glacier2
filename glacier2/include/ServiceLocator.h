@@ -10,6 +10,7 @@ namespace Glacier {
   class GUI;
   class EntityManager;
   class Music;
+  class Colors;
 
   class Locator {
   private:
@@ -23,6 +24,7 @@ namespace Glacier {
     static EntityManager* entityManager; //!< World entities manager
     static NullMusic nullMusic; //!< Default null music service
     static Music* musicPlayer; //!< Music player
+    static Colors colors; //!< Colors
   public:
     static const bool hasMemory() { return ( memoryService ? true : false ); }
 
@@ -74,6 +76,8 @@ namespace Glacier {
     {
       musicPlayer = player;
     }
+
+    static Colors& getColors() { return colors; }
   };
 
 }

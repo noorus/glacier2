@@ -28,6 +28,7 @@ namespace Glacier {
 
     enum WrappedType {
       Wrapped_Console = 0,
+      Wrapped_Colors,
       Wrapped_Vector3,
       Wrapped_Quaternion
     };

@@ -65,4 +65,21 @@ namespace Glacier {
     virtual const wstring& getProviderName() = 0;
   };
 
+  class Colors {
+  public:
+    enum Value {
+      Color_Text_Plain = 0,
+      Color_Text_Warning,
+      Color_Text_Error,
+      Color_Text_Success,
+      Color_MAX
+    };
+  protected:
+    ColourValue mColorTable[Color_MAX];
+  public:
+    Colors();
+    const ColourValue& base( const Value index );
+    void set( const Value index, uint32_t value );
+  };
+
 }

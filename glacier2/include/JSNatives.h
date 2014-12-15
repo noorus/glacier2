@@ -52,6 +52,21 @@ namespace Glacier {
       static void shutdown();
     };
 
+    //! \class Colors
+    //! A JavaScript-wrapped color service.
+    //! \sa Glacier::Colors
+    //! \sa ObjectWrapper
+    class Colors: public ObjectWrapper<Colors> {
+    protected:
+      static Colors* instance;
+      Colors();
+      //! JavaScript Colors.set.
+      static void jsSet( const FunctionCallbackInfo<v8::Value>& args );
+    public:
+      static void initialize( Handle<v8::Context> context );
+      static void shutdown();
+    };
+
     //! \class Vector3
     //! A JavaScript-wrapped Vector3.
     //! \sa Ogre::Vector3

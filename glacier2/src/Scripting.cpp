@@ -68,6 +68,7 @@ namespace Glacier {
 
     // Initialize native objects in the global namespace
     JS::Console::initialize( mEngine->getConsole(), context );
+    JS::Colors::initialize( context );
   }
 
   void Scripting::clearScripts()
@@ -81,6 +82,7 @@ namespace Glacier {
   void Scripting::shutdown()
   {
     clearScripts();
+    JS::Colors::shutdown();
     JS::Console::shutdown();
     mContext.Reset();
   }
