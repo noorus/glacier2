@@ -279,8 +279,11 @@ namespace Glacier {
       tickDelta.QuadPart = timeNew.QuadPart - timeCurrent.QuadPart;
       timeCurrent = timeNew;
 
+      // Make frame delta and accumulate stepping
       fTimeDelta = (GameTime)tickDelta.QuadPart / (GameTime)mHPCFrequency.QuadPart;
       fTimeAccumulator += fTimeDelta;
+
+      // Run logic steps
       while ( fTimeAccumulator >= fLogicStep )
       {
         if ( mPhysics )
@@ -293,8 +296,12 @@ namespace Glacier {
         fTime += fLogicStep;
         fTimeAccumulator -= fLogicStep;
       }
-      if ( fTimeDelta > 0.0 )
+
+      // If any time has passed, draw
+      if ( fTimeDelta > 0.0 ) {
+        mGame->componentPostUpdate( fTimeDelta, fTime );
         mGraphics->componentPostUpdate( fTimeDelta, fTime );
+      }
     }
   }
 

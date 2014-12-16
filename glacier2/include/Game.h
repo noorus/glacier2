@@ -19,6 +19,7 @@ namespace Glacier {
   public:
     Game( Engine* engine );
     virtual void componentTick( GameTime tick, GameTime time );
+    virtual void componentPostUpdate( GameTime delta, GameTime time );
     void changeState( State* state );
     void pushState( State* state );
     void popState();

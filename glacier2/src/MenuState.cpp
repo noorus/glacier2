@@ -49,6 +49,11 @@ namespace Glacier {
 //     mDirector->getCamera()->update( (float)tick );
   }
 
+  void MenuState::draw( GameTime delta, GameTime time )
+  {
+    //
+  }
+
   void MenuState::shutdown( GameTime time )
   {
     SAFE_DELETE( mDirector );

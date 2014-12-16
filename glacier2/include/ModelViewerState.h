@@ -19,6 +19,7 @@ namespace Glacier {
     virtual void initialize( Game* game, GameTime time );
     virtual void pause( GameTime time );
     virtual void update( GameTime tick, GameTime time );
+    virtual void draw( GameTime delta, GameTime time );
     virtual void resume( GameTime time );
     virtual void shutdown( GameTime time );
   };

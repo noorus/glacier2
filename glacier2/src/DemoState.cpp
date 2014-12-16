@@ -87,11 +87,12 @@ namespace Glacier {
   void DemoState::update( GameTime tick, GameTime time )
   {
     mDirector->getCamera()->applyMovement(
-      gEngine->getActionManager()->getCameraController()->getMovement()
-      );
+      gEngine->getActionManager()->getCameraController()->getMovement() );
+  }
 
-    mDirector->getCamera()->update( (float)tick );
-
+  void DemoState::draw( GameTime delta, GameTime time )
+  {
+    mDirector->getCamera()->update( (float)delta );
     mOverlay->update();
   }
 

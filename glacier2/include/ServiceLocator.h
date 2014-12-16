@@ -12,6 +12,8 @@ namespace Glacier {
   class Music;
   class Colors;
 
+  //! \class Locator
+  //! Central game services locator.
   class Locator {
   private:
     static Memory* memoryService; //!< Currently provided memory service

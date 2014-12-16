@@ -21,6 +21,12 @@ namespace Glacier {
       mStates.back()->update( tick, time );
   }
 
+  void Game::componentPostUpdate( GameTime delta, GameTime time )
+  {
+    if ( !mStates.empty() )
+      mStates.back()->draw( delta, time );
+  }
+
   void Game::changeState( State* state )
   {
     if ( !mStates.empty() )

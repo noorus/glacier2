@@ -61,6 +61,11 @@ namespace Glacier {
 //     mDirector->getCamera()->update( (float)tick );
   }
 
+  void ModelViewerState::draw( GameTime delta, GameTime time )
+  {
+    //
+  }
+
   void ModelViewerState::shutdown( GameTime time )
   {
     SAFE_DELETE( mViewer );
