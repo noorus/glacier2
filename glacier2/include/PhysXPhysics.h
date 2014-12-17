@@ -9,6 +9,7 @@
 namespace Glacier {
 
   ENGINE_EXTERN_CONVAR( px_threads );
+  ENGINE_EXTERN_CONVAR( px_cuda );
 
   class PhysicsScene;
 

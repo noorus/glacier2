@@ -29,6 +29,8 @@ namespace Glacier {
   
   ENGINE_DECLARE_CONVAR( px_threads,
     L"Number of PhysX dispatch threads.", 2 );
+  ENGINE_DECLARE_CONVAR( px_cuda,
+    L"Enable CUDA utilisation in physics.", true );
   ENGINE_DECLARE_CONVAR( px_gravity,
     L"World gravity in metres per second.", 9.81f );
   ENGINE_DECLARE_CONVAR( px_restitution,
@@ -107,9 +109,12 @@ namespace Glacier {
       ENGINE_EXCEPT( "PxCreateFoundation failed" );
 
     // Create CUDA context manager
-    PxCudaContextManagerDesc contextMgrDesc;
-    mCudaContextManager = PxCreateCudaContextManager( *mFoundation,
-      contextMgrDesc, nullptr );
+    if ( g_CVar_px_cuda.getBool() )
+    {
+      PxCudaContextManagerDesc contextMgrDesc;
+      mCudaContextManager = PxCreateCudaContextManager( *mFoundation,
+        contextMgrDesc, nullptr );
+    }
 
     if ( mCudaContextManager && !mCudaContextManager->contextIsValid() )
     {
