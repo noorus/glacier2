@@ -483,6 +483,12 @@
     <ClCompile Include="..\recastnavigation\DetourTileCache\Source\DetourTileCacheBuilder.cpp">
       <Filter>Source Files\Recast &amp; Detour\DetourTileCache</Filter>
     </ClCompile>
+    <ClCompile Include="src\JSColors.cpp">
+      <Filter>Source Files\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Colors.cpp">
+      <Filter>Source Files\Services</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\CompilerDef.h">

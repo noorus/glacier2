@@ -336,6 +336,7 @@
     <ClCompile Include="src\CharacterInputComponent.cpp" />
     <ClCompile Include="src\CharacterMovementComponent.cpp" />
     <ClCompile Include="src\CharacterPhysicsComponent.cpp" />
+    <ClCompile Include="src\Colors.cpp" />
     <ClCompile Include="src\Console.cpp" />
     <ClCompile Include="src\ConsoleWindow.cpp" />
     <ClCompile Include="src\DemoState.cpp" />
@@ -343,6 +344,7 @@
     <ClCompile Include="src\EntityRegistry.cpp" />
     <ClCompile Include="src\Gamepad.cpp" />
     <ClCompile Include="src\GUI.cpp" />
+    <ClCompile Include="src\JSColors.cpp" />
     <ClCompile Include="src\Keyboard.cpp" />
     <ClCompile Include="src\MenuState.cpp" />
     <ClCompile Include="src\ModelViewer.cpp" />
