@@ -132,7 +132,7 @@ namespace Glacier {
   EngineComponent( engine ),
   mRoot( nullptr ), mRenderer( nullptr ), mSceneManager( nullptr ),
   mOverlaySystem( nullptr ), mWindowHandler( windowHandler ),
-  mShadowConstants( nullptr )
+  mShadows( nullptr )
   {
     preInitialize();
   }
@@ -224,13 +224,15 @@ namespace Glacier {
     Ogre::TextureManager::getSingleton().setDefaultNumMipmaps(
       g_CVar_tex_mipmaps.getInt() );
 
-    mShadowConstants = new CSMGpuConstants( 4 );
+    mShadows = new Shadows();
 
     // Register & initialize resource groups
     mEngine->registerResources( ResourceGroupManager::getSingleton() );
 
     // Initialize globals
     mGlobals.stats.init();
+
+    mShadows->applyTo( mSceneManager );
 
     // Tell the engine to continue, in case this was a restart
     mEngine->operationContinueVideo();
@@ -299,7 +301,7 @@ namespace Glacier {
       mEngine->unregisterResources( ResourceGroupManager::getSingleton() );
       mEngine->unregisterUserLocations( ResourceGroupManager::getSingleton() );
 
-      SAFE_DELETE( mShadowConstants );
+      SAFE_DELETE( mShadows );
 
       SAFE_DELETE( mOverlaySystem );
       mRoot->shutdown();

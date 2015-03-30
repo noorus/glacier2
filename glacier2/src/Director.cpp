@@ -53,8 +53,7 @@ namespace Glacier {
   ArcballCamera* Director::mCamera = nullptr;
 
   Director::Director( Graphics* gfx, const PCZSceneNode* target ):
-  mGraphics( gfx ), mViewport( nullptr ), mLight( nullptr ), mShadowConstants( nullptr ),
-  mShadowSetup( nullptr )
+  mGraphics( gfx ), mViewport( nullptr ), mLight( nullptr )
   {
     auto zone = mGraphics->getScene()->getDefaultZone();
 
@@ -82,20 +81,6 @@ namespace Glacier {
     w->setDirection( Vector3( 0.3f, -1.0f, 0.4f ).normalisedCopy() );
     w->setCastShadows( true );
     w->setShadowFarClipDistance( 100.0f );
-
-    auto scene = gEngine->getGraphics()->getScene();
-    scene->setShadowTechnique( Ogre::SHADOWTYPE_TEXTURE_MODULATIVE_INTEGRATED );
-    scene->setShadowCasterRenderBackFaces( false );
-    scene->setShadowTextureCount( 4 );
-    scene->setShadowTextureCountPerLightType( Ogre::Light::LT_DIRECTIONAL, 4 );
-    for ( int i = 0; i < 4; i++ )
-      scene->setShadowTextureConfig( i, 1024, 1024, Ogre::PF_FLOAT32_R );
-    mShadowSetup = new StableCSMShadowCameraSetup( gEngine->getGraphics()->getShadowConstants() );
-    mShadowSetup->calculateSplitPoints( 4, 0.5f, 20.0f, 0.93f );
-    auto points = mShadowSetup->getSplitPoints();
-    mShadowSetup->setSplitPoints( points );
-    mShadowSetup->setSplitPadding( 1.0f );
-    scene->setShadowCameraSetup( Ogre::ShadowCameraSetupPtr( mShadowSetup ) );
 
     mHDRCompositor = new HDRlib::HDRCompositor(
       mGraphics->getWindow(), mCamera->getCamera() );

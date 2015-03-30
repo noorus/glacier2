@@ -376,6 +376,7 @@
     <ClCompile Include="src\FMODAudio.cpp" />
     <ClCompile Include="src\ServiceLocator.cpp" />
     <ClCompile Include="src\SettingsWindow.cpp" />
+    <ClCompile Include="src\Shadows.cpp" />
     <ClCompile Include="src\State.cpp" />
     <ClCompile Include="src\StdAfx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

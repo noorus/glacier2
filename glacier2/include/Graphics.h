@@ -19,6 +19,17 @@ namespace Glacier {
 
   class WindowHandler;
   class CSMGpuConstants;
+  class StableCSMShadowCameraSetup;
+
+  class Shadows {
+  protected:
+    CSMGpuConstants* mConstants;
+    StableCSMShadowCameraSetup* mSetup;
+  public:
+    Shadows();
+    ~Shadows();
+    void applyTo( SceneManager* scene );
+  };
 
   class Graphics: public EngineComponent {
   public:
@@ -38,7 +49,7 @@ namespace Glacier {
     Ogre::OverlaySystem* mOverlaySystem;
     WindowHandler* mWindowHandler;
     Settings mSettings;
-    CSMGpuConstants* mShadowConstants;
+    Shadows* mShadows;
   public:
     struct VideoMode {
       uint32_t mWidth;
@@ -76,7 +87,7 @@ namespace Glacier {
     void screenshot();
     void applySettings( const Settings& settings );
     const Settings& getSettings() throw() { return mSettings; }
-    CSMGpuConstants* getShadowConstants() throw() { return mShadowConstants; }
+    Shadows* getShadows() throw() { return mShadows; }
     void setRenderWindowTitle( const string& title );
     HWND getRenderWindowHandle();
     Ogre::Root* getRoot() { return mRoot; }
