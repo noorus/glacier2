@@ -222,10 +222,18 @@ namespace Glacier {
 
     if ( !options.noAudio )
     {
-      mAudio = new FMODAudio( this );
-      Locator::provideAudio( mAudio );
+      try
+      {
+        mAudio = new FMODAudio( this );
+        Locator::provideAudio( mAudio );
+      }
+      catch ( Exception& e )
+      {
+        mConsole->errorPrintf( Console::srcSound, L"%S", e.what() );
+      }
     }
-    else
+
+    if ( !mAudio )
       mConsole->printf( Console::srcEngine, L"Init: Skipping audio" );
 
     mWorld = new World( this );
