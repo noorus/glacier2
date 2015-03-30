@@ -31,11 +31,10 @@ namespace Glacier {
 
   void CameraController::updateMovement()
   {
-    //if ( !mZooming )
+    if ( !mZooming )
       mMovement = mPersistentMovement + mImpulseMovement;
-    //else {
-    //  mMovement = Vector3( mPersistentMovement.x, 0.0f, mPersistentMovement.y * 0.025f );
-    //}
+    else
+      mMovement = Vector3( mPersistentMovement.x, 0.0f, mPersistentMovement.y * 0.025f );
   }
 
   void CameraController::onMouseButtonPressed( size_t button )

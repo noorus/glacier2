@@ -10,11 +10,9 @@ namespace Glacier {
   //! @{
 
   class Graphics;
-  class ArcballCamera;
+  class GameCamera;
 
   //! \class Director
-  //! The director is in charge of managing the viewport,
-  //! camera and post-processing effects.
   class Director: boost::noncopyable {
   protected:
     Graphics* mGraphics;        //!< The graphics engine
@@ -22,13 +20,13 @@ namespace Glacier {
     Ogre::Light* mLight;
   public:
     static HDRlib::HDRCompositor* mHDRCompositor; //!< My HDR compositor
-    static ArcballCamera* mCamera; //!< My camera
+    static GameCamera* mCamera; //!< My camera
     //! Constructor.
     Director( Graphics* gfx, const PCZSceneNode* target );
     //! Gets the viewport.
     Ogre::Viewport* getViewport() { return mViewport; }
     //! Gets the camera.
-    ArcballCamera* getCamera() { return mCamera; }
+    GameCamera* getCamera() { return mCamera; }
     void update( const GameTime delta );
     //! Destructor.
     ~Director();

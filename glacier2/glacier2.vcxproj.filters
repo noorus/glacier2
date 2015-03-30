@@ -147,9 +147,6 @@
     <ClCompile Include="src\Director.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Camera.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Console.cpp">
       <Filter>Source Files\Console</Filter>
     </ClCompile>
@@ -223,9 +220,6 @@
       <Filter>Source Files\States</Filter>
     </ClCompile>
     <ClCompile Include="src\ModelViewer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ArcballCamera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\GUI.cpp">
@@ -483,14 +477,20 @@
     <ClCompile Include="..\recastnavigation\DetourTileCache\Source\DetourTileCacheBuilder.cpp">
       <Filter>Source Files\Recast &amp; Detour\DetourTileCache</Filter>
     </ClCompile>
-    <ClCompile Include="src\JSColors.cpp">
-      <Filter>Source Files\Scripting</Filter>
+    <ClCompile Include="src\Camera.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameCamera.cpp">
+      <Filter>Source Files\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="src\Colors.cpp">
       <Filter>Source Files\Services</Filter>
     </ClCompile>
     <ClCompile Include="src\Shadows.cpp">
       <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\JSColors.cpp">
+      <Filter>Source Files\Scripting</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -522,9 +522,6 @@
       <Filter>Header Files\HDRLib</Filter>
     </ClInclude>
     <ClInclude Include="include\Director.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\ConsoleWindow.h">
@@ -783,6 +780,9 @@
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="include\CascadedShadowMapping.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Camera.h">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
