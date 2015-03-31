@@ -17,7 +17,9 @@ namespace Glacier {
   {
     mEntities = new EntityManager( engine, this );
     mPhysics = engine->getPhysics()->createScene();
+#ifndef GLACIER_NO_PHYSICS_DEBUG
     mPhysics->setDebugVisuals( true );
+#endif
   }
 
   World::~World()

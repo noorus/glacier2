@@ -9,6 +9,8 @@
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
 
+#ifndef GLACIER_NO_NAVIGATION_DEBUG
+
 namespace Glacier {
 
   inline void colorToComponents( unsigned int clr, float& r, float& g, float& b )
@@ -133,3 +135,5 @@ namespace Glacier {
   }
 
 }
+
+#endif

@@ -57,13 +57,16 @@ namespace Glacier {
 
   void PhysicsScene::post()
   {
+#ifndef GLACIER_NO_PHYSICS_DEBUG
     if ( mVisualizer )
     {
       mVisualizer->clearDebugScene();
       mVisualizer->drawDebugScene( &mScene->getRenderBuffer() );
     }
+#endif
   }
 
+#ifndef GLACIER_NO_PHYSICS_DEBUG
   void PhysicsScene::setDebugVisuals( const bool visuals )
   {
     if ( visuals )
@@ -93,6 +96,7 @@ namespace Glacier {
   {
     return mScene->getRenderBuffer();
   }
+#endif
 
   float PhysicsScene::setGravity( const float gravity )
   {
@@ -123,7 +127,9 @@ namespace Glacier {
 
   PhysicsScene::~PhysicsScene()
   {
+#ifndef GLACIER_NO_PHYSICS_DEBUG
     SAFE_DELETE( mVisualizer );
+#endif
     if ( mControllerMgr )
     {
       mControllerMgr->purgeControllers();

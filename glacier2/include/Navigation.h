@@ -95,6 +95,8 @@ namespace Glacier {
     virtual ~Navigation();
   };
 
+#ifndef GLACIER_NO_NAVIGATION_DEBUG
+
   class NavigationDebugVisualizer: public duDebugDraw {
   protected:
     Engine* mEngine;
@@ -117,5 +119,7 @@ namespace Glacier {
     virtual void end();
     ~NavigationDebugVisualizer();
   };
+
+#endif
 
 }

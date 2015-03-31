@@ -140,9 +140,12 @@
 #include <DetourNavMeshBuilder.h>
 #include <DetourNavMeshQuery.h>
 #include <DetourNode.h>
-#include <DebugDraw.h>
-#include <RecastDebugDraw.h>
-#include <DetourDebugDraw.h>
+
+#ifndef GLACIER_NO_NAVIGATION_DEBUG
+# include <DebugDraw.h>
+# include <RecastDebugDraw.h>
+# include <DetourDebugDraw.h>
+#endif
 
 // Glacier types
 #include "Types.h"

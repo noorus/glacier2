@@ -22,18 +22,20 @@ namespace Glacier {
     physx::PxGpuDispatcher* mGPUDispatcher;
     physx::PxSimulationStatistics mStatistics;
     physx::PxControllerManager* mControllerMgr;
-    PhysicsDebugVisualizer* mVisualizer;
     PhysicsScene( PhysXPhysics* physics,
       physx::PxCpuDispatcher* cpuDispatcher, physx::PxGpuDispatcher* gpuDispatcher,
       const float gravity, const float restitution,
       const float staticFriction, const float dynamicFriction );
     void simulationStep( const GameTime delta, const GameTime time );
     void simulationFetchResults();
-    void debugFetchVisualization();
     void post();
+#ifndef GLACIER_NO_PHYSICS_DEBUG
+    PhysicsDebugVisualizer* mVisualizer;
+    void debugFetchVisualization();
+#else
+    void* mVisualizer;
+#endif
   public:
-    void setDebugVisuals( const bool visuals );
-    const physx::PxRenderBuffer& fetchDebugVisuals();
     inline physx::PxScene* getScene() const throw() { return mScene; }
     inline physx::PxControllerManager* getControllerManager() const throw() { return mControllerMgr; }
     float setGravity( const float gravity );
@@ -44,6 +46,10 @@ namespace Glacier {
     float setStaticFriction( const float staticFriction );
     float setDynamicFriction( const float dynamicFriction );
     ~PhysicsScene();
+#ifndef GLACIER_NO_PHYSICS_DEBUG
+    void setDebugVisuals( const bool visuals );
+    const physx::PxRenderBuffer& fetchDebugVisuals();
+#endif
   };
 
 }

@@ -11,6 +11,8 @@
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
 
+#ifndef GLACIER_NO_PHYSICS_DEBUG
+
 namespace Glacier {
 
   using namespace physx;
@@ -114,3 +116,5 @@ namespace Glacier {
   }
 
 }
+
+#endif
