@@ -42,8 +42,6 @@ namespace Glacier {
     const Derived& getDerived();
   };
 
-  typedef std::vector<Ogre::Entity*> OgreEntityVector;
-
   class NavigationInputGeometry {
   protected:
     SceneNode* mReferenceNode;
@@ -84,6 +82,8 @@ namespace Glacier {
     ~NavigationMesh();
     void setParameters( NavigationMeshParameters& parameters );
     void build( NavigationInputGeometry* geometry );
+    const rcPolyMesh* getPolyMesh();
+    const rcPolyMeshDetail* getPolyMeshDetail();
   };
 
   class Navigation: public EngineComponent {
@@ -93,6 +93,29 @@ namespace Glacier {
   public:
     Navigation( Engine* engine );
     virtual ~Navigation();
+  };
+
+  class NavigationDebugVisualizer: public duDebugDraw {
+  protected:
+    Engine* mEngine;
+    PCZSceneManager* mScene;
+    PCZSceneNode* mNode;
+    ManualObject* mManualObject;
+    ManualObject* mGrid;
+    Ogre::MaterialPtr mMaterial;
+    bool mDrawing;
+    float mAlpha;
+  public:
+    explicit NavigationDebugVisualizer( Engine* engine );
+    virtual void depthMask( bool state );
+    virtual void texture( bool state );
+    virtual void begin( duDebugDrawPrimitives prim, float size = 1.0f );
+    virtual void vertex( const float* pos, unsigned int color );
+    virtual void vertex( const float x, const float y, const float z, unsigned int color );
+    virtual void vertex( const float* pos, unsigned int color, const float* uv );
+    virtual void vertex( const float x, const float y, const float z, unsigned int color, const float u, const float v );
+    virtual void end();
+    ~NavigationDebugVisualizer();
   };
 
 }

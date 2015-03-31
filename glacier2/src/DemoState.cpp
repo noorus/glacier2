@@ -21,6 +21,7 @@
 #include "MovableTextOverlay.h"
 #include "DeveloperEntities.h"
 #include "Navigation.h"
+#include "GlacierMath.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
@@ -39,8 +40,8 @@ namespace Glacier {
     Locator::getGraphics().setRenderWindowTitle( cDemoStateTitle );
 
     Ogre::Plane plane( Vector3::UNIT_Y, 0.0f );
-    Real width = 256.0f;
-    Real height = 256.0f;
+    Real width = 128.0f;
+    Real height = 128.0f;
     mPrimitives.push_back( new Primitives::Plane( gEngine->getWorld()->getPhysics(), plane, width, height, Vector3::ZERO ) );
     mPrimitives.push_back( new Primitives::Box( gEngine->getWorld()->getPhysics(), Vector3( 1.0f, 10.0f, 1.0f ), Vector3( -5.5f, 5.0f, 5.5f ), Quaternion::IDENTITY ) );
     mPrimitives.push_back( new Primitives::Box( gEngine->getWorld()->getPhysics(), Vector3( 1.0f, 10.0f, 1.0f ), Vector3( 5.5f, 5.0f, -5.5f ), Quaternion::IDENTITY ) );
@@ -71,7 +72,19 @@ namespace Glacier {
     mNavigationMesh = new NavigationMesh( navParams );
     mNavigationMesh->build( &navGeometry );
 
+    mNavVis = new NavigationDebugVisualizer( gEngine );
+    duDebugDrawPolyMesh( mNavVis, *mNavigationMesh->getPolyMesh() );
+
     gEngine->getConsole()->printf( Console::srcGame, L"Yay built navmesh ok!" );
+    gEngine->getConsole()->printf( Console::srcGame, L"Navmesh has %d polygons, %d vertices",
+      mNavigationMesh->getPolyMesh()->npolys,
+      mNavigationMesh->getPolyMesh()->nverts );
+    Vector3 minbound = Math::floatArrayToOgreVec3( mNavigationMesh->getPolyMesh()->bmin );
+    gEngine->getConsole()->printf( Console::srcGame, L"Min bound: %f %f %f",
+      minbound.x, minbound.y, minbound.z );
+    Vector3 maxbound = Math::floatArrayToOgreVec3( mNavigationMesh->getPolyMesh()->bmax );
+    gEngine->getConsole()->printf( Console::srcGame, L"Max bound: %f %f %f",
+      maxbound.x, maxbound.y, maxbound.z );
 
     auto player = Locator::getEntities().create( "player" );
     player->spawn( Vector3( 0.0f, 1.0f, 0.0f ), Quaternion::IDENTITY );
@@ -128,6 +141,7 @@ namespace Glacier {
     SAFE_DELETE( mOverlay );
     Locator::getEntities().clear();
     Locator::getMusic().endScene();
+    SAFE_DELETE( mNavVis );
     SAFE_DELETE( mNavigationMesh );
     for ( auto primitive : mPrimitives )
       delete primitive;

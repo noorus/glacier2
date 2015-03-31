@@ -158,6 +158,16 @@ namespace Glacier {
     mContext->stopTimer( RC_TIMER_TOTAL );
   }
 
+  const rcPolyMesh* NavigationMesh::getPolyMesh()
+  {
+    return mPolyMesh;
+  }
+
+  const rcPolyMeshDetail* NavigationMesh::getPolyMeshDetail()
+  {
+    return mPolyMeshDetail;
+  }
+
   NavigationMesh::~NavigationMesh()
   {
     if ( mPolyMeshDetail )

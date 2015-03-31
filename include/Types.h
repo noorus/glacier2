@@ -27,6 +27,8 @@ namespace Glacier {
   typedef std::list<wstring> StringList;
   typedef std::queue<wstring> StringQueue;
 
+  typedef std::vector<Ogre::Entity*> OgreEntityVector;
+
   enum CharacterConstants
   {
     TAB = 9,

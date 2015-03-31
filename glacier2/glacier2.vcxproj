@@ -369,6 +369,7 @@
     <ClCompile Include="src\FMODMusic.cpp" />
     <ClCompile Include="src\MovableTextOverlay.cpp" />
     <ClCompile Include="src\Navigation.cpp" />
+    <ClCompile Include="src\NavigationDebugVisualizer.cpp" />
     <ClCompile Include="src\NavigationInputGeometry.cpp" />
     <ClCompile Include="src\NavigationMesh.cpp" />
     <ClCompile Include="src\NedPoolMemory.cpp" />

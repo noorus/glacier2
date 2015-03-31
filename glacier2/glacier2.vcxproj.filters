@@ -510,6 +510,9 @@
     <ClCompile Include="src\Navigation.cpp">
       <Filter>Source Files\Services\Navigation</Filter>
     </ClCompile>
+    <ClCompile Include="src\NavigationDebugVisualizer.cpp">
+      <Filter>Source Files\Services\Navigation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\CompilerDef.h">
