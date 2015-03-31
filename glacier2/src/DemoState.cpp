@@ -56,12 +56,12 @@ namespace Glacier {
     }
     NavigationInputGeometry navGeometry( navSources );
     NavigationMeshParameters navParams;
-    navParams.cellSize = 0.25f;
+    navParams.cellSize = 0.2f;
     navParams.cellHeight = 0.2f;
     navParams.agentMaxSlope = 20;
     navParams.agentHeight = 1.8f;
     navParams.agentMaxClimb = 1;
-    navParams.agentRadius = 0.4f;
+    navParams.agentRadius = 0.2f;
     navParams.edgeMaxLength = 12;
     navParams.edgeMaxError = 1.3f;
     navParams.regionMinSize = 50;
@@ -130,11 +130,11 @@ namespace Glacier {
   {
     mDirector->getCamera()->applyMovement(
       gEngine->getActionManager()->getCameraController()->getMovement() );
+    mDirector->getCamera()->update( tick );
   }
 
   void DemoState::draw( GameTime delta, GameTime time )
   {
-    mDirector->getCamera()->update( (float)delta );
     mOverlay->update();
   }
 
