@@ -82,8 +82,6 @@ namespace Glacier {
 
   void FMODMusic::update( const GameTime delta )
   {
-    FMOD_RESULT hr;
-
     if ( mLoading )
     {
       FMOD_OPENSTATE state;
@@ -100,14 +98,14 @@ namespace Glacier {
       if ( mChannels[oc] != 0 )
       {
         mChannels[oc]->getVolume( &newVolume );
-        newVolume -= 0.2f * delta;
+        newVolume -= 0.2f * (Real)delta;
         mChannels[oc]->setVolume( newVolume > 0.0f ? newVolume : 0.0f );
         if ( newVolume <= 0.0f )
           mChannels[oc]->stop();
       }
 
       mChannels[mCurrentChannel]->getVolume( &newVolume );
-      newVolume += 0.2f * delta;
+      newVolume += 0.2f * (Real)delta;
       mChannels[mCurrentChannel]->setVolume( newVolume < 1.0f ? newVolume : 1.0f );
       if ( newVolume >= 1.0f )
         mFading = false;

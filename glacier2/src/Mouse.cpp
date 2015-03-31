@@ -73,7 +73,7 @@ namespace Glacier {
       if ( Locator::getGUI().injectMouseMove( state ) )
         return;
 
-      gEngine->getActionManager()->applyZoom( state.mWheel.relative / WHEEL_DELTA );
+      gEngine->getActionManager()->applyZoom( Real( state.mWheel.relative / WHEEL_DELTA ) );
     }
 
     Device::~Device()

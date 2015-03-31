@@ -106,8 +106,8 @@ namespace Glacier {
         meshVertexCount[i], meshVertices[i],
         meshIndexCount[i], meshIndices[i] );
 
-      mVertexCount += meshVertexCount[i];
-      mTriangleCount += meshIndexCount[i];
+      mVertexCount += (int)meshVertexCount[i];
+      mTriangleCount += (int)meshIndexCount[i];
       i++;
     }
 
@@ -134,8 +134,8 @@ namespace Glacier {
       {
         mTriangles[previousIndexCountTotal + j] = meshIndices[i][j] + previousVertexCount;
       }
-      previousIndexCountTotal += meshIndexCount[i];
-      previousVertexCount += meshVertexCount[i];
+      previousIndexCountTotal += (int)meshIndexCount[i];
+      previousVertexCount += (int)meshVertexCount[i];
       i++;
     }
 

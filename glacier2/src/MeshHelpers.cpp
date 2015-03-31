@@ -11,10 +11,10 @@ namespace MeshHelpers {
   // This code has been extracted from the OgreODE project by monster.
   // Note that this code assumes sizeof(long) == sizeof(uint32_t), which is not true on AMD64 Linux.
   void getMeshInformation( const Ogre::MeshPtr mesh,
-    size_t &vertex_count, Ogre::Vector3* &vertices,
-    size_t &index_count, unsigned long* &indices,
-    const Ogre::Vector3 &position, const Ogre::Quaternion &orient,
-    const Ogre::Vector3 &scale )
+  size_t &vertex_count, Ogre::Vector3* &vertices,
+  size_t &index_count, unsigned long* &indices,
+  const Ogre::Vector3 &position, const Ogre::Quaternion &orient,
+  const Ogre::Vector3 &scale )
   {
     bool added_shared = false;
     size_t current_offset = 0;
@@ -124,17 +124,17 @@ namespace MeshHelpers {
   // This code has been extracted from the OgreODE project by monster.
   // Note that this code assumes sizeof(long) == sizeof(uint32_t), which is not true on AMD64 Linux.
   void getManualMeshInformation( const Ogre::ManualObject *manual,
-    size_t &vertex_count, Ogre::Vector3* &vertices,
-    size_t &index_count, unsigned long* &indices,
-    const Ogre::Vector3 &position, const Ogre::Quaternion &orient,
-    const Ogre::Vector3 &scale )
+  size_t &vertex_count, Ogre::Vector3* &vertices,
+  size_t &index_count, unsigned long* &indices,
+  const Ogre::Vector3 &position, const Ogre::Quaternion &orient,
+  const Ogre::Vector3 &scale )
   {
     std::vector<Ogre::Vector3> returnVertices;
     std::vector<unsigned long> returnIndices;
     unsigned long thisSectionStart = 0;
     for ( size_t i = 0; i < manual->getNumSections(); i++ )
     {
-      Ogre::ManualObject::ManualObjectSection* section = manual->getSection( i );
+      Ogre::ManualObject::ManualObjectSection* section = manual->getSection( (unsigned int)i );
       Ogre::RenderOperation* renderOp = section->getRenderOperation();
 
       std::vector<Ogre::Vector3> pushVertices;
@@ -146,7 +146,7 @@ namespace MeshHelpers {
         char* verticesBuffer = (char*)vertexBuffer->lock( Ogre::HardwareBuffer::HBL_READ_ONLY );
         float* positionArrayHolder;
 
-        thisSectionStart = pushVertices.size();
+        thisSectionStart = (unsigned long)pushVertices.size();
 
         pushVertices.reserve( renderOp->vertexData->vertexCount );
 

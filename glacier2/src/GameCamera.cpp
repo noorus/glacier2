@@ -88,7 +88,7 @@ namespace Glacier {
     // Handle rotation velocity
     if ( mRotation != Quaternion::IDENTITY )
     {
-      mRotation = mRotation.Slerp( cRotationDeceleration * delta, mRotation,
+      mRotation = mRotation.Slerp( cRotationDeceleration * (Real)delta, mRotation,
         Quaternion::IDENTITY, true );
       mDirection = mRotation * mDirection;
     }
@@ -100,7 +100,7 @@ namespace Glacier {
       mZoomVelocity += mMovement.z;
     if ( mZoomVelocity != 0.0f )
     {
-      mZoom += mZoomVelocity * cZoomAcceleration * delta;
+      mZoom += mZoomVelocity * cZoomAcceleration * (Real)delta;
       // TODO:MEDIUM - this could be softened a bit
       if ( mZoom > 1.0f ) {
         mZoom = 1.0f;
@@ -112,11 +112,11 @@ namespace Glacier {
       }
       else {
         if ( mZoomVelocity > 0.0f ) {
-          mZoomVelocity -= delta * cZoomDeceleration;
+          mZoomVelocity -= (Real)delta * cZoomDeceleration;
           if ( mZoomVelocity < 0.0f ) mZoomVelocity = 0.0f;
         }
         else if ( mZoomVelocity < 0.0f ) {
-          mZoomVelocity += delta * cZoomDeceleration;
+          mZoomVelocity += (Real)delta * cZoomDeceleration;
           if ( mZoomVelocity > 0.0f ) mZoomVelocity = 0.0f;
         }
       }
