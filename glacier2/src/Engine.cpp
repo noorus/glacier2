@@ -16,6 +16,7 @@
 #include "GUI.h"
 #include "EntityManager.h"
 #include "World.h"
+#include "Navigation.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
@@ -71,7 +72,7 @@ namespace Glacier {
   mSignal( Signal_None ), mVersion( 0, 1, 1 ), mConsoleWindow( nullptr ),
   mGame( nullptr ), mWindowHandler( nullptr ), mInput( nullptr ),
   mAudio( nullptr ), mPhysics( nullptr ), mActionManager( nullptr ),
-  mGUI( nullptr ), mEntities( nullptr )
+  mGUI( nullptr ), mEntities( nullptr ), mNavigation( nullptr )
   {
   }
 
@@ -236,6 +237,8 @@ namespace Glacier {
     if ( !mAudio )
       mConsole->printf( Console::srcEngine, L"Init: Skipping audio" );
 
+    mNavigation = new Navigation( this );
+
     mWorld = new World( this );
     mEntities = mWorld->getEntities();
     Locator::provideEntities( mEntities );
@@ -333,6 +336,8 @@ namespace Glacier {
       (float)Locator::getMemory().getMemoryUsage( Memory::Sector_Physics ) / 1048576.0f );
     console->printf( Console::srcEngine, L"Audio usage: %.2fMB",
       (float)Locator::getMemory().getMemoryUsage( Memory::Sector_Audio ) / 1048576.0f );
+    console->printf( Console::srcEngine, L"Navigation usage: %.2fMB",
+      (float)Locator::getMemory().getMemoryUsage( Memory::Sector_Navigation ) / 1048576.0f );
   }
 
   void Engine::callbackScreenshot( Console* console, ConCmd* command,
@@ -361,6 +366,8 @@ namespace Glacier {
     SAFE_DELETE( mWorld );
     mEntities = nullptr;
     Locator::provideEntities( mEntities );
+
+    SAFE_DELETE( mNavigation );
 
     if ( mAudio )
     {

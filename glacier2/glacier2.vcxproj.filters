@@ -507,6 +507,9 @@
     <ClCompile Include="src\MeshHelpers.cpp">
       <Filter>Source Files\Junk</Filter>
     </ClCompile>
+    <ClCompile Include="src\Navigation.cpp">
+      <Filter>Source Files\Services\Navigation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\CompilerDef.h">

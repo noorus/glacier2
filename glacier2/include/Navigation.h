@@ -2,6 +2,7 @@
 #include "Types.h"
 #include "Utilities.h"
 #include "Services.h"
+#include "EngineComponent.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
@@ -83,6 +84,15 @@ namespace Glacier {
     ~NavigationMesh();
     void setParameters( NavigationMeshParameters& parameters );
     void build( NavigationInputGeometry* geometry );
+  };
+
+  class Navigation: public EngineComponent {
+  protected:
+    static void* allocator( int size, rcAllocHint hint );
+    static void deallocator( void* ptr );
+  public:
+    Navigation( Engine* engine );
+    virtual ~Navigation();
   };
 
 }

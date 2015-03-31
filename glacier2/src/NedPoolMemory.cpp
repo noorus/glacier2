@@ -11,11 +11,12 @@ namespace Glacier {
   const wstring cNedPoolProviderName( L"Nedmalloc Pooled" );
 
   NedPoolMemory::NedPoolMemory(): mGenericPool( nullptr ),
-  mAudioPool( nullptr ), mPhysicsPool( nullptr )
+  mAudioPool( nullptr ), mPhysicsPool( nullptr ), mNavigationPool( nullptr )
   {
     mGenericPool = glacier_nedalloc::nedcreatepool( 10240, 2 );
     mAudioPool = glacier_nedalloc::nedcreatepool( 10240, 2 );
     mPhysicsPool = glacier_nedalloc::nedcreatepool( 10240, 2 );
+    mNavigationPool = glacier_nedalloc::nedcreatepool( 10240, 2 );
   }
 
   NedPoolMemory::~NedPoolMemory()
@@ -26,6 +27,8 @@ namespace Glacier {
       glacier_nedalloc::neddestroypool( mAudioPool );
     if ( mPhysicsPool )
       glacier_nedalloc::neddestroypool( mPhysicsPool );
+    if ( mNavigationPool )
+      glacier_nedalloc::neddestroypool( mNavigationPool );
   }
 
   void* NedPoolMemory::alloc( const Sector sector, size_t size, size_t alignment )

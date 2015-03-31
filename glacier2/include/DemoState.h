@@ -19,6 +19,7 @@ namespace Glacier {
   protected:
     Director* mDirector;
     std::list<Primitives::Primitive*> mPrimitives;
+    class NavigationMesh* mNavigationMesh;
   public:
     DemoState();
     Director* getDirector() { return mDirector; }

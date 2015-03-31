@@ -12,12 +12,15 @@ namespace Glacier {
     glacier_nedalloc::nedpool* mGenericPool;
     glacier_nedalloc::nedpool* mAudioPool;
     glacier_nedalloc::nedpool* mPhysicsPool;
+    glacier_nedalloc::nedpool* mNavigationPool;
     inline glacier_nedalloc::nedpool* resolvePool( const Sector sector )
     {
       if ( sector == Sector_Audio )
         return mAudioPool;
       if ( sector == Sector_Physics )
         return mPhysicsPool;
+      if ( sector == Sector_Navigation )
+        return mNavigationPool;
       return mGenericPool;
     }
   public:

@@ -68,8 +68,8 @@ namespace Glacier {
     navParams.vertsPerPoly = DT_VERTS_PER_POLYGON;
     navParams.detailSampleDist = 6;
     navParams.detailSampleMaxError = 1;
-    NavigationMesh navMesh( navParams );
-    navMesh.build( &navGeometry );
+    mNavigationMesh = new NavigationMesh( navParams );
+    mNavigationMesh->build( &navGeometry );
 
     gEngine->getConsole()->printf( Console::srcGame, L"Yay built navmesh ok!" );
 
@@ -128,6 +128,7 @@ namespace Glacier {
     SAFE_DELETE( mOverlay );
     Locator::getEntities().clear();
     Locator::getMusic().endScene();
+    SAFE_DELETE( mNavigationMesh );
     for ( auto primitive : mPrimitives )
       delete primitive;
     SAFE_DELETE( mDirector );
