@@ -7,6 +7,14 @@
 # define DEBUG
 #endif
 
+#ifdef GLACIER_SHIPPING
+# if defined( DEBUG )
+#  error Debug shipping compile?!
+# endif
+# define GLACIER_NO_PHYSICS_DEBUG
+# define GLACIER_NO_NAVIGATION_DEBUG
+#endif
+
 #ifndef SAFE_DELETE
 # define SAFE_DELETE(p) {if(p){delete p;(p)=NULL;}}
 #endif

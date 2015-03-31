@@ -8,7 +8,11 @@
 #ifdef _DEBUG
 # define _PROFILE L"Debug"
 #else
-# define _PROFILE L"Release"
+# ifdef GLACIER_SHIPPING
+#  define _PROFILE L"Shipping"
+# else
+#  define _PROFILE L"Release"
+# endif
 #endif
 
 // _COMPILER
