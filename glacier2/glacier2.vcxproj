@@ -515,6 +515,7 @@
     <ClInclude Include="include\ServiceLocator.h" />
     <ClInclude Include="include\Services.h" />
     <ClInclude Include="include\FMODAudio.h" />
+    <ClInclude Include="include\Shadows.h" />
     <ClInclude Include="include\State.h" />
     <ClInclude Include="include\StdAfx.h" />
     <ClInclude Include="include\TargetVer.h" />

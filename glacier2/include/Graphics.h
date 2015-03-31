@@ -3,6 +3,7 @@
 #include "EngineComponent.h"
 #include "GlobalStats.h"
 #include "PostProcessing.h"
+#include "Shadows.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
@@ -19,18 +20,6 @@ namespace Glacier {
   ENGINE_EXTERN_CONCMD( vid_restart );
 
   class WindowHandler;
-  class CSMGpuConstants;
-  class StableCSMShadowCameraSetup;
-
-  class Shadows {
-  protected:
-    CSMGpuConstants* mConstants;
-    StableCSMShadowCameraSetup* mSetup;
-  public:
-    Shadows();
-    ~Shadows();
-    void applyTo( SceneManager* scene );
-  };
 
   class Graphics: public EngineComponent {
   public:

@@ -1,10 +1,5 @@
 #include "StdAfx.h"
-#include "Director.h"
-#include "Graphics.h"
-#include "Camera.h"
-#include "HDRCompositor.h"
-#include "Engine.h"
-#include "GUI.h"
+#include "Shadows.h"
 #include "CascadedShadowMapping.h"
 
 // Glacier² Game Engine © 2014 noorus
