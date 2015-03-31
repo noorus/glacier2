@@ -59,7 +59,7 @@ namespace Glacier {
     mConfig.detailSampleMaxError = parameters.getDerived().detailSampleMaxError;
   }
 
-  void NavigationMesh::build( InputGeometry* geometry )
+  void NavigationMesh::build( NavigationInputGeometry* geometry )
   {
     mContext->resetTimers();
     mContext->startTimer( RC_TIMER_TOTAL );

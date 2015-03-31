@@ -39,8 +39,8 @@ namespace Glacier {
     Locator::getGraphics().setRenderWindowTitle( cDemoStateTitle );
 
     Ogre::Plane plane( Vector3::UNIT_Y, 0.0f );
-    Real width = 512.0f;
-    Real height = 512.0f;
+    Real width = 256.0f;
+    Real height = 256.0f;
     mPrimitives.push_back( new Primitives::Plane( gEngine->getWorld()->getPhysics(), plane, width, height, Vector3::ZERO ) );
     mPrimitives.push_back( new Primitives::Box( gEngine->getWorld()->getPhysics(), Vector3( 1.0f, 10.0f, 1.0f ), Vector3( -5.5f, 5.0f, 5.5f ), Quaternion::IDENTITY ) );
     mPrimitives.push_back( new Primitives::Box( gEngine->getWorld()->getPhysics(), Vector3( 1.0f, 10.0f, 1.0f ), Vector3( 5.5f, 5.0f, -5.5f ), Quaternion::IDENTITY ) );
@@ -53,7 +53,7 @@ namespace Glacier {
     {
       navSources.push_back( primitive->getEntity() );
     }
-    InputGeometry navGeometry( navSources );
+    NavigationInputGeometry navGeometry( navSources );
     NavigationMeshParameters navParams;
     navParams.cellSize = 0.25f;
     navParams.cellHeight = 0.2f;
@@ -71,7 +71,7 @@ namespace Glacier {
     NavigationMesh navMesh( navParams );
     navMesh.build( &navGeometry );
 
-    MessageBoxW( 0, L"yay built navmesh ok!", nullptr, MB_OK );
+    gEngine->getConsole()->printf( Console::srcGame, L"Yay built navmesh ok!" );
 
     auto player = Locator::getEntities().create( "player" );
     player->spawn( Vector3( 0.0f, 1.0f, 0.0f ), Quaternion::IDENTITY );

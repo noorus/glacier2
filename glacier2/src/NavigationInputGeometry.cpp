@@ -14,7 +14,7 @@
 
 namespace Glacier {
 
-  InputGeometry::InputGeometry( const OgreEntityVector& entities ):
+  NavigationInputGeometry::NavigationInputGeometry( const OgreEntityVector& entities ):
   mReferenceNode( nullptr ), mVertices( nullptr ), mVertexCount( 0 ),
   mTriangles( nullptr ), mTriangleCount( 0 ), mNormals( nullptr ),
   mBBoxMin( nullptr ), mBBoxMax( nullptr )
@@ -33,7 +33,7 @@ namespace Glacier {
     // TODO Chunky triangle mesh support, tiled navmeshes
   }
 
-  InputGeometry::~InputGeometry()
+  NavigationInputGeometry::~NavigationInputGeometry()
   {
     if ( mVertices )
       delete[] mVertices;
@@ -47,7 +47,7 @@ namespace Glacier {
       delete[] mBBoxMax;
   }
 
-  void InputGeometry::calculateExtents( const OgreEntityVector& entities )
+  void NavigationInputGeometry::calculateExtents( const OgreEntityVector& entities )
   {
     auto entity = entities[0];
     auto bbox = entity->getBoundingBox();
@@ -86,7 +86,7 @@ namespace Glacier {
     Math::ogreVec3ToFloatArray( bbmax, mBBoxMax );
   }
 
-  void InputGeometry::convertEntities( const OgreEntityVector& entities )
+  void NavigationInputGeometry::convertEntities( const OgreEntityVector& entities )
   {
     const size_t count = entities.size();
 
@@ -172,7 +172,7 @@ namespace Glacier {
     }
   }
 
-  AxisAlignedBox InputGeometry::getBoundingBox()
+  AxisAlignedBox NavigationInputGeometry::getBoundingBox()
   {
     AxisAlignedBox bbox;
     bbox.setMinimum( Math::floatArrayToOgreVec3( mBBoxMin ) );
@@ -180,42 +180,42 @@ namespace Glacier {
     return bbox;
   }
 
-  float* InputGeometry::getVertices()
+  float* NavigationInputGeometry::getVertices()
   {
     return mVertices;
   }
 
-  int InputGeometry::getVertexCount()
+  int NavigationInputGeometry::getVertexCount()
   {
     return mVertexCount;
   }
 
-  int* InputGeometry::getTriangles()
+  int* NavigationInputGeometry::getTriangles()
   {
     return mTriangles;
   }
 
-  int InputGeometry::getTriangleCount()
+  int NavigationInputGeometry::getTriangleCount()
   {
     return mTriangleCount;
   }
 
-  float* InputGeometry::getNormals()
+  float* NavigationInputGeometry::getNormals()
   {
     return mNormals;
   }
 
-  float* InputGeometry::getMeshBoundsMin()
+  float* NavigationInputGeometry::getMeshBoundsMin()
   {
     return mBBoxMin;
   }
 
-  float* InputGeometry::getMeshBoundsMax()
+  float* NavigationInputGeometry::getMeshBoundsMax()
   {
     return mBBoxMax;
   }
 
-  const bool InputGeometry::isEmpty()
+  const bool NavigationInputGeometry::isEmpty()
   {
     return ( mVertexCount <= 0 || mTriangleCount <= 0 );
   }

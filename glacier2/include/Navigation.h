@@ -43,7 +43,7 @@ namespace Glacier {
 
   typedef std::vector<Ogre::Entity*> OgreEntityVector;
 
-  class InputGeometry {
+  class NavigationInputGeometry {
   protected:
     SceneNode* mReferenceNode;
     float* mVertices;
@@ -56,8 +56,8 @@ namespace Glacier {
     void calculateExtents( const OgreEntityVector& entities );
     void convertEntities( const OgreEntityVector& entities );
   public:
-    InputGeometry( const OgreEntityVector& entities );
-    ~InputGeometry();
+    NavigationInputGeometry( const OgreEntityVector& entities );
+    ~NavigationInputGeometry();
     AxisAlignedBox getBoundingBox();
     float* getVertices();
     int getVertexCount();
@@ -82,7 +82,7 @@ namespace Glacier {
     NavigationMesh( NavigationMeshParameters& parameters );
     ~NavigationMesh();
     void setParameters( NavigationMeshParameters& parameters );
-    void build( InputGeometry* geometry );
+    void build( NavigationInputGeometry* geometry );
   };
 
 }
