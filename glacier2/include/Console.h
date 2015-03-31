@@ -1,6 +1,7 @@
 #pragma once
 #include "Types.h"
 #include "EngineComponent.h"
+#include "Utilities.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
@@ -158,8 +159,8 @@ namespace Glacier {
       srcGUI          //!< Message from the gui subsystem
     };
   protected:
-    SRWLOCK mLock; //!< Execution lock
-    SRWLOCK mBufferLock; //!< Command buffer lock
+    RWLock mLock; //!< Execution lock
+    RWLock mBufferLock; //!< Command buffer lock
     ConBaseList mCommands; //!< Registered commands & variables
     static ConBaseList mPrecreated; //!< Pre-created commands & variables
     StringList mLines; //!< Line buffer

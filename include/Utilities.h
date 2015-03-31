@@ -21,32 +21,44 @@ namespace Glacier {
     }
   };
 
-  //! \class ScopedSRWLock
-  //! Automation for scoped acquisition and release of an SRWLOCK.
-  //! \warning Lock must be initialized in advance!
-  class ScopedSRWLock: boost::noncopyable {
+  //! \class RWLock
+  //! Reader-writer lock class for easy portability.
+  class RWLock: boost::noncopyable {
   protected:
-    PSRWLOCK mLock;   //!< The lock
+    SRWLOCK mLock;
+  public:
+    RWLock() { InitializeSRWLock( &mLock ); }
+    void lock() { AcquireSRWLockExclusive( &mLock ); }
+    void unlock() { ReleaseSRWLockExclusive( &mLock ); }
+    void lockShared() { AcquireSRWLockShared( &mLock ); }
+    void unlockShared() { ReleaseSRWLockShared( &mLock ); }
+  };
+
+  //! \class ScopedRWLock
+  //! Automation for scoped acquisition and release of an RWLock.
+  class ScopedRWLock: boost::noncopyable {
+  protected:
+    RWLock* mLock;    //!< The lock
     bool mExclusive;  //!< Whether we're acquired in exclusive mode
     bool mLocked;     //!< Whether we're still locked
   public:
     //! Constructor.
     //! \param  lock      The lock to acquire.
     //! \param  exclusive (Optional) true to acquire in exclusive mode, false for shared.
-    ScopedSRWLock( PSRWLOCK lock, bool exclusive = true ):
+    ScopedRWLock( RWLock* lock, bool exclusive = true ):
     mLock( lock ), mExclusive( exclusive ), mLocked( true )
     {
-      mExclusive ? AcquireSRWLockExclusive( mLock ) : AcquireSRWLockShared( mLock );
+      mExclusive ? mLock->lock() : mLock->lockShared();
     }
     //! Call directly if you want to unlock before object leaves scope.
     void unlock()
     {
       if ( mLocked )
-        mExclusive ? ReleaseSRWLockExclusive( mLock ) : ReleaseSRWLockShared( mLock );
+        mExclusive ? mLock->unlock() : mLock->unlockShared();
       mLocked = false;
     }
     //! Destructor.
-    ~ScopedSRWLock()
+    ~ScopedRWLock()
     {
       unlock();
     }
@@ -94,7 +106,7 @@ namespace Glacier {
     //! \return true if it succeeds, false if it fails.
     bool push( T& element )
     {
-      ScopedSRWLock lock( &mLock );
+      ScopedRWLock lock( &mLock );
       mQueue.push_back( element );
       if ( !ReleaseSemaphore( mSemaphore, 1, NULL ) )
       {
@@ -110,7 +122,7 @@ namespace Glacier {
     //! \return true if it succeeds, false if it fails.
     bool pop( T& element )
     {
-      ScopedSRWLock lock( &mLock );
+      ScopedRWLock lock( &mLock );
       if ( mQueue.empty() )
       {
         while ( WaitForSingleObject( mSemaphore, 0 ) != WAIT_TIMEOUT )
@@ -124,7 +136,7 @@ namespace Glacier {
     //! Clears this object to its blank/initial state.
     void clear()
     {
-      ScopedSRWLock lock( &mLock );
+      ScopedRWLock lock( &mLock );
       for ( size_t i = 0; i < mQueue.size(); i++ )
         WaitForSingleObject( mSemaphore, 0 );
       mQueue.clear();

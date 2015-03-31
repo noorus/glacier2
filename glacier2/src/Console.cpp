@@ -193,9 +193,6 @@ namespace Glacier {
   mOutFile( nullptr ), mCmdList( nullptr ), mCmdHelp( nullptr ),
   mCmdFind( nullptr ), mCmdExec( nullptr )
   {
-    InitializeSRWLock( &mLock );
-    InitializeSRWLock( &mBufferLock );
-
     // Register console sources
     registerSource( L"engine", RGB(60,64,76) );
     registerSource( L"gfx", RGB(79,115,44) );
@@ -339,7 +336,7 @@ namespace Glacier {
 
   Console::Source Console::registerSource( const wstring& name, COLORREF color )
   {
-    ScopedSRWLock lock( &mLock );
+    ScopedRWLock lock( &mLock );
     ConsoleSource tmp = { name, color };
     auto index = (Console::Source)mSources.size();
     mSources[index] = tmp;
@@ -348,7 +345,7 @@ namespace Glacier {
 
   void Console::unregisterSource( Source source )
   {
-    ScopedSRWLock lock( &mLock );
+    ScopedRWLock lock( &mLock );
     mSources.erase( source );
   }
 
@@ -361,7 +358,7 @@ namespace Glacier {
 
   void Console::registerVariable( ConBase* var )
   {
-    ScopedSRWLock lock( &mLock );
+    ScopedRWLock lock( &mLock );
 
     auto it = std::find( mCommands.begin(), mCommands.end(), var );
     if ( it != mCommands.end() || var->isRegistered() )
@@ -373,7 +370,7 @@ namespace Glacier {
 
   void Console::printf( Source source_, const wchar_t* line, ... )
   {
-    ScopedSRWLock lock( &mLock );
+    ScopedRWLock lock( &mLock );
 
     va_list va_alist;
     WCHAR buffer[cMaxConsoleLine];
@@ -401,21 +398,21 @@ namespace Glacier {
 
   void Console::addListener( ConsoleListener* listener )
   {
-    ScopedSRWLock lock( &mLock );
+    ScopedRWLock lock( &mLock );
     
     mListeners.push_back( listener ); // Not checking for dupes
   }
 
   void Console::removeListener( ConsoleListener* listener )
   {
-    ScopedSRWLock lock( &mLock );
+    ScopedRWLock lock( &mLock );
 
     mListeners.remove( listener );
   }
 
   void Console::errorPrintf( Source source_, const wchar_t* line, ... )
   {
-    ScopedSRWLock lock( &mLock );
+    ScopedRWLock lock( &mLock );
 
     va_list va_alist;
     WCHAR buffer[cMaxConsoleLine];
@@ -496,7 +493,7 @@ namespace Glacier {
     if ( echo )
       printf( srcEngine, cConsoleEcho, commandLine.c_str() );
 
-    ScopedSRWLock lock( &mLock );
+    ScopedRWLock lock( &mLock );
 
     wstring command = arguments[0];
     for ( ConBase* base : mCommands )
@@ -535,14 +532,14 @@ namespace Glacier {
 
   void Console::executeBuffered( const wstring& commandLine )
   {
-    ScopedSRWLock lock( &mBufferLock );
+    ScopedRWLock lock( &mBufferLock );
 
     mCommandBuffer.push( commandLine );
   }
 
   void Console::processBuffered()
   {
-    ScopedSRWLock lock( &mBufferLock );
+    ScopedRWLock lock( &mBufferLock );
 
     while ( !mCommandBuffer.empty() )
     {
