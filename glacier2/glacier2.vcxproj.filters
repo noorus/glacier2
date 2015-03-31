@@ -513,6 +513,9 @@
     <ClCompile Include="src\NavigationDebugVisualizer.cpp">
       <Filter>Source Files\Services\Navigation</Filter>
     </ClCompile>
+    <ClCompile Include="src\PostProcessing.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\CompilerDef.h">
@@ -811,6 +814,9 @@
     </ClInclude>
     <ClInclude Include="include\MeshHelpers.h">
       <Filter>Header Files\Junk</Filter>
+    </ClInclude>
+    <ClInclude Include="include\PostProcessing.h">
+      <Filter>Header Files\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

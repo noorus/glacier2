@@ -12,44 +12,6 @@
 
 namespace Glacier {
 
-  bool cvarCallbackHDRKey( ConVar* variable, ConVar::Value oldValue )
-  {
-    if ( Director::mHDRCompositor )
-      Director::mHDRCompositor->setKey( variable->getFloat() );
-    return true;
-  }
-
-  bool cvarCallbackHDRE( ConVar* variable, ConVar::Value oldValue )
-  {
-    if ( Director::mHDRCompositor )
-      Director::mHDRCompositor->setLocalE( variable->getFloat() );
-    return true;
-  }
-
-  bool cvarCallbackHDRPhi( ConVar* variable, ConVar::Value oldValue )
-  {
-    if ( Director::mHDRCompositor )
-      Director::mHDRCompositor->setLocalPhi( variable->getFloat() );
-    return true;
-  }
-
-  bool cvarCallbackHDREnabled( ConVar* variable, ConVar::Value oldValue )
-  {
-    if ( Director::mHDRCompositor )
-      Director::mHDRCompositor->enable( variable->getBool() );
-    return true;
-  }
-
-  ENGINE_DECLARE_CONVAR_WITH_CB( hdr_key, L"HDR key",
-    0.1f, cvarCallbackHDRKey );
-  ENGINE_DECLARE_CONVAR_WITH_CB( hdr_e, L"HDR E",
-    0.05f, cvarCallbackHDRE );
-  ENGINE_DECLARE_CONVAR_WITH_CB( hdr_phi, L"HDR Phi",
-    8.0f, cvarCallbackHDRPhi );
-  ENGINE_DECLARE_CONVAR_WITH_CB( hdr_enabled, L"Whether to enable HDR rendering",
-    false, cvarCallbackHDREnabled );
-
-  HDRlib::HDRCompositor* Director::mHDRCompositor = nullptr;
   GameCamera* Director::mCamera = nullptr;
 
   Director::Director( Graphics* gfx, const PCZSceneNode* target ):
@@ -74,31 +36,18 @@ namespace Glacier {
     w->setCastShadows( true );
     w->setShadowFarClipDistance( 100.0f );
 
-    mHDRCompositor = new HDRlib::HDRCompositor(
-      mGraphics->getWindow(), mCamera->getCamera() );
-
-    mHDRCompositor->setTonemapper( HDRlib::Tonemapper_ReinhardMod );
-    mHDRCompositor->setGlareType( HDRlib::Glare_Blur );
-    mHDRCompositor->setStarType( HDRlib::Star_Plus );
-    mHDRCompositor->setAutokeying( true );
-    mHDRCompositor->setKey( g_CVar_hdr_key.getFloat() );
-    mHDRCompositor->setAdaptionScale( 3.0f );
-    mHDRCompositor->setLumAdaption( false );
-    mHDRCompositor->setGlareStrength( 0.15f );
-    mHDRCompositor->setStarStrength( 0.15f );
-    mHDRCompositor->setLocalE( g_CVar_hdr_e.getFloat() );
-    mHDRCompositor->setLocalPhi( g_CVar_hdr_phi.getFloat() );
-    mHDRCompositor->enable( g_CVar_hdr_enabled.getBool() );
+    mGraphics->getPostProcessing()->setup( mViewport );
   }
 
   void Director::update( const GameTime delta )
   {
-    mHDRCompositor->setFrameTime( (float)delta );
+    //
   }
 
   Director::~Director()
   {
-    SAFE_DELETE( mHDRCompositor );
+    mGraphics->getPostProcessing()->teardown();
+
     mGraphics->getScene()->destroyAllLights();
 
     mGraphics->getEngine()->getGUI()->shutdown();

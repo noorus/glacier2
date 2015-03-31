@@ -132,7 +132,7 @@ namespace Glacier {
   EngineComponent( engine ),
   mRoot( nullptr ), mRenderer( nullptr ), mSceneManager( nullptr ),
   mOverlaySystem( nullptr ), mWindowHandler( windowHandler ),
-  mShadows( nullptr )
+  mShadows( nullptr ), mPostProcessing( nullptr )
   {
     preInitialize();
   }
@@ -225,6 +225,7 @@ namespace Glacier {
       g_CVar_tex_mipmaps.getInt() );
 
     mShadows = new Shadows();
+    mPostProcessing = new PostProcessing( mSceneManager, mWindow );
 
     // Register & initialize resource groups
     mEngine->registerResources( ResourceGroupManager::getSingleton() );
@@ -301,6 +302,7 @@ namespace Glacier {
       mEngine->unregisterResources( ResourceGroupManager::getSingleton() );
       mEngine->unregisterUserLocations( ResourceGroupManager::getSingleton() );
 
+      SAFE_DELETE( mPostProcessing );
       SAFE_DELETE( mShadows );
 
       SAFE_DELETE( mOverlaySystem );
@@ -364,6 +366,9 @@ namespace Glacier {
   {
     // Update globals
     mGlobals.stats.update();
+
+    // Update post processing
+    mPostProcessing->update( delta );
 
     // Render frame
     if ( !mRoot->renderOneFrame( (Ogre::Real)delta ) )

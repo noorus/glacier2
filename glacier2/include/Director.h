@@ -19,7 +19,6 @@ namespace Glacier {
     Ogre::Viewport* mViewport;  //!< My viewport
     Ogre::Light* mLight;
   public:
-    static HDRlib::HDRCompositor* mHDRCompositor; //!< My HDR compositor
     static GameCamera* mCamera; //!< My camera
     //! Constructor.
     Director( Graphics* gfx, const PCZSceneNode* target );

@@ -2,6 +2,7 @@
 #include "Console.h"
 #include "EngineComponent.h"
 #include "GlobalStats.h"
+#include "PostProcessing.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
@@ -50,6 +51,7 @@ namespace Glacier {
     WindowHandler* mWindowHandler;
     Settings mSettings;
     Shadows* mShadows;
+    PostProcessing* mPostProcessing;
   public:
     struct VideoMode {
       uint32_t mWidth;
@@ -88,6 +90,7 @@ namespace Glacier {
     void applySettings( const Settings& settings );
     const Settings& getSettings() throw() { return mSettings; }
     Shadows* getShadows() throw() { return mShadows; }
+    PostProcessing* getPostProcessing() throw() { return mPostProcessing; }
     void setRenderWindowTitle( const string& title );
     HWND getRenderWindowHandle();
     Ogre::Root* getRoot() { return mRoot; }
