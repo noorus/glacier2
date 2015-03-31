@@ -20,6 +20,7 @@
 #include "FMODMusic.h"
 #include "MovableTextOverlay.h"
 #include "DeveloperEntities.h"
+#include "Navigation.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
@@ -45,6 +46,32 @@ namespace Glacier {
     mPrimitives.push_back( new Primitives::Box( gEngine->getWorld()->getPhysics(), Vector3( 1.0f, 10.0f, 1.0f ), Vector3( 5.5f, 5.0f, -5.5f ), Quaternion::IDENTITY ) );
     mPrimitives.push_back( new Primitives::Box( gEngine->getWorld()->getPhysics(), Vector3( 1.0f, 10.0f, 1.0f ), Vector3( 5.5f, 5.0f, 5.5f ), Quaternion::IDENTITY ) );
     mPrimitives.push_back( new Primitives::Box( gEngine->getWorld()->getPhysics(), Vector3( 1.0f, 10.0f, 1.0f ), Vector3( -5.5f, 5.0f, -5.5f ), Quaternion::IDENTITY ) );
+
+    // TODO this really needs to be in a background thread. or something.
+    OgreEntityVector navSources;
+    for ( auto primitive : mPrimitives )
+    {
+      navSources.push_back( primitive->getEntity() );
+    }
+    InputGeometry navGeometry( navSources );
+    NavigationMeshParameters navParams;
+    navParams.cellSize = 0.25f;
+    navParams.cellHeight = 0.2f;
+    navParams.agentMaxSlope = 20;
+    navParams.agentHeight = 1.8f;
+    navParams.agentMaxClimb = 1;
+    navParams.agentRadius = 0.4f;
+    navParams.edgeMaxLength = 12;
+    navParams.edgeMaxError = 1.3f;
+    navParams.regionMinSize = 50;
+    navParams.regionMergeSize = 20;
+    navParams.vertsPerPoly = DT_VERTS_PER_POLYGON;
+    navParams.detailSampleDist = 6;
+    navParams.detailSampleMaxError = 1;
+    NavigationMesh navMesh( navParams );
+    navMesh.build( &navGeometry );
+
+    MessageBoxW( 0, L"yay built navmesh ok!", nullptr, MB_OK );
 
     auto player = Locator::getEntities().create( "player" );
     player->spawn( Vector3( 0.0f, 1.0f, 0.0f ), Quaternion::IDENTITY );

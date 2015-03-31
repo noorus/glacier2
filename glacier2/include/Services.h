@@ -56,7 +56,8 @@ namespace Glacier {
     enum Sector {
       Sector_Generic,
       Sector_Audio,
-      Sector_Physics
+      Sector_Physics,
+      Sector_Navigation
     };
     virtual void* alloc( const Sector sector, size_t size, size_t alignment = 0Ui64 ) = 0;
     virtual void* realloc( const Sector sector, void* location, size_t size, size_t alignment = 0Ui64 ) = 0;

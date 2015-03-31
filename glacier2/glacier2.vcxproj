@@ -347,6 +347,7 @@
     <ClCompile Include="src\JSColors.cpp" />
     <ClCompile Include="src\Keyboard.cpp" />
     <ClCompile Include="src\MenuState.cpp" />
+    <ClCompile Include="src\MeshHelpers.cpp" />
     <ClCompile Include="src\ModelViewer.cpp" />
     <ClCompile Include="src\ModelViewerState.cpp" />
     <ClCompile Include="src\Director.cpp" />
@@ -367,6 +368,8 @@
     <ClCompile Include="src\Mouse.cpp" />
     <ClCompile Include="src\FMODMusic.cpp" />
     <ClCompile Include="src\MovableTextOverlay.cpp" />
+    <ClCompile Include="src\NavigationInputGeometry.cpp" />
+    <ClCompile Include="src\NavigationMesh.cpp" />
     <ClCompile Include="src\NedPoolMemory.cpp" />
     <ClCompile Include="src\PhysicsDebugVisualizer.cpp" />
     <ClCompile Include="src\PhysicsScene.cpp" />
@@ -449,6 +452,7 @@
     <ClInclude Include="include\GUI.h" />
     <ClInclude Include="include\Keyboard.h" />
     <ClInclude Include="include\MenuState.h" />
+    <ClInclude Include="include\MeshHelpers.h" />
     <ClInclude Include="include\ModelViewerState.h" />
     <ClInclude Include="include\Director.h" />
     <ClInclude Include="include\Engine.h" />
@@ -464,6 +468,7 @@
     <ClInclude Include="include\Mouse.h" />
     <ClInclude Include="include\FMODMusic.h" />
     <ClInclude Include="include\MovableTextOverlay.h" />
+    <ClInclude Include="include\Navigation.h" />
     <ClInclude Include="include\NedPoolMemory.h" />
     <ClInclude Include="include\InputManager.h" />
     <ClInclude Include="include\JSNatives.h" />

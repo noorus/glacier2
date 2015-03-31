@@ -127,6 +127,12 @@
     <Filter Include="Source Files\Recast &amp; Detour\DetourTileCache">
       <UniqueIdentifier>{b65da0d3-7b34-429a-87a3-52cf521af1d7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Services\Navigation">
+      <UniqueIdentifier>{4f7f8599-06a5-4409-a8e5-a673844d66a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Services\Navigation">
+      <UniqueIdentifier>{46c64b32-4ea9-403b-8cf4-220d96734962}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Main.cpp">
@@ -492,6 +498,15 @@
     <ClCompile Include="src\JSColors.cpp">
       <Filter>Source Files\Scripting</Filter>
     </ClCompile>
+    <ClCompile Include="src\NavigationMesh.cpp">
+      <Filter>Source Files\Services\Navigation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\NavigationInputGeometry.cpp">
+      <Filter>Source Files\Services\Navigation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MeshHelpers.cpp">
+      <Filter>Source Files\Junk</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\CompilerDef.h">
@@ -784,6 +799,12 @@
     </ClInclude>
     <ClInclude Include="include\Camera.h">
       <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Navigation.h">
+      <Filter>Header Files\Services\Navigation</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MeshHelpers.h">
+      <Filter>Header Files\Junk</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

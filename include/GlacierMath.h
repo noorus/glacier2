@@ -49,6 +49,22 @@ namespace Glacier {
       return fv;
     }
 
+    //! \fn floatArrayToOgreVec3
+    //! Convert from float[3] to Ogre Vector3.
+    inline Vector3 floatArrayToOgreVec3( const float* vec )
+    {
+      return Vector3( vec[0], vec[1], vec[2] );
+    }
+
+    //! \fn ogreVec3ToFloatArray
+    //! Convert from Ogre Vector3 to float[3].
+    inline void ogreVec3ToFloatArray( const Vector3& vec, float* out )
+    {
+      out[0] = vec.x;
+      out[1] = vec.y;
+      out[2] = vec.z;
+    }
+
     //! \fn pxQtToOgre
     //! Convert from PhysX NxQuat to Ogre Quaternion.
     inline Quaternion pxQtToOgre( const physx::PxQuat& q )

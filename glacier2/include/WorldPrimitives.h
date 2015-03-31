@@ -20,6 +20,8 @@ namespace Glacier {
       physx::PxRigidActor* mActor;
       PCZSceneNode* mNode;
       Primitive( PhysicsScene* scene );
+    public:
+      Ogre::Entity* getEntity() { return mEntity; }
     };
 
     class Plane: public Primitive {
