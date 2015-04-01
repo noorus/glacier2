@@ -70,6 +70,8 @@ namespace Glacier {
 
   class NavigationMesh {
   protected:
+    static uint32_t headerChunkID;
+  protected:
     rcConfig mConfig;
     rcContext* mContext;
     rcHeightfield* mSolid;
@@ -77,11 +79,17 @@ namespace Glacier {
     rcContourSet* mContours;
     rcPolyMesh* mPolyMesh;
     rcPolyMeshDetail* mPolyMeshDetail;
+    void newPolyMesh();
+    void newPolyMeshDetail();
   public:
     NavigationMesh( NavigationMeshParameters& parameters );
     ~NavigationMesh();
     void setParameters( NavigationMeshParameters& parameters );
-    void build( NavigationInputGeometry* geometry );
+    void buildFrom( NavigationInputGeometry* geometry );
+    void loadFrom( StreamSerialiser& serializer );
+    void loadFrom( const UTFString& filename );
+    void saveTo( StreamSerialiser& serializer );
+    void saveTo( const UTFString& filename );
     const rcPolyMesh* getPolyMesh();
     const rcPolyMeshDetail* getPolyMeshDetail();
   };

@@ -58,6 +58,7 @@
 #include <boost/tokenizer.hpp>
 #include <boost/variant.hpp>
 #include <boost/noncopyable.hpp>
+#include <boost/thread.hpp>
 
 // FMOD Headers
 #include <fmod.hpp>                   // FMOD API

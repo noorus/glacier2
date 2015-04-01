@@ -70,7 +70,8 @@ namespace Glacier {
     navParams.detailSampleDist = 6;
     navParams.detailSampleMaxError = 1;
     mNavigationMesh = new NavigationMesh( navParams );
-    mNavigationMesh->build( &navGeometry );
+    mNavigationMesh->buildFrom( &navGeometry );
+    // mNavigationMesh->loadFrom( "poop.navmesh" );
 
 #ifndef GLACIER_NO_NAVIGATION_DEBUG
     mNavVis = new NavigationDebugVisualizer( gEngine );

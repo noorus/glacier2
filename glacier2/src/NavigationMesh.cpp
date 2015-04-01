@@ -9,6 +9,9 @@
 
 namespace Glacier {
 
+  uint32_t NavigationMesh::headerChunkID =
+    StreamSerialiser::makeIdentifier( "NAVM" );
+
   void NavigationMeshParameters::updateDerived()
   {
     derived.walkableHeight = (int)ceilf( agentHeight / cellHeight );
@@ -35,6 +38,134 @@ namespace Glacier {
     mContext = new rcContext( true );
   }
 
+  void NavigationMesh::saveTo( StreamSerialiser& serializer )
+  {
+    serializer.writeChunkBegin( headerChunkID, 1 );
+
+    // Write configuration
+    uint32_t size = sizeof( rcConfig );
+    serializer.writeData( &size, 4, 1 );
+    serializer.writeData( &mConfig, size, 1 );
+
+    // Write polymesh
+    if ( !mPolyMesh ) {
+      size = 0;
+      serializer.writeData( &size, 4, 1 );
+    } else {
+      size = sizeof( rcPolyMesh );
+      serializer.writeData( &size, 4, 1 );
+      serializer.writeData( mPolyMesh, size, 1 );
+      serializer.writeData( mPolyMesh->verts, sizeof( unsigned short ) * 3, mPolyMesh->nverts );
+      serializer.writeData( mPolyMesh->polys, sizeof( unsigned short ) * 2 * mPolyMesh->nvp, mPolyMesh->npolys );
+      serializer.writeData( mPolyMesh->regs, sizeof( unsigned short ), mPolyMesh->npolys );
+      serializer.writeData( mPolyMesh->flags, sizeof( unsigned short ), mPolyMesh->npolys );
+      serializer.writeData( mPolyMesh->areas, sizeof( unsigned char ), mPolyMesh->npolys );
+    }
+
+    // Write detail mesh
+    if ( !mPolyMeshDetail ) {
+      size = 0;
+      serializer.writeData( &size, 4, 1 );
+    } else {
+      size = sizeof( rcPolyMeshDetail );
+      serializer.writeData( &size, 4, 1 );
+      serializer.writeData( mPolyMeshDetail, size, 1 );
+      serializer.writeData( mPolyMeshDetail->meshes, sizeof( unsigned int ) * 4, mPolyMeshDetail->nmeshes );
+      serializer.writeData( mPolyMeshDetail->verts, sizeof( float ) * 3, mPolyMeshDetail->nverts );
+      serializer.writeData( mPolyMeshDetail->tris, sizeof( unsigned char ) * 4, mPolyMeshDetail->ntris );
+    }
+
+    serializer.writeChunkEnd( headerChunkID );
+  }
+
+  void NavigationMesh::saveTo( const UTFString& filename )
+  {
+    DataStreamPtr stream = Ogre::Root::getSingleton().createFileStream(
+      filename, "User", true );
+    StreamSerialiser serializer( stream,
+      StreamSerialiser::ENDIAN_LITTLE, true );
+
+    saveTo( serializer );
+
+    stream->close();
+  }
+
+  void NavigationMesh::loadFrom( StreamSerialiser& serializer )
+  {
+    uint32_t size;
+    serializer.readChunkBegin( headerChunkID, 1 );
+
+    // Read configuration
+    serializer.readData( &size, 4, 1 );
+    if ( size != sizeof( rcConfig ) )
+      ENGINE_EXCEPT( "Bad size for rcConfig blob" );
+    serializer.readData( &mConfig, size, 1 );
+
+    // Allocate fresh & read polymesh
+    serializer.readData( &size, 4, 1 );
+    if ( size == 0 ) {
+      if ( mPolyMesh )
+        rcFreePolyMesh( mPolyMesh );
+      mPolyMesh = nullptr;
+    } else {
+      newPolyMesh();
+      if ( size != sizeof( rcPolyMesh ) )
+        ENGINE_EXCEPT( "Bad size for rcPolyMesh blob" );
+      serializer.readData( mPolyMesh, size, 1 );
+      size = ( sizeof( unsigned short ) * 3 );
+      mPolyMesh->verts = (unsigned short*)rcAlloc( size * mPolyMesh->nverts, RC_ALLOC_PERM );
+      serializer.readData( mPolyMesh->verts, size, mPolyMesh->nverts );
+      size = ( sizeof( unsigned short ) * 2 * mPolyMesh->nvp );
+      mPolyMesh->polys = (unsigned short*)rcAlloc( size * mPolyMesh->npolys, RC_ALLOC_PERM );
+      serializer.readData( mPolyMesh->polys, size, mPolyMesh->npolys );
+      size = sizeof( unsigned short );
+      mPolyMesh->regs = (unsigned short*)rcAlloc( size * mPolyMesh->npolys, RC_ALLOC_PERM );
+      serializer.readData( mPolyMesh->regs, size, mPolyMesh->npolys );
+      size = sizeof( unsigned short );
+      mPolyMesh->flags = (unsigned short*)rcAlloc( size * mPolyMesh->npolys, RC_ALLOC_PERM );
+      serializer.readData( mPolyMesh->flags, size, mPolyMesh->npolys );
+      size = sizeof( unsigned char );
+      mPolyMesh->areas = (unsigned char*)rcAlloc( size * mPolyMesh->npolys, RC_ALLOC_PERM );
+      serializer.readData( mPolyMesh->areas, size, mPolyMesh->npolys );
+    }
+
+    // Allocate fresh & read detail polymesh
+    serializer.readData( &size, 4, 1 );
+    if ( size == 0 ) {
+      if ( mPolyMeshDetail )
+        rcFreePolyMeshDetail( mPolyMeshDetail );
+      mPolyMeshDetail = nullptr;
+    } else {
+      newPolyMeshDetail();
+      if ( size != sizeof( rcPolyMeshDetail ) )
+        ENGINE_EXCEPT( "Bad size for rcPolyMeshDetail blob" );
+      serializer.readData( mPolyMeshDetail, size, 1 );
+      size = ( sizeof( unsigned int ) * 4 );
+      mPolyMeshDetail->meshes = (unsigned int*)rcAlloc( size * mPolyMeshDetail->nmeshes, RC_ALLOC_PERM );
+      serializer.readData( mPolyMeshDetail->meshes, size, mPolyMeshDetail->nmeshes );
+      size = ( sizeof( float ) * 3 );
+      mPolyMeshDetail->verts = (float*)rcAlloc( size * mPolyMeshDetail->nverts, RC_ALLOC_PERM );
+      serializer.readData( mPolyMeshDetail->verts, size, mPolyMeshDetail->nverts );
+      size = ( sizeof( unsigned char ) * 4 );
+      mPolyMeshDetail->tris = (unsigned char*)rcAlloc( size * mPolyMeshDetail->ntris, RC_ALLOC_PERM );
+      serializer.readData( mPolyMeshDetail->tris, size, mPolyMeshDetail->ntris );
+    }
+
+    serializer.readChunkEnd( headerChunkID );
+  }
+
+  void NavigationMesh::loadFrom( const UTFString& filename )
+  {
+    DataStreamPtr stream = Ogre::Root::getSingleton().openFileStream(
+      filename, "User" );
+    StreamSerialiser serializer( stream,
+      StreamSerialiser::ENDIAN_LITTLE, true );
+
+    loadFrom( serializer );
+
+    stream->close();
+  }
+
   void NavigationMesh::setParameters( NavigationMeshParameters& parameters )
   {
     parameters.updateDerived();
@@ -55,7 +186,7 @@ namespace Glacier {
     mConfig.detailSampleMaxError = parameters.getDerived().detailSampleMaxError;
   }
 
-  void NavigationMesh::build( NavigationInputGeometry* geometry )
+  void NavigationMesh::buildFrom( NavigationInputGeometry* geometry )
   {
     mContext->resetTimers();
     mContext->startTimer( RC_TIMER_TOTAL );
@@ -130,16 +261,12 @@ namespace Glacier {
     if ( mContours->nconts == 0 )
       ENGINE_EXCEPT( "Empty contour set" );
 
-    mPolyMesh = rcAllocPolyMesh();
-    if ( !mPolyMesh )
-      ENGINE_EXCEPT( "Failed to allocate poly mesh" );
+    newPolyMesh();
 
     if ( !rcBuildPolyMesh( mContext, *mContours, mConfig.maxVertsPerPoly, *mPolyMesh ) )
       ENGINE_EXCEPT( "Failed to triangulate contours" );
 
-    mPolyMeshDetail = rcAllocPolyMeshDetail();
-    if ( !mPolyMeshDetail )
-      ENGINE_EXCEPT( "Failed to allocate detail poly mesh" );
+    newPolyMeshDetail();
 
     if ( !rcBuildPolyMeshDetail( mContext, *mPolyMesh, *mCompact,
       mConfig.detailSampleDist, mConfig.detailSampleMaxError, *mPolyMeshDetail ) )
@@ -152,6 +279,24 @@ namespace Glacier {
     mContours = nullptr;
 
     mContext->stopTimer( RC_TIMER_TOTAL );
+  }
+
+  void NavigationMesh::newPolyMesh()
+  {
+    if ( mPolyMesh )
+      rcFreePolyMesh( mPolyMesh );
+    mPolyMesh = rcAllocPolyMesh();
+    if ( !mPolyMesh )
+      ENGINE_EXCEPT( "Failed to allocate poly mesh" );
+  }
+
+  void NavigationMesh::newPolyMeshDetail()
+  {
+    if ( mPolyMeshDetail )
+      rcFreePolyMeshDetail( mPolyMeshDetail );
+    mPolyMeshDetail = rcAllocPolyMeshDetail();
+    if ( !mPolyMeshDetail )
+      ENGINE_EXCEPT( "Failed to allocate detail poly mesh" );
   }
 
   const rcPolyMesh* NavigationMesh::getPolyMesh()
