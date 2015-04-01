@@ -56,6 +56,9 @@
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <FloatingPointModel>Fast</FloatingPointModel>
       <DisableSpecificWarnings>4267</DisableSpecificWarnings>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>ProceduralStableHeaders.h</PrecompiledHeaderFile>
+      <AdditionalOptions>/Zm512 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -77,6 +80,9 @@
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <EnableParallelCodeGeneration>true</EnableParallelCodeGeneration>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>ProceduralStableHeaders.h</PrecompiledHeaderFile>
+      <AdditionalOptions>/Zm512 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -102,7 +108,10 @@
     <ClCompile Include="library\src\ProceduralPath.cpp" />
     <ClCompile Include="library\src\ProceduralPathGenerators.cpp" />
     <ClCompile Include="library\src\ProceduralPlaneGenerator.cpp" />
-    <ClCompile Include="library\src\ProceduralPrecompiledHeaders.cpp" />
+    <ClCompile Include="library\src\ProceduralPrecompiledHeaders.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="library\src\ProceduralPrismGenerator.cpp" />
     <ClCompile Include="library\src\ProceduralRoundedBoxGenerator.cpp" />
     <ClCompile Include="library\src\ProceduralShape.cpp" />
