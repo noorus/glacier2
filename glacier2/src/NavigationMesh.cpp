@@ -7,10 +7,6 @@
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
 
-// This code is heavily based on OgreCrowd, Copyright (c) 2012 Jonas Hauquier.
-// Additional contributions by mkultra333 & Paul Wilson.
-// Made available under the MIT license.
-
 namespace Glacier {
 
   void NavigationMeshParameters::updateDerived()

@@ -64,7 +64,7 @@ namespace Glacier {
     while ( count-- ) {
       colorToComponents( point->color, r, g, b );
       mManualObject->position( Math::pxVec3ToOgre( point->pos ) );
-      mManualObject->colour( r, g, b );
+      mManualObject->colour( r, g, b, mAlpha );
       point++;
     }
     mManualObject->end();
@@ -78,10 +78,10 @@ namespace Glacier {
     while ( count-- ) {
       colorToComponents( line->color0, r, g, b );
       mManualObject->position( Math::pxVec3ToOgre( line->pos0 ) );
-      mManualObject->colour( r, g, b );
+      mManualObject->colour( r, g, b, mAlpha );
       colorToComponents( line->color1, r, g, b );
       mManualObject->position( Math::pxVec3ToOgre( line->pos1 ) );
-      mManualObject->colour( r, g, b );
+      mManualObject->colour( r, g, b, mAlpha );
       line++;
     }
     mManualObject->end();

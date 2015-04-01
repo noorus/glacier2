@@ -241,7 +241,8 @@ namespace Glacier {
 
   void Graphics::applySettings( const Settings& settings )
   {
-    mEngine->getConsole()->printf( Console::srcGfx, L"Applying new graphics settings..." );
+    mEngine->getConsole()->printf( Console::srcGfx,
+      L"Applying new graphics settings..." );
 
     bool newFullscreen = ( settings.fullScreen != mSettings.fullScreen );
     bool newVSync = ( settings.verticalSync != mSettings.verticalSync );
