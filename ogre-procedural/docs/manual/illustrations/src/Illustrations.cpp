@@ -136,7 +136,6 @@ bool Illustrations::init()
 	vp->setBackgroundColour(Ogre::ColourValue::White);
 	vp->setOverlaysEnabled(false);
 #else
-	mRoot->initialiseCompositor();
 	Ogre::CompositorManager2* pCompositorManager = mRoot->getCompositorManager2();
 	const Ogre::IdString workspaceName = "scene workspace";
 	pCompositorManager->createBasicWorkspaceDef(workspaceName, Ogre::ColourValue::White);
@@ -276,6 +275,18 @@ void Illustrations::go()
 	mp = PlaneGenerator().realizeMesh();
 	putMesh(mp);
 	next("primitive_plane", 1);
+
+	mp = PrismGenerator(1.0f, 1.0f, 3).realizeMesh();
+	putMesh(mp);
+	next("primitive_prism3", 2);
+
+	mp = PrismGenerator(1.0f, 1.0f, 5).realizeMesh();
+	putMesh(mp);
+	next("primitive_prism5", 2);
+
+	mp = PrismGenerator(1.0f, 1.0f, 6).realizeMesh();
+	putMesh(mp);
+	next("primitive_prism6", 2);
 
 	mCamera->setPosition(mCamera->getPosition() + Vector3(0.0f, 1.5f, 0.0f));
 	mp = SpringGenerator().setNumRound(3).realizeMesh();
@@ -861,6 +872,19 @@ void Illustrations::go()
 	dotfile.set("Cell", "texture_cell_smooth", "Text", "texture_text");
 	dotfile.save();
 #endif
+
+	Procedural::Solid(&buffer).setColour(Ogre::ColourValue(0.0f, 0.5f, 1.0f, 1.0f)).process();
+	Procedural::Polygon(&buffer).setColour(Ogre::ColourValue::Red).setSides(3).process();
+	exportImage("texture_polygon3", &buffer, true);
+	Procedural::Solid(&buffer).setColour(Ogre::ColourValue(0.0f, 0.5f, 1.0f, 1.0f)).process();
+	Procedural::Polygon(&buffer).setColour(Ogre::ColourValue::Red).setSides(5).process();
+	exportImage("texture_polygon5", &buffer, true);
+	dotfile = dotFile(mOutputPath, "texture_35", "Polygon_5_Demo");
+	dotfile.set("Solid", "texture_solid", "Polygon", "texture_polygon5");
+	dotfile.save();
+	Procedural::Solid(&buffer).setColour(Ogre::ColourValue(0.0f, 0.5f, 1.0f, 1.0f)).process();
+	Procedural::Polygon(&buffer).setColour(Ogre::ColourValue::Red).setSides(6).process();
+	exportImage("texture_polygon6", &buffer, true);
 
 	// Example
 	dotfile = dotFile(mOutputPath, "texture_01", "Material_Example");

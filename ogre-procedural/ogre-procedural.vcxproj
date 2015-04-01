@@ -1,0 +1,170 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{EA395C5C-D254-4482-BAFD-2A8E9893C115}</ProjectGuid>
+    <RootNamespace>ogreprocedural</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(SolutionDir)lib\</OutDir>
+    <TargetName>$(ProjectName)64_d</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)lib\</OutDir>
+    <TargetName>$(ProjectName)64</TargetName>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>false</SDLCheck>
+      <AdditionalIncludeDirectories>$(ProjectDir)library\include;$(SolutionDir)..\SDK\Ogre\include\OGRE;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <DisableSpecificWarnings>4267</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(ProjectDir)library\include;$(SolutionDir)..\SDK\Ogre\include\OGRE;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <EnableEnhancedInstructionSet>AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <DisableSpecificWarnings>4267</DisableSpecificWarnings>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <EnableParallelCodeGeneration>true</EnableParallelCodeGeneration>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="library\src\ProceduralBoolean.cpp" />
+    <ClCompile Include="library\src\ProceduralBoxGenerator.cpp" />
+    <ClCompile Include="library\src\ProceduralCapsuleGenerator.cpp" />
+    <ClCompile Include="library\src\ProceduralConeGenerator.cpp" />
+    <ClCompile Include="library\src\ProceduralCylinderGenerator.cpp" />
+    <ClCompile Include="library\src\ProceduralDebugRendering.cpp" />
+    <ClCompile Include="library\src\ProceduralExtruder.cpp" />
+    <ClCompile Include="library\src\ProceduralGeometryHelpers.cpp" />
+    <ClCompile Include="library\src\ProceduralIcoSphereGenerator.cpp" />
+    <ClCompile Include="library\src\ProceduralLathe.cpp" />
+    <ClCompile Include="library\src\ProceduralMeshModifiers.cpp" />
+    <ClCompile Include="library\src\ProceduralMultiShape.cpp" />
+    <ClCompile Include="library\src\ProceduralMultiShapeGenerators.cpp" />
+    <ClCompile Include="library\src\ProceduralNoise.cpp" />
+    <ClCompile Include="library\src\ProceduralPath.cpp" />
+    <ClCompile Include="library\src\ProceduralPathGenerators.cpp" />
+    <ClCompile Include="library\src\ProceduralPlaneGenerator.cpp" />
+    <ClCompile Include="library\src\ProceduralPrecompiledHeaders.cpp" />
+    <ClCompile Include="library\src\ProceduralPrismGenerator.cpp" />
+    <ClCompile Include="library\src\ProceduralRoundedBoxGenerator.cpp" />
+    <ClCompile Include="library\src\ProceduralShape.cpp" />
+    <ClCompile Include="library\src\ProceduralShapeGenerators.cpp" />
+    <ClCompile Include="library\src\ProceduralSphereGenerator.cpp" />
+    <ClCompile Include="library\src\ProceduralSpringGenerator.cpp" />
+    <ClCompile Include="library\src\ProceduralSVG.cpp" />
+    <ClCompile Include="library\src\ProceduralTextureBuffer.cpp" />
+    <ClCompile Include="library\src\ProceduralTextureGenerator.cpp" />
+    <ClCompile Include="library\src\ProceduralTextureModifiers.cpp" />
+    <ClCompile Include="library\src\ProceduralTorusGenerator.cpp" />
+    <ClCompile Include="library\src\ProceduralTorusKnotGenerator.cpp" />
+    <ClCompile Include="library\src\ProceduralTrack.cpp" />
+    <ClCompile Include="library\src\ProceduralTriangleBuffer.cpp" />
+    <ClCompile Include="library\src\ProceduralTriangulator.cpp" />
+    <ClCompile Include="library\src\ProceduralTubeGenerator.cpp" />
+    <ClCompile Include="library\src\ProceduralUtils.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="library\include\Procedural.h" />
+    <ClInclude Include="library\include\ProceduralBoolean.h" />
+    <ClInclude Include="library\include\ProceduralBoxGenerator.h" />
+    <ClInclude Include="library\include\ProceduralCapsuleGenerator.h" />
+    <ClInclude Include="library\include\ProceduralConeGenerator.h" />
+    <ClInclude Include="library\include\ProceduralCylinderGenerator.h" />
+    <ClInclude Include="library\include\ProceduralDebugRendering.h" />
+    <ClInclude Include="library\include\ProceduralExtruder.h" />
+    <ClInclude Include="library\include\ProceduralGeometryHelpers.h" />
+    <ClInclude Include="library\include\ProceduralIcoSphereGenerator.h" />
+    <ClInclude Include="library\include\ProceduralLathe.h" />
+    <ClInclude Include="library\include\ProceduralMeshGenerator.h" />
+    <ClInclude Include="library\include\ProceduralMeshModifiers.h" />
+    <ClInclude Include="library\include\ProceduralMultiShape.h" />
+    <ClInclude Include="library\include\ProceduralMultiShapeGenerators.h" />
+    <ClInclude Include="library\include\ProceduralNoise.h" />
+    <ClInclude Include="library\include\ProceduralPath.h" />
+    <ClInclude Include="library\include\ProceduralPathGenerators.h" />
+    <ClInclude Include="library\include\ProceduralPathGeneratorsBase.h" />
+    <ClInclude Include="library\include\ProceduralPlaneGenerator.h" />
+    <ClInclude Include="library\include\ProceduralPlatform.h" />
+    <ClInclude Include="library\include\ProceduralPrismGenerator.h" />
+    <ClInclude Include="library\include\ProceduralRoundedBoxGenerator.h" />
+    <ClInclude Include="library\include\ProceduralShape.h" />
+    <ClInclude Include="library\include\ProceduralShapeGenerators.h" />
+    <ClInclude Include="library\include\ProceduralShapeGeneratorsBase.h" />
+    <ClInclude Include="library\include\ProceduralSphereGenerator.h" />
+    <ClInclude Include="library\include\ProceduralSplines.h" />
+    <ClInclude Include="library\include\ProceduralSpringGenerator.h" />
+    <ClInclude Include="library\include\ProceduralStableHeaders.h" />
+    <ClInclude Include="library\include\ProceduralSVG.h" />
+    <ClInclude Include="library\include\ProceduralTextureBuffer.h" />
+    <ClInclude Include="library\include\ProceduralTextureGenerator.h" />
+    <ClInclude Include="library\include\ProceduralTextureModifiers.h" />
+    <ClInclude Include="library\include\ProceduralTorusGenerator.h" />
+    <ClInclude Include="library\include\ProceduralTorusKnotGenerator.h" />
+    <ClInclude Include="library\include\ProceduralTrack.h" />
+    <ClInclude Include="library\include\ProceduralTriangleBuffer.h" />
+    <ClInclude Include="library\include\ProceduralTriangulator.h" />
+    <ClInclude Include="library\include\ProceduralTubeGenerator.h" />
+    <ClInclude Include="library\include\ProceduralUtils.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

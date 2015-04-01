@@ -25,7 +25,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 -----------------------------------------------------------------------------
 */
-#include "StdAfx.h"
 #include "ProceduralStableHeaders.h"
 #include "ProceduralSVG.h"
 #include "ProceduralShape.h"
@@ -33,9 +32,6 @@ THE SOFTWARE.
 #include "ProceduralPath.h"
 #include "ProceduralPathGenerators.h"
 #include "rapidxml/rapidxml.hpp"
-
-#pragma warning( disable: 4267 )
-#pragma warning( disable: 4996 )
 
 using namespace Ogre;
 

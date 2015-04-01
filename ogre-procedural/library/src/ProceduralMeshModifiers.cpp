@@ -26,14 +26,10 @@
  -----------------------------------------------------------------------------
  */
 
-#include "StdAfx.h"
 #include "ProceduralStableHeaders.h"
 #include "OgreException.h"
 #include "ProceduralMeshModifiers.h"
 #include "ProceduralGeometryHelpers.h"
-
-#pragma warning( disable: 4267 )
-#pragma warning( disable: 4244 )
 
 using namespace Ogre;
 

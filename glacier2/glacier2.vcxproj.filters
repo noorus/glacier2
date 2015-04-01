@@ -94,9 +94,6 @@
     <Filter Include="Header Files\Procedural">
       <UniqueIdentifier>{7dd303b9-7b87-4e32-9c1a-66c8d4e20f87}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Procedural">
-      <UniqueIdentifier>{ac0cc9e0-9a75-4e03-b684-cbf36f790cfd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Input">
       <UniqueIdentifier>{7f15172e-a2fa-4119-ab86-8f4bd8f33ac5}</UniqueIdentifier>
     </Filter>
@@ -254,105 +251,6 @@
     </ClCompile>
     <ClCompile Include="src\EntityRegistry.cpp">
       <Filter>Source Files\Entities</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogre-procedural\library\src\ProceduralBoolean.cpp">
-      <Filter>Source Files\Procedural</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogre-procedural\library\src\ProceduralBoxGenerator.cpp">
-      <Filter>Source Files\Procedural</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogre-procedural\library\src\ProceduralCapsuleGenerator.cpp">
-      <Filter>Source Files\Procedural</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogre-procedural\library\src\ProceduralConeGenerator.cpp">
-      <Filter>Source Files\Procedural</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogre-procedural\library\src\ProceduralCylinderGenerator.cpp">
-      <Filter>Source Files\Procedural</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogre-procedural\library\src\ProceduralDebugRendering.cpp">
-      <Filter>Source Files\Procedural</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogre-procedural\library\src\ProceduralExtruder.cpp">
-      <Filter>Source Files\Procedural</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogre-procedural\library\src\ProceduralGeometryHelpers.cpp">
-      <Filter>Source Files\Procedural</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogre-procedural\library\src\ProceduralIcoSphereGenerator.cpp">
-      <Filter>Source Files\Procedural</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogre-procedural\library\src\ProceduralLathe.cpp">
-      <Filter>Source Files\Procedural</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogre-procedural\library\src\ProceduralMeshModifiers.cpp">
-      <Filter>Source Files\Procedural</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogre-procedural\library\src\ProceduralMultiShape.cpp">
-      <Filter>Source Files\Procedural</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogre-procedural\library\src\ProceduralMultiShapeGenerators.cpp">
-      <Filter>Source Files\Procedural</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogre-procedural\library\src\ProceduralNoise.cpp">
-      <Filter>Source Files\Procedural</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogre-procedural\library\src\ProceduralPath.cpp">
-      <Filter>Source Files\Procedural</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogre-procedural\library\src\ProceduralPathGenerators.cpp">
-      <Filter>Source Files\Procedural</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogre-procedural\library\src\ProceduralPlaneGenerator.cpp">
-      <Filter>Source Files\Procedural</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogre-procedural\library\src\ProceduralRoundedBoxGenerator.cpp">
-      <Filter>Source Files\Procedural</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogre-procedural\library\src\ProceduralShape.cpp">
-      <Filter>Source Files\Procedural</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogre-procedural\library\src\ProceduralShapeGenerators.cpp">
-      <Filter>Source Files\Procedural</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogre-procedural\library\src\ProceduralSphereGenerator.cpp">
-      <Filter>Source Files\Procedural</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogre-procedural\library\src\ProceduralSpringGenerator.cpp">
-      <Filter>Source Files\Procedural</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogre-procedural\library\src\ProceduralSVG.cpp">
-      <Filter>Source Files\Procedural</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogre-procedural\library\src\ProceduralTextureBuffer.cpp">
-      <Filter>Source Files\Procedural</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogre-procedural\library\src\ProceduralTextureGenerator.cpp">
-      <Filter>Source Files\Procedural</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogre-procedural\library\src\ProceduralTextureModifiers.cpp">
-      <Filter>Source Files\Procedural</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogre-procedural\library\src\ProceduralTorusGenerator.cpp">
-      <Filter>Source Files\Procedural</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogre-procedural\library\src\ProceduralTorusKnotGenerator.cpp">
-      <Filter>Source Files\Procedural</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogre-procedural\library\src\ProceduralTrack.cpp">
-      <Filter>Source Files\Procedural</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogre-procedural\library\src\ProceduralTriangleBuffer.cpp">
-      <Filter>Source Files\Procedural</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogre-procedural\library\src\ProceduralTriangulator.cpp">
-      <Filter>Source Files\Procedural</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogre-procedural\library\src\ProceduralTubeGenerator.cpp">
-      <Filter>Source Files\Procedural</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ogre-procedural\library\src\ProceduralUtils.cpp">
-      <Filter>Source Files\Procedural</Filter>
     </ClCompile>
     <ClCompile Include="src\DeveloperEntities.cpp">
       <Filter>Source Files\Entities</Filter>

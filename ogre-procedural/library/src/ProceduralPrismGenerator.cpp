@@ -26,49 +26,48 @@ THE SOFTWARE.
 -----------------------------------------------------------------------------
 */
 #include "ProceduralStableHeaders.h"
-#include "ProceduralCylinderGenerator.h"
+#include "ProceduralPrismGenerator.h"
+#include "ProceduralPlaneGenerator.h"
 #include "ProceduralUtils.h"
 
 using namespace Ogre;
 
 namespace Procedural
 {
-
-void CylinderGenerator::addToTriangleBuffer(TriangleBuffer& buffer) const
+void PrismGenerator::addToTriangleBuffer(TriangleBuffer& buffer) const
 {
 	buffer.rebaseOffset();
 	if (mCapped)
 	{
-		buffer.estimateVertexCount((mNumSegHeight+1)*(mNumSegBase+1)+2*(mNumSegBase+1)+2);
-		buffer.estimateIndexCount(mNumSegHeight*(mNumSegBase+1)*6+6*mNumSegBase);
+		buffer.estimateVertexCount((mNumSegHeight + 1) * (mNumSides + 1) + 2 * (mNumSides + 1) + 2);
+		buffer.estimateIndexCount(mNumSegHeight * (mNumSides + 1) * 6 + 6 * mNumSides);
 	}
 	else
 	{
-		buffer.estimateVertexCount((mNumSegHeight+1)*(mNumSegBase+1));
-		buffer.estimateIndexCount(mNumSegHeight*(mNumSegBase+1)*6);
+		buffer.estimateVertexCount((mNumSegHeight + 1) * (mNumSides + 1));
+		buffer.estimateIndexCount(mNumSegHeight * (mNumSides + 1) * 6);
 	}
 
-
-	Real deltaAngle = (Math::TWO_PI / mNumSegBase);
-	Real deltaHeight = mHeight/(Real)mNumSegHeight;
+	Real deltaAngle = (Math::TWO_PI / mNumSides);
+	Real deltaHeight = mHeight / (Real)mNumSegHeight;
 	int offset = 0;
 
-	for (unsigned int i = 0; i <=mNumSegHeight; i++)
-		for (unsigned int j = 0; j<=mNumSegBase; j++)
+	for (unsigned int i = 0; i <= mNumSegHeight; i++)
+		for (unsigned int j = 0; j <= mNumSides; j++)
 		{
-			Real x0 = mRadius * cosf(j*deltaAngle);
-			Real z0 = mRadius * sinf(j*deltaAngle);
+			Real x0 = mRadius * Math::Cos((Real)j * deltaAngle);
+			Real z0 = mRadius * Math::Sin((Real)j * deltaAngle);
 
-			addPoint(buffer, Vector3(x0, i*deltaHeight, z0),
-			         Vector3(x0,0,z0).normalisedCopy(),
-			         Vector2(j/(Real)mNumSegBase, i/(Real)mNumSegHeight));
+			addPoint(buffer, Vector3(x0, (Real)i * deltaHeight, z0),
+			         Vector3(x0, 0.0f, z0).normalisedCopy(),
+			         Vector2((Real)j / (Real)mNumSides, (Real)i / (Real)mNumSegHeight));
 
 			if (i != mNumSegHeight)
 			{
-				buffer.index(offset + mNumSegBase + 1);
+				buffer.index(offset + mNumSides + 1);
 				buffer.index(offset);
-				buffer.index(offset + mNumSegBase);
-				buffer.index(offset + mNumSegBase + 1);
+				buffer.index(offset + mNumSides);
+				buffer.index(offset + mNumSides + 1);
 				buffer.index(offset + 1);
 				buffer.index(offset);
 			}
@@ -82,40 +81,40 @@ void CylinderGenerator::addToTriangleBuffer(TriangleBuffer& buffer) const
 		         Vector3::NEGATIVE_UNIT_Y,
 		         Vector2::ZERO);
 		offset++;
-		for (unsigned int j=0; j<=mNumSegBase; j++)
+		for (unsigned int j = 0; j <= mNumSides; j++)
 		{
-			Real x0 =  cosf(j*deltaAngle);
-			Real z0 =  sinf(j*deltaAngle);
+			Real x0 = Math::Cos((Real)j * deltaAngle);
+			Real z0 = Math::Sin((Real)j * deltaAngle);
 
-			addPoint(buffer, Vector3(mRadius*x0, 0.0f, mRadius*z0),
+			addPoint(buffer, Vector3(mRadius * x0, 0.0f, mRadius * z0),
 			         Vector3::NEGATIVE_UNIT_Y,
 			         Vector2(x0, z0));
-			if (j!=mNumSegBase)
+			if (j != mNumSides)
 			{
 				buffer.index(centerIndex);
 				buffer.index(offset);
-				buffer.index(offset+1);
+				buffer.index(offset + 1);
 			}
 			offset++;
 		}
 		// high cap
 		centerIndex = offset;
-		addPoint(buffer, Vector3(0,mHeight,0),
+		addPoint(buffer, Vector3(0.0f, mHeight, 0.0f),
 		         Vector3::UNIT_Y,
 		         Vector2::ZERO);
 		offset++;
-		for (unsigned int j=0; j<=mNumSegBase; j++)
+		for (unsigned int j = 0; j <= mNumSides; j++)
 		{
-			Real x0 = cosf(j*deltaAngle);
-			Real z0 = sinf(j*deltaAngle);
+			Real x0 = Math::Cos((Real)j * deltaAngle);
+			Real z0 = Math::Sin((Real)j * deltaAngle);
 
 			addPoint(buffer, Vector3(x0 * mRadius, mHeight, mRadius * z0),
 			         Vector3::UNIT_Y,
 			         Vector2(x0, z0));
-			if (j!=mNumSegBase)
+			if (j != mNumSides)
 			{
 				buffer.index(centerIndex);
-				buffer.index(offset+1);
+				buffer.index(offset + 1);
 				buffer.index(offset);
 			}
 			offset++;

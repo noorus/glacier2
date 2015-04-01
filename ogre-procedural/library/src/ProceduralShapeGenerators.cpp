@@ -25,12 +25,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 -----------------------------------------------------------------------------
 */
-#include "StdAfx.h"
 #include "ProceduralStableHeaders.h"
 #include "ProceduralShapeGenerators.h"
 #include "ProceduralGeometryHelpers.h"
-
-#pragma warning( disable: 4267 )
 
 using namespace Ogre;
 
