@@ -26,6 +26,7 @@ Thumbs.db
 *.sbr
 obj/
 [Rr]elease*/
+[Ss]hip*/
 _ReSharper*/
 [Tt]est[Rr]esult*
 *.ipch
