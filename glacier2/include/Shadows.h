@@ -10,6 +10,8 @@ namespace Glacier {
   class CSMGpuConstants;
   class StableCSMShadowCameraSetup;
 
+  ENGINE_EXTERN_CONVAR( csm_enabled );
+
   class Shadows {
   protected:
     CSMGpuConstants* mConstants;
