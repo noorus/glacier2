@@ -1,5 +1,6 @@
 #pragma once
 #include <windows.h>
+#include "Exception.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
@@ -21,31 +22,60 @@ namespace Glacier {
     }
   };
 
-  //! \class RWLock
-  //! Reader-writer lock class for easy portability.
-  class RWLock: boost::noncopyable {
-  protected:
-    SRWLOCK mLock;
-  public:
-    RWLock() { InitializeSRWLock( &mLock ); }
-    void lock() { AcquireSRWLockExclusive( &mLock ); }
-    void unlock() { ReleaseSRWLockExclusive( &mLock ); }
-    void lockShared() { AcquireSRWLockShared( &mLock ); }
-    void unlockShared() { ReleaseSRWLockShared( &mLock ); }
-  };
+  namespace Platform {
+
+    //! \class RWLock
+    //! Reader-writer lock class for easy portability.
+    class RWLock: boost::noncopyable {
+    protected:
+      SRWLOCK mLock;
+    public:
+      RWLock() { InitializeSRWLock( &mLock ); }
+      void lock() { AcquireSRWLockExclusive( &mLock ); }
+      void unlock() { ReleaseSRWLockExclusive( &mLock ); }
+      void lockShared() { AcquireSRWLockShared( &mLock ); }
+      void unlockShared() { ReleaseSRWLockShared( &mLock ); }
+    };
+
+    //! \class Event
+    //! Waitable, thread-safe event signaling class.
+    class Event: boost::noncopyable {
+    protected:
+      HANDLE mEvent;
+    public:
+      Event()
+      {
+        mEvent = CreateEventW( NULL, TRUE, FALSE, NULL );
+      }
+      void set() { SetEvent( mEvent ); }
+      void reset() { ResetEvent( mEvent ); }
+      bool waitFor( size_t milliseconds = 0 )
+      {
+        DWORD wait = ( milliseconds == 0 ? INFINITE : (DWORD)milliseconds );
+        auto result = WaitForSingleObject( mEvent, wait );
+        if ( result == WAIT_OBJECT_0 )
+          return true;
+        else if ( result == WAIT_TIMEOUT )
+          return false;
+        else
+          ENGINE_EXCEPT_WINAPI( "Wait for event failed" );
+      }
+    };
+
+  }
 
   //! \class ScopedRWLock
   //! Automation for scoped acquisition and release of an RWLock.
   class ScopedRWLock: boost::noncopyable {
   protected:
-    RWLock* mLock;    //!< The lock
+    Platform::RWLock* mLock;    //!< The lock
     bool mExclusive;  //!< Whether we're acquired in exclusive mode
     bool mLocked;     //!< Whether we're still locked
   public:
     //! Constructor.
     //! \param  lock      The lock to acquire.
     //! \param  exclusive (Optional) true to acquire in exclusive mode, false for shared.
-    ScopedRWLock( RWLock* lock, bool exclusive = true ):
+    ScopedRWLock( Platform::RWLock* lock, bool exclusive = true ):
     mLock( lock ), mExclusive( exclusive ), mLocked( true )
     {
       mExclusive ? mLock->lock() : mLock->lockShared();

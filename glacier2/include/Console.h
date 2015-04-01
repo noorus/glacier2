@@ -159,8 +159,8 @@ namespace Glacier {
       srcGUI          //!< Message from the gui subsystem
     };
   protected:
-    RWLock mLock; //!< Execution lock
-    RWLock mBufferLock; //!< Command buffer lock
+    Platform::RWLock mLock; //!< Execution lock
+    Platform::RWLock mBufferLock; //!< Command buffer lock
     ConBaseList mCommands; //!< Registered commands & variables
     static ConBaseList mPrecreated; //!< Pre-created commands & variables
     StringList mLines; //!< Line buffer
