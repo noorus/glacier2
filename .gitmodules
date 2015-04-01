@@ -1,9 +1,6 @@
 [submodule "nil"]
 	path = nil
 	url = https://github.com/noorus/nil.git
-[submodule "hdrlib"]
-	path = hdrlib
-	url = https://github.com/sldt/hdrlib.git
 [submodule "recastnavigation"]
 	path = recastnavigation
 	url = https://github.com/memononen/recastnavigation.git
