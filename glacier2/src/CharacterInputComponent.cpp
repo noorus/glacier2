@@ -1,19 +1,13 @@
 #include "StdAfx.h"
-#include "PhysXPhysics.h"
 #include "Engine.h"
 #include "Exception.h"
 #include "ServiceLocator.h"
-#include "PhysicsScene.h"
-#include "PhysicsDebugVisualizer.h"
 #include "Graphics.h"
 #include "GlacierMath.h"
-#include "CharacterPhysicsComponent.h"
+#include "Character.h"
 #include "World.h"
 #include "Entity.h"
 #include "Actions.h"
-#include "DemoState.h"
-#include "Director.h"
-#include "Camera.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.

@@ -444,7 +444,7 @@
     <ClInclude Include="include\AudioService.h" />
     <ClInclude Include="include\Camera.h" />
     <ClInclude Include="include\CascadedShadowMapping.h" />
-    <ClInclude Include="include\CharacterPhysicsComponent.h" />
+    <ClInclude Include="include\Character.h" />
     <ClInclude Include="include\Console.h" />
     <ClInclude Include="include\ConsoleWindow.h" />
     <ClInclude Include="include\Controllers.h" />

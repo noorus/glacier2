@@ -28,9 +28,6 @@
     <Filter Include="Header Files\Console">
       <UniqueIdentifier>{b430c7e6-94a2-49a5-b869-04bfe67c61f4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\nedmalloc">
-      <UniqueIdentifier>{ea18ffd0-63de-4f91-a0f9-95599af5072d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Scripting">
       <UniqueIdentifier>{53e58cd0-4330-4fd0-a57c-d5522f9ce170}</UniqueIdentifier>
     </Filter>
@@ -75,9 +72,6 @@
     </Filter>
     <Filter Include="Header Files\GUI">
       <UniqueIdentifier>{82bc2e82-8bae-410d-9bfc-5d2398839580}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\GUI">
-      <UniqueIdentifier>{b0cd0d81-ed16-4edf-b179-80df49907f0d}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\World">
       <UniqueIdentifier>{451a9487-1f4a-4949-9d31-24d739581d43}</UniqueIdentifier>
@@ -124,6 +118,18 @@
     <Filter Include="Source Files\Services\Navigation">
       <UniqueIdentifier>{46c64b32-4ea9-403b-8cf4-220d96734962}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Entities\Character">
+      <UniqueIdentifier>{40eafd37-669e-4fa3-9aac-2427a0159ee3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Graphics\GUI">
+      <UniqueIdentifier>{b0cd0d81-ed16-4edf-b179-80df49907f0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Junk\nedmalloc">
+      <UniqueIdentifier>{ea18ffd0-63de-4f91-a0f9-95599af5072d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Entities\Character">
+      <UniqueIdentifier>{bd6a8db5-0113-4e15-a104-dc1f0281f8e3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Main.cpp">
@@ -151,7 +157,7 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\nedmalloc\nedmalloc.cpp">
-      <Filter>Source Files\nedmalloc</Filter>
+      <Filter>Source Files\Junk\nedmalloc</Filter>
     </ClCompile>
     <ClCompile Include="src\Script.cpp">
       <Filter>Source Files\Scripting</Filter>
@@ -217,10 +223,10 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\GUI.cpp">
-      <Filter>Source Files\GUI</Filter>
+      <Filter>Source Files\Graphics\GUI</Filter>
     </ClCompile>
     <ClCompile Include="src\SettingsWindow.cpp">
-      <Filter>Source Files\GUI</Filter>
+      <Filter>Source Files\Graphics\GUI</Filter>
     </ClCompile>
     <ClCompile Include="src\AudioService.cpp">
       <Filter>Source Files\Services\Audio</Filter>
@@ -248,18 +254,6 @@
     </ClCompile>
     <ClCompile Include="src\World.cpp">
       <Filter>Source Files\World</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CharacterPhysicsComponent.cpp">
-      <Filter>Source Files\Services\Physics</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CharacterMovementComponent.cpp">
-      <Filter>Source Files\Services\Physics</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Character.cpp">
-      <Filter>Source Files\Services\Physics</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CharacterInputComponent.cpp">
-      <Filter>Source Files\Services\Physics</Filter>
     </ClCompile>
     <ClCompile Include="src\Gamepad.cpp">
       <Filter>Source Files\Input</Filter>
@@ -413,6 +407,18 @@
     </ClCompile>
     <ClCompile Include="src\LocalController.cpp">
       <Filter>Source Files\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CharacterPhysicsComponent.cpp">
+      <Filter>Source Files\Entities\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Character.cpp">
+      <Filter>Source Files\Entities\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CharacterInputComponent.cpp">
+      <Filter>Source Files\Entities\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CharacterMovementComponent.cpp">
+      <Filter>Source Files\Entities\Character</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -671,9 +677,6 @@
     <ClInclude Include="include\World.h">
       <Filter>Header Files\World</Filter>
     </ClInclude>
-    <ClInclude Include="include\CharacterPhysicsComponent.h">
-      <Filter>Header Files\Services\Physics</Filter>
-    </ClInclude>
     <ClInclude Include="include\InputManager.h">
       <Filter>Header Files\Input</Filter>
     </ClInclude>
@@ -721,6 +724,9 @@
     </ClInclude>
     <ClInclude Include="include\Controllers.h">
       <Filter>Header Files\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Character.h">
+      <Filter>Header Files\Entities\Character</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

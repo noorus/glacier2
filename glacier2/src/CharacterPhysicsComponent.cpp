@@ -4,10 +4,9 @@
 #include "Exception.h"
 #include "ServiceLocator.h"
 #include "PhysicsScene.h"
-#include "PhysicsDebugVisualizer.h"
 #include "Graphics.h"
 #include "GlacierMath.h"
-#include "CharacterPhysicsComponent.h"
+#include "Character.h"
 #include "World.h"
 
 // Glacier² Game Engine © 2014 noorus

@@ -7,7 +7,7 @@
 #include "PhysicsDebugVisualizer.h"
 #include "Graphics.h"
 #include "GlacierMath.h"
-#include "CharacterPhysicsComponent.h"
+#include "Character.h"
 #include "World.h"
 #include "Entity.h"
 #include "Actions.h"

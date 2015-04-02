@@ -6,7 +6,7 @@
 #include "ServiceLocator.h"
 #include "Controllers.h"
 #include "InputManager.h"
-#include "CharacterPhysicsComponent.h"
+#include "Character.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
