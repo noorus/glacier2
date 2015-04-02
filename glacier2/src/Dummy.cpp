@@ -25,10 +25,6 @@ namespace Glacier {
 
   class DummyJumpState: public AI::State {
   public:
-    void enter( AI::FiniteStateMachine* machine, AI::Agent* agent )
-    {
-      AI::State::enter( machine, agent );
-    }
     void execute( AI::FiniteStateMachine* machine, AI::Agent* agent, const GameTime delta )
     {
       AI::State::execute( machine, agent, delta );
@@ -42,10 +38,6 @@ namespace Glacier {
 
   class DummyIdleState: public AI::State {
   public:
-    void enter( AI::FiniteStateMachine* machine, AI::Agent* agent )
-    {
-      AI::State::enter( machine, agent );
-    }
     void execute( AI::FiniteStateMachine* machine, AI::Agent* agent, const GameTime delta )
     {
       AI::State::execute( machine, agent, delta );
