@@ -6,7 +6,6 @@
 #include "Camera.h"
 #include "Graphics.h"
 #include "Engine.h"
-#include "ActionManager.h"
 #include "ModelViewer.h"
 #include "ServiceLocator.h"
 #include "Exception.h"
@@ -132,9 +131,7 @@ namespace Glacier {
 
   void DemoState::update( GameTime tick, GameTime time )
   {
-    mDirector->getCamera()->applyMovement(
-      gEngine->getActionManager()->getCameraController()->getMovement() );
-    mDirector->getCamera()->update( tick );
+    mDirector->update( tick );
   }
 
   void DemoState::draw( GameTime delta, GameTime time )

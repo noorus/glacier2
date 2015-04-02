@@ -2,7 +2,7 @@
 #include "Types.h"
 #include "Entity.h"
 #include "EntityRegistry.h"
-#include "ActionManager.h"
+#include "Actions.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
@@ -32,12 +32,14 @@ namespace Glacier {
     inline const bool inAir() const throw( ) { return mInAir; }
   };
 
+  enum CharacterMoveMode {
+    Mode_Impulse,
+    Mode_Directional
+  };
+
   struct CharacterMoveData {
   public:
-    enum MoveMode {
-      Mode_Impulse,
-      Mode_Directional
-    } moveMode;
+    CharacterMoveMode moveMode;
     enum Affector {
       Affector_Forward = 0,
       Affector_Backward,
@@ -114,7 +116,10 @@ namespace Glacier {
     virtual ~Character();
   public:
     virtual const Ogre::MovableObject* getMovable() const throw();
-    virtual void setActions( const ActionPacket& actions );
+    virtual void setActions( const ActionPacket& actions,
+      const CharacterMoveMode mode,
+      const Vector3& direction,
+      const Vector2& directional );
     virtual void spawn( const Vector3& position, const Quaternion& orientation );
     virtual void think( const GameTime delta );
     virtual void onHitGround();

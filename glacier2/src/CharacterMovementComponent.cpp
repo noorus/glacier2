@@ -82,7 +82,7 @@ namespace Glacier {
     // Calculate directional impulse
     Vector3 directional( Vector3::ZERO );
 
-    if ( move.moveMode == CharacterMoveData::Mode_Impulse )
+    if ( move.moveMode == CharacterMoveMode::Mode_Impulse )
     {
       // Impulse movements
       if ( move.affectors[CharacterMoveData::Affector_Forward] )
@@ -94,7 +94,7 @@ namespace Glacier {
       if ( move.affectors[CharacterMoveData::Affector_Left] )
         directional -= ( right * move.left );
     }
-    else if ( move.moveMode == CharacterMoveData::Mode_Directional )
+    else if ( move.moveMode == CharacterMoveMode::Mode_Directional )
     {
       // Directional movements
       if ( !move.directional.isZeroLength() && move.affectors[CharacterMoveData::Affector_Forward] )

@@ -3,7 +3,7 @@
 #include "Engine.h"
 #include "Exception.h"
 #include "Gamepad.h"
-#include "Controller.h"
+#include "Controllers.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
@@ -52,7 +52,7 @@ namespace Glacier {
         mDirectional /= length;
 
       if ( mType == Thumbstick_Camera )
-        mDevice->getController()->cameraMovement( mDevice, mDirectional * mMultiplier );
+        mDevice->getController()->cameraPersistentMovement( mDevice, mDirectional * mMultiplier );
       else if ( mType == Thumbstick_Movement )
         mDevice->getController()->directionalMovement( mDevice, mDirectional );
     }

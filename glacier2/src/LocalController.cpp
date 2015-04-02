@@ -1,59 +1,15 @@
 #include "StdAfx.h"
 #include "Exception.h"
 #include "Engine.h"
-#include "ActionManager.h"
+#include "Actions.h"
 #include "Console.h"
 #include "ServiceLocator.h"
-#include "Controller.h"
+#include "Controllers.h"
 #include "InputManager.h"
 #include "CharacterPhysicsComponent.h"
+#include "Camera.h"
 
 namespace Glacier {
-
-  Controller::Controller(): mCamera( nullptr ), mCharacter( nullptr )
-  {
-    resetActions();
-  }
-
-  void Controller::setCamera( GameCamera* camera )
-  {
-    mCamera = camera;
-  }
-
-  void Controller::setCharacter( Character* character )
-  {
-    gEngine->getConsole()->printf( Console::srcInput, L"Controller: setting character 0x%X", character );
-    mCharacter = character;
-  }
-
-  void Controller::resetActions()
-  {
-    mActions.move = Player_Move_None;
-    mActions.sidestep = Player_Sidestep_None;
-    mActions.jump = Player_Jump_None;
-    mActions.run = Player_Run_None;
-    mActions.crouch = Player_Crouch_None;
-  }
-
-  void Controller::prepare()
-  {
-    // mCameraController->prepare();
-
-    mActions.jump = Player_Jump_None;
-    mActions.run = Player_Run_None;
-    mActions.crouch = Player_Crouch_None;
-
-    /*if ( !mDirectional.isZeroLength() && mActions.move == Player_Move_None )
-      mActions.move = Player_Move_Forward;
-    else if ( mDirectional.isZeroLength() && mActions.move == Player_Move_Forward )
-      mActions.move = Player_Move_None;*/
-  }
-
-  void Controller::apply()
-  {
-    if ( mCharacter )
-      mCharacter->setActions( mActions );
-  }
 
   LocalController::LocalController(): mMode( Mode_KeyboardAndMouse )
   {
@@ -74,6 +30,8 @@ namespace Glacier {
     {
       mMode = checkMode;
       resetActions();
+      mRotating = false;
+      mZooming = false;
       gEngine->getConsole()->printf( Console::srcInput,
         L"Switched input mode: %s",
         mMode == Mode_KeyboardAndMouse ? L"Keyboard & Mouse" : L"Gamepad" );
@@ -83,7 +41,7 @@ namespace Glacier {
   bool LocalController::shouldIgnoreInput( InputDevice* from )
   {
     if ( ( from->getType() == InputDevice::Type_Keyboard
-        || from->getType() == InputDevice::Type_Mouse )
+      || from->getType() == InputDevice::Type_Mouse )
       && mMode == Mode_KeyboardAndMouse )
       return false;
     else if ( from->getType() == InputDevice::Type_Gamepad && mMode == Mode_Gamepad )
@@ -92,7 +50,8 @@ namespace Glacier {
       return true;
   }
 
-  void LocalController::beginAction( InputDevice* device, const BindAction& action )
+  void LocalController::beginAction( InputDevice* device,
+  const BindAction& action )
   {
     updateInputMode( device );
 
@@ -126,10 +85,17 @@ namespace Glacier {
       case Action_Crouch:
         mActions.crouch = Player_Crouch_Keydown;
         break;
+      case Action_Rotate:
+        mRotating = true;
+        break;
+      case Action_Zoom:
+        mZooming = true;
+        break;
     }
   }
 
-  void LocalController::endAction( InputDevice* device, const BindAction& action )
+  void LocalController::endAction( InputDevice* device,
+  const BindAction& action )
   {
     updateInputMode( device );
 
@@ -163,6 +129,12 @@ namespace Glacier {
       case Action_Crouch:
         mActions.crouch = Player_Crouch_Keyup;
         break;
+      case Action_Rotate:
+        mRotating = false;
+        break;
+      case Action_Zoom:
+        mZooming = false;
+        break;
     }
   }
 
@@ -178,27 +150,76 @@ namespace Glacier {
     if ( shouldIgnoreInput( device ) )
       return;
 
-    // gEngine->getConsole()->printf( Console::srcInput, L"LocalController::applyZoom()" );
+    mImpulseMovement.z += zoom;
+    updateMovement();
   }
 
-  void LocalController::directionalMovement( InputDevice* device, const Vector2& directional )
+  void LocalController::directionalMovement( InputDevice* device,
+  const Vector2& directional )
   {
     updateInputMode( device );
 
     if ( shouldIgnoreInput( device ) )
       return;
 
-    // gEngine->getConsole()->printf( Console::srcInput, L"LocalController::directionalMovement()" );
+    /*mDirectional = directional;
+
+    if ( !mDirectional.isZeroLength() && mActions.move == Player_Move_None )
+      mActions.move = Player_Move_Forward;
+    else if ( mDirectional.isZeroLength() && mActions.move == Player_Move_Forward )
+      mActions.move = Player_Move_None;*/
   }
 
-  void LocalController::cameraMovement( InputDevice* device, const Vector2& movement )
+  void LocalController::cameraMouseMovement( InputDevice* device,
+  const Vector3& movement )
   {
     updateInputMode( device );
 
     if ( shouldIgnoreInput( device ) )
       return;
 
-    // gEngine->getConsole()->printf( Console::srcInput, L"LocalController::cameraMovement()" );
+    if ( mRotating )
+    {
+      mImpulseMovement.x += movement.x;
+      mImpulseMovement.y += movement.y;
+      updateMovement();
+    }
+    else if ( mZooming )
+    {
+      mImpulseMovement.z += movement.z;
+      updateMovement();
+    }
+  }
+
+  void LocalController::cameraPersistentMovement( InputDevice* device,
+  const Vector2& movement )
+  {
+    updateInputMode( device );
+
+    if ( shouldIgnoreInput( device ) )
+      return;
+
+    mPersistentMovement.x = -movement.x;
+    mPersistentMovement.y = movement.y;
+    updateMovement();
+  }
+
+  void LocalController::prepare()
+  {
+    GameController::prepare();
+    CameraController::prepare();
+  }
+
+  void LocalController::apply()
+  {
+    CameraController::apply();
+
+    CharacterMoveMode moveMode = (
+      mMode == Mode_KeyboardAndMouse
+      ? CharacterMoveMode::Mode_Impulse
+      : CharacterMoveMode::Mode_Directional );
+
+    GameController::apply( moveMode, -mCamera->getDirection() );
   }
 
 }

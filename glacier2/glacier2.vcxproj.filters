@@ -267,9 +267,6 @@
     <ClCompile Include="src\InputManager.cpp">
       <Filter>Source Files\Input</Filter>
     </ClCompile>
-    <ClCompile Include="src\ActionManager.cpp">
-      <Filter>Source Files\Input</Filter>
-    </ClCompile>
     <ClCompile Include="src\Keyboard.cpp">
       <Filter>Source Files\Input</Filter>
     </ClCompile>
@@ -408,7 +405,13 @@
     <ClCompile Include="..\hdrlib\HDRCompositor.cpp">
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="src\Controller.cpp">
+    <ClCompile Include="src\GameController.cpp">
+      <Filter>Source Files\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CameraController.cpp">
+      <Filter>Source Files\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LocalController.cpp">
       <Filter>Source Files\Input</Filter>
     </ClCompile>
   </ItemGroup>
@@ -674,9 +677,6 @@
     <ClInclude Include="include\InputManager.h">
       <Filter>Header Files\Input</Filter>
     </ClInclude>
-    <ClInclude Include="include\ActionManager.h">
-      <Filter>Header Files\Input</Filter>
-    </ClInclude>
     <ClInclude Include="include\Gamepad.h">
       <Filter>Header Files\Input</Filter>
     </ClInclude>
@@ -716,7 +716,10 @@
     <ClInclude Include="..\hdrlib\HDRCompositor.h">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="include\Controller.h">
+    <ClInclude Include="include\Actions.h">
+      <Filter>Header Files\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Controllers.h">
       <Filter>Header Files\Input</Filter>
     </ClInclude>
   </ItemGroup>

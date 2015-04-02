@@ -10,7 +10,7 @@
 #include "CharacterPhysicsComponent.h"
 #include "World.h"
 #include "Entity.h"
-#include "ActionManager.h"
+#include "Actions.h"
 #include "InputManager.h"
 
 // Glacier² Game Engine © 2014 noorus
@@ -49,9 +49,14 @@ namespace Glacier {
     mMovement = new CharacterMovementComponent( this );
   }
 
-  void Character::setActions( const ActionPacket& actions )
+  void Character::setActions( const ActionPacket& actions,
+  const CharacterMoveMode mode, const Vector3& direction,
+  const Vector2& directional )
   {
     mActions = actions;
+    mMove.moveMode = mode;
+    mMove.direction = direction;
+    mMove.directional = directional;
   }
 
   void Character::think( const GameTime delta )

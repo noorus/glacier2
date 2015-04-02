@@ -10,7 +10,7 @@
 #include "CharacterPhysicsComponent.h"
 #include "World.h"
 #include "Entity.h"
-#include "ActionManager.h"
+#include "Actions.h"
 #include "DemoState.h"
 #include "Director.h"
 #include "Camera.h"
@@ -228,11 +228,6 @@ namespace Glacier {
   void CharacterInputComponent::update( const ActionPacket& action, GameTime delta )
   {
     CharacterMoveData& move = mCharacter->mMove;
-
-    // TODO properly
-    /*move.moveMode = CharacterMoveData::Mode_Directional;
-    move.direction = DemoState::instance().getDirector()->getCamera()->getCamera()->getDirection();
-    move.directional = gEngine->getActionManager()->getDirectional();*/
 
     handleCrouching( action, delta );
     handleRunning( action, delta );

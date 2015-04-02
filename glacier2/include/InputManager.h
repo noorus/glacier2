@@ -1,7 +1,7 @@
 #pragma once
 #include "Types.h"
 #include "EngineComponent.h"
-#include "Controller.h"
+#include "Controllers.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.

@@ -2,7 +2,7 @@
 #include "Types.h"
 #include "EngineComponent.h"
 #include "InputManager.h"
-#include "ActionManager.h"
+#include "Actions.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.

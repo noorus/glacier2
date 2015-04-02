@@ -5,7 +5,7 @@
 #include "Mouse.h"
 #include "ServiceLocator.h"
 #include "GUI.h"
-#include "Controller.h"
+#include "Controllers.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
@@ -18,6 +18,9 @@ namespace Glacier {
     InputDevice( local ), mMouse( mouse ), mFocused( true )
     {
       mButtons.resize( mMouse->getState().mButtons.size(), Action_None );
+
+      mButtons[0] = Action_Rotate;
+      mButtons[1] = Action_Zoom;
     }
 
     void Device::prepare()
@@ -63,6 +66,13 @@ namespace Glacier {
 
       if ( Locator::getGUI().injectMouseMove( state ) )
         return;
+
+      Vector3 movement(
+        (Real)state.mMovement.relative.x,
+        (Real)state.mMovement.relative.y,
+        0.0f );
+
+      mController->cameraMouseMovement( this, movement );
     }
 
     void Device::onMouseWheelMoved( Nil::Mouse* mouse, const Nil::MouseState& state )

@@ -322,9 +322,9 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Ship|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="src\ActionManager.cpp" />
     <ClCompile Include="src\AudioService.cpp" />
     <ClCompile Include="src\Camera.cpp" />
+    <ClCompile Include="src\CameraController.cpp" />
     <ClCompile Include="src\CascadedShadowMapping.cpp" />
     <ClCompile Include="src\Character.cpp" />
     <ClCompile Include="src\CharacterInputComponent.cpp" />
@@ -333,7 +333,7 @@
     <ClCompile Include="src\Colors.cpp" />
     <ClCompile Include="src\Console.cpp" />
     <ClCompile Include="src\ConsoleWindow.cpp" />
-    <ClCompile Include="src\Controller.cpp" />
+    <ClCompile Include="src\GameController.cpp" />
     <ClCompile Include="src\DemoState.cpp" />
     <ClCompile Include="src\DeveloperEntities.cpp" />
     <ClCompile Include="src\EntityRegistry.cpp" />
@@ -342,6 +342,7 @@
     <ClCompile Include="src\GUI.cpp" />
     <ClCompile Include="src\JSColors.cpp" />
     <ClCompile Include="src\Keyboard.cpp" />
+    <ClCompile Include="src\LocalController.cpp" />
     <ClCompile Include="src\MenuState.cpp" />
     <ClCompile Include="src\MeshHelpers.cpp" />
     <ClCompile Include="src\ModelViewer.cpp" />
@@ -439,14 +440,14 @@
     <ClInclude Include="..\ogre-procedural\library\include\ProceduralTriangulator.h" />
     <ClInclude Include="..\ogre-procedural\library\include\ProceduralTubeGenerator.h" />
     <ClInclude Include="..\ogre-procedural\library\include\ProceduralUtils.h" />
-    <ClInclude Include="include\ActionManager.h" />
+    <ClInclude Include="include\Actions.h" />
     <ClInclude Include="include\AudioService.h" />
     <ClInclude Include="include\Camera.h" />
     <ClInclude Include="include\CascadedShadowMapping.h" />
     <ClInclude Include="include\CharacterPhysicsComponent.h" />
     <ClInclude Include="include\Console.h" />
     <ClInclude Include="include\ConsoleWindow.h" />
-    <ClInclude Include="include\Controller.h" />
+    <ClInclude Include="include\Controllers.h" />
     <ClInclude Include="include\DemoState.h" />
     <ClInclude Include="include\DeveloperEntities.h" />
     <ClInclude Include="include\Gamepad.h" />

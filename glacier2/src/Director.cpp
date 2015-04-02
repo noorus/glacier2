@@ -6,6 +6,7 @@
 #include "Engine.h"
 #include "GUI.h"
 #include "CascadedShadowMapping.h"
+#include "InputManager.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
@@ -20,6 +21,8 @@ namespace Glacier {
     auto zone = mGraphics->getScene()->getDefaultZone();
 
     mCamera = new GameCamera( mGraphics->getScene(), "defaultcamera", target, zone );
+
+    gEngine->getInput()->getLocalController()->setCamera( mCamera );
 
     mViewport = mGraphics->getWindow()->addViewport(
       mCamera->getCamera(), 0 );
@@ -41,7 +44,7 @@ namespace Glacier {
 
   void Director::update( const GameTime delta )
   {
-    //
+    mCamera->update( delta );
   }
 
   Director::~Director()
@@ -54,6 +57,8 @@ namespace Glacier {
 
     mGraphics->getWindow()->removeViewport(
       mViewport->getZOrder() );
+
+    gEngine->getInput()->getLocalController()->setCamera( nullptr );
 
     SAFE_DELETE( mCamera );
   }
