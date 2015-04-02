@@ -441,6 +441,9 @@
     <ClCompile Include="src\CharacterInputComponent.cpp">
       <Filter>Source Files\Entities\Character</Filter>
     </ClCompile>
+    <ClCompile Include="src\AICharacterInputComponent.cpp">
+      <Filter>Source Files\Entities\Character</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\CompilerDef.h">

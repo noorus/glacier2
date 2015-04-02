@@ -109,6 +109,7 @@ namespace Glacier {
   class Character: public Entity {
   friend class EntityFactories;
   friend class PlayerCharacterInputComponent;
+  friend class AICharacterInputComponent;
   protected:
     enum Flags {
       Flag_On_Ground = 0
@@ -154,6 +155,15 @@ namespace Glacier {
     PlayerCharacterInputComponent( Character* character );
     virtual void update( const ActionPacket& action, GameTime delta );
     virtual ~PlayerCharacterInputComponent();
+  };
+
+  class AICharacterInputComponent: public CharacterInputComponent {
+  protected:
+    //
+  public:
+    AICharacterInputComponent( Character* character );
+    virtual void update( const ActionPacket& action, GameTime delta );
+    virtual ~AICharacterInputComponent();
   };
 
   class CharacterPhysicsComponent {
