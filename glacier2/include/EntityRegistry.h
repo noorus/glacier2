@@ -19,6 +19,7 @@ namespace Glacier {
   //! Declared for an entity in the ENGINE_DECLARE_ENTITY macro.
   struct EntityBaseData {
     const string className;
+    const string codeClassName;
     const uint32_t flags;
   };
 
@@ -83,7 +84,7 @@ namespace Glacier {
   //! \param realName The in-game class name, such as prop_static
   //! \param className The entity class in code, such as PropStatic
 # define ENGINE_DECLARE_ENTITY( realName, className )\
-  EntityBaseData className##::baseData = { #realName, 0 };\
+  EntityBaseData className##::baseData = { #realName, #className, 0 };\
   static EntityRegistrar<##className##> g_EntityRegistrar_##realName(\
   #realName, #className, &EntityFactories::factory<##className##> )
 

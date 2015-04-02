@@ -22,9 +22,7 @@ namespace Glacier {
   protected:
     v8::Isolate* mIsolate;
     v8::Persistent<v8::Context> mContext;
-    v8::Isolate* getIsolate();
     v8::Platform* mPlatform;
-    v8::Persistent<v8::Context>& getContext();
     ScriptList mScripts;
     void initialize();
     void shutdown();
@@ -33,6 +31,8 @@ namespace Glacier {
   public:
     Scripting( Engine* engine );
     virtual ~Scripting();
+    v8::Persistent<v8::Context>& getContext();
+    v8::Isolate* getIsolate();
     Script* getScript( const wstring& filename );
     static void registerResources( ResourceGroupManager& manager );
     static void unregisterResources( ResourceGroupManager& manager );

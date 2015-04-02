@@ -3,6 +3,9 @@
 #include "ServiceLocator.h"
 #include "EntityManager.h"
 #include "Graphics.h"
+#include "JSNatives.h"
+#include "World.h"
+#include "Scripting.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
@@ -11,9 +14,15 @@ namespace Glacier {
 
   Entity::Entity( World* world, const EntityBaseData* baseData ):
   mBaseData( baseData ), mWorld( world ), mPosition( Vector3::ZERO ),
-  mOrientation( Quaternion::IDENTITY ), mNode( nullptr )
+  mOrientation( Quaternion::IDENTITY ), mNode( nullptr ),
+  mScriptable( nullptr )
   {
-    //
+    auto isolate = mWorld->getScripting()->getIsolate();
+    v8::HandleScope handleScope( isolate );
+
+    auto context = v8::Local<v8::Context>::New( isolate, mWorld->getScripting()->getContext() );
+
+    mScriptable = JS::Entity::create( this, context );
   }
 
   void Entity::spawn( const Vector3& position, const Quaternion& orientation )
@@ -33,6 +42,7 @@ namespace Glacier {
 
   Entity::~Entity()
   {
+    SAFE_DELETE( mScriptable );
     if ( mNode )
       Locator::getGraphics().getScene()->destroySceneNode( mNode );
   }

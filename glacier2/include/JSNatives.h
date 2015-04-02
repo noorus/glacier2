@@ -14,6 +14,7 @@ namespace Glacier {
   //! @{
 
   class Console;
+  class Entity;
 
   namespace JS {
 
@@ -50,6 +51,18 @@ namespace Glacier {
       Glacier::Console* getConsole();
       static void initialize( Glacier::Console* console, Handle<v8::Context> context );
       static void shutdown();
+    };
+
+    class Entity: public ObjectWrapper<Entity> {
+    protected:
+      Glacier::Entity* mEntity;
+      explicit Entity( Glacier::Entity* entity );
+      static void jsToString( const FunctionCallbackInfo<v8::Value>& args );
+      static void jsGetName( const FunctionCallbackInfo<v8::Value>& args );
+    public:
+      ~Entity();
+      Glacier::Entity* getEntity();
+      static Entity* create( Glacier::Entity* entity, Handle<v8::Context> context );
     };
 
     //! \class Colors

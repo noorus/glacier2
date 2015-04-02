@@ -7,6 +7,7 @@ namespace Glacier {
 
   class PhysicsScene;
   class EntityManager;
+  class Scripting;
 
   class World {
   protected:
@@ -16,6 +17,7 @@ namespace Glacier {
     World( Engine* engine );
     inline EntityManager* getEntities() const throw( ) { return mEntities; }
     inline PhysicsScene* getPhysics() const throw( ) { return mPhysics; }
+    Scripting* getScripting() const throw( );
     ~World();
   };
 

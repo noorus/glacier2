@@ -6,6 +6,7 @@
 #include "PhysXPhysics.h"
 #include "PhysicsScene.h"
 #include "Engine.h"
+#include "Scripting.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
@@ -20,6 +21,11 @@ namespace Glacier {
 #ifndef GLACIER_NO_PHYSICS_DEBUG
     mPhysics->setDebugVisuals( true );
 #endif
+  }
+
+  Scripting* World::getScripting() const throw()
+  {
+    return gEngine->getScripting();
   }
 
   World::~World()

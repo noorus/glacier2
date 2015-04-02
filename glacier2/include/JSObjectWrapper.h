@@ -30,7 +30,8 @@ namespace Glacier {
       Wrapped_Console = 0,
       Wrapped_Colors,
       Wrapped_Vector3,
-      Wrapped_Quaternion
+      Wrapped_Quaternion,
+      Wrapped_Entity
     };
 
     //! \class ObjectWrapper

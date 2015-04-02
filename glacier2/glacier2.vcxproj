@@ -341,6 +341,7 @@
     <ClCompile Include="src\Gamepad.cpp" />
     <ClCompile Include="src\GUI.cpp" />
     <ClCompile Include="src\JSColors.cpp" />
+    <ClCompile Include="src\JSEntity.cpp" />
     <ClCompile Include="src\Keyboard.cpp" />
     <ClCompile Include="src\LocalController.cpp" />
     <ClCompile Include="src\MenuState.cpp" />
