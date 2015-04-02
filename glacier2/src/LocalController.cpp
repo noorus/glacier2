@@ -9,6 +9,9 @@
 #include "CharacterPhysicsComponent.h"
 #include "Camera.h"
 
+// Glacier² Game Engine © 2014 noorus
+// All rights reserved.
+
 namespace Glacier {
 
   LocalController::LocalController(): mMode( Mode_KeyboardAndMouse )

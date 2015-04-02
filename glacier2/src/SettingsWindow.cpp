@@ -90,7 +90,7 @@ namespace Glacier {
   void SettingsWindow::refreshAudioDrivers()
   {
     mAudioDrivers->removeAllItems();
-    
+
     const Audio::DriverVector& drivers = Locator::getAudio().getDrivers();
     for ( size_t i = 0; i < drivers.size(); i++ )
     {
@@ -183,14 +183,14 @@ namespace Glacier {
     mCurrentGraphics = mOriginalGraphics;
 
 //     Locator::getAudio().applySettings( mCurrentAudio );
-// 
+//
 //     bool newOutput   = ( mCurrentAudio.outputType != mOriginalAudio.outputType );
 //     bool newDriver   = ( mCurrentAudio.driver != mOriginalAudio.driver );
 //     bool newSpeakers = ( mCurrentAudio.speakerMode != mOriginalAudio.speakerMode );
-// 
+//
 //     mOriginalAudio = Locator::getAudio().getSettings();
 //     mCurrentAudio = mOriginalAudio;
-// 
+//
 //     if ( newOutput )
 //       refreshAudioOutputTypes();
 //     if ( newDriver )

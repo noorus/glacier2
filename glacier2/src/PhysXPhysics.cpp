@@ -14,7 +14,7 @@ namespace Glacier {
 
   PxDefaultCpuDispatcher* gDispatcher = nullptr;
 
-  void* PhysXPhysics::Allocator::allocate( size_t size, const char* typeName, 
+  void* PhysXPhysics::Allocator::allocate( size_t size, const char* typeName,
   const char* filename, int line )
   {
     return Locator::getMemory().alloc( Memory::Sector_Physics, size, 16 );
@@ -26,7 +26,7 @@ namespace Glacier {
   }
 
   // CVars
-  
+
   ENGINE_DECLARE_CONVAR( px_threads,
     L"Number of PhysX dispatch threads.", 2 );
   ENGINE_DECLARE_CONVAR( px_cuda,

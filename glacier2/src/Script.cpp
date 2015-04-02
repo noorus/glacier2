@@ -106,7 +106,7 @@ namespace Glacier {
         Local<v8::StackFrame> frame = message->GetStackTrace()->GetFrame( i );
         v8::String::Value functionName( frame->GetFunctionName() );
         v8::String::Value script( frame->GetScriptName() );
-        
+
         if ( functionName.length() )
           console->printf( Console::srcScripting, L"→   in function %s() (%s line %d)", *functionName, *script, frame->GetLineNumber() );
         else

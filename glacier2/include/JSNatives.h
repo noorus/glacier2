@@ -12,7 +12,7 @@ namespace Glacier {
 
   //! \addtogroup Scripting
   //! @{
-  
+
   class Console;
 
   namespace JS {

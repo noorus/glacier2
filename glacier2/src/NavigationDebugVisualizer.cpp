@@ -6,7 +6,7 @@
 #include "Graphics.h"
 #include "GlacierMath.h"
 
-// Glacier² Game Engine © 2014 noorus
+// GlacierÂ² Game Engine Â© 2014 noorus
 // All rights reserved.
 
 #ifndef GLACIER_NO_NAVIGATION_DEBUG

@@ -127,7 +127,7 @@ namespace Glacier {
   }
 
   // Graphics class ===========================================================
-  
+
   Graphics::Graphics( Engine* engine, WindowHandler* windowHandler ):
   EngineComponent( engine ),
   mRoot( nullptr ), mRenderer( nullptr ), mSceneManager( nullptr ),
@@ -165,9 +165,9 @@ namespace Glacier {
 
     // Setup video mode
     VideoMode videoMode(
-      g_CVar_vid_screenwidth.getInt(), 
-      g_CVar_vid_screenheight.getInt(), 
-      g_CVar_vid_screenbpp.getInt(), 
+      g_CVar_vid_screenwidth.getInt(),
+      g_CVar_vid_screenheight.getInt(),
+      g_CVar_vid_screenbpp.getInt(),
       g_CVar_vid_fullscreen.getBool(),
       g_CVar_vid_vsync.getBool(),
       g_CVar_vid_fsaa.getInt(),

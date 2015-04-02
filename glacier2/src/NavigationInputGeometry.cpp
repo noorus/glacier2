@@ -5,7 +5,7 @@
 #include "ServiceLocator.h"
 #include "MeshHelpers.h"
 
-// Glacier² Game Engine © 2014 noorus
+// GlacierÂ² Game Engine Â© 2014 noorus
 // All rights reserved.
 
 // This code is heavily based on OgreCrowd, Copyright (c) 2012 Jonas Hauquier.
@@ -113,7 +113,7 @@ namespace Glacier {
 
     mVertices = new float[mVertexCount * 3];
     mTriangles = new int[mTriangleCount];
-    
+
     mTriangleCount /= 3;
 
     i = 0;

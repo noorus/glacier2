@@ -78,7 +78,7 @@ namespace Glacier {
     }
 
     // Device
-    
+
     Device::Device( LocalController* local, Nil::Controller* controller ):
     InputDevice( local ), mGamepad( controller ), mFocused( true )
     {

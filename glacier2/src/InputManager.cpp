@@ -74,7 +74,7 @@ namespace Glacier {
   {
     device->enable();
   }
-  
+
   void InputManager::onDeviceDisconnected( Nil::Device* device )
   {
     device->disable();

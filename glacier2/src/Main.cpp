@@ -25,7 +25,7 @@ LPWSTR lpCmdLine, int nCmdShow )
 
   // CRT memory allocation breakpoints can be set here
   // _CrtSetBreakAlloc( x );
-  
+
   // Initialize & provide the pooled memory service
   NedPoolMemory memoryService;
   Locator::provideMemory( &memoryService );

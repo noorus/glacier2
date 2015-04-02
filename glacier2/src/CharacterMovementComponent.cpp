@@ -125,7 +125,7 @@ namespace Glacier {
         move.jumpImpulse = false;
       }
     }
-    
+
     // Final change in velocity
     Vector3 velocityDelta( Vector3::ZERO );
 
@@ -152,7 +152,7 @@ namespace Glacier {
       // Update velocity
       mVelocity += velocityDelta;
     }
-    
+
     // Make displacement
     mDisplacement = mVelocity * (Real)delta;
 

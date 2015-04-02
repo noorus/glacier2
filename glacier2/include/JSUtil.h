@@ -52,7 +52,7 @@ namespace Glacier {
           isolate ? isolate : Isolate::GetCurrent(),
           (uint16_t*)str );
       }
-      
+
       //! Create a local JavaScript String instance from given source string.
       inline Local<v8::String> allocString( const Ogre::String& str, Isolate* isolate = nullptr )
       {

@@ -4,7 +4,7 @@
 #include "Exception.h"
 #include "ServiceLocator.h"
 
-// Glacier² Game Engine © 2014 noorus
+// GlacierÂ² Game Engine Â© 2014 noorus
 // All rights reserved.
 
 namespace Glacier {
@@ -210,7 +210,7 @@ namespace Glacier {
       mConfig.bmin, mConfig.bmax,
       mConfig.cs, mConfig.ch ) )
       ENGINE_EXCEPT( "Failed to create heightfield" );
-    
+
     auto triareas = (unsigned char*)Locator::getMemory().alloc( Memory::Sector_Navigation, ntris );
     memset( triareas, 0, ntris );
 

@@ -5,7 +5,7 @@
 #include "Graphics.h"
 #include "ServiceLocator.h"
 
-// Glacier² Game Engine © 2014 noorus
+// GlacierÂ² Game Engine Â© 2014 noorus
 // All rights reserved.
 
 namespace Glacier {

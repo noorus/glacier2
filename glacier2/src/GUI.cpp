@@ -48,7 +48,7 @@ namespace Glacier {
       mEngine->getGraphics()->getRenderWindowHandle(), position ) )
       return false;
 
-    return MyGUI::InputManager::getInstance().injectMouseMove( 
+    return MyGUI::InputManager::getInstance().injectMouseMove(
       position.x, position.y, state.mWheel.relative );*/
   }
 

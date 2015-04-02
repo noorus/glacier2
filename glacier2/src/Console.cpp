@@ -399,7 +399,7 @@ namespace Glacier {
   void Console::addListener( ConsoleListener* listener )
   {
     ScopedRWLock lock( &mLock );
-    
+
     mListeners.push_back( listener ); // Not checking for dupes
   }
 

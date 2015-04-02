@@ -8,6 +8,9 @@
 #include "InputManager.h"
 #include "Camera.h"
 
+// Glacier² Game Engine © 2014 noorus
+// All rights reserved.
+
 namespace Glacier {
 
   CameraController::CameraController(): mCamera( nullptr ),

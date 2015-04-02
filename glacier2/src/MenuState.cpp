@@ -11,12 +11,12 @@
 #include "Win32.h"
 #include "GUI.h"
 
-// Glacier² Game Engine © 2014 noorus
+// GlacierÂ² Game Engine Â© 2014 noorus
 // All rights reserved.
 
 namespace Glacier {
 
-  const string cMenuWindowTitle( "glacier² » menu" );
+  const string cMenuWindowTitle( "glacier? ? menu" );
 
   MenuState::MenuState(): State( L"Menu" ) {}
 
@@ -44,7 +44,7 @@ namespace Glacier {
 //     mDirector->getCamera()->applyMovement(
 //       gEngine->getActionManager()->getCameraController()->getMovement()
 //     );
-// 
+//
 //     mDirector->getCamera()->update( (float)tick );
   }
 

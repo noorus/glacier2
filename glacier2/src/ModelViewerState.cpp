@@ -56,7 +56,7 @@ namespace Glacier {
 //     mDirector->getCamera()->applyMovement(
 //       gEngine->getActionManager()->getCameraController()->getMovement()
 //     );
-// 
+//
 //     mDirector->getCamera()->update( (float)tick );
   }
 
