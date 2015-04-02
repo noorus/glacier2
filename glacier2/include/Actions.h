@@ -52,6 +52,11 @@ namespace Glacier {
 
   struct ActionPacket {
   public:
+    ActionPacket(): move( Character_Move_None ),
+      sidestep( Character_Sidestep_None ),
+      jump( Character_Jump_None ),
+      run( Character_Run_None ),
+      crouch( Character_Crouch_None ) {}
     CharacterMoveAction move;
     CharacterSidestepAction sidestep;
     CharacterJumpAction jump;

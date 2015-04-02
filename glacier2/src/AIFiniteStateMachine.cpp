@@ -16,42 +16,42 @@ namespace Glacier {
     void FiniteStateMachine::pushState( State* state )
     {
       if ( !mStates.empty() )
-        mStates.back()->pause( mOwner);
+        mStates.back()->pause( this, mOwner );
 
       mStates.push_back( state );
 
-      state->enter( mOwner );
+      state->enter( this, mOwner );
     }
 
     void FiniteStateMachine::popState()
     {
       if ( !mStates.empty() )
       {
-        mStates.back()->leave( mOwner );
+        mStates.back()->leave( this, mOwner );
         mStates.pop_back();
       }
 
       if ( !mStates.empty() )
-        mStates.back()->resume( mOwner );
+        mStates.back()->resume( this, mOwner );
     }
 
     void FiniteStateMachine::changeState( State* state )
     {
       if ( !mStates.empty() )
       {
-        mStates.back()->leave( mOwner );
+        mStates.back()->leave( this, mOwner );
         mStates.pop_back();
       }
 
       mStates.push_back( state );
 
-      state->enter( mOwner );
+      state->enter( this, mOwner );
     }
 
-    void FiniteStateMachine::execute()
+    void FiniteStateMachine::execute( const GameTime delta )
     {
       if ( !mStates.empty() )
-        mStates.back()->execute( mOwner );
+        mStates.back()->execute( this, mOwner, delta );
     }
 
   }

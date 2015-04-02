@@ -13,6 +13,8 @@
 #include "Actions.h"
 #include "InputManager.h"
 #include "Dummy.h"
+#include "AIState.h"
+#include "AIFiniteStateMachine.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
@@ -21,9 +23,43 @@ namespace Glacier {
 
   ENGINE_DECLARE_ENTITY( dev_dummy, Dummy );
 
-  Dummy::Dummy( World* world ): Character( world, &baseData ),
-  mEntity( nullptr )
+  class DummyJumpState: public AI::State {
+  public:
+    void enter( AI::FiniteStateMachine* machine, AI::Agent* agent )
+    {
+      AI::State::enter( machine, agent );
+      gEngine->getConsole()->printf( Console::srcGame, L"Dummy: Jumping!" );
+    }
+    void execute( AI::FiniteStateMachine* machine, AI::Agent* agent, const GameTime delta )
+    {
+      AI::State::execute( machine, agent, delta );
+      machine->popState();
+    }
+  };
+
+  static DummyJumpState dummyJumpState;
+
+  class DummyIdleState: public AI::State {
+  public:
+    void enter( AI::FiniteStateMachine* machine, AI::Agent* agent )
+    {
+      AI::State::enter( machine, agent );
+      gEngine->getConsole()->printf( Console::srcGame, L"Dummy: Idle!" );
+    }
+    void execute( AI::FiniteStateMachine* machine, AI::Agent* agent, const GameTime delta )
+    {
+      AI::State::execute( machine, agent, delta );
+      if ( mTime >= 3.0f )
+        machine->pushState( &dummyJumpState );
+    }
+  };
+
+  static DummyIdleState dummyIdleState;
+
+  Dummy::Dummy( World* world ): Character( world, &baseData ), AI::Agent(),
+  mEntity( nullptr ), mStates( this )
   {
+    mStates.pushState( &dummyIdleState );
     mHeight = 0.8f;
     mRadius = 0.2f;
   }
@@ -42,6 +78,7 @@ namespace Glacier {
 
   void Dummy::think( const GameTime delta )
   {
+    mStates.execute( delta );
     Character::think( delta );
   }
 

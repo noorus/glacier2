@@ -18,7 +18,7 @@ namespace Glacier {
       void pushState( State* state );
       void popState();
       void changeState( State* state );
-      void execute();
+      void execute( const GameTime delta );
     };
 
   }
