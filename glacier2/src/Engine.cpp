@@ -71,8 +71,8 @@ namespace Glacier {
   mProcess( NULL ), mThread( NULL ), mInstance( instance ),
   mSignal( Signal_None ), mVersion( 0, 1, 1 ), mConsoleWindow( nullptr ),
   mGame( nullptr ), mWindowHandler( nullptr ), mInput( nullptr ),
-  mAudio( nullptr ), mPhysics( nullptr ), mActionManager( nullptr ),
-  mGUI( nullptr ), mEntities( nullptr ), mNavigation( nullptr )
+  mAudio( nullptr ), mPhysics( nullptr ), mGUI( nullptr ),
+  mEntities( nullptr ), mNavigation( nullptr )
   {
   }
 
@@ -210,7 +210,6 @@ namespace Glacier {
     mScripting = new Scripting( this );
     mScripting->simpleExecute( L"initialization.js" );
 
-    mActionManager = new ActionManager( this );
     mInput = new InputManager( this, mInstance, mGraphics->getWindow() );
 
     if ( !options.noPhysics )
@@ -381,7 +380,6 @@ namespace Glacier {
       Locator::providePhysics( nullptr );
     }
 
-    SAFE_DELETE( mActionManager );
     SAFE_DELETE( mInput );
     SAFE_DELETE( mScripting );
     SAFE_DELETE( mGUI );

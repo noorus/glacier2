@@ -16,6 +16,7 @@ namespace Glacier {
     Action_Crouch,
     Action_Run,
     Action_Zoom,
+    Action_Rotate,
     Action_Toggle_Console = 900
   };
 
@@ -56,41 +57,6 @@ namespace Glacier {
     PlayerJumpAction jump;
     PlayerRunAction run;
     PlayerCrouchAction crouch;
-  };
-
-  class CameraController: public boost::noncopyable {
-  protected:
-    Engine* mEngine;
-    Vector3 mPersistentMovement;
-    Vector3 mImpulseMovement;
-    Vector3 mMovement;
-    bool mZooming;
-    bool mRotating;
-    void updateMovement();
-  public:
-    explicit CameraController( Engine* engine );
-    ~CameraController();
-    void resetMovement();
-    void prepare();
-    void applyMouseMovement( const Nil::MouseState& state );
-    void applyMouseWheel( const Nil::MouseState& state );
-    void onMouseButtonPressed( size_t button );
-    void onMouseButtonReleased( size_t button );
-    void setPersistentMovement( const Vector2& vecMovement );
-    void setZooming( const bool zoom );
-    inline const Vector3& getMovement() throw() { return mMovement; }
-  };
-
-  class LocalController;
-
-  class ActionManager: public boost::noncopyable {
-  protected:
-    Engine* mEngine;
-    CameraController* mCameraController;
-  public:
-    explicit ActionManager( Engine* pEngine );
-    ~ActionManager();
-    CameraController* getCameraController() throw() { return mCameraController; }
   };
 
 }

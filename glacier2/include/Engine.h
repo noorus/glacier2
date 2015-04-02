@@ -24,7 +24,6 @@ namespace Glacier {
   class PhysXPhysics;
   class WindowHandler;
   class InputManager;
-  class ActionManager;
   class GUI;
   class EntityManager;
   class World;
@@ -80,7 +79,6 @@ namespace Glacier {
     Game* mGame;
     InputManager* mInput;
     WindowHandler* mWindowHandler;
-    ActionManager* mActionManager;
     GUI* mGUI;
     EntityManager* mEntities;
     World* mWorld;
@@ -107,7 +105,6 @@ namespace Glacier {
     FMODAudio* getSound() { return mAudio; }
     Game* getGame() { return mGame; }
     InputManager* getInput() { return mInput; }
-    ActionManager* getActionManager() { return mActionManager; }
     GUI* getGUI() { return mGUI; }
     EntityManager* getEntities() { return mEntities; }
     World* getWorld() { return mWorld; }
