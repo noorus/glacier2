@@ -337,6 +337,7 @@
     <ClCompile Include="src\GameController.cpp" />
     <ClCompile Include="src\DemoState.cpp" />
     <ClCompile Include="src\DeveloperEntities.cpp" />
+    <ClCompile Include="src\Dummy.cpp" />
     <ClCompile Include="src\EntityRegistry.cpp" />
     <ClCompile Include="src\GameCamera.cpp" />
     <ClCompile Include="src\Gamepad.cpp" />
@@ -456,6 +457,7 @@
     <ClInclude Include="include\Controllers.h" />
     <ClInclude Include="include\DemoState.h" />
     <ClInclude Include="include\DeveloperEntities.h" />
+    <ClInclude Include="include\Dummy.h" />
     <ClInclude Include="include\Gamepad.h" />
     <ClInclude Include="include\GUI.h" />
     <ClInclude Include="include\Keyboard.h" />

@@ -81,6 +81,9 @@ namespace Glacier {
     gEngine->getInput()->getLocalController()->setCharacter( (Character*)player );
     player->spawn( Vector3( 0.0f, 1.0f, 0.0f ), Quaternion::IDENTITY );
 
+    auto dummy = Locator::getEntities().create( "dev_dummy" );
+    dummy->spawn( Vector3( 0.0f, 1.0f, 5.0f ), Quaternion::IDENTITY );
+
     for ( int i = 1; i < 11; i++ )
     {
       auto cube = (Entities::DevCube*)Locator::getEntities().create( "dev_cube" );

@@ -435,6 +435,9 @@
     <ClCompile Include="src\AIFiniteStateMachine.cpp">
       <Filter>Source Files\AI</Filter>
     </ClCompile>
+    <ClCompile Include="src\Dummy.cpp">
+      <Filter>Source Files\Entities\Character</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\CompilerDef.h">
@@ -754,6 +757,9 @@
     </ClInclude>
     <ClInclude Include="include\AIAgent.h">
       <Filter>Header Files\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Dummy.h">
+      <Filter>Header Files\Entities\Character</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
