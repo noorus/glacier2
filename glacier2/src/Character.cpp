@@ -18,11 +18,12 @@
 
 namespace Glacier {
 
-  Character::Character( World* world, const EntityBaseData* baseData ):
+  Character::Character( World* world, const EntityBaseData* baseData,
+  CharacterInputComponent* input ):
   Entity( world, baseData ),
-  mInput( nullptr ), mPhysics( nullptr ), mMovement( nullptr )
+  mInput( input ), mPhysics( nullptr ), mMovement( nullptr )
   {
-    mInput = new PlayerCharacterInputComponent( this );
+    //
   }
 
   void Character::spawn( const Vector3& position, const Quaternion& orientation )
@@ -45,7 +46,8 @@ namespace Glacier {
 
   void Character::think( const GameTime delta )
   {
-    mInput->update( mActions, delta );
+    if ( mInput )
+      mInput->update( mActions, delta );
 
     if ( mPhysics && mMovement )
     {

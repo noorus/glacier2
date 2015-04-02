@@ -21,7 +21,8 @@ namespace Glacier {
 
   ENGINE_DECLARE_ENTITY( player, Player );
 
-  Player::Player( World* world ): Character( world, &baseData ),
+  Player::Player( World* world ):
+  Character( world, &baseData, new PlayerCharacterInputComponent( this ) ),
   mEntity( nullptr )
   {
     mHeight = 1.0f;

@@ -56,7 +56,7 @@ namespace Glacier {
 
   static DummyIdleState dummyIdleState;
 
-  Dummy::Dummy( World* world ): Character( world, &baseData ), AI::Agent(),
+  Dummy::Dummy( World* world ): Character( world, &baseData, nullptr ), AI::Agent(),
   mEntity( nullptr ), mStates( this )
   {
     mStates.pushState( &dummyIdleState );

@@ -33,7 +33,7 @@ namespace Glacier {
   }
 
   PlayerCharacterInputComponent::PlayerCharacterInputComponent( Character* character ):
-  mCharacter( character ), mCrouchKeyed( false ), mRunKeyed( false ),
+  CharacterInputComponent( character ), mCrouchKeyed( false ), mRunKeyed( false ),
   mRunTime( 0.0f ), mCrouchTime( 0.0f )
   {
     //

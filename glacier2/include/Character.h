@@ -95,6 +95,17 @@ namespace Glacier {
       jumpImpulse( false ) {}
   };
 
+  class Character;
+
+  class CharacterInputComponent {
+  protected:
+    Character* mCharacter;
+  public:
+    CharacterInputComponent( Character* character );
+    virtual void update( const ActionPacket& action, GameTime delta ) = 0;
+    virtual ~CharacterInputComponent();
+  };
+
   class Character: public Entity {
   friend class EntityFactories;
   friend class PlayerCharacterInputComponent;
@@ -103,14 +114,15 @@ namespace Glacier {
       Flag_On_Ground = 0
     };
     std::bitset<8> mFlags;
-    PlayerCharacterInputComponent* mInput;
+    CharacterInputComponent* mInput;
     CharacterMovementComponent* mMovement;
     CharacterPhysicsComponent* mPhysics;
     CharacterMoveData mMove;
     ActionPacket mActions;
     Real mHeight;
     Real mRadius;
-    Character( World* world, const EntityBaseData* baseData );
+    Character( World* world, const EntityBaseData* baseData,
+      CharacterInputComponent* input );
     virtual ~Character();
   public:
     virtual const Ogre::MovableObject* getMovable() const throw() = 0;
@@ -125,9 +137,8 @@ namespace Glacier {
     virtual const bool isOnGround();
   };
 
-  class PlayerCharacterInputComponent {
+  class PlayerCharacterInputComponent: public CharacterInputComponent {
   protected:
-    Character* mCharacter;
     bool mRunKeyed;
     bool mCrouchKeyed;
     Real mRunTime;
