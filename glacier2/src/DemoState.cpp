@@ -17,7 +17,6 @@
 #include "EntityManager.h"
 #include "World.h"
 #include "FMODMusic.h"
-#include "MovableTextOverlay.h"
 #include "DeveloperEntities.h"
 #include "Navigation.h"
 #include "GlacierMath.h"
@@ -30,7 +29,6 @@
 namespace Glacier {
 
   const string cDemoStateTitle( "glacier² » demo" );
-  MovableTextOverlay* mOverlay = nullptr;
 
   DemoState::DemoState(): State( L"Demo" ) {}
 
@@ -79,17 +77,6 @@ namespace Glacier {
     duDebugDrawPolyMesh( mNavVis, *mNavigationMesh->getPolyMesh() );
 #endif
 
-    gEngine->getConsole()->printf( Console::srcGame, L"Yay built navmesh ok!" );
-    gEngine->getConsole()->printf( Console::srcGame, L"Navmesh has %d polygons, %d vertices",
-      mNavigationMesh->getPolyMesh()->npolys,
-      mNavigationMesh->getPolyMesh()->nverts );
-    Vector3 minbound = Math::floatArrayToOgreVec3( mNavigationMesh->getPolyMesh()->bmin );
-    gEngine->getConsole()->printf( Console::srcGame, L"Min bound: %f %f %f",
-      minbound.x, minbound.y, minbound.z );
-    Vector3 maxbound = Math::floatArrayToOgreVec3( mNavigationMesh->getPolyMesh()->bmax );
-    gEngine->getConsole()->printf( Console::srcGame, L"Max bound: %f %f %f",
-      maxbound.x, maxbound.y, maxbound.z );
-
     auto player = Locator::getEntities().create( "player" );
     gEngine->getInput()->getLocalController()->setCharacter( (Character*)player );
     player->spawn( Vector3( 0.0f, 1.0f, 0.0f ), Quaternion::IDENTITY );
@@ -108,13 +95,6 @@ namespace Glacier {
     }
 
     mDirector = new Director( &Locator::getGraphics(), player->getNode() );
-
-    auto attrs = new MovableTextOverlayAttributes( gEngine->getGraphics()->getScene()->getCamera( "defaultcamera" ),
-      "Banksia", 17, Locator::getColors().base( Colors::Color_Text_Warning ), "Debug/EntityNameRect" );
-
-    mOverlay = new MovableTextOverlay( "charname", "player",
-      player->getMovable(), attrs );
-    mOverlay->enable( true );
 
     Locator::getMusic().beginScene();
   }
@@ -136,12 +116,11 @@ namespace Glacier {
 
   void DemoState::draw( GameTime delta, GameTime time )
   {
-    mOverlay->update();
+    //
   }
 
   void DemoState::shutdown( GameTime time )
   {
-    SAFE_DELETE( mOverlay );
     gEngine->getInput()->getLocalController()->setCharacter( nullptr );
     Locator::getEntities().clear();
     Locator::getMusic().endScene();
