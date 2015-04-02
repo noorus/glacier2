@@ -328,7 +328,7 @@
     <ClCompile Include="src\CameraController.cpp" />
     <ClCompile Include="src\CascadedShadowMapping.cpp" />
     <ClCompile Include="src\Character.cpp" />
-    <ClCompile Include="src\CharacterInputComponent.cpp" />
+    <ClCompile Include="src\PlayerCharacterInputComponent.cpp" />
     <ClCompile Include="src\CharacterMovementComponent.cpp" />
     <ClCompile Include="src\CharacterPhysicsComponent.cpp" />
     <ClCompile Include="src\Colors.cpp" />

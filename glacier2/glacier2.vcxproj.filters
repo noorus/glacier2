@@ -420,9 +420,6 @@
     <ClCompile Include="src\Character.cpp">
       <Filter>Source Files\Entities\Character</Filter>
     </ClCompile>
-    <ClCompile Include="src\CharacterInputComponent.cpp">
-      <Filter>Source Files\Entities\Character</Filter>
-    </ClCompile>
     <ClCompile Include="src\CharacterMovementComponent.cpp">
       <Filter>Source Files\Entities\Character</Filter>
     </ClCompile>
@@ -436,6 +433,9 @@
       <Filter>Source Files\AI</Filter>
     </ClCompile>
     <ClCompile Include="src\Dummy.cpp">
+      <Filter>Source Files\Entities\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PlayerCharacterInputComponent.cpp">
       <Filter>Source Files\Entities\Character</Filter>
     </ClCompile>
   </ItemGroup>

@@ -11,7 +11,7 @@ namespace Glacier {
 
   class World;
 
-  class CharacterInputComponent;
+  class PlayerCharacterInputComponent;
   class CharacterMovementComponent;
   class CharacterPhysicsComponent;
   struct ActionPacket;
@@ -97,13 +97,13 @@ namespace Glacier {
 
   class Character: public Entity {
   friend class EntityFactories;
-  friend class CharacterInputComponent;
+  friend class PlayerCharacterInputComponent;
   protected:
     enum Flags {
       Flag_On_Ground = 0
     };
     std::bitset<8> mFlags;
-    CharacterInputComponent* mInput;
+    PlayerCharacterInputComponent* mInput;
     CharacterMovementComponent* mMovement;
     CharacterPhysicsComponent* mPhysics;
     CharacterMoveData mMove;
@@ -125,7 +125,7 @@ namespace Glacier {
     virtual const bool isOnGround();
   };
 
-  class CharacterInputComponent {
+  class PlayerCharacterInputComponent {
   protected:
     Character* mCharacter;
     bool mRunKeyed;
@@ -140,9 +140,9 @@ namespace Glacier {
     void updateCrouchStatus();
     void calculateSpeed();
   public:
-    CharacterInputComponent( Character* character );
+    PlayerCharacterInputComponent( Character* character );
     virtual void update( const ActionPacket& action, GameTime delta );
-    virtual ~CharacterInputComponent();
+    virtual ~PlayerCharacterInputComponent();
   };
 
   class CharacterPhysicsComponent {

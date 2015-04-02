@@ -32,14 +32,14 @@ namespace Glacier {
     return ( 3.0f * squared - 2.0f * squared * value );
   }
 
-  CharacterInputComponent::CharacterInputComponent( Character* character ):
+  PlayerCharacterInputComponent::PlayerCharacterInputComponent( Character* character ):
   mCharacter( character ), mCrouchKeyed( false ), mRunKeyed( false ),
   mRunTime( 0.0f ), mCrouchTime( 0.0f )
   {
     //
   }
 
-  void CharacterInputComponent::calculateAffectors( const ActionPacket& action, GameTime delta )
+  void PlayerCharacterInputComponent::calculateAffectors( const ActionPacket& action, GameTime delta )
   {
     CharacterMoveData& move = mCharacter->mMove;
 
@@ -114,7 +114,7 @@ namespace Glacier {
     move.updateBits();
   }
 
-  void CharacterInputComponent::handleCrouching( const ActionPacket& action, const GameTime delta )
+  void PlayerCharacterInputComponent::handleCrouching( const ActionPacket& action, const GameTime delta )
   {
     CharacterMoveData& move = mCharacter->mMove;
 
@@ -138,7 +138,7 @@ namespace Glacier {
       mCrouchTime = 0.0f;
   }
 
-  void CharacterInputComponent::handleRunning( const ActionPacket& action, const GameTime delta )
+  void PlayerCharacterInputComponent::handleRunning( const ActionPacket& action, const GameTime delta )
   {
     CharacterMoveData& move = mCharacter->mMove;
 
@@ -161,7 +161,7 @@ namespace Glacier {
       mRunTime = 0.0f;
   }
 
-  void CharacterInputComponent::handleJumping( const ActionPacket& action )
+  void PlayerCharacterInputComponent::handleJumping( const ActionPacket& action )
   {
     CharacterMoveData& move = mCharacter->mMove;
 
@@ -169,7 +169,7 @@ namespace Glacier {
       move.jumpImpulse = true;
   }
 
-  void CharacterInputComponent::updateMoveStatus()
+  void PlayerCharacterInputComponent::updateMoveStatus()
   {
     CharacterMoveData& move = mCharacter->mMove;
 
@@ -195,12 +195,12 @@ namespace Glacier {
       move.moveStatus = CharacterMoveData::Move_Idle;
   }
 
-  void CharacterInputComponent::updateCrouchStatus()
+  void PlayerCharacterInputComponent::updateCrouchStatus()
   {
     //
   }
 
-  void CharacterInputComponent::calculateSpeed()
+  void PlayerCharacterInputComponent::calculateSpeed()
   {
     CharacterMoveData& move = mCharacter->mMove;
 
@@ -219,7 +219,7 @@ namespace Glacier {
     }
   }
 
-  void CharacterInputComponent::update( const ActionPacket& action, GameTime delta )
+  void PlayerCharacterInputComponent::update( const ActionPacket& action, GameTime delta )
   {
     CharacterMoveData& move = mCharacter->mMove;
 
@@ -232,7 +232,7 @@ namespace Glacier {
     calculateSpeed();
   }
 
-  CharacterInputComponent::~CharacterInputComponent()
+  PlayerCharacterInputComponent::~PlayerCharacterInputComponent()
   {
     //
   }

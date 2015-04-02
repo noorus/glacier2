@@ -22,7 +22,7 @@ namespace Glacier {
   Entity( world, baseData ),
   mInput( nullptr ), mPhysics( nullptr ), mMovement( nullptr )
   {
-    mInput = new CharacterInputComponent( this );
+    mInput = new PlayerCharacterInputComponent( this );
   }
 
   void Character::spawn( const Vector3& position, const Quaternion& orientation )

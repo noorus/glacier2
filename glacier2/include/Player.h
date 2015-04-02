@@ -12,7 +12,7 @@ namespace Glacier {
 
   class Player: public Character {
   friend class EntityFactories;
-  friend class CharacterInputComponent;
+  friend class PlayerCharacterInputComponent;
   private:
     static EntityBaseData baseData;
   protected:

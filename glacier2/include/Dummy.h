@@ -14,7 +14,7 @@ namespace Glacier {
 
   class Dummy: public Character, public AI::Agent {
   friend class EntityFactories;
-  friend class CharacterInputComponent;
+  friend class PlayerCharacterInputComponent;
   private:
     static EntityBaseData baseData;
   protected:
