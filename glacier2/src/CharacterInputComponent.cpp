@@ -49,15 +49,15 @@ namespace Glacier {
     // forward & backward
     switch ( action.move )
     {
-      case Player_Move_Forward:
+      case Character_Move_Forward:
         move.forward += accelerator;
         move.backward -= decelerator;
         break;
-      case Player_Move_Backward:
+      case Character_Move_Backward:
         move.backward += accelerator;
         move.forward -= decelerator;
         break;
-      case Player_Move_None:
+      case Character_Move_None:
         move.forward -= decelerator;
         move.backward -= decelerator;
         break;
@@ -66,15 +66,15 @@ namespace Glacier {
     // sidestepping
     switch ( action.sidestep )
     {
-      case Player_Sidestep_Left:
+      case Character_Sidestep_Left:
         move.left += accelerator;
         move.right -= decelerator;
         break;
-      case Player_Sidestep_Right:
+      case Character_Sidestep_Right:
         move.right += accelerator;
         move.left -= decelerator;
         break;
-      case Player_Sidestep_None:
+      case Character_Sidestep_None:
         move.left -= decelerator;
         move.right -= decelerator;
     }
@@ -118,12 +118,12 @@ namespace Glacier {
   {
     CharacterMoveData& move = mCharacter->mMove;
 
-    if ( action.crouch == Player_Crouch_Keydown )
+    if ( action.crouch == Character_Crouch_Keydown )
     {
       mCrouchKeyed = true;
       mCrouchTime = 0.0f;
     }
-    else if ( action.crouch == Player_Crouch_Keyup )
+    else if ( action.crouch == Character_Crouch_Keyup )
     {
       mCrouchKeyed = false;
       if ( mCrouchTime > cTimeToUncrouch )
@@ -142,12 +142,12 @@ namespace Glacier {
   {
     CharacterMoveData& move = mCharacter->mMove;
 
-    if ( action.run == Player_Run_Keydown )
+    if ( action.run == Character_Run_Keydown )
     {
       mRunKeyed = true;
       mRunTime = 0.0f;
     }
-    else if ( action.run == Player_Run_Keyup )
+    else if ( action.run == Character_Run_Keyup )
     {
       mRunKeyed = false;
       if ( mRunTime > cTimeToSlowdown )
@@ -165,7 +165,7 @@ namespace Glacier {
   {
     CharacterMoveData& move = mCharacter->mMove;
 
-    if ( action.jump == Player_Jump_Keydown && mCharacter->isOnGround() )
+    if ( action.jump == Character_Jump_Keydown && mCharacter->isOnGround() )
       move.jumpImpulse = true;
   }
 

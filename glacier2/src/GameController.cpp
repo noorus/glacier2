@@ -25,19 +25,19 @@ namespace Glacier {
 
   void GameController::resetActions()
   {
-    mActions.move = Player_Move_None;
-    mActions.sidestep = Player_Sidestep_None;
-    mActions.jump = Player_Jump_None;
-    mActions.run = Player_Run_None;
-    mActions.crouch = Player_Crouch_None;
+    mActions.move = Character_Move_None;
+    mActions.sidestep = Character_Sidestep_None;
+    mActions.jump = Character_Jump_None;
+    mActions.run = Character_Run_None;
+    mActions.crouch = Character_Crouch_None;
     mDirectional = Vector2::ZERO;
   }
 
   void GameController::prepare()
   {
-    mActions.jump = Player_Jump_None;
-    mActions.run = Player_Run_None;
-    mActions.crouch = Player_Crouch_None;
+    mActions.jump = Character_Jump_None;
+    mActions.run = Character_Run_None;
+    mActions.crouch = Character_Crouch_None;
   }
 
   void GameController::apply(

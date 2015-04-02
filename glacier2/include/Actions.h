@@ -20,43 +20,43 @@ namespace Glacier {
     Action_Toggle_Console = 900
   };
 
-  enum PlayerMoveAction {
-    Player_Move_None = 0,
-    Player_Move_Forward,
-    Player_Move_Backward
+  enum CharacterMoveAction {
+    Character_Move_None = 0,
+    Character_Move_Forward,
+    Character_Move_Backward
   };
 
-  enum PlayerSidestepAction {
-    Player_Sidestep_None = 0,
-    Player_Sidestep_Left,
-    Player_Sidestep_Right
+  enum CharacterSidestepAction {
+    Character_Sidestep_None = 0,
+    Character_Sidestep_Left,
+    Character_Sidestep_Right
   };
 
-  enum PlayerJumpAction {
-    Player_Jump_None = 0,
-    Player_Jump_Keydown,
-    Player_Jump_Keyup
+  enum CharacterJumpAction {
+    Character_Jump_None = 0,
+    Character_Jump_Keydown,
+    Character_Jump_Keyup
   };
 
-  enum PlayerRunAction {
-    Player_Run_None = 0,
-    Player_Run_Keydown,
-    Player_Run_Keyup
+  enum CharacterRunAction {
+    Character_Run_None = 0,
+    Character_Run_Keydown,
+    Character_Run_Keyup
   };
 
-  enum PlayerCrouchAction {
-    Player_Crouch_None = 0,
-    Player_Crouch_Keydown,
-    Player_Crouch_Keyup
+  enum CharacterCrouchAction {
+    Character_Crouch_None = 0,
+    Character_Crouch_Keydown,
+    Character_Crouch_Keyup
   };
 
   struct ActionPacket {
   public:
-    PlayerMoveAction move;
-    PlayerSidestepAction sidestep;
-    PlayerJumpAction jump;
-    PlayerRunAction run;
-    PlayerCrouchAction crouch;
+    CharacterMoveAction move;
+    CharacterSidestepAction sidestep;
+    CharacterJumpAction jump;
+    CharacterRunAction run;
+    CharacterCrouchAction crouch;
   };
 
 }
