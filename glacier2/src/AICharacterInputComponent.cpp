@@ -25,6 +25,12 @@ namespace Glacier {
     //
   }
 
+  void AICharacterInputComponent::injectJump()
+  {
+    CharacterMoveData& move = mCharacter->mMove;
+    move.jumpImpulse = true;
+  }
+
   AICharacterInputComponent::~AICharacterInputComponent()
   {
     //

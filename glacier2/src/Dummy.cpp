@@ -28,11 +28,12 @@ namespace Glacier {
     void enter( AI::FiniteStateMachine* machine, AI::Agent* agent )
     {
       AI::State::enter( machine, agent );
-      gEngine->getConsole()->printf( Console::srcGame, L"Dummy: Jumping!" );
     }
     void execute( AI::FiniteStateMachine* machine, AI::Agent* agent, const GameTime delta )
     {
       AI::State::execute( machine, agent, delta );
+      auto dummy = (Dummy*)agent;
+      dummy->getInput()->injectJump();
       machine->popState();
     }
   };
@@ -44,7 +45,6 @@ namespace Glacier {
     void enter( AI::FiniteStateMachine* machine, AI::Agent* agent )
     {
       AI::State::enter( machine, agent );
-      gEngine->getConsole()->printf( Console::srcGame, L"Dummy: Idle!" );
     }
     void execute( AI::FiniteStateMachine* machine, AI::Agent* agent, const GameTime delta )
     {
@@ -64,6 +64,11 @@ namespace Glacier {
     mStates.pushState( &dummyIdleState );
     mHeight = 0.8f;
     mRadius = 0.2f;
+  }
+
+  AICharacterInputComponent* Dummy::getInput()
+  {
+    return (AICharacterInputComponent*)mInput;
   }
 
   void Dummy::spawn( const Vector3& position, const Quaternion& orientation )

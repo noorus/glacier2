@@ -163,6 +163,7 @@ namespace Glacier {
   public:
     AICharacterInputComponent( Character* character );
     virtual void update( const ActionPacket& action, GameTime delta );
+    virtual void injectJump();
     virtual ~AICharacterInputComponent();
   };
 
