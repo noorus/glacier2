@@ -165,19 +165,17 @@ namespace Glacier {
     if ( shouldIgnoreInput( device ) )
       return;
 
-    /*mDirectional = directional;
+    mDirectional = directional;
 
     if ( !mDirectional.isZeroLength() && mActions.move == Player_Move_None )
       mActions.move = Player_Move_Forward;
     else if ( mDirectional.isZeroLength() && mActions.move == Player_Move_Forward )
-      mActions.move = Player_Move_None;*/
+      mActions.move = Player_Move_None;
   }
 
   void LocalController::cameraMouseMovement( InputDevice* device,
   const Vector3& movement )
   {
-    updateInputMode( device );
-
     if ( shouldIgnoreInput( device ) )
       return;
 
