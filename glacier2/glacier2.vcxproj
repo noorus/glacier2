@@ -373,6 +373,7 @@
     <ClCompile Include="src\PhysicsDebugVisualizer.cpp" />
     <ClCompile Include="src\PhysicsScene.cpp" />
     <ClCompile Include="src\PhysXPhysics.cpp" />
+    <ClCompile Include="src\Player.cpp" />
     <ClCompile Include="src\PostProcessing.cpp" />
     <ClCompile Include="src\Script.cpp" />
     <ClCompile Include="src\Scripting.cpp" />
@@ -479,6 +480,7 @@
     <ClInclude Include="include\PhysicsDebugVisualizer.h" />
     <ClInclude Include="include\PhysicsScene.h" />
     <ClInclude Include="include\PhysXPhysics.h" />
+    <ClInclude Include="include\Player.h" />
     <ClInclude Include="include\PostProcessing.h" />
     <ClInclude Include="include\Script.h" />
     <ClInclude Include="include\Scripting.h" />

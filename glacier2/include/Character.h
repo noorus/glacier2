@@ -98,8 +98,6 @@ namespace Glacier {
   class Character: public Entity {
   friend class EntityFactories;
   friend class CharacterInputComponent;
-  private:
-    static EntityBaseData baseData;
   protected:
     enum Flags {
       Flag_On_Ground = 0
@@ -112,7 +110,7 @@ namespace Glacier {
     ActionPacket mActions;
     Ogre::Entity* mEntity;
     Ogre::MeshPtr mMesh;
-    Character( World* world );
+    Character( World* world, const EntityBaseData* baseData );
     virtual ~Character();
   public:
     virtual const Ogre::MovableObject* getMovable() const throw();

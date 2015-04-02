@@ -18,12 +18,11 @@
 
 namespace Glacier {
 
-  ENGINE_DECLARE_ENTITY( player, Character );
-
   const Real cPlayerHeight = 1.0f;
   const Real cPlayerRadius = 0.25f;
 
-  Character::Character( World* world ): Entity( world, &baseData ),
+  Character::Character( World* world, const EntityBaseData* baseData ):
+  Entity( world, baseData ),
   mInput( nullptr ), mPhysics( nullptr ), mMovement( nullptr )
   {
     mInput = new CharacterInputComponent( this );

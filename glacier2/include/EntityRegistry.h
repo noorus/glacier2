@@ -67,7 +67,7 @@ namespace Glacier {
   //! \class EntityRegistrar
   //! \brief Declares an entity to the EntityRegistry on construction.
   //! \brief Only called through the ENGINE_DECLARE_ENTITY macro.
-  //! \warning Don't use directly for anything!
+  //! \warning You should never need to use this class directly.
   template <class T>
   class EntityRegistrar {
   public:

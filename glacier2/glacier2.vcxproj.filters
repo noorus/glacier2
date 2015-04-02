@@ -420,6 +420,9 @@
     <ClCompile Include="src\CharacterMovementComponent.cpp">
       <Filter>Source Files\Entities\Character</Filter>
     </ClCompile>
+    <ClCompile Include="src\Player.cpp">
+      <Filter>Source Files\Entities\Character</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\CompilerDef.h">
@@ -726,6 +729,9 @@
       <Filter>Header Files\Input</Filter>
     </ClInclude>
     <ClInclude Include="include\Character.h">
+      <Filter>Header Files\Entities\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Player.h">
       <Filter>Header Files\Entities\Character</Filter>
     </ClInclude>
   </ItemGroup>
