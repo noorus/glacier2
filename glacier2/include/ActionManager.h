@@ -81,25 +81,16 @@ namespace Glacier {
     inline const Vector3& getMovement() throw() { return mMovement; }
   };
 
+  class LocalController;
+
   class ActionManager: public boost::noncopyable {
   protected:
     Engine* mEngine;
-    ActionPacket mActions;
     CameraController* mCameraController;
-    Vector2 mDirectional; // hack hack hack...
   public:
     explicit ActionManager( Engine* pEngine );
-    void resetActions();
-    void prepare();
-    void beginAction( const BindAction& action );
-    void endAction( const BindAction& action );
-    void applyZoom( const Real zoom );
     ~ActionManager();
-    inline const ActionPacket& getActions() throw() { return mActions; }
     CameraController* getCameraController() throw() { return mCameraController; }
-    // hack hack hack...
-    void setDirectional( const Vector2& directional ) { mDirectional = directional; }
-    inline const Vector2& getDirectional() throw() { return mDirectional; }
   };
 
 }

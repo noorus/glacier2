@@ -24,7 +24,7 @@ namespace Glacier {
       void onKeyReleased(
         Nil::Keyboard* keyboard, const Nil::VirtualKeyCode keycode );
     public:
-      Device( Nil::Keyboard* keyboard );
+      Device( LocalController* local, Nil::Keyboard* keyboard );
       virtual void prepare();
       virtual void onFocus( const bool focus );
       void resetBinds();

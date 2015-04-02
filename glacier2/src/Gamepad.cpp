@@ -2,9 +2,8 @@
 #include "InputManager.h"
 #include "Engine.h"
 #include "Exception.h"
-#include "ActionManager.h"
-#include "ConsoleWindow.h"
 #include "Gamepad.h"
+#include "Controller.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
@@ -30,9 +29,9 @@ namespace Glacier {
     void Button::onButtonInput( const ButtonInput& input )
     {
       if ( input == Button_Pressed )
-        gEngine->getActionManager()->beginAction( mAction );
+        mDevice->getController()->beginAction( mDevice, mAction );
       else if ( input == Button_Released )
-        gEngine->getActionManager()->endAction( mAction );
+        mDevice->getController()->endAction( mDevice, mAction );
     }
 
     Thumbstick::Thumbstick( Device* device, ThumbstickType type, Real multiplier ):
@@ -53,13 +52,9 @@ namespace Glacier {
         mDirectional /= length;
 
       if ( mType == Thumbstick_Camera )
-      {
-        gEngine->getActionManager()->getCameraController()->setPersistentMovement( mDirectional * mMultiplier );
-      }
+        mDevice->getController()->cameraMovement( mDevice, mDirectional * mMultiplier );
       else if ( mType == Thumbstick_Movement )
-      {
-        gEngine->getActionManager()->setDirectional( mDirectional );
-      }
+        mDevice->getController()->directionalMovement( mDevice, mDirectional );
     }
 
     Directional::Directional( Device* device ): Component( device )
@@ -84,12 +79,13 @@ namespace Glacier {
 
     // Device
     
-    Device::Device( Nil::Controller* controller ): mController( controller ), mFocused( true )
+    Device::Device( LocalController* local, Nil::Controller* controller ):
+    InputDevice( local ), mGamepad( controller ), mFocused( true )
     {
-      nButtons = mController->getState().mButtons.size();
-      nAxes = mController->getState().mAxes.size();
-      nPovs = mController->getState().mPOVs.size();
-      nSliders = mController->getState().mSliders.size();
+      nButtons = mGamepad->getState().mButtons.size();
+      nAxes = mGamepad->getState().mAxes.size();
+      nPovs = mGamepad->getState().mPOVs.size();
+      nSliders = mGamepad->getState().mSliders.size();
 
       // 360
       defineButton( 6, Action_Jump );
@@ -118,7 +114,8 @@ namespace Glacier {
       return component;
     }
 
-    Thumbstick* Device::defineThumbstick( size_t axisX, size_t axisY, const ThumbstickType& type, const Real multiplier )
+    Thumbstick* Device::defineThumbstick( size_t axisX, size_t axisY,
+    const ThumbstickType& type, const Real multiplier )
     {
       Thumbstick* component = new Thumbstick( this, type, multiplier );
       mAxisMap[axisX] = AxisDefinition( component, Axis_X );

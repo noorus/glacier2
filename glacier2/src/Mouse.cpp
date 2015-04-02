@@ -2,11 +2,10 @@
 #include "InputManager.h"
 #include "Engine.h"
 #include "Exception.h"
-#include "ActionManager.h"
-#include "ConsoleWindow.h"
 #include "Mouse.h"
 #include "ServiceLocator.h"
 #include "GUI.h"
+#include "Controller.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
@@ -15,7 +14,8 @@ namespace Glacier {
 
   namespace Mouse {
 
-    Device::Device( Nil::Mouse* mouse ): mMouse( mouse ), mFocused( true )
+    Device::Device( LocalController* local, Nil::Mouse* mouse ):
+    InputDevice( local ), mMouse( mouse ), mFocused( true )
     {
       mButtons.resize( mMouse->getState().mButtons.size(), Action_None );
     }
@@ -40,7 +40,7 @@ namespace Glacier {
 
       const BindAction& action = mButtons[button];
       if ( action != Action_None )
-        gEngine->getActionManager()->beginAction( action );
+        mController->beginAction( this, action );
     }
 
     void Device::onMouseButtonReleased( Nil::Mouse* mouse, const Nil::MouseState& state, size_t button )
@@ -53,7 +53,7 @@ namespace Glacier {
 
       const BindAction& action = mButtons[button];
       if ( action != Action_None )
-        gEngine->getActionManager()->endAction( action );
+        mController->endAction( this, action );
     }
 
     void Device::onMouseMoved( Nil::Mouse* mouse, const Nil::MouseState& state )
@@ -73,7 +73,7 @@ namespace Glacier {
       if ( Locator::getGUI().injectMouseMove( state ) )
         return;
 
-      gEngine->getActionManager()->applyZoom( Real( state.mWheel.relative / WHEEL_DELTA ) );
+      mController->applyZoom( this, Real( state.mWheel.relative / WHEEL_DELTA ) );
     }
 
     Device::~Device()

@@ -2,9 +2,8 @@
 #include "InputManager.h"
 #include "Engine.h"
 #include "Exception.h"
-#include "ActionManager.h"
-#include "ConsoleWindow.h"
 #include "Keyboard.h"
+#include "Controller.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
@@ -13,7 +12,8 @@ namespace Glacier {
 
   namespace Keyboard {
 
-    Device::Device( Nil::Keyboard* keyboard ): mKeyboard( keyboard ), mFocused( true )
+    Device::Device( LocalController* local, Nil::Keyboard* keyboard ):
+    InputDevice( local ), mKeyboard( keyboard ), mFocused( true )
     {
       resetBinds();
 
@@ -35,7 +35,7 @@ namespace Glacier {
       const BindAction& action = mKeyBindTable[keycode];
 
       if ( action != Action_None )
-        gEngine->getActionManager()->beginAction( action );
+        mController->beginAction( this, action );
     }
 
     void Device::onKeyRepeat( Nil::Keyboard* keyboard, const Nil::VirtualKeyCode keycode )
@@ -54,7 +54,7 @@ namespace Glacier {
       const BindAction& action = mKeyBindTable[keycode];
 
       if ( action != Action_None )
-        gEngine->getActionManager()->endAction( action );
+        mController->endAction( this, action );
     }
 
     void Device::prepare()

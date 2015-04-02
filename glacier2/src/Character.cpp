@@ -11,6 +11,7 @@
 #include "World.h"
 #include "Entity.h"
 #include "ActionManager.h"
+#include "InputManager.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
@@ -50,7 +51,8 @@ namespace Glacier {
 
   void Character::think( const GameTime delta )
   {
-    mInput->update( gEngine->getActionManager()->getActions(), delta );
+    auto actions = gEngine->getInput()->getLocalController()->getActions();
+    mInput->update( actions, delta );
 
     if ( mPhysics && mMovement )
     {

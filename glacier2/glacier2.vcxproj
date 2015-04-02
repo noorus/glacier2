@@ -333,6 +333,7 @@
     <ClCompile Include="src\Colors.cpp" />
     <ClCompile Include="src\Console.cpp" />
     <ClCompile Include="src\ConsoleWindow.cpp" />
+    <ClCompile Include="src\Controller.cpp" />
     <ClCompile Include="src\DemoState.cpp" />
     <ClCompile Include="src\DeveloperEntities.cpp" />
     <ClCompile Include="src\EntityRegistry.cpp" />
@@ -445,6 +446,7 @@
     <ClInclude Include="include\CharacterPhysicsComponent.h" />
     <ClInclude Include="include\Console.h" />
     <ClInclude Include="include\ConsoleWindow.h" />
+    <ClInclude Include="include\Controller.h" />
     <ClInclude Include="include\DemoState.h" />
     <ClInclude Include="include\DeveloperEntities.h" />
     <ClInclude Include="include\Gamepad.h" />

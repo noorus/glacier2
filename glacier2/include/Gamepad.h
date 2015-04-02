@@ -105,7 +105,7 @@ namespace Glacier {
       typedef std::map<size_t, AxisDefinition> AxisMap;
       typedef std::map<size_t, Directional*> PovMap;
     protected:
-      Nil::Controller* mController;
+      Nil::Controller* mGamepad;
       ComponentList mComponents;
       ButtonMap mButtonMap;
       AxisMap mAxisMap;
@@ -133,7 +133,7 @@ namespace Glacier {
       virtual void onControllerPOVMoved( Nil::Controller* controller,
         const Nil::ControllerState& state, size_t pov );
     public:
-      Device( Nil::Controller* controller );
+      Device( LocalController* local, Nil::Controller* controller );
       virtual void prepare();
       virtual void onFocus( const bool focus );
       virtual ~Device();

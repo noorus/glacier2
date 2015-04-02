@@ -29,7 +29,7 @@ namespace Glacier {
       void onMouseWheelMoved(
         Nil::Mouse* mouse, const Nil::MouseState& state );
     public:
-      Device( Nil::Mouse* mouse );
+      Device( LocalController* local, Nil::Mouse* mouse );
       virtual void prepare();
       virtual void onFocus( const bool focus );
       virtual ~Device();

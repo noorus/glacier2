@@ -16,12 +16,6 @@
     <Filter Include="Header Files\Shared">
       <UniqueIdentifier>{7a4c40f9-b3c1-4f2d-aac3-b4974a4e1c43}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\HDRLib">
-      <UniqueIdentifier>{009720e5-f203-4f4a-bfd9-19723834dde4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\HDRLib">
-      <UniqueIdentifier>{4d45a1da-b48d-4eca-97de-83ad370f6d5d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\States">
       <UniqueIdentifier>{2ae52bc9-4c29-4716-a233-2caec2f900fa}</UniqueIdentifier>
     </Filter>
@@ -143,9 +137,6 @@
     </ClCompile>
     <ClCompile Include="src\Game.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\hdrlib\HDRCompositor.cpp">
-      <Filter>Source Files\HDRLib</Filter>
     </ClCompile>
     <ClCompile Include="src\Director.cpp">
       <Filter>Source Files</Filter>
@@ -414,6 +405,12 @@
     <ClCompile Include="src\PostProcessing.cpp">
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="..\hdrlib\HDRCompositor.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Controller.cpp">
+      <Filter>Source Files\Input</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\CompilerDef.h">
@@ -439,9 +436,6 @@
     </ClInclude>
     <ClInclude Include="glacier2_resource.h">
       <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\hdrlib\HDRCompositor.h">
-      <Filter>Header Files\HDRLib</Filter>
     </ClInclude>
     <ClInclude Include="include\Director.h">
       <Filter>Header Files</Filter>
@@ -718,6 +712,12 @@
     </ClInclude>
     <ClInclude Include="include\Shadows.h">
       <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\hdrlib\HDRCompositor.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Controller.h">
+      <Filter>Header Files\Input</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -14,11 +14,13 @@
 namespace Glacier {
 
   InputManager::InputManager( Engine* engine, HINSTANCE instance, Ogre::RenderWindow* window ):
-  EngineComponent( engine ), mSystem( nullptr ), mTakingInput( false )
+  EngineComponent( engine ), mSystem( nullptr ), mTakingInput( false ), mLocalController( nullptr )
   {
+    mLocalController = new LocalController();
+
     // Greetings
     mEngine->getConsole()->printf( Console::srcInput,
-      L"Initializing Nice Input Library" );
+      L"Initializing input" );
 
     // Get window handle
     HWND windowHandle = NULL;
@@ -37,7 +39,7 @@ namespace Glacier {
 
   void InputManager::componentTick( GameTime tick, GameTime time )
   {
-    gEngine->getActionManager()->prepare();
+    mLocalController->prepare();
 
     for ( auto mouse : mMice )
       mouse.second->prepare();
@@ -61,6 +63,11 @@ namespace Glacier {
     //   gamepad.second->onFocus( focus );
   }
 
+  LocalController* InputManager::getLocalController()
+  {
+    return mLocalController;
+  }
+
   void InputManager::onDeviceConnected( Nil::Device* device )
   {
     device->enable();
@@ -79,7 +86,7 @@ namespace Glacier {
     if ( mMice.find( device->getStaticID() ) != mMice.end() )
       delete mMice[device->getStaticID()];
 
-    auto mouse = new Mouse::Device( instance );
+    auto mouse = new Mouse::Device( mLocalController, instance );
     mMice[device->getStaticID()] = mouse;
     instance->addListener( mouse );
   }
@@ -92,7 +99,7 @@ namespace Glacier {
     if ( mKeyboards.find( device->getStaticID() ) != mKeyboards.end() )
       delete mKeyboards[device->getStaticID()];
 
-    auto keyboard = new Keyboard::Device( instance );
+    auto keyboard = new Keyboard::Device( mLocalController, instance );
     mKeyboards[device->getStaticID()] = keyboard;
     instance->addListener( keyboard );
   }
@@ -105,7 +112,7 @@ namespace Glacier {
     if ( mGamepads.find( device->getStaticID() ) != mGamepads.end() )
       delete mGamepads[device->getStaticID()];
 
-    auto gamepad = new Gamepad::Device( instance );
+    auto gamepad = new Gamepad::Device( mLocalController, instance );
     mGamepads[device->getStaticID()] = gamepad;
     instance->addListener( gamepad );
   }
@@ -140,6 +147,7 @@ namespace Glacier {
   InputManager::~InputManager()
   {
     SAFE_DELETE( mSystem );
+    SAFE_DELETE( mLocalController );
   }
 
 }
