@@ -108,12 +108,12 @@ namespace Glacier {
     CharacterPhysicsComponent* mPhysics;
     CharacterMoveData mMove;
     ActionPacket mActions;
-    Ogre::Entity* mEntity;
-    Ogre::MeshPtr mMesh;
+    Real mHeight;
+    Real mRadius;
     Character( World* world, const EntityBaseData* baseData );
     virtual ~Character();
   public:
-    virtual const Ogre::MovableObject* getMovable() const throw();
+    virtual const Ogre::MovableObject* getMovable() const throw() = 0;
     virtual void setActions( const ActionPacket& actions,
       const CharacterMoveMode mode,
       const Vector3& direction,

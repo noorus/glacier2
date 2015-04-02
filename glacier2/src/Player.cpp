@@ -21,14 +21,23 @@ namespace Glacier {
 
   ENGINE_DECLARE_ENTITY( player, Player );
 
-  Player::Player( World* world ): Character( world, &baseData )
+  Player::Player( World* world ): Character( world, &baseData ),
+  mEntity( nullptr )
   {
-    //
+    mHeight = 1.0f;
+    mRadius = 0.25f;
   }
 
   void Player::spawn( const Vector3& position, const Quaternion& orientation )
   {
     Character::spawn( position, orientation );
+
+    mMesh = Procedural::CapsuleGenerator().setHeight( mHeight ).setRadius( mRadius ).realizeMesh( "playerStandCapsule" );
+
+    mEntity = Locator::getGraphics().getScene()->createEntity( mMesh );
+    mEntity->setMaterialName( "Developer/Placeholder/Player" );
+    mEntity->setCastShadows( true );
+    mNode->attachObject( mEntity );
   }
 
   void Player::think( const GameTime delta )
@@ -36,9 +45,15 @@ namespace Glacier {
     Character::think( delta );
   }
 
+  const Ogre::MovableObject* Player::getMovable() const
+  {
+    return mEntity;
+  }
+
   Player::~Player()
   {
-    //
+    if ( mEntity )
+      Locator::getGraphics().getScene()->destroyEntity( mEntity );
   }
 
 }

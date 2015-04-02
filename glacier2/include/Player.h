@@ -16,11 +16,14 @@ namespace Glacier {
   private:
     static EntityBaseData baseData;
   protected:
+    Ogre::Entity* mEntity;
+    Ogre::MeshPtr mMesh;
     Player( World* world );
     virtual ~Player();
   public:
     virtual void spawn( const Vector3& position, const Quaternion& orientation );
     virtual void think( const GameTime delta );
+    virtual const Ogre::MovableObject* getMovable() const throw();
   };
 
 }
