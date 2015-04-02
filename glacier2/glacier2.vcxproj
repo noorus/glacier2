@@ -322,6 +322,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Ship|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\AIFiniteStateMachine.cpp" />
     <ClCompile Include="src\AudioService.cpp" />
     <ClCompile Include="src\Camera.cpp" />
     <ClCompile Include="src\CameraController.cpp" />
@@ -443,6 +444,9 @@
     <ClInclude Include="..\ogre-procedural\library\include\ProceduralTubeGenerator.h" />
     <ClInclude Include="..\ogre-procedural\library\include\ProceduralUtils.h" />
     <ClInclude Include="include\Actions.h" />
+    <ClInclude Include="include\AIAgent.h" />
+    <ClInclude Include="include\AIFiniteStateMachine.h" />
+    <ClInclude Include="include\AIState.h" />
     <ClInclude Include="include\AudioService.h" />
     <ClInclude Include="include\Camera.h" />
     <ClInclude Include="include\CascadedShadowMapping.h" />

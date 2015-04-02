@@ -130,6 +130,12 @@
     <Filter Include="Header Files\Entities\Character">
       <UniqueIdentifier>{bd6a8db5-0113-4e15-a104-dc1f0281f8e3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\AI">
+      <UniqueIdentifier>{f7513b51-1d73-4a60-9469-4e75dd1d5f5c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\AI">
+      <UniqueIdentifier>{9fb7191a-fe1c-45b5-ac00-322d9e56ce9a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Main.cpp">
@@ -425,6 +431,9 @@
     </ClCompile>
     <ClCompile Include="src\JSEntity.cpp">
       <Filter>Source Files\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AIFiniteStateMachine.cpp">
+      <Filter>Source Files\AI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -736,6 +745,15 @@
     </ClInclude>
     <ClInclude Include="include\Player.h">
       <Filter>Header Files\Entities\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="include\AIFiniteStateMachine.h">
+      <Filter>Header Files\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="include\AIState.h">
+      <Filter>Header Files\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="include\AIAgent.h">
+      <Filter>Header Files\AI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
