@@ -16,12 +16,19 @@ namespace Glacier {
   namespace Gamepad { class Device; }
 
   class InputDevice {
+  public:
+    enum Type {
+      Type_Keyboard,
+      Type_Mouse,
+      Type_Gamepad
+    };
   protected:
     LocalController* mController;
   public:
     InputDevice( LocalController* controller ): mController( controller ) {}
     virtual void prepare() = 0;
     virtual void onFocus( const bool focus ) = 0;
+    virtual const Type getType() = 0;
     virtual LocalController* getController() { return mController; }
   };
 

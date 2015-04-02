@@ -49,10 +49,14 @@ namespace Glacier {
     mMovement = new CharacterMovementComponent( this );
   }
 
+  void Character::setActions( const ActionPacket& actions )
+  {
+    mActions = actions;
+  }
+
   void Character::think( const GameTime delta )
   {
-    auto actions = gEngine->getInput()->getLocalController()->getActions();
-    mInput->update( actions, delta );
+    mInput->update( mActions, delta );
 
     if ( mPhysics && mMovement )
     {

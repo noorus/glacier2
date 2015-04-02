@@ -2,6 +2,7 @@
 #include "Types.h"
 #include "Entity.h"
 #include "EntityRegistry.h"
+#include "ActionManager.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
@@ -106,12 +107,14 @@ namespace Glacier {
     CharacterMovementComponent* mMovement;
     CharacterPhysicsComponent* mPhysics;
     CharacterMoveData mMove;
+    ActionPacket mActions;
     Ogre::Entity* mEntity;
     Ogre::MeshPtr mMesh;
     Character( World* world );
     virtual ~Character();
   public:
     virtual const Ogre::MovableObject* getMovable() const throw();
+    virtual void setActions( const ActionPacket& actions );
     virtual void spawn( const Vector3& position, const Quaternion& orientation );
     virtual void think( const GameTime delta );
     virtual void onHitGround();

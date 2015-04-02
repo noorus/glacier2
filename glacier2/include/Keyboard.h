@@ -27,6 +27,7 @@ namespace Glacier {
       Device( LocalController* local, Nil::Keyboard* keyboard );
       virtual void prepare();
       virtual void onFocus( const bool focus );
+      virtual const Type getType() { return Type_Keyboard; }
       void resetBinds();
       virtual ~Device();
     };

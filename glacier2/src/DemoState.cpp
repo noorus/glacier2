@@ -22,6 +22,8 @@
 #include "DeveloperEntities.h"
 #include "Navigation.h"
 #include "GlacierMath.h"
+#include "InputManager.h"
+#include "CharacterPhysicsComponent.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
@@ -90,6 +92,7 @@ namespace Glacier {
       maxbound.x, maxbound.y, maxbound.z );
 
     auto player = Locator::getEntities().create( "player" );
+    gEngine->getInput()->getLocalController()->setCharacter( (Character*)player );
     player->spawn( Vector3( 0.0f, 1.0f, 0.0f ), Quaternion::IDENTITY );
 
     for ( int i = 1; i < 11; i++ )
@@ -142,6 +145,7 @@ namespace Glacier {
   void DemoState::shutdown( GameTime time )
   {
     SAFE_DELETE( mOverlay );
+    gEngine->getInput()->getLocalController()->setCharacter( nullptr );
     Locator::getEntities().clear();
     Locator::getMusic().endScene();
 #ifndef GLACIER_NO_NAVIGATION_DEBUG

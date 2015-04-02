@@ -5,17 +5,25 @@
 #include "Console.h"
 #include "ServiceLocator.h"
 #include "Controller.h"
+#include "InputManager.h"
+#include "CharacterPhysicsComponent.h"
 
 namespace Glacier {
 
-  Controller::Controller(): mCamera( nullptr )
+  Controller::Controller(): mCamera( nullptr ), mCharacter( nullptr )
   {
-    //
+    resetActions();
   }
 
   void Controller::setCamera( GameCamera* camera )
   {
     mCamera = camera;
+  }
+
+  void Controller::setCharacter( Character* character )
+  {
+    gEngine->getConsole()->printf( Console::srcInput, L"Controller: setting character 0x%X", character );
+    mCharacter = character;
   }
 
   void Controller::resetActions()
@@ -41,8 +49,56 @@ namespace Glacier {
       mActions.move = Player_Move_None;*/
   }
 
+  void Controller::apply()
+  {
+    if ( mCharacter )
+      mCharacter->setActions( mActions );
+  }
+
+  LocalController::LocalController(): mMode( Mode_KeyboardAndMouse )
+  {
+    //
+  }
+
+  void LocalController::updateInputMode( InputDevice* device )
+  {
+    Mode checkMode;
+
+    if ( device->getType() == InputDevice::Type_Mouse
+      || device->getType() == InputDevice::Type_Keyboard )
+      checkMode = Mode_KeyboardAndMouse;
+    else
+      checkMode = Mode_Gamepad;
+
+    if ( checkMode != mMode )
+    {
+      mMode = checkMode;
+      resetActions();
+      gEngine->getConsole()->printf( Console::srcInput,
+        L"Switched input mode: %s",
+        mMode == Mode_KeyboardAndMouse ? L"Keyboard & Mouse" : L"Gamepad" );
+    }
+  }
+
+  bool LocalController::shouldIgnoreInput( InputDevice* from )
+  {
+    if ( ( from->getType() == InputDevice::Type_Keyboard
+        || from->getType() == InputDevice::Type_Mouse )
+      && mMode == Mode_KeyboardAndMouse )
+      return false;
+    else if ( from->getType() == InputDevice::Type_Gamepad && mMode == Mode_Gamepad )
+      return false;
+    else
+      return true;
+  }
+
   void LocalController::beginAction( InputDevice* device, const BindAction& action )
   {
+    updateInputMode( device );
+
+    if ( shouldIgnoreInput( device ) )
+      return;
+
     switch ( action )
     {
       case Action_Move_Forward:
@@ -75,6 +131,11 @@ namespace Glacier {
 
   void LocalController::endAction( InputDevice* device, const BindAction& action )
   {
+    updateInputMode( device );
+
+    if ( shouldIgnoreInput( device ) )
+      return;
+
     switch ( action )
     {
       case Action_Move_Forward:
@@ -105,19 +166,39 @@ namespace Glacier {
     }
   }
 
+  const LocalController::Mode& LocalController::getMode()
+  {
+    return mMode;
+  }
+
   void LocalController::applyZoom( InputDevice* device, const Real zoom )
   {
-    gEngine->getConsole()->printf( Console::srcInput, L"LocalController::applyZoom()" );
+    updateInputMode( device );
+
+    if ( shouldIgnoreInput( device ) )
+      return;
+
+    // gEngine->getConsole()->printf( Console::srcInput, L"LocalController::applyZoom()" );
   }
 
   void LocalController::directionalMovement( InputDevice* device, const Vector2& directional )
   {
-    gEngine->getConsole()->printf( Console::srcInput, L"LocalController::directionalMovement()" );
+    updateInputMode( device );
+
+    if ( shouldIgnoreInput( device ) )
+      return;
+
+    // gEngine->getConsole()->printf( Console::srcInput, L"LocalController::directionalMovement()" );
   }
 
   void LocalController::cameraMovement( InputDevice* device, const Vector2& movement )
   {
-    gEngine->getConsole()->printf( Console::srcInput, L"LocalController::cameraMovement()" );
+    updateInputMode( device );
+
+    if ( shouldIgnoreInput( device ) )
+      return;
+
+    // gEngine->getConsole()->printf( Console::srcInput, L"LocalController::cameraMovement()" );
   }
 
 }

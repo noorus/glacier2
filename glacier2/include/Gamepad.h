@@ -136,6 +136,7 @@ namespace Glacier {
       Device( LocalController* local, Nil::Controller* controller );
       virtual void prepare();
       virtual void onFocus( const bool focus );
+      virtual const Type getType() { return Type_Gamepad; }
       virtual ~Device();
     };
 

@@ -49,6 +49,8 @@ namespace Glacier {
       gamepad.second->prepare();
 
     mSystem->update();
+
+    mLocalController->apply();
   }
 
   void InputManager::onInputFocus( const bool focus )

@@ -32,6 +32,7 @@ namespace Glacier {
       Device( LocalController* local, Nil::Mouse* mouse );
       virtual void prepare();
       virtual void onFocus( const bool focus );
+      virtual const Type getType() { return Type_Mouse; }
       virtual ~Device();
     };
 
