@@ -78,6 +78,24 @@ namespace Glacier {
     }
   }
 
+  const bool Character::canSee( Entity* entity ) const
+  {
+    auto worldEye = getWorldEyePosition();
+    auto halfFov = Radian( mFieldOfView.valueDegrees() / 2.0f );
+    auto samplingPoints = entity->getMovable()->getWorldBoundingBox( false ).getAllCorners();
+    for ( size_t i = 0; i < 8; i++ )
+    {
+      auto sample = samplingPoints[i];
+      if ( sample.distance( worldEye ) <= mViewDistance )
+      {
+        sample -= worldEye;
+        if ( sample.angleBetween( mFacing ) <= halfFov )
+          return true;
+      }
+    }
+    return false;
+  }
+
   void Character::onHitGround()
   {
     mFlags[Flag_On_Ground] = true;

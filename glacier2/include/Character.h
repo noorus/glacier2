@@ -135,6 +135,7 @@ namespace Glacier {
     virtual const Vector3 getWorldEyePosition() const throw();
     virtual const Radian& getFieldOfView() const throw();
     virtual const Vector3& getFacing() const throw();
+    virtual const bool canSee( Entity* entity ) const throw();
     virtual void setActions( const ActionPacket& actions,
       const CharacterMoveMode mode,
       const Vector3& direction,
