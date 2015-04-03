@@ -81,7 +81,7 @@ namespace Glacier {
   const bool Character::canSee( Entity* entity ) const
   {
     auto worldEye = getWorldEyePosition();
-    auto halfFov = Radian( mFieldOfView.valueDegrees() / 2.0f );
+    auto halfFov = Degree( mFieldOfView.valueDegrees() / 2.0f );
     auto samplingPoints = entity->getMovable()->getWorldBoundingBox( false ).getAllCorners();
     for ( size_t i = 0; i < 8; i++ )
     {
