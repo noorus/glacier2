@@ -9,7 +9,7 @@
 
 namespace Glacier {
 
-  FOVCone::FOVCone(): entity( nullptr ), node( nullptr )
+  FOVCone::FOVCone(): entity( nullptr ), node( nullptr ), alert( false )
   {
     auto scene = Locator::getGraphics().getScene();
     node = scene->createSceneNode();
@@ -23,6 +23,18 @@ namespace Glacier {
       scene->destroyEntity( entity );
     if ( node )
       scene->destroySceneNode( node );
+  }
+
+  void FOVCone::setAlert( const bool alert )
+  {
+    this->alert = alert;
+    if ( !entity )
+      return;
+
+    ColourValue color = ( alert ? ColourValue::Red : ColourValue::Green );
+    entity->getSubEntity( 0 )->getMaterial()->getTechnique( 0 )->getPass( 0 )->getTextureUnitState( 0 )->setColourOperationEx(
+      Ogre::LayerBlendOperationEx::LBX_SOURCE1,
+      Ogre::LayerBlendSource::LBS_MANUAL, Ogre::LayerBlendSource::LBS_CURRENT, color );
   }
 
   void FOVCone::set( Real viewDistance, const Radian& fieldOfView )
@@ -44,6 +56,7 @@ namespace Glacier {
 
     entity = scene->createEntity( mesh );
     entity->setMaterialName( "Debug/FOVVisualization" );
+    setAlert( alert );
 
     // Fix our node's direction so it points towards the usual default -Z.
     node->attachObject( entity );

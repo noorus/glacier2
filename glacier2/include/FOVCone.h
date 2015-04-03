@@ -10,9 +10,11 @@ namespace Glacier {
     Ogre::MeshPtr mesh;
     Ogre::Entity* entity;
     Ogre::SceneNode* node;
+    bool alert;
     FOVCone();
     ~FOVCone();
     void set( Real viewDistance, const Radian& fieldOfView );
+    void setAlert( const bool alert );
   };
 
 }
