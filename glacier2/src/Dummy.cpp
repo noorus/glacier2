@@ -63,8 +63,8 @@ namespace Glacier {
   mEntity( nullptr ), mStates( this )
   {
     mEyePosition = Vector3( 0.0f, 0.5f, 0.0f );
-    mFieldOfView = Radian( Ogre::Degree( 60.0f ) );
-    mViewDistance = 5.0f;
+    mFieldOfView = Radian( Ogre::Degree( 50.0f ) );
+    mViewDistance = 8.0f;
     mStates.pushState( &dummyIdleState );
     mHeight = 0.8f;
     mRadius = 0.2f;
@@ -87,6 +87,7 @@ namespace Glacier {
     mMesh = Procedural::CapsuleGenerator( mRadius, mHeight, 8, 16, 1 ).realizeMesh();
 
     mEntity = Locator::getGraphics().getScene()->createEntity( mMesh );
+    mEntity->setQueryFlags( SceneQueryFlag_Character );
     mEntity->setMaterialName( "Developer/Placeholder/Dummy" );
     mEntity->setCastShadows( true );
     mNode->attachObject( mEntity );

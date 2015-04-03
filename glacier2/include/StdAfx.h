@@ -150,3 +150,4 @@
 
 // Glacier types
 #include "Types.h"
+#include "GlobalFlags.h"

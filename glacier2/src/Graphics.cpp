@@ -216,6 +216,10 @@ namespace Glacier {
     // Add OverlaySystem as a global renderqueue listener
     mSceneManager->addRenderQueueListener( mOverlaySystem );
 
+    // Set movables to have no scene query flags by default
+    // This ensures that all kinds of random crap don't screw up our queries
+    Ogre::MovableObject::setDefaultQueryFlags( 0 );
+
     // Set default texture filtering, anisotropy and mipmap count
     Ogre::MaterialManager::getSingleton().setDefaultTextureFiltering(
       (Ogre::TextureFilterOptions)g_CVar_tex_filtering.getInt() );

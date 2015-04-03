@@ -52,6 +52,7 @@ namespace Glacier {
       scm->addPCZSceneNode( mNode, scm->getDefaultZone() );
 
       mEntity = Locator::getGraphics().getScene()->createEntity( mMesh );
+      mEntity->setQueryFlags( SceneQueryFlag_World );
       mEntity->setMaterialName( "Developer/Floor" );
       mEntity->setCastShadows( false );
       mNode->attachObject( mEntity );
@@ -91,6 +92,7 @@ namespace Glacier {
       scm->addPCZSceneNode( mNode, scm->getDefaultZone() );
 
       mEntity = Locator::getGraphics().getScene()->createEntity( mMesh );
+      mEntity->setQueryFlags( SceneQueryFlag_World );
       mEntity->setMaterialName( "Developer/Floor" );
       mEntity->setCastShadows( true );
       mNode->attachObject( mEntity );

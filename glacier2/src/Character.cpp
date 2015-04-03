@@ -12,6 +12,7 @@
 #include "Entity.h"
 #include "Actions.h"
 #include "InputManager.h"
+#include "Graphics.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
@@ -80,9 +81,11 @@ namespace Glacier {
 
   const bool Character::canSee( Entity* entity ) const
   {
+    auto scene = Locator::getGraphics().getScene();
+    auto movable = entity->getMovable();
     auto worldEye = getWorldEyePosition();
     auto halfFov = Degree( mFieldOfView.valueDegrees() / 2.0f );
-    auto samplingPoints = entity->getMovable()->getWorldBoundingBox( false ).getAllCorners();
+    auto samplingPoints = movable->getWorldBoundingBox( false ).getAllCorners();
     for ( size_t i = 0; i < 8; i++ )
     {
       auto sample = samplingPoints[i];
@@ -90,7 +93,26 @@ namespace Glacier {
       {
         sample -= worldEye;
         if ( sample.angleBetween( mFacing ) <= halfFov )
-          return true;
+        {
+          Ogre::Ray ray( worldEye, sample );
+          auto query = scene->createRayQuery( ray );
+          query->setSortByDistance( true );
+          auto results = query->execute();
+          for ( auto result : results )
+          {
+            if ( !result.movable )
+              break;
+            auto flags = result.movable->getQueryFlags();
+            if ( ( flags & SceneQueryFlag_World ) != 0 )
+              break;
+            if ( result.movable == movable )
+            {
+              scene->destroyQuery( query );
+              return true;
+            }
+          }
+          scene->destroyQuery( query );
+        }
       }
     }
     return false;

@@ -462,6 +462,7 @@
     <ClInclude Include="include\DeveloperEntities.h" />
     <ClInclude Include="include\Dummy.h" />
     <ClInclude Include="include\Gamepad.h" />
+    <ClInclude Include="include\GlobalFlags.h" />
     <ClInclude Include="include\GUI.h" />
     <ClInclude Include="include\Keyboard.h" />
     <ClInclude Include="include\MenuState.h" />

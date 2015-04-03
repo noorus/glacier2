@@ -770,7 +770,7 @@
     <ClInclude Include="include\Dummy.h">
       <Filter>Header Files\Entities\Character</Filter>
     </ClInclude>
-    <ClInclude Include="include\FOVCone.h">
+    <ClInclude Include="include\GlobalFlags.h">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
   </ItemGroup>

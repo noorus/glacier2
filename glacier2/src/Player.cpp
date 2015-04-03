@@ -36,6 +36,7 @@ namespace Glacier {
     mMesh = Procedural::CapsuleGenerator().setHeight( mHeight ).setRadius( mRadius ).realizeMesh( "playerStandCapsule" );
 
     mEntity = Locator::getGraphics().getScene()->createEntity( mMesh );
+    mEntity->setQueryFlags( SceneQueryFlag_Character );
     mEntity->setMaterialName( "Developer/Placeholder/Player" );
     mEntity->setCastShadows( true );
     mNode->attachObject( mEntity );
