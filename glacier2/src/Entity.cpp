@@ -32,6 +32,7 @@ namespace Glacier {
 
     auto scm = Locator::getGraphics().getScene();
     mNode = (PCZSceneNode*)scm->getRootSceneNode()->createChildSceneNode( mPosition, mOrientation );
+    mNode->setDirection( Vector3::NEGATIVE_UNIT_Z, Ogre::Node::TS_WORLD );
     scm->addPCZSceneNode( mNode, scm->getDefaultZone() );
   }
 
