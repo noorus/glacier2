@@ -23,7 +23,7 @@ namespace Glacier {
   Entity( world, baseData ),
   mInput( input ), mPhysics( nullptr ), mMovement( nullptr )
   {
-    //
+    mFacing = Vector3::UNIT_Z;
   }
 
   void Character::spawn( const Vector3& position, const Quaternion& orientation )
@@ -34,6 +34,11 @@ namespace Glacier {
     mMovement = new CharacterMovementComponent( this );
   }
 
+  const Vector3& Character::getLocalEyePosition() const
+  {
+    return mEyePosition;
+  }
+
   const Vector3 Character::getWorldEyePosition() const
   {
     return mPhysics->getPosition() + mEyePosition;
@@ -42,6 +47,11 @@ namespace Glacier {
   const Radian& Character::getFieldOfView() const
   {
     return mFieldOfView;
+  }
+
+  const Vector3& Character::getFacing() const
+  {
+    return mFacing;
   }
 
   void Character::setActions( const ActionPacket& actions,

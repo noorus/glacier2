@@ -74,7 +74,7 @@ namespace Glacier {
     mEyeNode = Locator::getGraphics().getScene()->createSceneNode();
     mEyeNode->addChild( mFovCone.node );
     mEyeNode->setPosition( mEyePosition );
-    mEyeNode->setDirection( Vector3::UNIT_Z );
+    mEyeNode->setDirection( Vector3::NEGATIVE_UNIT_Z, Ogre::Node::TS_PARENT );
 
     mNode->addChild( mEyeNode );
   }
@@ -83,6 +83,10 @@ namespace Glacier {
   {
     mStates.execute( delta );
     Character::think( delta );
+    Quaternion qt;
+    qt.FromAngleAxis( Degree( 0.5f ), Vector3::UNIT_Y );
+    mFacing = qt * mFacing;
+    mNode->setDirection( mFacing, Ogre::Node::TS_WORLD );
   }
 
   const Ogre::MovableObject* Dummy::getMovable() const

@@ -125,13 +125,16 @@ namespace Glacier {
     Vector3 mEyePosition; //!< Local space eye position
     Radian mFieldOfView;
     Real mViewDistance;
+    Vector3 mFacing; //!< Local space normalized facing direction
     Character( World* world, const EntityBaseData* baseData,
       CharacterInputComponent* input );
     virtual ~Character();
   public:
     virtual const Ogre::MovableObject* getMovable() const throw() = 0;
+    virtual const Vector3& getLocalEyePosition() const throw();
     virtual const Vector3 getWorldEyePosition() const throw();
     virtual const Radian& getFieldOfView() const throw();
+    virtual const Vector3& getFacing() const throw();
     virtual void setActions( const ActionPacket& actions,
       const CharacterMoveMode mode,
       const Vector3& direction,
@@ -180,7 +183,7 @@ namespace Glacier {
     physx::PxScene* mScene;
     physx::PxCapsuleController* mController;
     physx::PxMaterial* mMaterial;
-    Vector3 mPosition;
+    Vector3 mPosition; //!< World space position
     physx::PxControllerCollisionFlags mCollisionFlags;
     struct GroundQuery {
       bool hit;

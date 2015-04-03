@@ -47,6 +47,7 @@ namespace Glacier {
 
     // Fix our node's direction so it points towards the usual default -Z.
     node->attachObject( entity );
+    node->setPosition( Vector3::ZERO );
     node->setDirection( Vector3::NEGATIVE_UNIT_Z,
       Ogre::Node::TS_LOCAL, Vector3::NEGATIVE_UNIT_Y );
   }
