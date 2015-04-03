@@ -77,7 +77,7 @@ namespace Glacier {
     duDebugDrawPolyMesh( mNavVis, *mNavigationMesh->getPolyMesh() );
 #endif
 
-    auto player = Locator::getEntities().create( "player" );
+    auto player = Locator::getEntities().create( "player", "player" );
     gEngine->getInput()->getLocalController()->setCharacter( (Character*)player );
     player->spawn( Vector3( 0.0f, 1.0f, 0.0f ), Quaternion::IDENTITY );
 

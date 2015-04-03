@@ -7,6 +7,7 @@
 #include "Dummy.h"
 #include "AIState.h"
 #include "AIFiniteStateMachine.h"
+#include "EntityManager.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
@@ -15,26 +16,42 @@ namespace Glacier {
 
   ENGINE_DECLARE_ENTITY( dev_dummy, Dummy );
 
-  class DummyJumpState: public AI::State {
+  class DummyAlertState: public AI::State {
   public:
+    void enter( AI::FiniteStateMachine* machine, AI::Agent* agent )
+    {
+      AI::State::enter( machine, agent );
+      auto dummy = (Dummy*)agent;
+      dummy->getFOVCone().setAlert( true );
+      dummy->getInput()->injectJump();
+    }
     void execute( AI::FiniteStateMachine* machine, AI::Agent* agent, const GameTime delta )
     {
       AI::State::execute( machine, agent, delta );
       auto dummy = (Dummy*)agent;
-      dummy->getInput()->injectJump();
-      machine->popState();
+      auto player = dummy->getWorld()->getEntities()->findByName( "player" );
+      if ( !player || !dummy->canSee( player ) )
+        machine->popState();
     }
   };
 
-  static DummyJumpState dummyJumpState;
+  static DummyAlertState dummyAlertState;
 
   class DummyIdleState: public AI::State {
   public:
+    void enter( AI::FiniteStateMachine* machine, AI::Agent* agent )
+    {
+      AI::State::enter( machine, agent );
+      auto dummy = (Dummy*)agent;
+      dummy->getFOVCone().setAlert( false );
+    }
     void execute( AI::FiniteStateMachine* machine, AI::Agent* agent, const GameTime delta )
     {
       AI::State::execute( machine, agent, delta );
-      if ( mTime >= 3.0f )
-        machine->pushState( &dummyJumpState );
+      auto dummy = (Dummy*)agent;
+      auto player = dummy->getWorld()->getEntities()->findByName( "player" );
+      if ( player && dummy->canSee( player ) )
+        machine->pushState( &dummyAlertState );
     }
   };
 
@@ -46,7 +63,7 @@ namespace Glacier {
   mEntity( nullptr ), mStates( this )
   {
     mEyePosition = Vector3( 0.0f, 0.5f, 0.0f );
-    mFieldOfView = Radian( Ogre::Degree( 90.0f ) );
+    mFieldOfView = Radian( Ogre::Degree( 60.0f ) );
     mViewDistance = 5.0f;
     mStates.pushState( &dummyIdleState );
     mHeight = 0.8f;
@@ -56,6 +73,11 @@ namespace Glacier {
   AICharacterInputComponent* Dummy::getInput()
   {
     return (AICharacterInputComponent*)mInput;
+  }
+
+  FOVCone& Dummy::getFOVCone()
+  {
+    return mFovCone;
   }
 
   void Dummy::spawn( const Vector3& position, const Quaternion& orientation )

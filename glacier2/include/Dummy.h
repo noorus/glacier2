@@ -28,9 +28,10 @@ namespace Glacier {
     virtual ~Dummy();
   public:
     virtual AICharacterInputComponent* getInput();
+    FOVCone& getFOVCone() throw();
     virtual void spawn( const Vector3& position, const Quaternion& orientation );
     virtual void think( const GameTime delta );
-    virtual const Ogre::MovableObject* getMovable() const throw( );
+    virtual const Ogre::MovableObject* getMovable() const throw();
   };
 
 }
