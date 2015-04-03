@@ -122,11 +122,16 @@ namespace Glacier {
     ActionPacket mActions;
     Real mHeight;
     Real mRadius;
+    Vector3 mEyePosition; //!< Local space eye position
+    Radian mFieldOfView;
+    Real mViewDistance;
     Character( World* world, const EntityBaseData* baseData,
       CharacterInputComponent* input );
     virtual ~Character();
   public:
     virtual const Ogre::MovableObject* getMovable() const throw() = 0;
+    virtual const Vector3 getWorldEyePosition() const throw();
+    virtual const Radian& getFieldOfView() const throw();
     virtual void setActions( const ActionPacket& actions,
       const CharacterMoveMode mode,
       const Vector3& direction,

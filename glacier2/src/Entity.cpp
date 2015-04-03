@@ -44,7 +44,10 @@ namespace Glacier {
   {
     SAFE_DELETE( mScriptable );
     if ( mNode )
+    {
+      mNode->removeAndDestroyAllChildren();
       Locator::getGraphics().getScene()->destroySceneNode( mNode );
+    }
   }
 
 }

@@ -6,6 +6,7 @@
 #include "Character.h"
 #include "AIAgent.h"
 #include "AIFiniteStateMachine.h"
+#include "FOVCone.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
@@ -20,7 +21,9 @@ namespace Glacier {
   protected:
     Ogre::Entity* mEntity;
     Ogre::MeshPtr mMesh;
+    Ogre::SceneNode* mEyeNode;
     AI::FiniteStateMachine mStates;
+    FOVCone mFovCone;
     Dummy( World* world );
     virtual ~Dummy();
   public:

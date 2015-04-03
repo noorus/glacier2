@@ -444,6 +444,9 @@
     <ClCompile Include="src\AICharacterInputComponent.cpp">
       <Filter>Source Files\Entities\Character</Filter>
     </ClCompile>
+    <ClCompile Include="src\FOVCone.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\CompilerDef.h">
@@ -766,6 +769,9 @@
     </ClInclude>
     <ClInclude Include="include\Dummy.h">
       <Filter>Header Files\Entities\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="include\FOVCone.h">
+      <Filter>Header Files\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -34,6 +34,16 @@ namespace Glacier {
     mMovement = new CharacterMovementComponent( this );
   }
 
+  const Vector3 Character::getWorldEyePosition() const
+  {
+    return mPhysics->getPosition() + mEyePosition;
+  }
+
+  const Radian& Character::getFieldOfView() const
+  {
+    return mFieldOfView;
+  }
+
   void Character::setActions( const ActionPacket& actions,
   const CharacterMoveMode mode, const Vector3& direction,
   const Vector2& directional )

@@ -361,6 +361,7 @@
     <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\GlobalStats.cpp" />
     <ClCompile Include="src\Graphics.cpp" />
+    <ClCompile Include="src\FOVCone.cpp" />
     <ClCompile Include="src\InputManager.cpp" />
     <ClCompile Include="src\JSConsole.cpp" />
     <ClCompile Include="src\JSQuaternion.cpp" />
