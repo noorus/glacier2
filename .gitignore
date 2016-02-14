@@ -36,3 +36,4 @@ data/
 screenshot*
 doc/
 ipch/
+*.opendb
