@@ -29,9 +29,9 @@ namespace Glacier {
       //
     }
 
-    const Ogre::MovableObject* DevCube::getMovable() const
+    Ogre::MovableObject* DevCube::getMovable()
     {
-      return mEntity;
+      return mItem;
     }
 
     void DevCube::setType( const Type type )
@@ -63,8 +63,8 @@ namespace Glacier {
         scene->getScene()->addActor( *mActor );
 
         mMesh = Procedural::BoxGenerator().setSizeX( 0.25f ).setSizeY( 0.25f ).setSizeZ( 0.25f ).realizeMesh();
-        mEntity = Locator::getGraphics().getScene()->createEntity( mMesh );
-        mEntity->setMaterialName( "Developer/Cube025" );
+        mItem = Locator::getGraphics().getScene()->createItem( mMesh );
+        mItem->setDatablockOrMaterialName( "Developer/Cube025" );
       }
       else if ( mType == DevCube_050 )
       {
@@ -79,12 +79,12 @@ namespace Glacier {
         scene->getScene()->addActor( *mActor );
 
         mMesh = Procedural::BoxGenerator().setSizeX( 0.5f ).setSizeY( 0.5f ).setSizeZ( 0.5f ).realizeMesh();
-        mEntity = Locator::getGraphics().getScene()->createEntity( mMesh );
-        mEntity->setMaterialName( "Developer/Cube050" );
+        mItem = Locator::getGraphics().getScene()->createItem( mMesh );
+        mItem->setDatablockOrMaterialName( "Developer/Cube050" );
       }
 
-      mEntity->setCastShadows( true );
-      mNode->attachObject( mEntity );
+      mItem->setCastShadows( true );
+      mNode->attachObject( mItem );
     }
 
     void DevCube::think( const GameTime delta )
@@ -96,8 +96,8 @@ namespace Glacier {
 
     DevCube::~DevCube()
     {
-      if ( mEntity )
-        Locator::getGraphics().getScene()->destroyEntity( mEntity );
+      if ( mItem )
+        Locator::getGraphics().getScene()->destroyItem( mItem );
 
       mWorld->getPhysics()->getScene()->removeActor( *mActor );
     }

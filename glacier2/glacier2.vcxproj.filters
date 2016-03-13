@@ -70,17 +70,11 @@
     <Filter Include="Header Files\Scripting">
       <UniqueIdentifier>{026a2bdd-f8b7-4b37-abc3-a9f0f42fd01e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\GUI">
-      <UniqueIdentifier>{82bc2e82-8bae-410d-9bfc-5d2398839580}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\World">
       <UniqueIdentifier>{451a9487-1f4a-4949-9d31-24d739581d43}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\World">
       <UniqueIdentifier>{69c24dc0-2c8a-437a-97fd-faa5dd9bf24c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Procedural">
-      <UniqueIdentifier>{7dd303b9-7b87-4e32-9c1a-66c8d4e20f87}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Input">
       <UniqueIdentifier>{7f15172e-a2fa-4119-ab86-8f4bd8f33ac5}</UniqueIdentifier>
@@ -120,9 +114,6 @@
     </Filter>
     <Filter Include="Source Files\Entities\Character">
       <UniqueIdentifier>{40eafd37-669e-4fa3-9aac-2427a0159ee3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Graphics\GUI">
-      <UniqueIdentifier>{b0cd0d81-ed16-4edf-b179-80df49907f0d}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Junk\nedmalloc">
       <UniqueIdentifier>{ea18ffd0-63de-4f91-a0f9-95599af5072d}</UniqueIdentifier>
@@ -228,12 +219,6 @@
     <ClCompile Include="src\ModelViewer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI.cpp">
-      <Filter>Source Files\Graphics\GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="src\SettingsWindow.cpp">
-      <Filter>Source Files\Graphics\GUI</Filter>
-    </ClCompile>
     <ClCompile Include="src\AudioService.cpp">
       <Filter>Source Files\Services\Audio</Filter>
     </ClCompile>
@@ -280,9 +265,6 @@
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="src\MovableTextOverlay.cpp">
-      <Filter>Source Files\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CascadedShadowMapping.cpp">
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="..\recastnavigation\Recast\Source\Recast.cpp">
@@ -378,9 +360,6 @@
     <ClCompile Include="src\Colors.cpp">
       <Filter>Source Files\Services</Filter>
     </ClCompile>
-    <ClCompile Include="src\Shadows.cpp">
-      <Filter>Source Files\Graphics</Filter>
-    </ClCompile>
     <ClCompile Include="src\JSColors.cpp">
       <Filter>Source Files\Scripting</Filter>
     </ClCompile>
@@ -398,12 +377,6 @@
     </ClCompile>
     <ClCompile Include="src\NavigationDebugVisualizer.cpp">
       <Filter>Source Files\Services\Navigation</Filter>
-    </ClCompile>
-    <ClCompile Include="src\PostProcessing.cpp">
-      <Filter>Source Files\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="..\hdrlib\HDRCompositor.cpp">
-      <Filter>Source Files\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="src\GameController.cpp">
       <Filter>Source Files\Input</Filter>
@@ -563,9 +536,6 @@
     <ClInclude Include="include\ModelViewerState.h">
       <Filter>Header Files\States</Filter>
     </ClInclude>
-    <ClInclude Include="include\GUI.h">
-      <Filter>Header Files\GUI</Filter>
-    </ClInclude>
     <ClInclude Include="include\AudioService.h">
       <Filter>Header Files\Services\Audio</Filter>
     </ClInclude>
@@ -586,126 +556,6 @@
     </ClInclude>
     <ClInclude Include="include\WorldPrimitives.h">
       <Filter>Header Files\World</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ogre-procedural\library\include\Procedural.h">
-      <Filter>Header Files\Procedural</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ogre-procedural\library\include\ProceduralBoolean.h">
-      <Filter>Header Files\Procedural</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ogre-procedural\library\include\ProceduralBoxGenerator.h">
-      <Filter>Header Files\Procedural</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ogre-procedural\library\include\ProceduralCapsuleGenerator.h">
-      <Filter>Header Files\Procedural</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ogre-procedural\library\include\ProceduralConeGenerator.h">
-      <Filter>Header Files\Procedural</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ogre-procedural\library\include\ProceduralCylinderGenerator.h">
-      <Filter>Header Files\Procedural</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ogre-procedural\library\include\ProceduralDebugRendering.h">
-      <Filter>Header Files\Procedural</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ogre-procedural\library\include\ProceduralExtruder.h">
-      <Filter>Header Files\Procedural</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ogre-procedural\library\include\ProceduralGeometryHelpers.h">
-      <Filter>Header Files\Procedural</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ogre-procedural\library\include\ProceduralIcoSphereGenerator.h">
-      <Filter>Header Files\Procedural</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ogre-procedural\library\include\ProceduralLathe.h">
-      <Filter>Header Files\Procedural</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ogre-procedural\library\include\ProceduralMeshGenerator.h">
-      <Filter>Header Files\Procedural</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ogre-procedural\library\include\ProceduralMeshModifiers.h">
-      <Filter>Header Files\Procedural</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ogre-procedural\library\include\ProceduralMultiShape.h">
-      <Filter>Header Files\Procedural</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ogre-procedural\library\include\ProceduralMultiShapeGenerators.h">
-      <Filter>Header Files\Procedural</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ogre-procedural\library\include\ProceduralNoise.h">
-      <Filter>Header Files\Procedural</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ogre-procedural\library\include\ProceduralPath.h">
-      <Filter>Header Files\Procedural</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ogre-procedural\library\include\ProceduralPathGenerators.h">
-      <Filter>Header Files\Procedural</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ogre-procedural\library\include\ProceduralPathGeneratorsBase.h">
-      <Filter>Header Files\Procedural</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ogre-procedural\library\include\ProceduralPlaneGenerator.h">
-      <Filter>Header Files\Procedural</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ogre-procedural\library\include\ProceduralRoundedBoxGenerator.h">
-      <Filter>Header Files\Procedural</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ogre-procedural\library\include\ProceduralShape.h">
-      <Filter>Header Files\Procedural</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ogre-procedural\library\include\ProceduralShapeGenerators.h">
-      <Filter>Header Files\Procedural</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ogre-procedural\library\include\ProceduralShapeGeneratorsBase.h">
-      <Filter>Header Files\Procedural</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ogre-procedural\library\include\ProceduralSphereGenerator.h">
-      <Filter>Header Files\Procedural</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ogre-procedural\library\include\ProceduralSplines.h">
-      <Filter>Header Files\Procedural</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ogre-procedural\library\include\ProceduralSpringGenerator.h">
-      <Filter>Header Files\Procedural</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ogre-procedural\library\include\ProceduralSVG.h">
-      <Filter>Header Files\Procedural</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ogre-procedural\library\include\ProceduralTextureBuffer.h">
-      <Filter>Header Files\Procedural</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ogre-procedural\library\include\ProceduralTextureGenerator.h">
-      <Filter>Header Files\Procedural</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ogre-procedural\library\include\ProceduralTextureModifiers.h">
-      <Filter>Header Files\Procedural</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ogre-procedural\library\include\ProceduralTorusGenerator.h">
-      <Filter>Header Files\Procedural</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ogre-procedural\library\include\ProceduralTorusKnotGenerator.h">
-      <Filter>Header Files\Procedural</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ogre-procedural\library\include\ProceduralTrack.h">
-      <Filter>Header Files\Procedural</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ogre-procedural\library\include\ProceduralTriangleBuffer.h">
-      <Filter>Header Files\Procedural</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ogre-procedural\library\include\ProceduralTriangulator.h">
-      <Filter>Header Files\Procedural</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ogre-procedural\library\include\ProceduralTubeGenerator.h">
-      <Filter>Header Files\Procedural</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ogre-procedural\library\include\ProceduralUtils.h">
-      <Filter>Header Files\Procedural</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ogre-procedural\library\include\ProceduralStableHeaders.h">
-      <Filter>Header Files\Procedural</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ogre-procedural\library\include\ProceduralPlatform.h">
-      <Filter>Header Files\Procedural</Filter>
     </ClInclude>
     <ClInclude Include="include\DeveloperEntities.h">
       <Filter>Header Files\Entities</Filter>
@@ -734,9 +584,6 @@
     <ClInclude Include="include\MovableTextOverlay.h">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="include\CascadedShadowMapping.h">
-      <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
     <ClInclude Include="include\Camera.h">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
@@ -745,15 +592,6 @@
     </ClInclude>
     <ClInclude Include="include\MeshHelpers.h">
       <Filter>Header Files\Junk</Filter>
-    </ClInclude>
-    <ClInclude Include="include\PostProcessing.h">
-      <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Shadows.h">
-      <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\hdrlib\HDRCompositor.h">
-      <Filter>Header Files\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="include\Actions.h">
       <Filter>Header Files\Input</Filter>
@@ -784,6 +622,9 @@
     </ClInclude>
     <ClInclude Include="include\AIGoals.h">
       <Filter>Header Files\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="include\FOVCone.h">
+      <Filter>Header Files\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

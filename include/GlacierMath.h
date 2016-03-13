@@ -162,6 +162,24 @@ namespace Glacier {
       return std::max( std::min( value, maxv ), minv );
     }
 
+    //! \fn aabbCorners
+    //! Return the array (8) of an AABB's corners.
+    inline std::vector<Vector3> aabbCorners( const Ogre::Aabb& aabb )
+    {
+      std::vector<Vector3> pts( 8 );
+      auto min = aabb.getMinimum();
+      auto max = aabb.getMaximum();
+      pts[0] = min;
+      pts[1] = Vector3( max.x, min.y, min.z );
+      pts[2] = Vector3( max.x, max.y, min.z );
+      pts[3] = Vector3( min.x, max.y, min.z );
+      pts[4] = Vector3( min.x, min.y, max.z );
+      pts[5] = Vector3( max.x, min.y, max.z );
+      pts[6] = Vector3( max.x, max.y, max.z );
+      pts[7] = Vector3( min.x, max.y, max.z );
+      return pts;
+    }
+
   }
 
 }

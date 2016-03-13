@@ -15,13 +15,13 @@ namespace Glacier {
 
     class Primitive {
     protected:
-      Ogre::Entity* mEntity;
+      Ogre::Item* mItem;
       PhysicsScene* mScene;
       physx::PxRigidActor* mActor;
-      PCZSceneNode* mNode;
+      SceneNode* mNode;
       Primitive( PhysicsScene* scene );
     public:
-      Ogre::Entity* getEntity() { return mEntity; }
+      Ogre::Item* getItem() { return mItem; }
     };
 
     class Plane: public Primitive {

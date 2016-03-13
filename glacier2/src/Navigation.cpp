@@ -21,7 +21,7 @@ namespace Glacier {
 
   Navigation::Navigation( Engine* engine ): EngineComponent( engine )
   {
-    rcAllocSetCustom( allocator, deallocator );
+    // rcAllocSetCustom( allocator, deallocator );
   }
 
   Navigation::~Navigation()

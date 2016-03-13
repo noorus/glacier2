@@ -16,7 +16,7 @@
 
 namespace Glacier {
 
-  const string cModelViewerTitle( "glacier² » modelviewer" );
+  /*const string cModelViewerTitle( "glacier² » modelviewer" );
 
   ModelViewerState::ModelViewerState(): State( L"ModelViewer" ) {}
 
@@ -27,13 +27,6 @@ namespace Glacier {
     Locator::getGraphics().setRenderWindowTitle( cModelViewerTitle );
 
 //    mDirector = new Director( &Locator::getGraphics() );
-
-    /*wstring fileName;
-    if ( Win32::Win32::instance().fileOpenDialog(
-    L"Ogre Mesh Files (*.mesh)", L"*.mesh", fileName ) )
-    {
-      mViewer = new ModelViewer( fileName );
-    }*/
 
     mViewer = new ModelViewer( L"rotta_01.mesh" );
   }
@@ -71,6 +64,6 @@ namespace Glacier {
     SAFE_DELETE( mDirector );
 
     State::shutdown( time );
-  }
+  }*/
 
 }

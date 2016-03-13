@@ -8,9 +8,9 @@ namespace Glacier {
   class GlobalStats {
   protected:
     bool mEnabled;
-    Ogre::Overlay* mOverlay;
-    Ogre::OverlayElement* mNamesText;
-    Ogre::OverlayElement* mValuesText;
+    Ogre::v1::Overlay* mOverlay;
+    Ogre::v1::OverlayElement* mNamesText;
+    Ogre::v1::OverlayElement* mValuesText;
   public:
     void init();
     void shutdown();

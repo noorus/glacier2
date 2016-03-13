@@ -12,7 +12,6 @@
 #include "WindowHandler.h"
 #include "InputManager.h"
 #include "ServiceLocator.h"
-#include "GUI.h"
 #include "EntityManager.h"
 #include "World.h"
 #include "Navigation.h"
@@ -70,7 +69,7 @@ namespace Glacier {
   mProcess( NULL ), mThread( NULL ), mInstance( instance ),
   mSignal( Signal_None ), mVersion( 0, 1, 1 ), mConsoleWindow( nullptr ),
   mGame( nullptr ), mWindowHandler( nullptr ), mInput( nullptr ),
-  mAudio( nullptr ), mPhysics( nullptr ), mGUI( nullptr ),
+  mAudio( nullptr ), mPhysics( nullptr ),
   mEntities( nullptr ), mNavigation( nullptr )
   {
   }
@@ -162,12 +161,10 @@ namespace Glacier {
   {
     Graphics::registerResources( manager );
     Scripting::registerResources( manager );
-    GUI::registerResources( manager );
   }
 
   void Engine::unregisterResources( ResourceGroupManager& manager )
   {
-    GUI::unregisterResources( manager );
     Scripting::unregisterResources( manager );
     Graphics::unregisterResources( manager );
   }
@@ -202,9 +199,6 @@ namespace Glacier {
       mConsole->executeFile( exec );
 
     mGraphics->postInitialize();
-
-    mGUI = new GUI( this );
-    Locator::provideGUI( mGUI );
 
     mScripting = new Scripting( this );
     mScripting->simpleExecute( L"initialization.js" );
@@ -381,8 +375,6 @@ namespace Glacier {
 
     SAFE_DELETE( mInput );
     SAFE_DELETE( mScripting );
-    SAFE_DELETE( mGUI );
-    Locator::provideGUI( nullptr );
     SAFE_DELETE( mGraphics );
     SAFE_DELETE( mWindowHandler );
     SAFE_DELETE( mConsoleWindow );

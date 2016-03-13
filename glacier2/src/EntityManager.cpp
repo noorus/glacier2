@@ -21,7 +21,7 @@ namespace Glacier {
   string EntityManager::nextEntityName()
   {
     char name[64];
-    sprintf_s( name, 64, "entity_%u", mNamingCounter );
+    sprintf_s( name, 64, "entity_%I64u", mNamingCounter );
     mNamingCounter++;
     return name;
   }

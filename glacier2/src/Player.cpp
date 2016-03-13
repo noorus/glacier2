@@ -23,7 +23,7 @@ namespace Glacier {
 
   Player::Player( World* world ):
   Character( world, &baseData, new PlayerCharacterInputComponent( this ) ),
-  mEntity( nullptr )
+  mItem( nullptr )
   {
     mHeight = 1.0f;
     mRadius = 0.25f;
@@ -35,11 +35,11 @@ namespace Glacier {
 
     mMesh = Procedural::CapsuleGenerator().setHeight( mHeight ).setRadius( mRadius ).realizeMesh( "playerStandCapsule" );
 
-    mEntity = Locator::getGraphics().getScene()->createEntity( mMesh );
-    mEntity->setQueryFlags( SceneQueryFlag_Character );
-    mEntity->setMaterialName( "Developer/Placeholder/Player" );
-    mEntity->setCastShadows( true );
-    mNode->attachObject( mEntity );
+    mItem = Locator::getGraphics().getScene()->createItem( mMesh );
+    mItem->setQueryFlags( SceneQueryFlag_Character );
+    mItem->setDatablockOrMaterialName( "Developer/Placeholder/Player" );
+    mItem->setCastShadows( true );
+    mNode->attachObject( mItem );
   }
 
   void Player::think( const GameTime delta )
@@ -47,15 +47,15 @@ namespace Glacier {
     Character::think( delta );
   }
 
-  const Ogre::MovableObject* Player::getMovable() const
+  Ogre::MovableObject* Player::getMovable()
   {
-    return mEntity;
+    return mItem;
   }
 
   Player::~Player()
   {
-    if ( mEntity )
-      Locator::getGraphics().getScene()->destroyEntity( mEntity );
+    if ( mItem )
+      Locator::getGraphics().getScene()->destroyItem( mItem );
   }
 
 }

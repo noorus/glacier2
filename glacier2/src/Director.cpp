@@ -2,10 +2,7 @@
 #include "Director.h"
 #include "Graphics.h"
 #include "Camera.h"
-#include "HDRCompositor.h"
 #include "Engine.h"
-#include "GUI.h"
-#include "CascadedShadowMapping.h"
 #include "InputManager.h"
 
 // Glacier² Game Engine © 2014 noorus
@@ -15,31 +12,23 @@ namespace Glacier {
 
   GameCamera* Director::mCamera = nullptr;
 
-  Director::Director( Graphics* gfx, const PCZSceneNode* target ):
-  mGraphics( gfx ), mViewport( nullptr ), mLight( nullptr )
+  Director::Director( Graphics* gfx, SceneNode* target ):
+  mGraphics( gfx ), mLight( nullptr ), mWorkspace( nullptr )
   {
-    auto zone = mGraphics->getScene()->getDefaultZone();
-
-    mCamera = new GameCamera( mGraphics->getScene(), "defaultcamera", target, zone );
+    mCamera = new GameCamera( mGraphics->getScene(), "defaultcamera", target );
 
     gEngine->getInput()->getLocalController()->setCamera( mCamera );
 
-    mViewport = mGraphics->getWindow()->addViewport(
-      mCamera->getCamera(), 0 );
-    mViewport->setClearEveryFrame( true );
-    mViewport->setBackgroundColour( ColourValue( 0.62f, 0.78f, 0.88f ) );
+    mWorkspace = mGraphics->createGameWorkspace( mCamera );
 
-    mGraphics->getEngine()->getGUI()->initialize();
+    // mGraphics->getScene()->setAmbientLight( ColourValue( 0.25f, 0.25f, 0.25f ) );
 
-    mGraphics->getScene()->setAmbientLight( ColourValue( 0.25f, 0.25f, 0.25f ) );
-
-    Ogre::Light* w = mGraphics->getScene()->createLight( "doopwhoop" );
+    Ogre::Light* w = mGraphics->getScene()->createLight();
+    mGraphics->getScene()->getRootSceneNode( Ogre::SCENE_DYNAMIC )->attachObject( w );
     w->setType( Ogre::Light::LT_DIRECTIONAL );
     w->setDirection( Vector3( 0.3f, -1.0f, 0.4f ).normalisedCopy() );
     w->setCastShadows( true );
     w->setShadowFarClipDistance( 100.0f );
-
-    mGraphics->getPostProcessing()->setup( mViewport );
   }
 
   void Director::update( const GameTime delta )
@@ -49,14 +38,13 @@ namespace Glacier {
 
   Director::~Director()
   {
-    mGraphics->getPostProcessing()->teardown();
-
     mGraphics->getScene()->destroyAllLights();
 
-    mGraphics->getEngine()->getGUI()->shutdown();
-
-    mGraphics->getWindow()->removeViewport(
-      mViewport->getZOrder() );
+    if ( mWorkspace )
+    {
+      mGraphics->destroyGameWorkspace( mWorkspace );
+      mWorkspace = nullptr;
+    }
 
     gEngine->getInput()->getLocalController()->setCamera( nullptr );
 

@@ -12,11 +12,11 @@ namespace Glacier {
 
   void GlobalStats::init()
   {
-    mOverlay = Ogre::OverlayManager::getSingleton().getByName(
+    mOverlay = Ogre::v1::OverlayManager::getSingleton().getByName(
       "Ingame/Debug/Stats" );
-    mNamesText = Ogre::OverlayManager::getSingleton().getOverlayElement(
+    mNamesText = Ogre::v1::OverlayManager::getSingleton().getOverlayElement(
       "Ingame/Debug/Stats/Names" );
-    mValuesText = Ogre::OverlayManager::getSingleton().getOverlayElement(
+    mValuesText = Ogre::v1::OverlayManager::getSingleton().getOverlayElement(
       "Ingame/Debug/Stats/Values" );
     setEnabled( true );
   }
@@ -41,14 +41,14 @@ namespace Glacier {
     if ( !mEnabled )
       return;
 
-    mNamesText->setCaption( "FPS:\r\nTriangles:\r\nBatches:" );
+    mNamesText->setCaption( "Triangles:\r\nBatches:" );
 
     const Ogre::RenderTarget::FrameStats& stats = gEngine->getGraphics()->getWindow()->getStatistics();
 
     static wchar_t values[64];
     swprintf_s( values, 64,
-      L"%.3f\r\n%u\r\n%u",
-      stats.lastFPS, stats.triangleCount, stats.batchCount );
+      L"%I64u\r\n%I64u",
+      stats.triangleCount, stats.batchCount );
 
     mValuesText->setCaption( Ogre::UTFString( values ) );
   }

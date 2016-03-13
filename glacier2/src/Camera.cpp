@@ -6,28 +6,28 @@
 
 namespace Glacier {
 
-  Camera::Camera( PCZSceneManager* scene, const Ogre::String& name,
-  const Vector3& position, const Radian& fovy, PCZone* homeZone ):
-  mCamera( nullptr ), mNode( nullptr ), mZone( homeZone ),
+  Camera::Camera( SceneManager* scene, const Ogre::String& name,
+  const Vector3& position, const Radian& fovy ):
+  mCamera( nullptr ), mNode( nullptr ),
   mScene( scene ), mModifier( nullptr )
   {
-    assert( scene && homeZone );
+    assert( scene );
 
     // Create camera
-    mCamera = (PCZCamera*)mScene->createCamera( name );
+    mCamera = mScene->createCamera( name );
+    mCamera->detachFromParent();
 
     mCamera->setPosition( Vector3::ZERO );
     mCamera->setAutoAspectRatio( true );
     mCamera->setFOVy( fovy );
 
     // Create node, attach the camera
-    mNode = (PCZSceneNode*)mScene->getRootSceneNode()->createChildSceneNode();
+    mNode = mScene->getRootSceneNode()->createChildSceneNode();
     mNode->attachObject( mCamera );
     mNode->setPosition( position );
     mNode->setFixedYawAxis( true, Vector3::UNIT_Y );
-    mNode->setHomeZone( mZone );
 
-    mCamera->setNearClipDistance( 0.0001f );
+    mCamera->setNearClipDistance( 0.01f );
     mCamera->setFarClipDistance( 1024.0f );
   }
 
@@ -59,7 +59,7 @@ namespace Glacier {
     if ( mNode )
     {
       mNode->detachAllObjects();
-      mScene->destroySceneNode( mNode->getName() );
+      mScene->destroySceneNode( mNode );
     }
     if ( mCamera )
       mScene->destroyCamera( mCamera );

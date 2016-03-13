@@ -10,7 +10,7 @@ namespace MeshHelpers {
   // From http://www.ogre3d.org/tikiwiki/RetrieveVertexData
   // This code has been extracted from the OgreODE project by monster.
   // Note that this code assumes sizeof(long) == sizeof(uint32_t), which is not true on AMD64 Linux.
-  void getMeshInformation( const Ogre::MeshPtr mesh,
+  void getMeshInformation( const Ogre::v1::MeshPtr mesh,
   size_t &vertex_count, Ogre::Vector3* &vertices,
   size_t &index_count, unsigned long* &indices,
   const Ogre::Vector3 &position, const Ogre::Quaternion &orient,
@@ -27,22 +27,22 @@ namespace MeshHelpers {
     // Calculate how many vertices and indices we're going to need
     for ( unsigned short i = 0; i < mesh->getNumSubMeshes(); ++i )
     {
-      Ogre::SubMesh* submesh = mesh->getSubMesh( i );
+      auto submesh = mesh->getSubMesh( i );
       // We only need to add the shared vertices once
       if ( submesh->useSharedVertices )
       {
         if ( !added_shared )
         {
-          vertex_count += mesh->sharedVertexData->vertexCount;
+          vertex_count += mesh->sharedVertexData[Ogre::VpNormal]->vertexCount;
           added_shared = true;
         }
       }
       else
       {
-        vertex_count += submesh->vertexData->vertexCount;
+        vertex_count += submesh->vertexData[Ogre::VpNormal]->vertexCount;
       }
       // Add the indices
-      index_count += submesh->indexData->indexCount;
+      index_count += submesh->indexData[Ogre::VpNormal]->indexCount;
     }
 
     // Allocate space for the vertices and indices
@@ -54,9 +54,9 @@ namespace MeshHelpers {
     // Run through the submeshes again, adding the data into the arrays
     for ( unsigned short i = 0; i < mesh->getNumSubMeshes(); ++i )
     {
-      Ogre::SubMesh* submesh = mesh->getSubMesh( i );
+      auto submesh = mesh->getSubMesh( i );
 
-      Ogre::VertexData* vertex_data = submesh->useSharedVertices ? mesh->sharedVertexData : submesh->vertexData;
+      auto vertex_data = submesh->useSharedVertices ? mesh->sharedVertexData[Ogre::VpNormal] : submesh->vertexData[Ogre::VpNormal];
 
       if ( ( !submesh->useSharedVertices ) || ( submesh->useSharedVertices && !added_shared ) )
       {
@@ -66,14 +66,14 @@ namespace MeshHelpers {
           shared_offset = current_offset;
         }
 
-        const Ogre::VertexElement* posElem =
+        const Ogre::v1::VertexElement* posElem =
           vertex_data->vertexDeclaration->findElementBySemantic( Ogre::VES_POSITION );
 
-        Ogre::HardwareVertexBufferSharedPtr vbuf =
+        Ogre::v1::HardwareVertexBufferSharedPtr vbuf =
           vertex_data->vertexBufferBinding->getBuffer( posElem->getSource() );
 
         unsigned char* vertex =
-          static_cast<unsigned char*>( vbuf->lock( Ogre::HardwareBuffer::HBL_READ_ONLY ) );
+          static_cast<unsigned char*>( vbuf->lock( Ogre::v1::HardwareBuffer::HBL_READ_ONLY ) );
 
         float* pReal;
 
@@ -88,13 +88,13 @@ namespace MeshHelpers {
         next_offset += vertex_data->vertexCount;
       }
 
-      Ogre::IndexData* index_data = submesh->indexData;
+      Ogre::v1::IndexData* index_data = submesh->indexData[0];
       size_t numTris = index_data->indexCount / 3;
-      Ogre::HardwareIndexBufferSharedPtr ibuf = index_data->indexBuffer;
+      Ogre::v1::HardwareIndexBufferSharedPtr ibuf = index_data->indexBuffer;
 
-      bool use32bitindexes = ( ibuf->getType() == Ogre::HardwareIndexBuffer::IT_32BIT );
+      bool use32bitindexes = ( ibuf->getType() == Ogre::v1::HardwareIndexBuffer::IT_32BIT );
 
-      unsigned long* pLong = static_cast<unsigned long*>( ibuf->lock( Ogre::HardwareBuffer::HBL_READ_ONLY ) );
+      unsigned long* pLong = static_cast<unsigned long*>( ibuf->lock( Ogre::v1::HardwareBuffer::HBL_READ_ONLY ) );
       unsigned short* pShort = reinterpret_cast<unsigned short*>( pLong );
 
       size_t offset = ( submesh->useSharedVertices ) ? shared_offset : current_offset;
@@ -118,12 +118,30 @@ namespace MeshHelpers {
       ibuf->unlock();
       current_offset = next_offset;
     }
-  };
+  }
+
+  void getMesh2Information( const Ogre::MeshPtr mesh,
+    size_t &vertex_count, Ogre::Vector3* &vertices,
+    size_t &index_count, unsigned long* &indices,
+    const Ogre::Vector3 &position, const Ogre::Quaternion &orient,
+    const Ogre::Vector3 &scale )
+  {
+    for ( auto submesh : mesh->getSubMeshes() )
+    {
+      for ( auto vao : submesh->mVao[Ogre::VpNormal] )
+      {
+        for ( auto vec : vao->getVertexBuffers() )
+        {
+          auto elems = vec->getVertexElements();
+        }
+      }
+    }
+  }
 
   // From http://www.ogre3d.org/tikiwiki/RetrieveVertexData
   // This code has been extracted from the OgreODE project by monster.
   // Note that this code assumes sizeof(long) == sizeof(uint32_t), which is not true on AMD64 Linux.
-  void getManualMeshInformation( const Ogre::ManualObject *manual,
+  void getManualMeshInformation( const Ogre::v1::ManualObject *manual,
   size_t &vertex_count, Ogre::Vector3* &vertices,
   size_t &index_count, unsigned long* &indices,
   const Ogre::Vector3 &position, const Ogre::Quaternion &orient,
@@ -134,16 +152,16 @@ namespace MeshHelpers {
     unsigned long thisSectionStart = 0;
     for ( size_t i = 0; i < manual->getNumSections(); i++ )
     {
-      Ogre::ManualObject::ManualObjectSection* section = manual->getSection( (unsigned int)i );
-      Ogre::RenderOperation* renderOp = section->getRenderOperation();
+      Ogre::v1::ManualObject::ManualObjectSection* section = manual->getSection( (unsigned int)i );
+      Ogre::v1::RenderOperation* renderOp = section->getRenderOperation();
 
       std::vector<Ogre::Vector3> pushVertices;
       // Collect the vertices
       {
-        const Ogre::VertexElement * vertexElement = renderOp->vertexData->vertexDeclaration->findElementBySemantic( Ogre::VES_POSITION );
-        Ogre::HardwareVertexBufferSharedPtr vertexBuffer = renderOp->vertexData->vertexBufferBinding->getBuffer( vertexElement->getSource() );
+        const Ogre::v1::VertexElement * vertexElement = renderOp->vertexData->vertexDeclaration->findElementBySemantic( Ogre::VES_POSITION );
+        Ogre::v1::HardwareVertexBufferSharedPtr vertexBuffer = renderOp->vertexData->vertexBufferBinding->getBuffer( vertexElement->getSource() );
 
-        char* verticesBuffer = (char*)vertexBuffer->lock( Ogre::HardwareBuffer::HBL_READ_ONLY );
+        char* verticesBuffer = (char*)vertexBuffer->lock( Ogre::v1::HardwareBuffer::HBL_READ_ONLY );
         float* positionArrayHolder;
 
         thisSectionStart = (unsigned long)pushVertices.size();
@@ -168,15 +186,15 @@ namespace MeshHelpers {
       {
         if ( renderOp->useIndexes )
         {
-          Ogre::HardwareIndexBufferSharedPtr indexBuffer = renderOp->indexData->indexBuffer;
+          Ogre::v1::HardwareIndexBufferSharedPtr indexBuffer = renderOp->indexData->indexBuffer;
 
-          if ( indexBuffer.isNull() || renderOp->operationType != Ogre::RenderOperation::OT_TRIANGLE_LIST )
+          if ( indexBuffer.isNull() || renderOp->operationType != Ogre::OperationType::OT_TRIANGLE_LIST )
             continue;
 
           returnVertices.reserve( returnVertices.size() + pushVertices.size() );
           returnVertices.insert( returnVertices.end(), pushVertices.begin(), pushVertices.end() );
 
-          unsigned int * pLong = (unsigned int*)indexBuffer->lock( Ogre::HardwareBuffer::HBL_READ_ONLY );
+          unsigned int * pLong = (unsigned int*)indexBuffer->lock( Ogre::v1::HardwareBuffer::HBL_READ_ONLY );
           unsigned short * pShort = (unsigned short*)pLong;
 
           returnIndices.reserve( returnIndices.size() + renderOp->indexData->indexCount );
@@ -185,7 +203,7 @@ namespace MeshHelpers {
           {
             unsigned long index;
 
-            if ( indexBuffer->getType() == Ogre::HardwareIndexBuffer::IT_32BIT )
+            if ( indexBuffer->getType() == Ogre::v1::HardwareIndexBuffer::IT_32BIT )
               index = (unsigned long)pLong[j] + thisSectionStart;
             else
               index = (unsigned long)pShort[j] + thisSectionStart;

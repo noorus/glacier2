@@ -13,8 +13,8 @@ namespace Glacier {
   class PhysicsDebugVisualizer {
   protected:
     Engine* mEngine;
-    PCZSceneManager* mScene;
-    PCZSceneNode* mNode;
+    SceneManager* mScene;
+    SceneNode* mNode;
     ManualObject* mManualObject;
     ManualObject* mGrid;
     Ogre::MaterialPtr mMaterial;

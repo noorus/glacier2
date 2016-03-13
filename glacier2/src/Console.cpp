@@ -594,6 +594,7 @@ namespace Glacier {
     }
     catch ( Ogre::FileNotFoundException& e )
     {
+      UNREFERENCED_PARAMETER( e );
       printf( srcEngine, L"Unable to execute %s, file not found",
         filename.c_str() );
     }

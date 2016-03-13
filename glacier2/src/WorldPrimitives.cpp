@@ -21,7 +21,7 @@ namespace Glacier {
   namespace Primitives {
 
     Primitive::Primitive( PhysicsScene* scene ):
-    mScene( scene ), mActor( nullptr ), mNode( nullptr )
+    mScene( scene ), mActor( nullptr ), mNode( nullptr ), mItem( nullptr )
     {
       //
     }
@@ -40,30 +40,24 @@ namespace Glacier {
 
       mScene->getScene()->addActor( *mActor );
 
-      mMesh = Ogre::MeshManager::getSingleton().createPlane( "",
-        ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME, plane,
-        width, height,
-        8, 8, true, 1,
-        width, height,
-        Vector3::UNIT_Z );
+      mMesh = Procedural::PlaneGenerator().setSize( Vector2( width, height ) ).setNormal( plane.normal ).setNumSegX( 8 ).setNumSegY( 8 ).realizeMesh();
 
       auto scm = Locator::getGraphics().getScene();
-      mNode = (PCZSceneNode*)scm->getRootSceneNode()->createChildSceneNode();
-      scm->addPCZSceneNode( mNode, scm->getDefaultZone() );
+      mNode = scm->getRootSceneNode()->createChildSceneNode();
 
-      mEntity = Locator::getGraphics().getScene()->createEntity( mMesh );
-      mEntity->setQueryFlags( SceneQueryFlag_World );
-      mEntity->setMaterialName( "Developer/Floor" );
-      mEntity->setCastShadows( false );
-      mNode->attachObject( mEntity );
+      mItem = scm->createItem( mMesh );
+      mItem->setQueryFlags( SceneQueryFlag_World );
+      mItem->setDatablockOrMaterialName( "Developer/Floor" );
+      mItem->setCastShadows( false );
+      mNode->attachObject( mItem );
       mNode->setPosition( position );
       mNode->setOrientation( Quaternion::IDENTITY );
     }
 
     Plane::~Plane()
     {
-      if ( mEntity )
-        Locator::getGraphics().getScene()->destroyEntity( mEntity );
+      if ( mItem )
+        Locator::getGraphics().getScene()->destroyItem( mItem );
       if ( mNode )
         Locator::getGraphics().getScene()->destroySceneNode( mNode );
       mScene->getScene()->removeActor( *mActor );
@@ -88,22 +82,21 @@ namespace Glacier {
       mMesh = Procedural::BoxGenerator().setSize( size ).realizeMesh();
 
       auto scm = Locator::getGraphics().getScene();
-      mNode = (PCZSceneNode*)scm->getRootSceneNode()->createChildSceneNode();
-      scm->addPCZSceneNode( mNode, scm->getDefaultZone() );
+      mNode = scm->getRootSceneNode()->createChildSceneNode();
 
-      mEntity = Locator::getGraphics().getScene()->createEntity( mMesh );
-      mEntity->setQueryFlags( SceneQueryFlag_World );
-      mEntity->setMaterialName( "Developer/Floor" );
-      mEntity->setCastShadows( true );
-      mNode->attachObject( mEntity );
+      mItem = Locator::getGraphics().getScene()->createItem( mMesh );
+      mItem->setQueryFlags( SceneQueryFlag_World );
+      mItem->setDatablockOrMaterialName( "Developer/Floor" );
+      mItem->setCastShadows( true );
+      mNode->attachObject( mItem );
       mNode->setPosition( position );
       mNode->setOrientation( orientation );
     }
 
     Box::~Box()
     {
-      if ( mEntity )
-        Locator::getGraphics().getScene()->destroyEntity( mEntity );
+      if ( mItem )
+        Locator::getGraphics().getScene()->destroyItem( mItem );
       if ( mNode )
         Locator::getGraphics().getScene()->destroySceneNode( mNode );
       mScene->getScene()->removeActor( *mActor );

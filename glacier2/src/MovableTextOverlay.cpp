@@ -10,7 +10,7 @@
 
 namespace Glacier {
 
-  MovableTextOverlayAttributes::MovableTextOverlayAttributes(
+  /*MovableTextOverlayAttributes::MovableTextOverlayAttributes(
     const Ogre::Camera* camera, const Ogre::String& font, const Real height,
     const ColourValue& color, const Ogre::String& material ):
     mCamera( camera ), mFont( nullptr ), mHeight( height ), mColor( color )
@@ -81,12 +81,12 @@ namespace Glacier {
   mName( name ), mTarget( target ), mDirty( true ), mOnScreen( false ),
   mEnabled( false ), mAttributes( attributes )
   {
-    Ogre::OverlayManager& manager = Ogre::OverlayManager::getSingleton();
+    Ogre::v1::OverlayManager& manager = Ogre::v1::OverlayManager::getSingleton();
 
     mOverlay = manager.create( name );
     mOverlay->hide();
 
-    mContainer = (Ogre::OverlayContainer*)manager.createOverlayElement( "Panel", name + "/Container" );
+    mContainer = (Ogre::v1::OverlayContainer*)manager.createOverlayElement( "Panel", name + "/Container" );
     mContainer->setDimensions( 0.0f, 0.0f );
 
     mOverlay->add2D( mContainer );
@@ -94,9 +94,9 @@ namespace Glacier {
     mElement = manager.createOverlayElement( "TextArea", name + "/Container/Text" );
     mContainer->addChild( mElement );
 
-    mElement->setMetricsMode( Ogre::GMM_RELATIVE );
+    mElement->setMetricsMode( Ogre::v1::GMM_RELATIVE );
     mElement->setDimensions( 1.0f, 1.0f );
-    mElement->setMetricsMode( Ogre::GMM_PIXELS );
+    mElement->setMetricsMode( Ogre::v1::GMM_PIXELS );
     mElement->setPosition( 0.0f, 0.0f );
 
     updateOverlay();
@@ -141,8 +141,8 @@ namespace Glacier {
     Real x[4];
     Real y[4];
 
-    if ( !mTarget->isInScene() )
-      return;
+    // if ( !mTarget->isInScene() )
+    //  return;
 
     const Ogre::AxisAlignedBox& aabb = mTarget->getWorldBoundingBox( true );
     const Vector3 corners[4] = {
@@ -213,7 +213,7 @@ namespace Glacier {
 
   void MovableTextOverlay::update()
   {
-    Ogre::OverlayManager& manager = Ogre::OverlayManager::getSingleton();
+    Ogre::v1::OverlayManager& manager = Ogre::v1::OverlayManager::getSingleton();
 
     Real minX, minY, maxX, maxY;
     getMinMaxEdgesOfTopAABBIn2D( minX, minY, maxX, maxY );
@@ -237,7 +237,7 @@ namespace Glacier {
 
   MovableTextOverlay::~MovableTextOverlay()
   {
-    Ogre::OverlayManager& manager = Ogre::OverlayManager::getSingleton();
+    Ogre::v1::OverlayManager& manager = Ogre::v1::OverlayManager::getSingleton();
 
     mOverlay->hide();
     mContainer->removeChild( mElement->getName() );
@@ -246,6 +246,6 @@ namespace Glacier {
     manager.destroyOverlayElement( mElement );
     manager.destroyOverlayElement( mContainer );
     manager.destroy( mOverlay );
-  }
+  }*/
 
 }

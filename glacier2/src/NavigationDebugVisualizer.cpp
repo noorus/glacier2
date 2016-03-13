@@ -26,14 +26,14 @@ namespace Glacier {
     assert( mEngine && mEngine->getGraphics() );
     mScene = mEngine->getGraphics()->getScene();
 
-    mNode = (PCZSceneNode*)mScene->getRootSceneNode()->createChildSceneNode();
+    mNode = mScene->getRootSceneNode()->createChildSceneNode();
     mManualObject = mScene->createManualObject();
 
     mMaterial = Ogre::MaterialManager::getSingleton().getByName(
       "Debug/NavigationVisualization", "Bootload" );
 
     mNode->attachObject( mManualObject );
-    mManualObject->setRenderQueueGroup( Ogre::RENDER_QUEUE_SKIES_LATE );
+    // mManualObject->setRenderQueueGroup( Ogre::RENDER_QUEUE_SKIES_LATE );
     mManualObject->setCastShadows( false );
 
     mAlpha = 0.4f;
@@ -54,19 +54,19 @@ namespace Glacier {
     if ( prim == DU_DRAW_LINES )
     {
       mManualObject->begin( mMaterial->getName(),
-        Ogre::RenderOperation::OT_LINE_LIST );
+        Ogre::OperationType::OT_LINE_LIST );
       mDrawing = true;
     }
     else if ( prim == DU_DRAW_POINTS )
     {
       mManualObject->begin( mMaterial->getName(),
-        Ogre::RenderOperation::OT_POINT_LIST );
+        Ogre::OperationType::OT_POINT_LIST );
       mDrawing = true;
     }
     else if ( prim == DU_DRAW_TRIS )
     {
       mManualObject->begin( mMaterial->getName(),
-        Ogre::RenderOperation::OT_TRIANGLE_LIST );
+        Ogre::OperationType::OT_TRIANGLE_LIST );
       mDrawing = true;
     }
   }
@@ -131,7 +131,7 @@ namespace Glacier {
     if ( mManualObject )
       mScene->destroyManualObject( mManualObject );
     if ( mNode )
-      mScene->destroySceneNode( mNode->getName() );
+      mScene->destroySceneNode( mNode );
   }
 
 }

@@ -27,7 +27,7 @@ namespace Glacier {
   typedef std::list<wstring> StringList;
   typedef std::queue<wstring> StringQueue;
 
-  typedef std::vector<Ogre::Entity*> OgreEntityVector;
+  typedef std::vector<Ogre::Item*> OgreItemVector;
 
   enum CharacterConstants
   {
@@ -41,15 +41,12 @@ namespace Glacier {
     BACKSLASH = 92
   };
 
-  using Ogre::PCZSceneManager;
-  using Ogre::PCZone;
-  using Ogre::PCZCamera;
-  using Ogre::PCZSceneNode;
   using Ogre::ResourceManager;
   using Ogre::ResourceGroupManager;
   using Ogre::ResourceGroupListener;
   using Ogre::SceneManager;
   using Ogre::SceneNode;
+  using Ogre::CompositorWorkspace;
   using Ogre::ColourValue;
   using Ogre::Font;
   using Ogre::Viewport;
@@ -75,6 +72,7 @@ namespace Glacier {
   using Ogre::GpuProgramManager;
   using Ogre::RenderWindow;
   using Ogre::StreamSerialiser;
+  using Ogre::IdString;
 
   using physx::PxVec2;
   using physx::PxVec3;

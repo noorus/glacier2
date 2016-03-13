@@ -6,6 +6,8 @@
 #include "Exception.h"
 #include "JSNatives.h"
 #include "JSUtil.h"
+#include "ServiceLocator.h"
+#include "Win32.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
@@ -21,12 +23,21 @@ namespace Glacier {
       L"Initializing V8 v%S", v8::V8::GetVersion() );
 
     v8::V8::InitializeICU();
+
+    auto dir = UTFString( Win32::Win32::instance().getCurrentDirectory() );
+    dir.append( "\\" );
+
+    v8::V8::InitializeExternalStartupData( dir.asUTF8_c_str() );
+
     mPlatform = v8::platform::CreateDefaultPlatform();
     v8::V8::InitializePlatform( mPlatform );
 
     v8::V8::Initialize();
 
-    mIsolate = v8::Isolate::New();
+    v8::Isolate::CreateParams params;
+    params.array_buffer_allocator = this;
+
+    mIsolate = v8::Isolate::New( params );
     if ( !mIsolate )
       ENGINE_EXCEPT( "Creating v8 default Isolate failed" );
 
@@ -36,6 +47,21 @@ namespace Glacier {
       true, 5, v8::StackTrace::kDetailed );
 
     initialize();
+  }
+
+  void* Scripting::Allocate( size_t length )
+  {
+    return Locator::getMemory().alloc( Memory::Sector_Generic, length );
+  }
+
+  void* Scripting::AllocateUninitialized( size_t length )
+  {
+    return Locator::getMemory().alloc( Memory::Sector_Generic, length );
+  }
+
+  void Scripting::Free( void* data, size_t length )
+  {
+    Locator::getMemory().free( Memory::Sector_Generic, data );
   }
 
   v8::Isolate* Scripting::getIsolate()

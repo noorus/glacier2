@@ -30,14 +30,14 @@ namespace Glacier {
     assert( mEngine && mEngine->getGraphics() );
     mScene = mEngine->getGraphics()->getScene();
 
-    mNode = (PCZSceneNode*)mScene->getRootSceneNode()->createChildSceneNode();
+    mNode = mScene->getRootSceneNode()->createChildSceneNode();
     mManualObject = mScene->createManualObject();
 
     mMaterial = Ogre::MaterialManager::getSingleton().getByName(
       "Debug/PhysicsVisualization", "Bootload" );
 
     mNode->attachObject( mManualObject );
-    mManualObject->setRenderQueueGroup( Ogre::RENDER_QUEUE_SKIES_LATE );
+    // mManualObject->setRenderQueueGroup( Ogre::RENDER_QUEUE_SKIES_LATE );
     mManualObject->setCastShadows( false );
 
     mAlpha = 0.8f;
@@ -60,7 +60,7 @@ namespace Glacier {
     const PxDebugPoint* point = renderable->getPoints();
     mManualObject->estimateVertexCount( count );
     mManualObject->begin( mMaterial->getName(),
-      Ogre::RenderOperation::OT_POINT_LIST );
+      Ogre::v1::RenderOperation::OT_POINT_LIST );
     while ( count-- ) {
       colorToComponents( point->color, r, g, b );
       mManualObject->position( Math::pxVec3ToOgre( point->pos ) );
@@ -74,7 +74,7 @@ namespace Glacier {
     const PxDebugLine* line = renderable->getLines();
     mManualObject->estimateVertexCount( count * 2 );
     mManualObject->begin( mMaterial->getName(),
-      Ogre::RenderOperation::OT_LINE_LIST );
+      Ogre::v1::RenderOperation::OT_LINE_LIST );
     while ( count-- ) {
       colorToComponents( line->color0, r, g, b );
       mManualObject->position( Math::pxVec3ToOgre( line->pos0 ) );
@@ -91,7 +91,7 @@ namespace Glacier {
     const PxDebugTriangle* triangle = renderable->getTriangles();
     mManualObject->estimateVertexCount( count * 3 );
     mManualObject->begin( mMaterial->getName(),
-      Ogre::RenderOperation::OT_TRIANGLE_LIST );
+      Ogre::v1::RenderOperation::OT_TRIANGLE_LIST );
     while ( count-- ) {
       colorToComponents( triangle->color0, r, g, b );
       mManualObject->position( Math::pxVec3ToOgre( triangle->pos0 ) );
@@ -112,7 +112,7 @@ namespace Glacier {
     if ( mManualObject )
       mScene->destroyManualObject( mManualObject );
     if ( mNode )
-      mScene->destroySceneNode( mNode->getName() );
+      mScene->destroySceneNode( mNode );
   }
 
 }

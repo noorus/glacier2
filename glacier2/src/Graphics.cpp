@@ -4,11 +4,8 @@
 #include "Exception.h"
 #include "Engine.h"
 #include "WindowHandler.h"
-#include "OgreD3D9Plugin.h"
-#include "Plugins/CgProgramManager/OgreCgPlugin.h"
-#include "Plugins/PCZSceneManager/OgrePCZPlugin.h"
 #include "Win32.h"
-#include "CascadedShadowMapping.h"
+#include "Camera.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
@@ -29,8 +26,6 @@ namespace Glacier {
     L"Vertical sync toggle. Changes are applied when the renderer is restarted.", false );
   ENGINE_DECLARE_CONVAR( vid_fsaa,
     L"Full Scene Anti-Aliasing multiplier. Valid values are multiples of 2.", 8 );
-  ENGINE_DECLARE_CONVAR( vid_d3d9ex,
-    L"Whether to try using Direct3D9Ex when available. Windows 7+.", true );
   ENGINE_DECLARE_CONCMD( vid_restart,
     L"Restart the renderer to apply changes to display mode.",
     &Graphics::callbackVideoRestart );
@@ -47,21 +42,22 @@ namespace Glacier {
 
   // Graphics engine constants ================================================
 
-  const char* cRenderSystemName    = "Direct3D9 Rendering Subsystem";
-  const char* cRenderSystemDebug   = "RenderSystem_Direct3D9_d";
-  const char* cRenderSystemRelease = "RenderSystem_Direct3D9";
+  const char* cRenderSystemName    = "Direct3D11 Rendering Subsystem";
+  const char* cRenderSystemDebug   = "RenderSystem_Direct3D11_d";
+  const char* cRenderSystemRelease = "RenderSystem_Direct3D11";
   const char* cRenderWindowClass   = "gcr2_render";
   const char* cRenderWindowTitle   = "glacier² » renderer";
   const char* cScreenshotPrefix    = "screenshot";
   const char* cScreenshotSuffix    = ".png";
   const char* cOgreLogFile         = "ogre.log";
+  const IdString cWorkspaceName    = "GcrMainWorkspace";
 
   // Graphics::VideoMode class ================================================
 
   Graphics::VideoMode::VideoMode( uint32_t width, uint32_t height,
-  uint32_t bpp, bool fs, bool vsync, uint32_t fsaa, bool dx9ex ):
+  uint32_t bpp, bool fs, bool vsync, uint32_t fsaa ):
   mWidth( width ), mHeight( height ), mBits( bpp ), mFullscreen( fs ),
-  mVSync( vsync ), mFSAA( fsaa ), mDX9Ex( dx9ex )
+  mVSync( vsync ), mFSAA( fsaa )
   {
     //
   }
@@ -73,14 +69,14 @@ namespace Glacier {
     renderer.setConfigOption( "VSync", optVSyncAsString() );
     renderer.setConfigOption( "Full Screen", optFSAsString() );
     renderer.setConfigOption( "Video Mode", getAsOptionString() );
-    renderer.setConfigOption( "sRGB Gamma Conversion", "No" );
-    renderer.setConfigOption( "Allow DirectX9Ex", optDX9ExAsString() );
+    renderer.setConfigOption( "sRGB Gamma Conversion", "Yes" );
   }
 
   Ogre::NameValuePairList Graphics::VideoMode::getParams()
   {
     Ogre::NameValuePairList params;
     params["title"] = cRenderWindowTitle;
+    params["gamma"] = "true";
     params["colourDepth"] = optBitsAsString();
     params["vsync"] = optVSyncAsString();
     params["FSAA"] = optFSAAAsString();
@@ -121,18 +117,13 @@ namespace Glacier {
     return fsaa;
   }
 
-  string Graphics::VideoMode::optDX9ExAsString()
-  {
-    return mDX9Ex ? "Yes" : "No";
-  }
-
   // Graphics class ===========================================================
 
   Graphics::Graphics( Engine* engine, WindowHandler* windowHandler ):
   EngineComponent( engine ),
   mRoot( nullptr ), mRenderer( nullptr ), mSceneManager( nullptr ),
   mOverlaySystem( nullptr ), mWindowHandler( windowHandler ),
-  mShadows( nullptr ), mPostProcessing( nullptr )
+  mGameWorkspace( nullptr )
   {
     preInitialize();
   }
@@ -154,10 +145,13 @@ namespace Glacier {
   void Graphics::postInitialize()
   {
     // Create overlay system
-    mOverlaySystem = new Ogre::OverlaySystem();
+    mOverlaySystem = new Ogre::v1::OverlaySystem();
 
-    // Load renderer
-    mRoot->installPlugin( new Ogre::D3D9Plugin );
+#ifdef DEBUG
+    mRoot->loadPlugin( cRenderSystemDebug );
+#else
+    mRoot->loadPlugin( cRenderSystemRelease );
+#endif
 
     // Select renderer
     mRenderer = mRoot->getRenderSystemByName( cRenderSystemName );
@@ -170,8 +164,7 @@ namespace Glacier {
       g_CVar_vid_screenbpp.getInt(),
       g_CVar_vid_fullscreen.getBool(),
       g_CVar_vid_vsync.getBool(),
-      g_CVar_vid_fsaa.getInt(),
-      g_CVar_vid_d3d9ex.getBool() );
+      g_CVar_vid_fsaa.getInt() );
 
     mEngine->getConsole()->printf( Console::srcGfx,
       L"Video mode: %S%s%s (fsaa x%u)",
@@ -205,42 +198,104 @@ namespace Glacier {
     mWindow->setDeactivateOnFocusChange( false );
 
     // Load plugins
-    mRoot->installPlugin( new Ogre::CgPlugin );
-    mRoot->installPlugin( new Ogre::PCZPlugin );
+    // mRoot->installPlugin( new Ogre::CgPlugin );
+    // mRoot->installPlugin( new Ogre::PCZPlugin );
 
     // Create the portal-connected scene manager
-    mSceneManager = (Ogre::PCZSceneManager*)mRoot->createSceneManager(
-      "PCZSceneManager", "PCZSceneManager" );
-    mSceneManager->init( "ZoneType_Default" );
+    const size_t numThreads = 1;
+    Ogre::InstancingThreadedCullingMethod cullingMethod = Ogre::INSTANCING_CULLING_SINGLETHREAD;
+    mSceneManager = mRoot->createSceneManager( Ogre::ST_GENERIC, numThreads, cullingMethod );
 
     // Add OverlaySystem as a global renderqueue listener
     mSceneManager->addRenderQueueListener( mOverlaySystem );
+
+    setupCompositors();
+
+    // Just some defaults
+    mSceneManager->setShadowDirectionalLightExtrusionDistance( 500.0f );
+    mSceneManager->setShadowFarDistance( 500.0f );
 
     // Set movables to have no scene query flags by default
     // This ensures that all kinds of random crap don't screw up our queries
     Ogre::MovableObject::setDefaultQueryFlags( 0 );
 
     // Set default texture filtering, anisotropy and mipmap count
-    Ogre::MaterialManager::getSingleton().setDefaultTextureFiltering(
-      (Ogre::TextureFilterOptions)g_CVar_tex_filtering.getInt() );
-    Ogre::MaterialManager::getSingleton().setDefaultAnisotropy(
-      g_CVar_tex_anisotropy.getInt() );
+    // Ogre::MaterialManager::getSingleton().setDefaultTextureFiltering(
+    //   (Ogre::TextureFilterOptions)g_CVar_tex_filtering.getInt() );
+    // Ogre::MaterialManager::getSingleton().setDefaultAnisotropy(
+    //   g_CVar_tex_anisotropy.getInt() );
     Ogre::TextureManager::getSingleton().setDefaultNumMipmaps(
       g_CVar_tex_mipmaps.getInt() );
 
-    mShadows = new Shadows();
-    mPostProcessing = new PostProcessing( mSceneManager, mWindow );
+    // mShadows = new Shadows();
+    // mPostProcessing = new PostProcessing( mSceneManager, mWindow );
 
     // Register & initialize resource groups
+    registerHlms();
     mEngine->registerResources( ResourceGroupManager::getSingleton() );
 
     // Initialize globals
     mGlobals.stats.init();
 
-    mShadows->applyTo( mSceneManager );
-
     // Tell the engine to continue, in case this was a restart
     mEngine->operationContinueVideo();
+  }
+
+  void Graphics::setupCompositors()
+  {
+    auto cmpMgr = mRoot->getCompositorManager2();
+    if ( !cmpMgr->hasWorkspaceDefinition( cWorkspaceName ) )
+    {
+      ColourValue bgColor( ColourValue::Black );
+      cmpMgr->createBasicWorkspaceDef( cWorkspaceName, bgColor );
+    }
+  }
+
+  CompositorWorkspace* Graphics::createGameWorkspace( Camera* camera )
+  {
+    assert( camera && !mGameWorkspace );
+
+    auto cmpMgr = mRoot->getCompositorManager2();
+
+    mGameWorkspace = cmpMgr->addWorkspace( mSceneManager, mWindow, camera->getCamera(), cWorkspaceName, true );
+    return mGameWorkspace;
+  }
+
+  void Graphics::destroyGameWorkspace( CompositorWorkspace* ws )
+  {
+    assert( ws == mGameWorkspace );
+
+    auto cmpMgr = mRoot->getCompositorManager2();
+
+    cmpMgr->removeWorkspace( mGameWorkspace );
+    mGameWorkspace = nullptr;
+  }
+
+  void Graphics::registerHlms()
+  {
+    mEngine->getConsole()->printf( Console::srcGfx,
+      L"Registering HLMS..." );
+
+    auto mgr = Ogre::ArchiveManager::getSingletonPtr();
+
+    auto archiveLibrary = mgr->load( "data\\tindalos\\Hlms\\Common\\HLSL", "FileSystem", true );
+
+    Ogre::ArchiveVec library;
+    library.push_back( archiveLibrary );
+
+    auto archiveUnlit = mgr->load( "data\\tindalos\\Hlms\\Unlit\\HLSL", "FileSystem", true );
+    auto hlmsUnlit = OGRE_NEW Ogre::HlmsUnlit( archiveUnlit, &library );
+    mRoot->getHlmsManager()->registerHlms( hlmsUnlit );
+
+    auto archivePBS = mgr->load( "data\\tindalos\\Hlms\\Pbs\\HLSL", "FileSystem", true );
+    auto hlmsPBS = OGRE_NEW Ogre::HlmsPbs( archivePBS, &library );
+    mRoot->getHlmsManager()->registerHlms( hlmsPBS );
+  }
+
+  void Graphics::unregisterHlms()
+  {
+    mEngine->getConsole()->printf( Console::srcGfx,
+      L"Unregistering HLMS..." );
   }
 
   void Graphics::applySettings( const Settings& settings )
@@ -306,9 +361,10 @@ namespace Glacier {
 
       mEngine->unregisterResources( ResourceGroupManager::getSingleton() );
       mEngine->unregisterUserLocations( ResourceGroupManager::getSingleton() );
+      unregisterHlms();
 
-      SAFE_DELETE( mPostProcessing );
-      SAFE_DELETE( mShadows );
+      // SAFE_DELETE( mPostProcessing );
+      // SAFE_DELETE( mShadows );
 
       SAFE_DELETE( mOverlaySystem );
       mRoot->shutdown();
@@ -373,7 +429,7 @@ namespace Glacier {
     mGlobals.stats.update();
 
     // Update post processing
-    mPostProcessing->update( delta );
+    // mPostProcessing->update( delta );
 
     // Render frame
     if ( !mRoot->renderOneFrame( (Ogre::Real)delta ) )
@@ -399,9 +455,9 @@ namespace Glacier {
     if ( method > Ogre::TFO_ANISOTROPIC )
       method = Ogre::TFO_ANISOTROPIC;
 
-    if ( Ogre::MaterialManager::getSingletonPtr() )
+    /*if ( Ogre::MaterialManager::getSingletonPtr() )
       Ogre::MaterialManager::getSingleton().setDefaultTextureFiltering(
-        method );
+        method );*/
 
     return true;
   }
@@ -409,9 +465,9 @@ namespace Glacier {
   bool Graphics::callbackCVARTextureAnisotropy(
   ConVar* variable, ConVar::Value oldValue )
   {
-    if ( Ogre::MaterialManager::getSingletonPtr() )
+    /*if ( Ogre::MaterialManager::getSingletonPtr() )
       Ogre::MaterialManager::getSingleton().setDefaultAnisotropy(
-        variable->getInt() );
+        variable->getInt() );*/
 
     return true;
   }

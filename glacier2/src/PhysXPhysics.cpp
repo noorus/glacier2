@@ -44,7 +44,7 @@ namespace Glacier {
 
   PhysXPhysics::PhysXPhysics( Engine* engine ): EngineComponent( engine ),
     mFoundation( nullptr ), mPhysics( nullptr ), mCooking( nullptr ),
-    mCudaContextManager( nullptr ), mCPUDispatcher( nullptr )
+    mCPUDispatcher( nullptr )
   {
     initialize();
   }
@@ -108,20 +108,6 @@ namespace Glacier {
     if ( !mFoundation )
       ENGINE_EXCEPT( "PxCreateFoundation failed" );
 
-    // Create CUDA context manager
-    if ( g_CVar_px_cuda.getBool() )
-    {
-      PxCudaContextManagerDesc contextMgrDesc;
-      mCudaContextManager = PxCreateCudaContextManager( *mFoundation,
-        contextMgrDesc, nullptr );
-    }
-
-    if ( mCudaContextManager && !mCudaContextManager->contextIsValid() )
-    {
-      mCudaContextManager->release();
-      mCudaContextManager = nullptr;
-    }
-
     // Default cooking tolerances scale, TODO: adjust later
     PxTolerancesScale scale;
 
@@ -152,18 +138,6 @@ namespace Glacier {
     if ( !mCooking )
       ENGINE_EXCEPT( "PhysX Cooking initialization failed" );
 
-    // Print some CUDA information
-    if ( mCudaContextManager )
-    {
-      mEngine->getConsole()->printf( Console::srcPhysics,
-        L"CUDA device: %S%s, %dMHz, %dMB",
-        mCudaContextManager->getDeviceName(),
-        mCudaContextManager->usingDedicatedPhysXGPU() ? " (PhysX PPU)" : "",
-        mCudaContextManager->getClockRate() / 1000,
-        mCudaContextManager->getDeviceTotalMemBytes() / 1024 / 1024 );
-    } else
-      mEngine->getConsole()->printf( Console::srcPhysics, L"CUDA unavailable" );
-
     mEngine->operationContinuePhysics();
   }
 
@@ -175,8 +149,6 @@ namespace Glacier {
   PhysicsScene* PhysXPhysics::createScene()
   {
     PxCpuDispatcher* cpuDispatcher = mCPUDispatcher;
-    //PxGpuDispatcher* gpuDispatcher = ( mCudaContextManager
-    //  ? mCudaContextManager->getGpuDispatcher() : nullptr );
     PxGpuDispatcher* gpuDispatcher = nullptr;
 
     float gravity = g_CVar_px_gravity.getFloat();
@@ -236,7 +208,6 @@ namespace Glacier {
       mPhysics->release();
     }
 
-    SAFE_RELEASE_PHYSX( mCudaContextManager );
     SAFE_RELEASE_PHYSX( mCooking );
     SAFE_RELEASE_PHYSX( mFoundation );
   }

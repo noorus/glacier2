@@ -5,19 +5,19 @@
 
 namespace Glacier {
 
-  class ModelViewer {
+  /*class ModelViewer {
   private:
     Ogre::Overlay* mOverlay;
     Ogre::OverlayElement* mNamesText;
     Ogre::OverlayElement* mValuesText;
-    Ogre::Entity* mEntity;
-    PCZSceneNode* mModelNode;
-    Ogre::Entity* mFloor;
-    PCZSceneNode* mFloorNode;
+    Ogre::v1::Entity* mEntity;
+    SceneNode* mModelNode;
+    Ogre::v1::Entity* mFloor;
+    SceneNode* mFloorNode;
   public:
     ModelViewer( wstring meshName );
     void update();
     ~ModelViewer();
-  };
+  };*/
 
 }

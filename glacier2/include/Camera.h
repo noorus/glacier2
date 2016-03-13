@@ -21,22 +21,21 @@ namespace Glacier {
 
   class Camera: boost::noncopyable {
   protected:
-    PCZone* mZone;
-    PCZSceneManager* mScene;
-    PCZCamera* mCamera;
-    PCZSceneNode* mNode;
+    SceneManager* mScene;
+    Ogre::Camera* mCamera;
+    SceneNode* mNode;
     CameraModifier* mModifier;
   public:
-    explicit Camera( PCZSceneManager* scene, const Ogre::String& name,
-      const Vector3& position, const Radian& fovy, PCZone* homeZone );
+    explicit Camera( SceneManager* scene, const Ogre::String& name,
+      const Vector3& position, const Radian& fovy );
     virtual void lookAt( const Vector3& position );
-    virtual PCZCamera* getCamera() { return mCamera; }
-    virtual PCZSceneNode* getNode() { return mNode; }
+    virtual Ogre::Camera* getCamera() { return mCamera; }
+    virtual SceneNode* getNode() { return mNode; }
     virtual const Radian& getFOVy();
     virtual void setFOVy( const Radian& fovy );
-    virtual const Quaternion& getOrientation() {
+    virtual const Quaternion getOrientation() {
       return mNode->_getDerivedOrientation(); }
-    virtual const Vector3& getPosition() {
+    virtual const Vector3 getPosition() {
       return mNode->_getDerivedPosition(); }
     virtual void castViewportRay( const Vector2& position, Ray& ray );
     virtual CameraModifier* getModifier() { return mModifier; }
@@ -48,7 +47,7 @@ namespace Glacier {
   class GameCamera: public Camera {
   friend class CameraModifier;
   protected:
-    const PCZSceneNode* mTarget;
+    SceneNode* mTarget;
     Vector3 mDirection;
     Vector3 mMovement;
     Quaternion mRotation;
@@ -59,9 +58,8 @@ namespace Glacier {
     Real mZoom;
     bool mReverseAxes;
   public:
-    explicit GameCamera( PCZSceneManager* scene,
-      const Ogre::String& name, const PCZSceneNode* target,
-      PCZone* homeZone );
+    explicit GameCamera( SceneManager* scene,
+      const Ogre::String& name, SceneNode* target );
     virtual void applyMovement( const Vector3& movement );
     virtual void update( const GameTime delta );
     virtual const Vector3& getDirection() const throw() { return mDirection; }
@@ -69,7 +67,6 @@ namespace Glacier {
     virtual void setSensitivity( const Real sensitivity );
     virtual bool hasAxisReversion() { return mReverseAxes; }
     virtual void setAxisReversion( const bool reverse );
-    virtual void updateWindow();
     ~GameCamera();
   };
 

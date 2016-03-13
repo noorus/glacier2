@@ -52,10 +52,10 @@ namespace Glacier {
     float* mNormals;
     float* mBBoxMin;
     float* mBBoxMax;
-    void calculateExtents( const OgreEntityVector& entities );
-    void convertEntities( const OgreEntityVector& entities );
+    void calculateExtents( const OgreItemVector& items );
+    void convertItems( const OgreItemVector& items );
   public:
-    NavigationInputGeometry( const OgreEntityVector& entities );
+    NavigationInputGeometry( const OgreItemVector& items );
     ~NavigationInputGeometry();
     AxisAlignedBox getBoundingBox();
     float* getVertices();
@@ -108,8 +108,8 @@ namespace Glacier {
   class NavigationDebugVisualizer: public duDebugDraw {
   protected:
     Engine* mEngine;
-    PCZSceneManager* mScene;
-    PCZSceneNode* mNode;
+    SceneManager* mScene;
+    SceneNode* mNode;
     ManualObject* mManualObject;
     ManualObject* mGrid;
     Ogre::MaterialPtr mMaterial;

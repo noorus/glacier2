@@ -22,7 +22,6 @@ namespace Glacier {
     static Physics* physicsService; //!< Currently provided physics service
     static NullPhysics nullPhysicsService; //!< Default null physics service
     static Graphics* graphicsService; //!< Graphics component
-    static GUI* guiService; //!< GUI component
     static EntityManager* entityManager; //!< World entities manager
     static NullMusic nullMusic; //!< Default null music service
     static Music* musicPlayer; //!< Music player
@@ -56,13 +55,6 @@ namespace Glacier {
     static void provideGraphics( Graphics* graphics )
     {
       graphicsService = graphics;
-    }
-
-    static GUI& getGUI() { return *guiService; }
-
-    static void provideGUI( GUI* gui )
-    {
-      guiService = gui;
     }
 
     static EntityManager& getEntities() { return *entityManager; }

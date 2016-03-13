@@ -85,8 +85,13 @@ namespace Glacier {
     auto movable = entity->getMovable();
     auto worldEye = getWorldEyePosition();
     auto halfFov = Degree( mFieldOfView.valueDegrees() / 2.0f );
-    auto samplingPoints = movable->getWorldBoundingBox( false ).getAllCorners();
-    for ( size_t i = 0; i < 8; i++ )
+    auto aabb = movable->getWorldAabbUpdated();
+
+    if ( aabb.distance( worldEye ) > mViewDistance )
+      return false;
+
+    auto samplingPoints = Math::aabbCorners( aabb );
+    for ( size_t i = 0; i < samplingPoints.size(); i++ )
     {
       auto sample = samplingPoints[i];
       if ( sample.distance( worldEye ) <= mViewDistance )

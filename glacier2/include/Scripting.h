@@ -17,7 +17,7 @@ namespace Glacier {
   //! \class Scripting
   //! Main engine component responsible of running all JS scripting.
   //! \sa EngineComponent
-  class Scripting: public EngineComponent {
+  class Scripting: public EngineComponent, public v8::ArrayBuffer::Allocator {
   friend class Script;
   protected:
     v8::Isolate* mIsolate;
@@ -28,6 +28,9 @@ namespace Glacier {
     void shutdown();
     void clearScripts();
     DataStreamPtr openScriptFile( const Ogre::String& filename );
+    virtual void* Allocate( size_t length );
+    virtual void* AllocateUninitialized( size_t length );
+    virtual void Free( void* data, size_t length );
   public:
     Scripting( Engine* engine );
     virtual ~Scripting();

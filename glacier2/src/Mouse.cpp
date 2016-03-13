@@ -4,7 +4,6 @@
 #include "Exception.h"
 #include "Mouse.h"
 #include "ServiceLocator.h"
-#include "GUI.h"
 #include "Controllers.h"
 
 // Glacier² Game Engine © 2014 noorus
@@ -38,8 +37,8 @@ namespace Glacier {
       if ( !mFocused )
         return;
 
-      if ( Locator::getGUI().injectMousePress( state, button ) )
-        return;
+      // if ( Locator::getGUI().injectMousePress( state, button ) )
+      //   return;
 
       const BindAction& action = mButtons[button];
       if ( action != Action_None )
@@ -51,8 +50,8 @@ namespace Glacier {
       if ( !mFocused )
         return;
 
-      if ( Locator::getGUI().injectMouseRelease( state, button ) )
-        return;
+      // if ( Locator::getGUI().injectMouseRelease( state, button ) )
+      //   return;
 
       const BindAction& action = mButtons[button];
       if ( action != Action_None )
@@ -64,8 +63,8 @@ namespace Glacier {
       if ( !mFocused )
         return;
 
-      if ( Locator::getGUI().injectMouseMove( state ) )
-        return;
+      // if ( Locator::getGUI().injectMouseMove( state ) )
+      //   return;
 
       Vector3 movement(
         (Real)state.mMovement.relative.x,
@@ -80,8 +79,8 @@ namespace Glacier {
       if ( !mFocused )
         return;
 
-      if ( Locator::getGUI().injectMouseMove( state ) )
-        return;
+      // if ( Locator::getGUI().injectMouseMove( state ) )
+      //   return;
 
       mController->applyZoom( this, Real( state.mWheel.relative / WHEEL_DELTA ) );
     }

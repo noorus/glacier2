@@ -22,13 +22,13 @@ namespace Glacier {
       static EntityBaseData baseData;
     protected:
       physx::PxRigidDynamic* mActor;
-      Ogre::Entity* mEntity;
+      Ogre::Item* mItem;
       Ogre::MeshPtr mMesh;
       Type mType;
       DevCube( World* world );
       virtual ~DevCube();
     public:
-      virtual const Ogre::MovableObject* getMovable() const throw();
+      virtual Ogre::MovableObject* getMovable();
       virtual void setType( const Type type );
       virtual void spawn( const Vector3& position, const Quaternion& orientation );
       virtual void think( const GameTime delta );

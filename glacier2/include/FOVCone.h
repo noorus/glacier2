@@ -8,7 +8,7 @@ namespace Glacier {
 
   struct FOVCone {
     Ogre::MeshPtr mesh;
-    Ogre::Entity* entity;
+    Ogre::Item* item;
     Ogre::SceneNode* node;
     bool alert;
     FOVCone();

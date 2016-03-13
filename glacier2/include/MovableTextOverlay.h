@@ -6,7 +6,7 @@
 
 namespace Glacier {
 
-  class MovableTextOverlayAttributes {
+  /*class MovableTextOverlayAttributes {
   protected:
     const Ogre::Camera* mCamera;
     Ogre::Font* mFont;
@@ -36,9 +36,9 @@ namespace Glacier {
     const Ogre::String mName;
     const Ogre::MovableObject* mTarget;
     Ogre::String mCaption;
-    Ogre::Overlay* mOverlay;
-    Ogre::OverlayContainer* mContainer;
-    Ogre::OverlayElement* mElement;
+    Ogre::v1::Overlay* mOverlay;
+    Ogre::v1::OverlayContainer* mContainer;
+    Ogre::v1::OverlayElement* mElement;
     MovableTextOverlayAttributes* mAttributes;
     bool mEnabled;
     bool mDirty;
@@ -61,6 +61,6 @@ namespace Glacier {
     const bool isEnabled() const { return mEnabled; }
     void enable( bool enable );
     void update();
-  };
+  };*/
 
 }

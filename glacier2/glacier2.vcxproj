@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|x64">
       <Configuration>Debug</Configuration>
@@ -7,10 +7,6 @@
     </ProjectConfiguration>
     <ProjectConfiguration Include="Release|x64">
       <Configuration>Release</Configuration>
-      <Platform>x64</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Ship|x64">
-      <Configuration>Ship</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
@@ -23,20 +19,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>Unicode</CharacterSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Ship|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -49,9 +38,6 @@
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Ship|x64'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -59,29 +45,30 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Ship|x64'">
-    <LinkIncremental>false</LinkIncremental>
-  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;ENABLE_LARGE_PAGES;ENABLE_USERMODEPAGEALLOCATOR;USE_LOCKS;USE_SPIN_LOCKS;_CRT_SECURE_NO_WARNINGS;DEBUG;_DEBUG;_WINDOWS;WIN64;_ALLOW_MSC_VER_MISMATCH;_ALLOW_ITERATOR_DEBUG_LEVEL_MISMATCH;PHYSX_PROFILE_SDK;PX_DEBUG;PX_CHECKED;PX_SUPPORT_VISUAL_DEBUGGER;PX_NVTX;V8_TARGET_ARCH_X64;V8_DEPRECATION_WARNINGS;V8_I18N_SUPPORT;U_USING_ICU_NAMESPACE=0;U_ENABLE_DYLOAD=0;U_STATIC_IMPLEMENTATION;U_CHARSET_IS_UTF8=1;ENABLE_HANDLE_ZAPPING;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)include;$(ProjectDir)include;$(SolutionDir)..\SDK\Ogre\include\OGRE;$(SolutionDir)..\SDK\Ogre\include\OGRE\Overlay;$(SolutionDir)..\SDK\Ogre\include\OGRE\Paging;$(SolutionDir)..\SDK\Ogre\include\OGRE\Plugins\PCZSceneManager;$(SolutionDir)..\SDK\Ogre\include\OGRE\RenderSystems\Direct3D9;$(SolutionDir)..\SDK\Ogre\include\OGRE\Terrain;$(SolutionDir)..\SDK\Ogre\include\OGRE\Threading;$(SolutionDir)..\SDK\FMOD SoundSystem\FMOD Programmers API Windows\api\inc;$(SolutionDir)..\SDK\FMOD SoundSystem\FMOD Programmers API Windows\fmoddesignerapi\api\inc;$(SolutionDir)..\v8\include;$(SolutionDir)..\v8;$(SolutionDir)nil\include;$(SolutionDir)nedmalloc;$(SolutionDir)hdrlib;$(SolutionDir)..\SDK\PhysX\Include;$(SolutionDir)..\SDK\OgreDependencies\include;$(SolutionDir)shiny\Main;$(SolutionDir)shiny\Platforms\Ogre;$(SolutionDir)..\SDK\MyGUI\include\MYGUI;$(SolutionDir)..\v8\third_party\icu\source\common;$(SolutionDir)..\v8\third_party\icu\source\i18n;$(SolutionDir)..\v8\third_party\icu\source\io;$(SolutionDir)ogre-procedural\library\include;$(SolutionDir)recastnavigation\Recast\Include;$(SolutionDir)recastnavigation\Detour\Include;$(SolutionDir)recastnavigation\DebugUtils\Include;$(SolutionDir)recastnavigation\DetourCrowd\Include;$(SolutionDir)recastnavigation\DetourTileCache\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;ENABLE_LARGE_PAGES;ENABLE_USERMODEPAGEALLOCATOR;USE_LOCKS;USE_SPIN_LOCKS;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;DEBUG;_DEBUG;_WINDOWS;WIN64;_ALLOW_MSC_VER_MISMATCH;_ALLOW_ITERATOR_DEBUG_LEVEL_MISMATCH;PHYSX_PROFILE_SDK;PX_DEBUG;PX_CHECKED;PX_SUPPORT_VISUAL_DEBUGGER;PX_NVTX;V8_TARGET_ARCH_X64;V8_DEPRECATION_WARNINGS;V8_I18N_SUPPORT;U_USING_ICU_NAMESPACE=0;U_ENABLE_DYLOAD=0;U_STATIC_IMPLEMENTATION;U_CHARSET_IS_UTF8=1;ENABLE_HANDLE_ZAPPING;GLACIER_NO_PHYSICS_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)include;$(ProjectDir)include;$(SolutionDir)..\SDK\Ogre\include\OGRE;$(SolutionDir)..\SDK\Ogre\include\OGRE\Overlay;$(SolutionDir)..\SDK\Ogre\include\OGRE\Threading;$(SolutionDir)..\SDK\FMOD SoundSystem\FMOD Programmers API Windows\api\inc;$(SolutionDir)..\SDK\FMOD SoundSystem\FMOD Programmers API Windows\fmoddesignerapi\api\inc;$(SolutionDir)..\v8\include;$(SolutionDir)..\v8;$(SolutionDir)nil\include;$(SolutionDir)nedmalloc;$(SolutionDir)..\SDK\PhysX\Include;$(SolutionDir)..\v8\third_party\icu\source\common;$(SolutionDir)..\v8\third_party\icu\source\i18n;$(SolutionDir)..\v8\third_party\icu\source\io;$(SolutionDir)recastnavigation\Recast\Include;$(SolutionDir)recastnavigation\Detour\Include;$(SolutionDir)recastnavigation\DebugUtils\Include;$(SolutionDir)recastnavigation\DetourCrowd\Include;$(SolutionDir)recastnavigation\DetourTileCache\Include;$(SolutionDir)..\SDK\OgreProcedural\include\OgreProcedural;$(SolutionDir)..\SDK\Ogre\include\OGRE\Hlms\Pbs;$(SolutionDir)..\SDK\Ogre\include\OGRE\Hlms\Unlit;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>StdAfx.h</PrecompiledHeaderFile>
       <AdditionalOptions>/Zm512 %(AdditionalOptions)</AdditionalOptions>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <FloatingPointModel>Fast</FloatingPointModel>
       <ShowIncludes>
       </ShowIncludes>
+      <EnableParallelCodeGeneration>true</EnableParallelCodeGeneration>
+      <EnableEnhancedInstructionSet>AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)lib;$(SolutionDir)..\SDK\Ogre\lib\$(Configuration);$(SolutionDir)..\SDK\Ogre\lib\$(Configuration)\opt;$(SolutionDir)..\SDK\FMOD SoundSystem\FMOD Programmers API Windows\api\lib;$(SolutionDir)..\SDK\FMOD SoundSystem\FMOD Programmers API Windows\fmoddesignerapi\api\lib;$(SolutionDir)..\v8\build\$(Configuration)\lib;$(SolutionDir)..\SDK\PhysX\Lib\vc11win64;$(SolutionDir)..\SDK\OgreDependencies\lib\$(Configuration);$(SolutionDir)..\SDK\MyGUI\lib\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>OgreMainStatic_d.lib;OgreOverlayStatic_d.lib;RenderSystem_Direct3D9Static_d.lib;Plugin_PCZSceneManagerStatic_d.lib;Plugin_CgProgramManagerStatic_d.lib;fmodexL64_vc.lib;fmod_eventL64.lib;v8_libplatform.lib;icui18n.lib;icuuc.lib;v8_base.lib;v8_libbase.lib;v8_snapshot.lib;PhysX3CommonDEBUG_x64.lib;PhysX3DEBUG_x64.lib;PhysX3CookingDEBUG_x64.lib;PhysX3CharacterKinematicDEBUG_x64.lib;PhysX3ExtensionsDEBUG.lib;PhysX3VehicleDEBUG.lib;PhysXProfileSDKDEBUG.lib;PhysXVisualDebuggerSDKDEBUG.lib;PxTaskDEBUG.lib;nil64_d.lib;ws2_32.lib;winmm.lib;comctl32.lib;gdiplus.lib;avrt.lib;FreeImage_d.lib;zziplib_d.lib;zlib_d.lib;libboost_thread-vc120-mt-sgd-1_56.lib;libboost_date_time-vc120-mt-sgd-1_56.lib;libboost_system-vc120-mt-sgd-1_56.lib;libboost_atomic-vc120-mt-sgd-1_56.lib;libboost_chrono-vc120-mt-sgd-1_56.lib;freetype_d.lib;cg.lib;d3d9.lib;d3dx9.lib;DxErr.lib;dxguid.lib;MyGUIEngineStatic_d.lib;MyGUI.OgrePlatform_d.lib;ogre-procedural64_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)lib;$(SolutionDir)..\SDK\Ogre\lib\$(Configuration);$(SolutionDir)..\SDK\Ogre\lib\$(Configuration)\opt;$(SolutionDir)..\SDK\FMOD SoundSystem\FMOD Programmers API Windows\api\lib;$(SolutionDir)..\SDK\FMOD SoundSystem\FMOD Programmers API Windows\fmoddesignerapi\api\lib;$(SolutionDir)..\v8\build\$(Configuration)\lib;$(SolutionDir)..\SDK\PhysX\Lib\vc14win64;$(SolutionDir)..\SDK\OgreDependencies\lib\$(Configuration);$(SolutionDir)..\SDK\OgreProcedural\lib\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>OgreMain_d.lib;OgreOverlay_d.lib;OgreHlmsUnlit_d.lib;OgreHlmsPbs_d.lib;fmodexL64_vc.lib;fmod_eventL64.lib;v8_libplatform.lib;icui18n.lib;icuuc.lib;v8.lib;v8_libbase.lib;PhysX3CommonDEBUG_x64.lib;PhysX3DEBUG_x64.lib;PhysX3CookingDEBUG_x64.lib;PhysX3CharacterKinematicDEBUG_x64.lib;PhysX3ExtensionsDEBUG.lib;PhysX3VehicleDEBUG.lib;PhysXProfileSDKDEBUG.lib;PhysXVisualDebuggerSDKDEBUG.lib;PxTaskDEBUG.lib;nil64_d.lib;ws2_32.lib;winmm.lib;comctl32.lib;gdiplus.lib;avrt.lib;libboost_thread-vc140-mt-gd-1_59.lib;libboost_date_time-vc140-mt-gd-1_59.lib;libboost_system-vc140-mt-gd-1_59.lib;libboost_atomic-vc140-mt-gd-1_59.lib;libboost_chrono-vc140-mt-gd-1_59.lib;OgreProcedural_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>/ignore:4099 %(AdditionalOptions)</AdditionalOptions>
       <TreatLinkerWarningAsErrors>
       </TreatLinkerWarningAsErrors>
@@ -98,16 +85,16 @@
       <FunctionLevelLinking>
       </FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;ENABLE_LARGE_PAGES;ENABLE_USERMODEPAGEALLOCATOR;USE_LOCKS;USE_SPIN_LOCKS;_CRT_SECURE_NO_WARNINGS;NDEBUG;_WINDOWS;_ALLOW_MSC_VER_MISMATCH;_ALLOW_ITERATOR_DEBUG_LEVEL_MISMATCH;PHYSX_PROFILE_SDK;V8_TARGET_ARCH_X64;V8_DEPRECATION_WARNINGS;V8_I18N_SUPPORT;U_USING_ICU_NAMESPACE=0;U_ENABLE_DYLOAD=0;U_STATIC_IMPLEMENTATION;U_CHARSET_IS_UTF8=1;ENABLE_HANDLE_ZAPPING;GLACIER_OVERRIDE_NEW;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)include;$(ProjectDir)include;$(SolutionDir)..\SDK\Ogre\include\OGRE;$(SolutionDir)..\SDK\Ogre\include\OGRE\Overlay;$(SolutionDir)..\SDK\Ogre\include\OGRE\Paging;$(SolutionDir)..\SDK\Ogre\include\OGRE\Plugins\PCZSceneManager;$(SolutionDir)..\SDK\Ogre\include\OGRE\RenderSystems\Direct3D9;$(SolutionDir)..\SDK\Ogre\include\OGRE\Terrain;$(SolutionDir)..\SDK\Ogre\include\OGRE\Threading;$(SolutionDir)..\SDK\FMOD SoundSystem\FMOD Programmers API Windows\api\inc;$(SolutionDir)..\SDK\FMOD SoundSystem\FMOD Programmers API Windows\fmoddesignerapi\api\inc;$(SolutionDir)..\v8\include;$(SolutionDir)..\v8;$(SolutionDir)nil\include;$(SolutionDir)nedmalloc;$(SolutionDir)hdrlib;$(SolutionDir)..\SDK\PhysX\Include;$(SolutionDir)..\SDK\OgreDependencies\include;$(SolutionDir)shiny\Main;$(SolutionDir)shiny\Platforms\Ogre;$(SolutionDir)..\SDK\MyGUI\include\MYGUI;$(SolutionDir)..\v8\third_party\icu\source\common;$(SolutionDir)..\v8\third_party\icu\source\i18n;$(SolutionDir)..\v8\third_party\icu\source\io;$(SolutionDir)ogre-procedural\library\include;$(SolutionDir)recastnavigation\Recast\Include;$(SolutionDir)recastnavigation\Detour\Include;$(SolutionDir)recastnavigation\DebugUtils\Include;$(SolutionDir)recastnavigation\DetourCrowd\Include;$(SolutionDir)recastnavigation\DetourTileCache\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;ENABLE_LARGE_PAGES;ENABLE_USERMODEPAGEALLOCATOR;USE_LOCKS;USE_SPIN_LOCKS;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;NDEBUG;_WINDOWS;_ALLOW_MSC_VER_MISMATCH;_ALLOW_ITERATOR_DEBUG_LEVEL_MISMATCH;PHYSX_PROFILE_SDK;_USING_V110_SDK71_;V8_TARGET_ARCH_X64;V8_I18N_SUPPORT;V8_USE_EXTERNAL_STARTUP_DATA;USING_V8_SHARED;V8_SHARED;U_USING_ICU_NAMESPACE=0;U_ENABLE_DYLOAD=0;U_STATIC_IMPLEMENTATION;U_CHARSET_IS_UTF8=1;VERIFY_HEAP;V8_ENABLE_CHECKS;ENABLE_HANDLE_ZAPPING;GLACIER_OVERRIDE_NEW;GLACIER_SHIPPING;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)include;$(ProjectDir)include;$(SolutionDir)..\SDK\Ogre\include\OGRE;$(SolutionDir)..\SDK\Ogre\include\OGRE\Overlay;$(SolutionDir)..\SDK\Ogre\include\OGRE\Threading;$(SolutionDir)..\SDK\FMOD SoundSystem\FMOD Programmers API Windows\api\inc;$(SolutionDir)..\SDK\FMOD SoundSystem\FMOD Programmers API Windows\fmoddesignerapi\api\inc;$(SolutionDir)..\v8\include;$(SolutionDir)..\v8;$(SolutionDir)nil\include;$(SolutionDir)nedmalloc;$(SolutionDir)..\SDK\PhysX\Include;$(SolutionDir)..\v8\third_party\icu\source\common;$(SolutionDir)..\v8\third_party\icu\source\i18n;$(SolutionDir)..\v8\third_party\icu\source\io;$(SolutionDir)recastnavigation\Recast\Include;$(SolutionDir)recastnavigation\Detour\Include;$(SolutionDir)recastnavigation\DebugUtils\Include;$(SolutionDir)recastnavigation\DetourCrowd\Include;$(SolutionDir)recastnavigation\DetourTileCache\Include;$(SolutionDir)..\SDK\OgreProcedural\include\OgreProcedural;$(SolutionDir)..\SDK\Ogre\include\OGRE\Hlms\Pbs;$(SolutionDir)..\SDK\Ogre\include\OGRE\Hlms\Unlit;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>StdAfx.h</PrecompiledHeaderFile>
-      <DebugInformationFormat>None</DebugInformationFormat>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <EnableEnhancedInstructionSet>AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <AdditionalOptions>/Zm512 %(AdditionalOptions)</AdditionalOptions>
       <ShowIncludes>false</ShowIncludes>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FloatingPointModel>Fast</FloatingPointModel>
       <EnableParallelCodeGeneration>true</EnableParallelCodeGeneration>
       <FloatingPointExceptions>
@@ -116,52 +103,11 @@
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
-      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <GenerateDebugInformation>Debug</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(SolutionDir)lib;$(SolutionDir)..\SDK\Ogre\lib\$(Configuration);$(SolutionDir)..\SDK\Ogre\lib\$(Configuration)\opt;$(SolutionDir)..\SDK\FMOD SoundSystem\FMOD Programmers API Windows\api\lib;$(SolutionDir)..\SDK\FMOD SoundSystem\FMOD Programmers API Windows\fmoddesignerapi\api\lib;$(SolutionDir)..\v8\build\$(Configuration)\lib;$(SolutionDir)..\SDK\PhysX\Lib\vc11win64;$(SolutionDir)..\SDK\OgreDependencies\lib\$(Configuration);$(SolutionDir)..\SDK\MyGUI\lib\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>OgreMainStatic.lib;OgreOverlayStatic.lib;RenderSystem_Direct3D9Static.lib;Plugin_PCZSceneManagerStatic.lib;Plugin_CgProgramManagerStatic.lib;fmodex64_vc.lib;fmod_event64.lib;v8_libplatform.lib;icui18n.lib;icuuc.lib;v8_base.lib;v8_libbase.lib;v8_snapshot.lib;PhysX3Common_x64.lib;PhysX3_x64.lib;PhysX3Cooking_x64.lib;PhysX3CharacterKinematic_x64.lib;PhysX3Extensions.lib;PhysX3Vehicle.lib;PhysXProfileSDK.lib;PhysXVisualDebuggerSDK.lib;PxTask.lib;nil64.lib;ws2_32.lib;winmm.lib;comctl32.lib;gdiplus.lib;avrt.lib;FreeImage.lib;zziplib.lib;zlib.lib;libboost_thread-vc120-mt-s-1_56.lib;libboost_date_time-vc120-mt-s-1_56.lib;libboost_system-vc120-mt-s-1_56.lib;libboost_atomic-vc120-mt-s-1_56.lib;libboost_chrono-vc120-mt-s-1_56.lib;freetype.lib;cg.lib;d3d9.lib;d3dx9.lib;DxErr.lib;dxguid.lib;MyGUIEngineStatic.lib;MyGUI.OgrePlatform.lib;ogre-procedural64.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <ShowProgress>NotSet</ShowProgress>
-      <AdditionalOptions>/ignore:4099 %(AdditionalOptions)</AdditionalOptions>
-      <TreatLinkerWarningAsErrors>
-      </TreatLinkerWarningAsErrors>
-    </Link>
-    <Manifest>
-      <AdditionalManifestFiles>glacier2.manifest</AdditionalManifestFiles>
-    </Manifest>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Ship|x64'">
-    <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <Optimization>MaxSpeed</Optimization>
-      <FunctionLevelLinking>
-      </FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;ENABLE_LARGE_PAGES;ENABLE_USERMODEPAGEALLOCATOR;USE_LOCKS;USE_SPIN_LOCKS;_CRT_SECURE_NO_WARNINGS;NDEBUG;_WINDOWS;_ALLOW_MSC_VER_MISMATCH;_ALLOW_ITERATOR_DEBUG_LEVEL_MISMATCH;PHYSX_PROFILE_SDK;V8_TARGET_ARCH_X64;V8_DEPRECATION_WARNINGS;V8_I18N_SUPPORT;U_USING_ICU_NAMESPACE=0;U_ENABLE_DYLOAD=0;U_STATIC_IMPLEMENTATION;U_CHARSET_IS_UTF8=1;ENABLE_HANDLE_ZAPPING;GLACIER_OVERRIDE_NEW;GLACIER_SHIPPING;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)include;$(ProjectDir)include;$(SolutionDir)..\SDK\Ogre\include\OGRE;$(SolutionDir)..\SDK\Ogre\include\OGRE\Overlay;$(SolutionDir)..\SDK\Ogre\include\OGRE\Paging;$(SolutionDir)..\SDK\Ogre\include\OGRE\Plugins\PCZSceneManager;$(SolutionDir)..\SDK\Ogre\include\OGRE\RenderSystems\Direct3D9;$(SolutionDir)..\SDK\Ogre\include\OGRE\Terrain;$(SolutionDir)..\SDK\Ogre\include\OGRE\Threading;$(SolutionDir)..\SDK\FMOD SoundSystem\FMOD Programmers API Windows\api\inc;$(SolutionDir)..\SDK\FMOD SoundSystem\FMOD Programmers API Windows\fmoddesignerapi\api\inc;$(SolutionDir)..\v8\include;$(SolutionDir)..\v8;$(SolutionDir)nil\include;$(SolutionDir)nedmalloc;$(SolutionDir)hdrlib;$(SolutionDir)..\SDK\PhysX\Include;$(SolutionDir)..\SDK\OgreDependencies\include;$(SolutionDir)shiny\Main;$(SolutionDir)shiny\Platforms\Ogre;$(SolutionDir)..\SDK\MyGUI\include\MYGUI;$(SolutionDir)..\v8\third_party\icu\source\common;$(SolutionDir)..\v8\third_party\icu\source\i18n;$(SolutionDir)..\v8\third_party\icu\source\io;$(SolutionDir)ogre-procedural\library\include;$(SolutionDir)recastnavigation\Recast\Include;$(SolutionDir)recastnavigation\Detour\Include;$(SolutionDir)recastnavigation\DebugUtils\Include;$(SolutionDir)recastnavigation\DetourCrowd\Include;$(SolutionDir)recastnavigation\DetourTileCache\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PrecompiledHeaderFile>StdAfx.h</PrecompiledHeaderFile>
-      <DebugInformationFormat>None</DebugInformationFormat>
-      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
-      <EnableEnhancedInstructionSet>AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
-      <BufferSecurityCheck>false</BufferSecurityCheck>
-      <AdditionalOptions>/Zm512 %(AdditionalOptions)</AdditionalOptions>
-      <ShowIncludes>false</ShowIncludes>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <FloatingPointModel>Fast</FloatingPointModel>
-      <EnableParallelCodeGeneration>true</EnableParallelCodeGeneration>
-      <FloatingPointExceptions>
-      </FloatingPointExceptions>
-      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
-      <StringPooling>true</StringPooling>
-    </ClCompile>
-    <Link>
-      <SubSystem>Windows</SubSystem>
-      <GenerateDebugInformation>false</GenerateDebugInformation>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(SolutionDir)lib;$(SolutionDir)..\SDK\Ogre\lib\Release;$(SolutionDir)..\SDK\Ogre\lib\Release\opt;$(SolutionDir)..\SDK\FMOD SoundSystem\FMOD Programmers API Windows\api\lib;$(SolutionDir)..\SDK\FMOD SoundSystem\FMOD Programmers API Windows\fmoddesignerapi\api\lib;$(SolutionDir)..\v8\build\Release\lib;$(SolutionDir)..\SDK\PhysX\Lib\vc11win64;$(SolutionDir)..\SDK\OgreDependencies\lib\Release;$(SolutionDir)..\SDK\MyGUI\lib\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>OgreMainStatic.lib;OgreOverlayStatic.lib;RenderSystem_Direct3D9Static.lib;Plugin_PCZSceneManagerStatic.lib;Plugin_CgProgramManagerStatic.lib;fmodex64_vc.lib;fmod_event64.lib;v8_libplatform.lib;icui18n.lib;icuuc.lib;v8_base.lib;v8_libbase.lib;v8_snapshot.lib;PhysX3Common_x64.lib;PhysX3_x64.lib;PhysX3Cooking_x64.lib;PhysX3CharacterKinematic_x64.lib;PhysX3Extensions.lib;PhysX3Vehicle.lib;PhysXProfileSDK.lib;PhysXVisualDebuggerSDK.lib;PxTask.lib;nil64.lib;ws2_32.lib;winmm.lib;comctl32.lib;gdiplus.lib;avrt.lib;FreeImage.lib;zziplib.lib;zlib.lib;libboost_thread-vc120-mt-s-1_56.lib;libboost_date_time-vc120-mt-s-1_56.lib;libboost_system-vc120-mt-s-1_56.lib;libboost_atomic-vc120-mt-s-1_56.lib;libboost_chrono-vc120-mt-s-1_56.lib;freetype.lib;cg.lib;d3d9.lib;d3dx9.lib;DxErr.lib;dxguid.lib;MyGUIEngineStatic.lib;MyGUI.OgrePlatform.lib;ogre-procedural64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)lib;$(SolutionDir)..\SDK\Ogre\lib\$(Configuration);$(SolutionDir)..\SDK\Ogre\lib\$(Configuration)\opt;$(SolutionDir)..\SDK\FMOD SoundSystem\FMOD Programmers API Windows\api\lib;$(SolutionDir)..\SDK\FMOD SoundSystem\FMOD Programmers API Windows\fmoddesignerapi\api\lib;$(SolutionDir)..\v8\build\$(Configuration)\lib;$(SolutionDir)..\SDK\PhysX\Lib\vc14win64;$(SolutionDir)..\SDK\OgreDependencies\lib\$(Configuration);$(SolutionDir)..\SDK\OgreProcedural\lib\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>OgreMain.lib;OgreOverlay.lib;fmodex64_vc.lib;fmod_event64.lib;v8_libplatform.lib;icui18n.lib;icuuc.lib;v8_libbase.lib;v8.lib;PhysX3Common_x64.lib;PhysX3_x64.lib;PhysX3Cooking_x64.lib;PhysX3CharacterKinematic_x64.lib;PhysX3Extensions.lib;PhysX3Vehicle.lib;PhysXProfileSDK.lib;PhysXVisualDebuggerSDK.lib;PxTask.lib;nil64.lib;ws2_32.lib;winmm.lib;comctl32.lib;gdiplus.lib;avrt.lib;libboost_thread-vc140-mt-1_59.lib;libboost_date_time-vc140-mt-1_59.lib;libboost_system-vc140-mt-1_59.lib;libboost_atomic-vc140-mt-1_59.lib;libboost_chrono-vc140-mt-1_59.lib;OgreProcedural.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ShowProgress>NotSet</ShowProgress>
       <AdditionalOptions>/ignore:4099 %(AdditionalOptions)</AdditionalOptions>
       <TreatLinkerWarningAsErrors>
@@ -172,155 +118,118 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\hdrlib\HDRCompositor.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Ship|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
     <ClCompile Include="..\nedmalloc\nedmalloc.cpp" />
     <ClCompile Include="..\recastnavigation\DebugUtils\Source\DebugDraw.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Ship|x64'">NotUsing</PrecompiledHeader>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Ship|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\recastnavigation\DebugUtils\Source\DetourDebugDraw.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Ship|x64'">NotUsing</PrecompiledHeader>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Ship|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\recastnavigation\DebugUtils\Source\RecastDebugDraw.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Ship|x64'">NotUsing</PrecompiledHeader>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Ship|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\recastnavigation\DebugUtils\Source\RecastDump.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Ship|x64'">NotUsing</PrecompiledHeader>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Ship|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\recastnavigation\DetourCrowd\Source\DetourCrowd.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Ship|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\recastnavigation\DetourCrowd\Source\DetourLocalBoundary.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Ship|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\recastnavigation\DetourCrowd\Source\DetourObstacleAvoidance.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Ship|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\recastnavigation\DetourCrowd\Source\DetourPathCorridor.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Ship|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\recastnavigation\DetourCrowd\Source\DetourPathQueue.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Ship|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\recastnavigation\DetourCrowd\Source\DetourProximityGrid.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Ship|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\recastnavigation\DetourTileCache\Source\DetourTileCache.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Ship|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\recastnavigation\DetourTileCache\Source\DetourTileCacheBuilder.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Ship|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\recastnavigation\Detour\Source\DetourAlloc.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Ship|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\recastnavigation\Detour\Source\DetourCommon.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Ship|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\recastnavigation\Detour\Source\DetourNavMesh.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Ship|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\recastnavigation\Detour\Source\DetourNavMeshBuilder.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Ship|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\recastnavigation\Detour\Source\DetourNavMeshQuery.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Ship|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\recastnavigation\Detour\Source\DetourNode.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Ship|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\recastnavigation\Recast\Source\Recast.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Ship|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\recastnavigation\Recast\Source\RecastAlloc.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Ship|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\recastnavigation\Recast\Source\RecastArea.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Ship|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\recastnavigation\Recast\Source\RecastContour.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Ship|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\recastnavigation\Recast\Source\RecastFilter.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Ship|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\recastnavigation\Recast\Source\RecastLayers.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Ship|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\recastnavigation\Recast\Source\RecastMesh.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Ship|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\recastnavigation\Recast\Source\RecastMeshDetail.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Ship|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\recastnavigation\Recast\Source\RecastRasterization.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Ship|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\recastnavigation\Recast\Source\RecastRegion.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Ship|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\AICompositeGoal.cpp" />
     <ClCompile Include="src\AIFiniteStateMachine.cpp" />
@@ -329,7 +238,6 @@
     <ClCompile Include="src\AudioService.cpp" />
     <ClCompile Include="src\Camera.cpp" />
     <ClCompile Include="src\CameraController.cpp" />
-    <ClCompile Include="src\CascadedShadowMapping.cpp" />
     <ClCompile Include="src\Character.cpp" />
     <ClCompile Include="src\CharacterInputComponent.cpp" />
     <ClCompile Include="src\PlayerCharacterInputComponent.cpp" />
@@ -346,7 +254,6 @@
     <ClCompile Include="src\EntityRegistry.cpp" />
     <ClCompile Include="src\GameCamera.cpp" />
     <ClCompile Include="src\Gamepad.cpp" />
-    <ClCompile Include="src\GUI.cpp" />
     <ClCompile Include="src\JSColors.cpp" />
     <ClCompile Include="src\JSEntity.cpp" />
     <ClCompile Include="src\Keyboard.cpp" />
@@ -383,18 +290,14 @@
     <ClCompile Include="src\PhysicsScene.cpp" />
     <ClCompile Include="src\PhysXPhysics.cpp" />
     <ClCompile Include="src\Player.cpp" />
-    <ClCompile Include="src\PostProcessing.cpp" />
     <ClCompile Include="src\Script.cpp" />
     <ClCompile Include="src\Scripting.cpp" />
     <ClCompile Include="src\FMODAudio.cpp" />
     <ClCompile Include="src\ServiceLocator.cpp" />
-    <ClCompile Include="src\SettingsWindow.cpp" />
-    <ClCompile Include="src\Shadows.cpp" />
     <ClCompile Include="src\State.cpp" />
     <ClCompile Include="src\StdAfx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Ship|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\TextFile.cpp" />
     <ClCompile Include="src\ThreadController.cpp" />
@@ -404,52 +307,11 @@
     <ClCompile Include="src\WorldPrimitives.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\hdrlib\HDRCompositor.h" />
     <ClInclude Include="..\include\CompilerDef.h" />
     <ClInclude Include="..\include\Defines.h" />
     <ClInclude Include="..\include\GlacierMath.h" />
     <ClInclude Include="..\include\Types.h" />
     <ClInclude Include="..\include\Utilities.h" />
-    <ClInclude Include="..\ogre-procedural\library\include\Procedural.h" />
-    <ClInclude Include="..\ogre-procedural\library\include\ProceduralBoolean.h" />
-    <ClInclude Include="..\ogre-procedural\library\include\ProceduralBoxGenerator.h" />
-    <ClInclude Include="..\ogre-procedural\library\include\ProceduralCapsuleGenerator.h" />
-    <ClInclude Include="..\ogre-procedural\library\include\ProceduralConeGenerator.h" />
-    <ClInclude Include="..\ogre-procedural\library\include\ProceduralCylinderGenerator.h" />
-    <ClInclude Include="..\ogre-procedural\library\include\ProceduralDebugRendering.h" />
-    <ClInclude Include="..\ogre-procedural\library\include\ProceduralExtruder.h" />
-    <ClInclude Include="..\ogre-procedural\library\include\ProceduralGeometryHelpers.h" />
-    <ClInclude Include="..\ogre-procedural\library\include\ProceduralIcoSphereGenerator.h" />
-    <ClInclude Include="..\ogre-procedural\library\include\ProceduralLathe.h" />
-    <ClInclude Include="..\ogre-procedural\library\include\ProceduralMeshGenerator.h" />
-    <ClInclude Include="..\ogre-procedural\library\include\ProceduralMeshModifiers.h" />
-    <ClInclude Include="..\ogre-procedural\library\include\ProceduralMultiShape.h" />
-    <ClInclude Include="..\ogre-procedural\library\include\ProceduralMultiShapeGenerators.h" />
-    <ClInclude Include="..\ogre-procedural\library\include\ProceduralNoise.h" />
-    <ClInclude Include="..\ogre-procedural\library\include\ProceduralPath.h" />
-    <ClInclude Include="..\ogre-procedural\library\include\ProceduralPathGenerators.h" />
-    <ClInclude Include="..\ogre-procedural\library\include\ProceduralPathGeneratorsBase.h" />
-    <ClInclude Include="..\ogre-procedural\library\include\ProceduralPlaneGenerator.h" />
-    <ClInclude Include="..\ogre-procedural\library\include\ProceduralPlatform.h" />
-    <ClInclude Include="..\ogre-procedural\library\include\ProceduralRoundedBoxGenerator.h" />
-    <ClInclude Include="..\ogre-procedural\library\include\ProceduralShape.h" />
-    <ClInclude Include="..\ogre-procedural\library\include\ProceduralShapeGenerators.h" />
-    <ClInclude Include="..\ogre-procedural\library\include\ProceduralShapeGeneratorsBase.h" />
-    <ClInclude Include="..\ogre-procedural\library\include\ProceduralSphereGenerator.h" />
-    <ClInclude Include="..\ogre-procedural\library\include\ProceduralSplines.h" />
-    <ClInclude Include="..\ogre-procedural\library\include\ProceduralSpringGenerator.h" />
-    <ClInclude Include="..\ogre-procedural\library\include\ProceduralStableHeaders.h" />
-    <ClInclude Include="..\ogre-procedural\library\include\ProceduralSVG.h" />
-    <ClInclude Include="..\ogre-procedural\library\include\ProceduralTextureBuffer.h" />
-    <ClInclude Include="..\ogre-procedural\library\include\ProceduralTextureGenerator.h" />
-    <ClInclude Include="..\ogre-procedural\library\include\ProceduralTextureModifiers.h" />
-    <ClInclude Include="..\ogre-procedural\library\include\ProceduralTorusGenerator.h" />
-    <ClInclude Include="..\ogre-procedural\library\include\ProceduralTorusKnotGenerator.h" />
-    <ClInclude Include="..\ogre-procedural\library\include\ProceduralTrack.h" />
-    <ClInclude Include="..\ogre-procedural\library\include\ProceduralTriangleBuffer.h" />
-    <ClInclude Include="..\ogre-procedural\library\include\ProceduralTriangulator.h" />
-    <ClInclude Include="..\ogre-procedural\library\include\ProceduralTubeGenerator.h" />
-    <ClInclude Include="..\ogre-procedural\library\include\ProceduralUtils.h" />
     <ClInclude Include="include\Actions.h" />
     <ClInclude Include="include\AIAgent.h" />
     <ClInclude Include="include\AIFiniteStateMachine.h" />
@@ -457,7 +319,6 @@
     <ClInclude Include="include\AIState.h" />
     <ClInclude Include="include\AudioService.h" />
     <ClInclude Include="include\Camera.h" />
-    <ClInclude Include="include\CascadedShadowMapping.h" />
     <ClInclude Include="include\Character.h" />
     <ClInclude Include="include\Console.h" />
     <ClInclude Include="include\ConsoleWindow.h" />
@@ -465,9 +326,9 @@
     <ClInclude Include="include\DemoState.h" />
     <ClInclude Include="include\DeveloperEntities.h" />
     <ClInclude Include="include\Dummy.h" />
+    <ClInclude Include="include\FOVCone.h" />
     <ClInclude Include="include\Gamepad.h" />
     <ClInclude Include="include\GlobalFlags.h" />
-    <ClInclude Include="include\GUI.h" />
     <ClInclude Include="include\Keyboard.h" />
     <ClInclude Include="include\MenuState.h" />
     <ClInclude Include="include\MeshHelpers.h" />
@@ -496,13 +357,11 @@
     <ClInclude Include="include\PhysicsScene.h" />
     <ClInclude Include="include\PhysXPhysics.h" />
     <ClInclude Include="include\Player.h" />
-    <ClInclude Include="include\PostProcessing.h" />
     <ClInclude Include="include\Script.h" />
     <ClInclude Include="include\Scripting.h" />
     <ClInclude Include="include\ServiceLocator.h" />
     <ClInclude Include="include\Services.h" />
     <ClInclude Include="include\FMODAudio.h" />
-    <ClInclude Include="include\Shadows.h" />
     <ClInclude Include="include\State.h" />
     <ClInclude Include="include\StdAfx.h" />
     <ClInclude Include="include\TargetVer.h" />

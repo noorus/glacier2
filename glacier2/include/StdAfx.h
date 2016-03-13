@@ -14,8 +14,8 @@
 #include <commctrl.h>         // Common Controls          (comctl32.lib)
 #include <richedit.h>         // RichEdit
 #include <time.h>             // Time
-#include <psapi.h>            // Process Status API       (psapi.lib)
-#include <dbghelp.h>          // Debug Help Library       (dbghelp.lib)
+//#include <psapi.h>            // Process Status API       (psapi.lib)
+//#include <dbghelp.h>          // Debug Help Library       (dbghelp.lib)
 #include <avrt.h>             // AVRT                     (avrt.lib)
 
 // nedmalloc Headers
@@ -67,6 +67,9 @@
 #include <fmod_event_net.h>           // FMOD Designer Network API
 
 // Ogre3D Headers
+#pragma warning( push )
+#pragma warning( disable: 4267 ) // warning C4267: 'return': conversion from 'size_t' to 'Ogre::uint32', possible loss of data
+#pragma warning( disable: 4005 ) // warning C4005: 'SAFE_DELETE': macro redefinition
 #include <Ogre.h>
 #include <OgreCamera.h>
 #include <OgreUTFString.h>
@@ -76,10 +79,6 @@
 #include <OgreRenderWindow.h>
 #include <OgreStreamSerialiser.h>
 #include <OgreDeflate.h>
-#pragma warning( push )
-#pragma warning( disable: 4005 ) // warning C4005: 'SAFE_DELETE' : macro redefinition
-#include <RenderSystems/Direct3D9/OgreD3D9RenderSystem.h>
-#pragma warning( pop )
 #include <Overlay/OgreOverlay.h>
 #include <Overlay/OgreOverlaySystem.h>
 #include <Overlay/OgreOverlayManager.h>
@@ -88,17 +87,26 @@
 #include <Overlay/OgreTextAreaOverlayElement.h>
 #include <Overlay/OgreFont.h>
 #include <Overlay/OgreFontManager.h>
-#include <Paging/OgrePaging.h>
-#include <Terrain/OgreTerrain.h>
-#include <Terrain/OgreTerrainPaging.h>
-#include <Terrain/OgreTerrainPagedWorldSection.h>
-#include <Terrain/OgreTerrainGroup.h>
-#include <Terrain/OgreTerrainQuadTreeNode.h>
-#include <Terrain/OgreTerrainMaterialGeneratorA.h>
-#include <Plugins/PCZSceneManager/OgrePCZPlugin.h>
-#include <Plugins/PCZSceneManager/OgrePCZSceneManager.h>
-#include <Plugins/PCZSceneManager/OgrePCZSceneNode.h>
-#include <Plugins/PCZSceneManager/OgrePCZCamera.h>
+#include <OgreMesh.h>
+#include <OgreSubMesh.h>
+#include <OgreManualObject.h>
+#include <OgreMesh2.h>
+#include <OgreSubMesh2.h>
+#include <OgreManualObject2.h>
+#include <OgreHlms.h>
+#include <OgreHlmsUnlit.h>
+#include <OgreHlmsPbs.h>
+#include <OgreHlmsManager.h>
+#include <OgreArchiveManager.h>
+#include <Compositor/OgreCompositorManager2.h>
+#include <Compositor/OgreCompositorWorkspace.h>
+#include <Compositor/OgreCompositorWorkspaceListener.h>
+#include <OgreItem.h>
+#include <OgreSubItem.h>
+#include <OgreEntity.h>
+#include <RenderSystems/Direct3D11/OgreD3D11Plugin.h>
+#include <RenderSystems/Direct3D11/OgreD3D11RenderSystem.h>
+#pragma warning( pop )
 
 // ICU Headers
 #include <unicode/utypes.h>
@@ -112,18 +120,14 @@
 #include <unicode/unum.h>
 
 // V8 Headers
-#include <v8.h>
 #include <libplatform/libplatform.h>
+#include <v8.h>
 
 // PhysX Headers
 #include <PxPhysicsAPI.h>
 
 // Nil Headers
 #include <nil.h>
-
-// MyGUI Headers
-#include <MyGUI.h>
-#include <MyGUI_OgrePlatform.h>
 
 // OgreProcedural Headers
 #pragma warning( push )

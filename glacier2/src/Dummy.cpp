@@ -60,7 +60,7 @@ namespace Glacier {
   Dummy::Dummy( World* world ):
   Character( world, &baseData, new AICharacterInputComponent( this ) ),
   AI::Agent(),
-  mEntity( nullptr ), mStates( this )
+  mItem( nullptr ), mStates( this )
   {
     mEyePosition = Vector3( 0.0f, 0.5f, 0.0f );
     mFieldOfView = Radian( Ogre::Degree( 50.0f ) );
@@ -86,11 +86,11 @@ namespace Glacier {
 
     mMesh = Procedural::CapsuleGenerator( mRadius, mHeight, 8, 16, 1 ).realizeMesh();
 
-    mEntity = Locator::getGraphics().getScene()->createEntity( mMesh );
-    mEntity->setQueryFlags( SceneQueryFlag_Character );
-    mEntity->setMaterialName( "Developer/Placeholder/Dummy" );
-    mEntity->setCastShadows( true );
-    mNode->attachObject( mEntity );
+    mItem = Locator::getGraphics().getScene()->createItem( mMesh );
+    mItem->setQueryFlags( SceneQueryFlag_Character );
+    mItem->setDatablockOrMaterialName( "Developer/Placeholder/Dummy" );
+    mItem->setCastShadows( true );
+    mNode->attachObject( mItem );
 
     mFovCone.set( mViewDistance, mFieldOfView );
 
@@ -112,16 +112,16 @@ namespace Glacier {
     mNode->setDirection( mFacing, Ogre::Node::TS_WORLD );
   }
 
-  const Ogre::MovableObject* Dummy::getMovable() const
+  Ogre::MovableObject* Dummy::getMovable()
   {
-    return mEntity;
+    return mItem;
   }
 
   Dummy::~Dummy()
   {
     mEyeNode->removeAllChildren();
-    if ( mEntity )
-      Locator::getGraphics().getScene()->destroyEntity( mEntity );
+    if ( mItem )
+      Locator::getGraphics().getScene()->destroyItem( mItem );
   }
 
 }

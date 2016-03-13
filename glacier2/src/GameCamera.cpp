@@ -18,10 +18,9 @@ namespace Glacier {
   const Radian cClampTop = Radian( 0.6f );
   const Radian cClampBottom = Radian( 1.0f );
 
-  GameCamera::GameCamera( PCZSceneManager* scene,
-    const Ogre::String& name, const PCZSceneNode* target,
-    PCZone* homeZone ):
-    Camera( scene, name, Vector3::ZERO, cFOVy, homeZone ),
+  GameCamera::GameCamera( SceneManager* scene,
+    const Ogre::String& name, SceneNode* target ):
+    Camera( scene, name, Vector3::ZERO, cFOVy ),
     mSensitivity( cSensitivity ),
     mTarget( target ),
     mRotation( Quaternion::IDENTITY ), mMovement( Vector3::ZERO ),
@@ -29,11 +28,11 @@ namespace Glacier {
     mZoom( 0.0f ), mDirection( Vector3::ZERO ), mReverseAxes( true )
   {
     mDistance = cDistance;
-    mCamera->setAutoTracking( true, (SceneNode*)mTarget );
-    mCamera->setProjectionType( Ogre::PT_ORTHOGRAPHIC );
+    mCamera->setAutoTracking( false );
+    mCamera->setProjectionType( Ogre::PT_PERSPECTIVE );
     mAngle = Ogre::Math::DegreesToRadians( 45.0f );
     mDirection = Quaternion( mAngle, Vector3::UNIT_Z ) * Vector3::UNIT_X;
-    updateWindow();
+    lookAt( mTarget->_getDerivedPositionUpdated() );
   }
 
   void GameCamera::applyMovement( const Vector3& movement )
@@ -47,12 +46,6 @@ namespace Glacier {
       mMovement.y += -movement.y * mSensitivity;
     }
     mMovement.z += movement.z;
-  }
-
-  void GameCamera::updateWindow()
-  {
-    Real window = Math::interpolateLinear( cMaximumWindow, cMinimumWindow, mZoom );
-    mCamera->setOrthoWindowWidth( window );
   }
 
   void GameCamera::update( const GameTime delta )
@@ -122,18 +115,19 @@ namespace Glacier {
       }
     }
 
-    updateWindow();
-
     // Reset movement for next frame
     mMovement = Vector3::ZERO;
 
     // Update camera position
-    Vector3 target = mTarget->_getDerivedPosition();
+    Vector3 target = mTarget->_getDerivedPositionUpdated();
     Vector3 offset = mDirection * mDistance;
     Vector3 vecPosition = target + offset;
     if ( mModifier )
       mModifier->updatePosition( this, target, offset, vecPosition );
     mNode->setPosition( vecPosition );
+
+    // Always look at our target
+    lookAt( target );
   }
 
   void GameCamera::setSensitivity( const Real sensitivity )

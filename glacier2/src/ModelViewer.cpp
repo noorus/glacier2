@@ -8,7 +8,7 @@
 
 namespace Glacier {
 
-  ModelViewer::ModelViewer( wstring meshName ):
+  /*ModelViewer::ModelViewer( wstring meshName ):
   mEntity( nullptr ), mModelNode( nullptr ), mFloor( nullptr ),
   mFloorNode( nullptr )
   {
@@ -92,6 +92,6 @@ namespace Glacier {
       Locator::getGraphics().getScene()->destroyEntity( mFloor );
     if ( mFloorNode )
       Locator::getGraphics().getScene()->destroySceneNode( mFloorNode );
-  }
+  }*/
 
 }

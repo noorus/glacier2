@@ -952,7 +952,7 @@ static size_t FillWithFreePages(AddressSpaceReservation_t *RESTRICT addr, RemapM
   }
   /* Allocate more pages if needed */
 #ifdef DEBUG
-	if(pages-n>0) DebugPrint("Requesting %lu new pages from kernel\n", (unsigned long) pages-n);
+	if(pages-n>0) DebugPrint("Requesting %lu new pages from kernel\n", (unsigned long)(pages-n));
 #endif
   while(pages-n>0)
   {

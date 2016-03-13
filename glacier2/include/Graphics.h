@@ -2,8 +2,6 @@
 #include "Console.h"
 #include "EngineComponent.h"
 #include "GlobalStats.h"
-#include "PostProcessing.h"
-#include "Shadows.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
@@ -16,10 +14,10 @@ namespace Glacier {
   ENGINE_EXTERN_CONVAR( vid_fullscreen );
   ENGINE_EXTERN_CONVAR( vid_vsync );
   ENGINE_EXTERN_CONVAR( vid_fsaa );
-  ENGINE_EXTERN_CONVAR( vid_d3d9ex );
   ENGINE_EXTERN_CONCMD( vid_restart );
 
   class WindowHandler;
+  class Camera;
 
   class Graphics: public EngineComponent {
   public:
@@ -35,12 +33,11 @@ namespace Glacier {
     Ogre::Root* mRoot;
     Ogre::RenderSystem* mRenderer;
     Ogre::RenderWindow* mWindow;
-    Ogre::PCZSceneManager* mSceneManager;
-    Ogre::OverlaySystem* mOverlaySystem;
+    SceneManager* mSceneManager;
+    CompositorWorkspace* mGameWorkspace;
+    Ogre::v1::OverlaySystem* mOverlaySystem;
     WindowHandler* mWindowHandler;
     Settings mSettings;
-    Shadows* mShadows;
-    PostProcessing* mPostProcessing;
   public:
     struct VideoMode {
       uint32_t mWidth;
@@ -48,10 +45,9 @@ namespace Glacier {
       uint32_t mBits;
       bool mFullscreen;
       bool mVSync;
-      bool mDX9Ex;
       uint32_t mFSAA;
       VideoMode( uint32_t width, uint32_t height, uint32_t bpp,
-        bool fs, bool vsync, uint32_t fsaa, bool dx9ex );
+        bool fs, bool vsync, uint32_t fsaa );
       void setConfigurations( Ogre::RenderSystem& renderer );
       Ogre::NameValuePairList getParams();
       string getAsOptionString();
@@ -59,7 +55,6 @@ namespace Glacier {
       string optFSAsString();
       string optVSyncAsString();
       string optFSAAAsString();
-      string optDX9ExAsString();
     };
     static void callbackVideoRestart( Console* console,
       ConCmd* command, StringVector& arguments );
@@ -71,6 +66,11 @@ namespace Glacier {
       ConVar* variable, ConVar::Value oldValue );
   public:
     Graphics( Engine* engine, WindowHandler* windowHandler );
+    void setupCompositors();
+    CompositorWorkspace* createGameWorkspace( Camera* camera );
+    void destroyGameWorkspace( CompositorWorkspace* ws );
+    void registerHlms();
+    void unregisterHlms();
     void preInitialize();
     void postInitialize();
     void videoShutdown();
@@ -78,14 +78,12 @@ namespace Glacier {
     void screenshot();
     void applySettings( const Settings& settings );
     const Settings& getSettings() throw() { return mSettings; }
-    Shadows* getShadows() throw() { return mShadows; }
-    PostProcessing* getPostProcessing() throw() { return mPostProcessing; }
     void setRenderWindowTitle( const string& title );
     HWND getRenderWindowHandle();
     Ogre::Root* getRoot() { return mRoot; }
     Ogre::RenderSystem* getRenderer() { return mRenderer; }
     Ogre::RenderWindow* getWindow() { return mWindow; }
-    Ogre::PCZSceneManager* getScene() { return mSceneManager; }
+    Ogre::SceneManager* getScene() { return mSceneManager; }
     virtual void componentPreUpdate( GameTime time );
     virtual void componentPostUpdate( GameTime delta, GameTime time );
     static void registerResources( ResourceGroupManager& manager );

@@ -14,7 +14,7 @@
 
 namespace Glacier {
 
-  NavigationInputGeometry::NavigationInputGeometry( const OgreEntityVector& entities ):
+  NavigationInputGeometry::NavigationInputGeometry( const OgreItemVector& entities ):
   mReferenceNode( nullptr ), mVertices( nullptr ), mVertexCount( 0 ),
   mTriangles( nullptr ), mTriangleCount( 0 ), mNormals( nullptr ),
   mBBoxMin( nullptr ), mBBoxMax( nullptr )
@@ -28,7 +28,7 @@ namespace Glacier {
     mReferenceNode = entities[0]->getParentSceneNode()->getCreator()->getRootSceneNode();
 
     calculateExtents( entities );
-    convertEntities( entities );
+    convertItems( entities );
 
     // TODO Chunky triangle mesh support, tiled navmeshes
   }
@@ -47,13 +47,14 @@ namespace Glacier {
       delete[] mBBoxMax;
   }
 
-  void NavigationInputGeometry::calculateExtents( const OgreEntityVector& entities )
+  void NavigationInputGeometry::calculateExtents( const OgreItemVector& entities )
   {
     auto entity = entities[0];
-    auto bbox = entity->getBoundingBox();
+    auto bbox = entity->getLocalAabb();
 
     Matrix4 transform = mReferenceNode->_getFullTransform().inverse() * entity->getParentSceneNode()->_getFullTransform();
-    bbox.transform( transform );
+    assert( transform.isAffine() );
+    bbox.transformAffine( transform );
 
     Vector3 bbmin = bbox.getMinimum();
     Vector3 bbmax = bbox.getMaximum();
@@ -61,9 +62,10 @@ namespace Glacier {
     for ( auto iterator : entities )
     {
       entity = iterator;
-      bbox = entity->getBoundingBox();
+      bbox = entity->getLocalAabb();
       transform = mReferenceNode->_getFullTransform().inverse() * entity->getParentSceneNode()->_getFullTransform();
-      bbox.transform( transform );
+      assert( transform.isAffine() );
+      bbox.transformAffine( transform );
 
       Vector3 min2 = bbox.getMinimum();
       if ( min2.x < bbmin.x )
@@ -86,9 +88,9 @@ namespace Glacier {
     Math::ogreVec3ToFloatArray( bbmax, mBBoxMax );
   }
 
-  void NavigationInputGeometry::convertEntities( const OgreEntityVector& entities )
+  void NavigationInputGeometry::convertItems( const OgreItemVector& items )
   {
-    const size_t count = entities.size();
+    const size_t count = items.size();
 
     size_t* meshVertexCount = new size_t[count];
     size_t* meshIndexCount = new size_t[count];
@@ -100,9 +102,9 @@ namespace Glacier {
     mTriangleCount = 0;
 
     size_t i = 0;
-    for ( auto entity : entities )
+    for ( auto item : items )
     {
-      MeshHelpers::getMeshInformation( entity->getMesh(),
+      MeshHelpers::getMesh2Information( item->getMesh(),
         meshVertexCount[i], meshVertices[i],
         meshIndexCount[i], meshIndices[i] );
 
@@ -120,7 +122,7 @@ namespace Glacier {
     int vertexIndex = 0;
     int previousVertexCount = 0;
     int previousIndexCountTotal = 0;
-    for ( auto entity : entities )
+    for ( auto entity : items )
     {
       Matrix4 transform = mReferenceNode->_getFullTransform().inverse() * entity->getParentSceneNode()->_getFullTransform();
       for ( size_t j = 0; j < meshVertexCount[i]; j++ )

@@ -1,5 +1,4 @@
 #pragma once
-#include "HDRCompositor.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
@@ -16,14 +15,12 @@ namespace Glacier {
   class Director: boost::noncopyable {
   protected:
     Graphics* mGraphics;        //!< The graphics engine
-    Ogre::Viewport* mViewport;  //!< My viewport
     Ogre::Light* mLight;
+    CompositorWorkspace* mWorkspace;
   public:
     static GameCamera* mCamera; //!< My camera
     //! Constructor.
-    Director( Graphics* gfx, const PCZSceneNode* target );
-    //! Gets the viewport.
-    Ogre::Viewport* getViewport() { return mViewport; }
+    Director( Graphics* gfx, SceneNode* target );
     //! Gets the camera.
     GameCamera* getCamera() { return mCamera; }
     void update( const GameTime delta );

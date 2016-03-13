@@ -9,7 +9,7 @@
 
 namespace Glacier {
 
-  FOVCone::FOVCone(): entity( nullptr ), node( nullptr ), alert( false )
+  FOVCone::FOVCone(): item( nullptr ), node( nullptr ), alert( false )
   {
     auto scene = Locator::getGraphics().getScene();
     node = scene->createSceneNode();
@@ -19,8 +19,8 @@ namespace Glacier {
   {
     auto scene = Locator::getGraphics().getScene();
 
-    if ( entity )
-      scene->destroyEntity( entity );
+    if ( item )
+      scene->destroyItem( item );
     if ( node )
       scene->destroySceneNode( node );
   }
@@ -28,13 +28,13 @@ namespace Glacier {
   void FOVCone::setAlert( const bool alert )
   {
     this->alert = alert;
-    if ( !entity )
+    if ( !item )
       return;
 
-    ColourValue color = ( alert ? ColourValue::Red : ColourValue::Green );
-    entity->getSubEntity( 0 )->getMaterial()->getTechnique( 0 )->getPass( 0 )->getTextureUnitState( 0 )->setColourOperationEx(
+    /*ColourValue color = ( alert ? ColourValue::Red : ColourValue::Green );
+    item->getSubEntity( 0 )->getMaterial()->getTechnique( 0 )->getPass( 0 )->getTextureUnitState( 0 )->setColourOperationEx(
       Ogre::LayerBlendOperationEx::LBX_SOURCE1,
-      Ogre::LayerBlendSource::LBS_MANUAL, Ogre::LayerBlendSource::LBS_CURRENT, color );
+      Ogre::LayerBlendSource::LBS_MANUAL, Ogre::LayerBlendSource::LBS_CURRENT, color );*/
   }
 
   void FOVCone::set( Real viewDistance, const Radian& fieldOfView )
@@ -45,8 +45,8 @@ namespace Glacier {
     auto scene = Locator::getGraphics().getScene();
     node->detachAllObjects();
 
-    if ( entity )
-      scene->destroyEntity( entity );
+    if ( item )
+      scene->destroyItem( item );
 
     // The cone gets created with its base at the origin, pointing towards +Y.
     // Flip the cone via setPosition so it widens outwards towards -Y instead.
@@ -54,12 +54,12 @@ namespace Glacier {
       .setPosition( Vector3( 0.0f, -viewDistance, 0.0f ) )
       .realizeMesh();
 
-    entity = scene->createEntity( mesh );
-    entity->setMaterialName( "Debug/FOVVisualization" );
+    item = scene->createItem( mesh );
+    item->setDatablockOrMaterialName( "Debug/FOVVisualization" );
     setAlert( alert );
 
     // Fix our node's direction so it points towards the usual default -Z.
-    node->attachObject( entity );
+    node->attachObject( item );
     node->setPosition( Vector3::ZERO );
     node->setDirection( Vector3::NEGATIVE_UNIT_Z,
       Ogre::Node::TS_LOCAL, Vector3::NEGATIVE_UNIT_Y );

@@ -9,7 +9,6 @@
 #include "ServiceLocator.h"
 #include "Exception.h"
 #include "Win32.h"
-#include "GUI.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
