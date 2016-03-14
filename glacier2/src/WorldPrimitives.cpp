@@ -26,6 +26,11 @@ namespace Glacier {
       //
     }
 
+    Primitive::~Primitive()
+    {
+      //
+    }
+
     Plane::Plane( PhysicsScene* scene, const Ogre::Plane& plane,
     const Real width, const Real height, const Vector3& position ):
     Primitive( scene )
@@ -47,7 +52,7 @@ namespace Glacier {
 
       mItem = scm->createItem( mMesh );
       mItem->setQueryFlags( SceneQueryFlag_World );
-      mItem->setDatablockOrMaterialName( "Developer/Floor" );
+      mItem->setDatablock( "Developer/Floor" );
       mItem->setCastShadows( false );
       mNode->attachObject( mItem );
       mNode->setPosition( position );
@@ -59,7 +64,10 @@ namespace Glacier {
       if ( mItem )
         Locator::getGraphics().getScene()->destroyItem( mItem );
       if ( mNode )
+      {
+        mNode->removeAndDestroyAllChildren();
         Locator::getGraphics().getScene()->destroySceneNode( mNode );
+      }
       mScene->getScene()->removeActor( *mActor );
     }
 
@@ -86,7 +94,7 @@ namespace Glacier {
 
       mItem = Locator::getGraphics().getScene()->createItem( mMesh );
       mItem->setQueryFlags( SceneQueryFlag_World );
-      mItem->setDatablockOrMaterialName( "Developer/Floor" );
+      mItem->setDatablock( "Developer/Floor" );
       mItem->setCastShadows( true );
       mNode->attachObject( mItem );
       mNode->setPosition( position );
@@ -98,7 +106,10 @@ namespace Glacier {
       if ( mItem )
         Locator::getGraphics().getScene()->destroyItem( mItem );
       if ( mNode )
+      {
+        mNode->removeAndDestroyAllChildren();
         Locator::getGraphics().getScene()->destroySceneNode( mNode );
+      }
       mScene->getScene()->removeActor( *mActor );
     }
 

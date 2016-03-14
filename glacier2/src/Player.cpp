@@ -37,7 +37,7 @@ namespace Glacier {
 
     mItem = Locator::getGraphics().getScene()->createItem( mMesh );
     mItem->setQueryFlags( SceneQueryFlag_Character );
-    mItem->setDatablockOrMaterialName( "Developer/Placeholder/Player" );
+    mItem->setDatablock( "Developer/Placeholder/Player" );
     mItem->setCastShadows( true );
     mNode->attachObject( mItem );
   }
@@ -56,6 +56,8 @@ namespace Glacier {
   {
     if ( mItem )
       Locator::getGraphics().getScene()->destroyItem( mItem );
+    if ( !mMesh.isNull() )
+      Ogre::MeshManager::getSingleton().remove( mMesh->getHandle() );
   }
 
 }

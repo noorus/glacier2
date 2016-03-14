@@ -64,7 +64,7 @@ namespace Glacier {
 
         mMesh = Procedural::BoxGenerator().setSizeX( 0.25f ).setSizeY( 0.25f ).setSizeZ( 0.25f ).realizeMesh();
         mItem = Locator::getGraphics().getScene()->createItem( mMesh );
-        mItem->setDatablockOrMaterialName( "Developer/Cube025" );
+        mItem->setDatablock( "Developer/Cube025" );
       }
       else if ( mType == DevCube_050 )
       {
@@ -80,7 +80,7 @@ namespace Glacier {
 
         mMesh = Procedural::BoxGenerator().setSizeX( 0.5f ).setSizeY( 0.5f ).setSizeZ( 0.5f ).realizeMesh();
         mItem = Locator::getGraphics().getScene()->createItem( mMesh );
-        mItem->setDatablockOrMaterialName( "Developer/Cube050" );
+        mItem->setDatablock( "Developer/Cube050" );
       }
 
       mItem->setCastShadows( true );
@@ -98,6 +98,9 @@ namespace Glacier {
     {
       if ( mItem )
         Locator::getGraphics().getScene()->destroyItem( mItem );
+
+      if ( !mMesh.isNull() )
+        Ogre::MeshManager::getSingleton().remove( mMesh->getHandle() );
 
       mWorld->getPhysics()->getScene()->removeActor( *mActor );
     }

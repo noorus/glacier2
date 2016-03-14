@@ -93,6 +93,7 @@
 #include <OgreMesh2.h>
 #include <OgreSubMesh2.h>
 #include <OgreManualObject2.h>
+#include <OgreMeshManager2.h>
 #include <OgreHlms.h>
 #include <OgreHlmsUnlit.h>
 #include <OgreHlmsPbs.h>

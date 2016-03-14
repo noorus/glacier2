@@ -301,7 +301,7 @@ namespace Glacier {
       }
 
       // If any time has passed, draw
-      if ( fTimeDelta > 0.0 ) {
+      if ( fTimeDelta > 0.0 && mSignal != Signal_Stop ) {
         mGame->componentPostUpdate( fTimeDelta, fTime );
         mGraphics->componentPostUpdate( fTimeDelta, fTime );
       }
@@ -376,6 +376,7 @@ namespace Glacier {
     SAFE_DELETE( mInput );
     SAFE_DELETE( mScripting );
     SAFE_DELETE( mGraphics );
+    Locator::provideGraphics( nullptr );
     SAFE_DELETE( mWindowHandler );
     SAFE_DELETE( mConsoleWindow );
     SAFE_DELETE( mConsole );

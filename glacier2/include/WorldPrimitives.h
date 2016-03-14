@@ -22,6 +22,7 @@ namespace Glacier {
       Primitive( PhysicsScene* scene );
     public:
       Ogre::Item* getItem() { return mItem; }
+      virtual ~Primitive();
     };
 
     class Plane: public Primitive {
@@ -29,7 +30,7 @@ namespace Glacier {
       Ogre::MeshPtr mMesh;
     public:
       Plane( PhysicsScene* scene, const Ogre::Plane& plane, const Real width, const Real height, const Vector3& position );
-      ~Plane();
+      virtual ~Plane();
     };
 
     class Box: public Primitive {
@@ -37,7 +38,7 @@ namespace Glacier {
       Ogre::MeshPtr mMesh;
     public:
       Box( PhysicsScene* scene, const Vector3& size, const Vector3& position, const Quaternion& orientation );
-      ~Box();
+      virtual ~Box();
     };
 
   }

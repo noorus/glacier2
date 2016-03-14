@@ -21,14 +21,23 @@ namespace Glacier {
 
     mWorkspace = mGraphics->createGameWorkspace( mCamera );
 
-    // mGraphics->getScene()->setAmbientLight( ColourValue( 0.25f, 0.25f, 0.25f ) );
+    auto scene = mGraphics->getScene();
 
-    Ogre::Light* w = mGraphics->getScene()->createLight();
-    mGraphics->getScene()->getRootSceneNode( Ogre::SCENE_DYNAMIC )->attachObject( w );
-    w->setType( Ogre::Light::LT_DIRECTIONAL );
-    w->setDirection( Vector3( 0.3f, -1.0f, 0.4f ).normalisedCopy() );
-    w->setCastShadows( true );
-    w->setShadowFarClipDistance( 100.0f );
+    Ogre::Light* sun = scene->createLight();
+    auto node = scene->getRootSceneNode( Ogre::SCENE_DYNAMIC )->createChildSceneNode( Ogre::SCENE_DYNAMIC );
+    node->attachObject( sun );
+    sun->setPowerScale( 1.0f );
+    sun->setType( Ogre::Light::LT_DIRECTIONAL );
+    sun->setDirection( Vector3( 0.0f, -1.0f, 0.0f ) );
+    sun->setCastShadows( false );
+    sun->setShadowFarClipDistance( 100.0f );
+    node->resetOrientation();
+    node->setPosition( 0.0f, 20.0f, 0.0f );
+
+    mGraphics->getScene()->setAmbientLight( Ogre::ColourValue( 0.3f, 0.5f, 0.7f ) * 0.1f * 0.75f,
+      Ogre::ColourValue( 0.6f, 0.45f, 0.3f ) * 0.065f * 0.75f,
+      -sun->getDirection() + Ogre::Vector3::UNIT_Y * 0.2f,
+      1.0f );
   }
 
   void Director::update( const GameTime delta )

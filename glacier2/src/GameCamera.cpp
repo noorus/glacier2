@@ -7,16 +7,19 @@
 
 namespace Glacier {
 
-  const Real cMinimumWindow = 10.0f;
-  const Real cMaximumWindow = 32.0f;
   const Real cRotationDeceleration = 20.0f;
-  const Real cZoomAcceleration = 150.0f;
-  const Real cZoomDeceleration = 15.0f;
+  const Real cZoomAcceleration = 0.25f;
+  const Real cZoomDeceleration = 4.0f;
   const Radian cFOVy = Radian( Ogre::Math::DegreesToRadians( 70.0f ) );
-  const Real cDistance = 20.0f;
-  const Real cSensitivity = 0.75f;
+  const Real cMaxDistance = 15.0f;
+  const Real cMinDistance = 2.0f;
+  const Real cSensitivity = 0.5f;
   const Radian cClampTop = Radian( 0.6f );
   const Radian cClampBottom = Radian( 1.0f );
+
+  const Radian cAngle = Radian( Ogre::Math::DegreesToRadians( 10.0f ) );
+  const Radian cMinAngle = Radian( Ogre::Math::DegreesToRadians( 8.0f ) );
+  const Radian cMaxAngle = Radian( Ogre::Math::DegreesToRadians( 80.0f ) );
 
   GameCamera::GameCamera( SceneManager* scene,
     const Ogre::String& name, SceneNode* target ):
@@ -27,10 +30,10 @@ namespace Glacier {
     mZoomVelocity( 0.0f ),
     mZoom( 0.0f ), mDirection( Vector3::ZERO ), mReverseAxes( true )
   {
-    mDistance = cDistance;
+    mDistance = cMaxDistance;
     mCamera->setAutoTracking( false );
     mCamera->setProjectionType( Ogre::PT_PERSPECTIVE );
-    mAngle = Ogre::Math::DegreesToRadians( 45.0f );
+    mAngle = cAngle;
     mDirection = Quaternion( mAngle, Vector3::UNIT_Z ) * Vector3::UNIT_X;
     lookAt( mTarget->_getDerivedPositionUpdated() );
   }
@@ -50,7 +53,7 @@ namespace Glacier {
 
   void GameCamera::update( const GameTime delta )
   {
-    // Calculate the local X axis, as it changes with rotation along world Y
+    // Make up the local X axis, as it changes with rotation along world Y
     Vector3 axis = Vector3( -mDirection.z, 0, mDirection.x );
     axis.normalise();
 
@@ -113,6 +116,7 @@ namespace Glacier {
           if ( mZoomVelocity > 0.0f ) mZoomVelocity = 0.0f;
         }
       }
+      mDistance = Math::interpolateLinear( cMaxDistance, cMinDistance, mZoom );
     }
 
     // Reset movement for next frame
@@ -121,10 +125,10 @@ namespace Glacier {
     // Update camera position
     Vector3 target = mTarget->_getDerivedPositionUpdated();
     Vector3 offset = mDirection * mDistance;
-    Vector3 vecPosition = target + offset;
+    Vector3 position = target + offset;
     if ( mModifier )
-      mModifier->updatePosition( this, target, offset, vecPosition );
-    mNode->setPosition( vecPosition );
+      mModifier->updatePosition( this, target, offset, position );
+    mNode->setPosition( position );
 
     // Always look at our target
     lookAt( target );

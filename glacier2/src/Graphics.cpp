@@ -366,7 +366,11 @@ namespace Glacier {
       // SAFE_DELETE( mPostProcessing );
       // SAFE_DELETE( mShadows );
 
+      gEngine->getConsole()->printf( Console::srcGfx, L"shutting down ogre" );
+
       SAFE_DELETE( mOverlaySystem );
+      Ogre::MeshManager::getSingleton().removeAll();
+      Ogre::v1::MeshManager::getSingleton().removeAll();
       mRoot->shutdown();
       SAFE_DELETE( mRoot );
       mRenderer = nullptr;
