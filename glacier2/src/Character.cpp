@@ -81,7 +81,8 @@ namespace Glacier {
 
   const bool Character::canSee( Entity* entity ) const
   {
-    auto scene = Locator::getGraphics().getScene();
+    // FIXME: Unfortunately the ray query keeps causing those fucking asserts in 2.1 regarding outdated scene graph. Investigate later.
+    /*auto scene = Locator::getGraphics().getScene();
     auto movable = entity->getMovable();
     auto worldEye = getWorldEyePosition();
     auto halfFov = Degree( mFieldOfView.valueDegrees() / 2.0f );
@@ -119,7 +120,7 @@ namespace Glacier {
           scene->destroyQuery( query );
         }
       }
-    }
+    }*/
     return false;
   }
 
