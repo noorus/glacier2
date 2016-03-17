@@ -123,7 +123,7 @@ namespace Glacier {
   EngineComponent( engine ),
   mRoot( nullptr ), mRenderer( nullptr ), mSceneManager( nullptr ),
   mOverlaySystem( nullptr ), mWindowHandler( windowHandler ),
-  mGameWorkspace( nullptr )
+  mGameWorkspace( nullptr ), mUnlitMaterials( nullptr ), mPbsMaterials( nullptr )
   {
     preInitialize();
   }
@@ -227,11 +227,12 @@ namespace Glacier {
     Ogre::TextureManager::getSingleton().setDefaultNumMipmaps(
       g_CVar_tex_mipmaps.getInt() );
 
+    registerHlms();
+
     // mShadows = new Shadows();
     // mPostProcessing = new PostProcessing( mSceneManager, mWindow );
 
     // Register & initialize resource groups
-    registerHlms();
     mEngine->registerResources( ResourceGroupManager::getSingleton() );
 
     // Initialize globals
@@ -278,24 +279,38 @@ namespace Glacier {
 
     auto mgr = Ogre::ArchiveManager::getSingletonPtr();
 
-    auto archiveLibrary = mgr->load( "data\\tindalos\\Hlms\\Common\\HLSL", "FileSystem", true );
+    auto archiveCommon = mgr->load( "data\\tindalos\\Hlms\\Common\\HLSL", "FileSystem", true );
 
     Ogre::ArchiveVec library;
-    library.push_back( archiveLibrary );
+    library.push_back( archiveCommon );
 
     auto archiveUnlit = mgr->load( "data\\tindalos\\Hlms\\Unlit\\HLSL", "FileSystem", true );
-    auto hlmsUnlit = OGRE_NEW Ogre::HlmsUnlit( archiveUnlit, &library );
-    mRoot->getHlmsManager()->registerHlms( hlmsUnlit );
+    mUnlitMaterials = OGRE_NEW Ogre::HlmsUnlit( archiveUnlit, &library );
+    mRoot->getHlmsManager()->registerHlms( mUnlitMaterials, false );
 
     auto archivePBS = mgr->load( "data\\tindalos\\Hlms\\Pbs\\HLSL", "FileSystem", true );
-    auto hlmsPBS = OGRE_NEW Ogre::HlmsPbs( archivePBS, &library );
-    mRoot->getHlmsManager()->registerHlms( hlmsPBS );
+    mPbsMaterials = OGRE_NEW Ogre::HlmsPbs( archivePBS, &library );
+    mRoot->getHlmsManager()->registerHlms( mPbsMaterials, false );
   }
 
   void Graphics::unregisterHlms()
   {
     mEngine->getConsole()->printf( Console::srcGfx,
       L"Unregistering HLMS..." );
+
+    if ( mPbsMaterials )
+    {
+      mRoot->getHlmsManager()->unregisterHlms( mPbsMaterials->getType() );
+      OGRE_DELETE mPbsMaterials;
+      mPbsMaterials = nullptr;
+    }
+
+    if ( mUnlitMaterials )
+    {
+      mRoot->getHlmsManager()->unregisterHlms( mUnlitMaterials->getType() );
+      OGRE_DELETE( mUnlitMaterials );
+      mUnlitMaterials = nullptr;
+    }
   }
 
   void Graphics::applySettings( const Settings& settings )
@@ -354,6 +369,7 @@ namespace Glacier {
 
       if ( mSceneManager )
       {
+        mSceneManager->clearScene();
         if ( mOverlaySystem )
           mSceneManager->removeRenderQueueListener( mOverlaySystem );
         mRoot->destroySceneManager( mSceneManager );
@@ -361,16 +377,14 @@ namespace Glacier {
 
       mEngine->unregisterResources( ResourceGroupManager::getSingleton() );
       mEngine->unregisterUserLocations( ResourceGroupManager::getSingleton() );
-      unregisterHlms();
 
       // SAFE_DELETE( mPostProcessing );
       // SAFE_DELETE( mShadows );
-
-      gEngine->getConsole()->printf( Console::srcGfx, L"shutting down ogre" );
-
-      SAFE_DELETE( mOverlaySystem );
       Ogre::MeshManager::getSingleton().removeAll();
       Ogre::v1::MeshManager::getSingleton().removeAll();
+
+      //SAFE_DELETE( mOverlaySystem );
+      unregisterHlms();
       mRoot->shutdown();
       SAFE_DELETE( mRoot );
       mRenderer = nullptr;
@@ -409,7 +423,12 @@ namespace Glacier {
       L"Registering resources..." );
 
     manager.addResourceLocation( "data\\bootload", "FileSystem", "Bootload", true );
-    manager.initialiseResourceGroup( "Bootload" );
+    manager.addResourceLocation( "data\\tindalos\\2.0\\scripts\\Compositors", "FileSystem", "Bootload", true );
+    manager.addResourceLocation( "data\\tindalos\\2.0\\scripts\\materials\\PbsMaterials", "FileSystem", "Bootload", true );
+    manager.addResourceLocation( "data\\tindalos\\models", "FileSystem", "Bootload", true );
+    manager.addResourceLocation( "data\\tindalos\\materials\\textures", "FileSystem", "Bootload", true );
+    manager.addResourceLocation( "data\\tindalos\\materials\\textures\\Cubemaps", "FileSystem", "Bootload", true );
+    ResourceGroupManager::getSingleton().initialiseResourceGroup( "Bootload" );
   }
 
   void Graphics::unregisterResources( ResourceGroupManager& manager )
@@ -417,7 +436,7 @@ namespace Glacier {
     gEngine->getConsole()->printf( Console::srcGfx,
       L"Unregistering resources..." );
 
-    manager.removeResourceLocation( "data\\bootload", "Bootload" );
+    // manager.destroyResourceGroup( "Bootload" );
   }
 
   void Graphics::componentPreUpdate( GameTime time )

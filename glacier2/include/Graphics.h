@@ -38,6 +38,8 @@ namespace Glacier {
     Ogre::v1::OverlaySystem* mOverlaySystem;
     WindowHandler* mWindowHandler;
     Settings mSettings;
+    HlmsUnlit* mUnlitMaterials;
+    HlmsPbs* mPbsMaterials;
   public:
     struct VideoMode {
       uint32_t mWidth;
@@ -84,6 +86,8 @@ namespace Glacier {
     Ogre::RenderSystem* getRenderer() { return mRenderer; }
     Ogre::RenderWindow* getWindow() { return mWindow; }
     Ogre::SceneManager* getScene() { return mSceneManager; }
+    HlmsUnlit* getUnlit() { return mUnlitMaterials; }
+    HlmsPbs* getPbs() { return mPbsMaterials; }
     virtual void componentPreUpdate( GameTime time );
     virtual void componentPostUpdate( GameTime delta, GameTime time );
     static void registerResources( ResourceGroupManager& manager );
