@@ -36,6 +36,9 @@ namespace Glacier {
 
   void WindowHandler::windowFocusChange( Ogre::RenderWindow* rw )
   {
+    if ( !mEngine || !mEngine->getInput() )
+      return;
+
     // This might break; It seems that when WM_ACTIVATE generates this event,
     // the GetFocus() return hasn't yet changed. So the statuses act reversed.
     HWND windowHandle = NULL;
