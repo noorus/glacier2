@@ -37,3 +37,6 @@ screenshot*
 doc/
 ipch/
 *.opendb
+*.db
+*.cfg
+*.lastcodeanalysissucceeded
