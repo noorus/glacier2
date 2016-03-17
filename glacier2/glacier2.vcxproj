@@ -240,6 +240,7 @@
     <ClCompile Include="src\CameraController.cpp" />
     <ClCompile Include="src\Character.cpp" />
     <ClCompile Include="src\CharacterInputComponent.cpp" />
+    <ClCompile Include="src\HDR.cpp" />
     <ClCompile Include="src\PlayerCharacterInputComponent.cpp" />
     <ClCompile Include="src\AICharacterInputComponent.cpp" />
     <ClCompile Include="src\CharacterMovementComponent.cpp" />
@@ -353,6 +354,7 @@
     <ClInclude Include="include\FOVCone.h" />
     <ClInclude Include="include\Gamepad.h" />
     <ClInclude Include="include\GlobalFlags.h" />
+    <ClInclude Include="include\HDR.h" />
     <ClInclude Include="include\Keyboard.h" />
     <ClInclude Include="include\MenuState.h" />
     <ClInclude Include="include\MeshHelpers.h" />

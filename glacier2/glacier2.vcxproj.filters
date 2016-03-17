@@ -447,6 +447,9 @@
     <ClCompile Include="src\AIThinkGoal.cpp">
       <Filter>Source Files\AI</Filter>
     </ClCompile>
+    <ClCompile Include="src\HDR.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\CompilerDef.h">
@@ -715,6 +718,9 @@
     </ClInclude>
     <ClInclude Include="..\recastnavigation\Detour\Include\DetourStatus.h">
       <Filter>Header Files\Recast &amp; Detour\Detour</Filter>
+    </ClInclude>
+    <ClInclude Include="include\HDR.h">
+      <Filter>Header Files\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

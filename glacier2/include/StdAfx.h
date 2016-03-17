@@ -102,6 +102,8 @@
 #include <Compositor/OgreCompositorManager2.h>
 #include <Compositor/OgreCompositorWorkspace.h>
 #include <Compositor/OgreCompositorWorkspaceListener.h>
+#include <Compositor/OgreCompositorNodeDef.h>
+#include <Compositor/Pass/PassClear/OgreCompositorPassClearDef.h>
 #include <OgreItem.h>
 #include <OgreSubItem.h>
 #include <OgreEntity.h>
