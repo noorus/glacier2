@@ -52,7 +52,7 @@ namespace Glacier {
     auto entity = entities[0];
     auto bbox = entity->getLocalAabb();
 
-    Matrix4 transform = mReferenceNode->_getFullTransform().inverse() * entity->getParentSceneNode()->_getFullTransform();
+    Matrix4 transform = mReferenceNode->_getFullTransformUpdated().inverse() * entity->getParentSceneNode()->_getFullTransformUpdated();
     assert( transform.isAffine() );
     bbox.transformAffine( transform );
 
@@ -63,7 +63,7 @@ namespace Glacier {
     {
       entity = iterator;
       bbox = entity->getLocalAabb();
-      transform = mReferenceNode->_getFullTransform().inverse() * entity->getParentSceneNode()->_getFullTransform();
+      transform = mReferenceNode->_getFullTransformUpdated().inverse() * entity->getParentSceneNode()->_getFullTransformUpdated();
       assert( transform.isAffine() );
       bbox.transformAffine( transform );
 
@@ -96,7 +96,7 @@ namespace Glacier {
     size_t* meshIndexCount = new size_t[count];
 
     Vector3** meshVertices = new Vector3*[count];
-    unsigned long** meshIndices = new unsigned long*[count];
+    Ogre::uint32** meshIndices = new Ogre::uint32*[count];
 
     mVertexCount = 0;
     mTriangleCount = 0;
@@ -124,7 +124,7 @@ namespace Glacier {
     int previousIndexCountTotal = 0;
     for ( auto entity : items )
     {
-      Matrix4 transform = mReferenceNode->_getFullTransform().inverse() * entity->getParentSceneNode()->_getFullTransform();
+      Matrix4 transform = mReferenceNode->_getFullTransformUpdated().inverse() * entity->getParentSceneNode()->_getFullTransformUpdated();
       for ( size_t j = 0; j < meshVertexCount[i]; j++ )
       {
         Vector3 vertexPosition = transform * meshVertices[i][j];

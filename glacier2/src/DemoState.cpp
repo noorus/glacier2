@@ -48,7 +48,7 @@ namespace Glacier {
     mPrimitives.push_back( new Primitives::Box( gEngine->getWorld()->getPhysics(), Vector3( 1.0f, 10.0f, 1.0f ), Vector3( -5.5f, 5.0f, -5.5f ), Quaternion::IDENTITY ) );
 
     // TODO this really needs to be in a background thread. or something.
-    /*OgreItemVector navSources;
+    OgreItemVector navSources;
     for ( auto primitive : mPrimitives )
     {
       navSources.push_back( primitive->getItem() );
@@ -75,7 +75,7 @@ namespace Glacier {
 #ifndef GLACIER_NO_NAVIGATION_DEBUG
     mNavVis = new NavigationDebugVisualizer( gEngine );
     duDebugDrawPolyMesh( mNavVis, *mNavigationMesh->getPolyMesh() );
-#endif*/
+#endif
 
     auto player = Locator::getEntities().create( "player", "player" );
     gEngine->getInput()->getLocalController()->setCharacter( (Character*)player );
@@ -127,10 +127,10 @@ namespace Glacier {
     gEngine->getInput()->getLocalController()->setCharacter( nullptr );
     Locator::getEntities().clear();
     Locator::getMusic().endScene();
-/*#ifndef GLACIER_NO_NAVIGATION_DEBUG
+#ifndef GLACIER_NO_NAVIGATION_DEBUG
     SAFE_DELETE( mNavVis );
 #endif
-    SAFE_DELETE( mNavigationMesh );*/
+    SAFE_DELETE( mNavigationMesh );
     for ( auto primitive : mPrimitives )
       delete primitive;
     SAFE_DELETE( mDirector );

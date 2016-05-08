@@ -21,6 +21,7 @@
 // nedmalloc Headers
 #include <nedmalloc.h>
 #undef WIN32_LEAN_AND_MEAN
+#define NOMINMAX
 
 // VC++ Runtime Headers
 #ifdef _DEBUG
@@ -66,6 +67,9 @@
 #include <fmod_event.hpp>             // FMOD Designer API
 #include <fmod_event_net.h>           // FMOD Designer Network API
 
+#undef min
+#undef max
+
 // Ogre3D Headers
 #pragma warning( push )
 #pragma warning( disable: 4267 ) // warning C4267: 'return': conversion from 'size_t' to 'Ogre::uint32', possible loss of data
@@ -79,6 +83,7 @@
 #include <OgreRenderWindow.h>
 #include <OgreStreamSerialiser.h>
 #include <OgreDeflate.h>
+#include <OgreFastArray.h>
 #include <Overlay/OgreOverlay.h>
 #include <Overlay/OgreOverlaySystem.h>
 #include <Overlay/OgreOverlayManager.h>
@@ -109,6 +114,8 @@
 #include <OgreEntity.h>
 #include <RenderSystems/Direct3D11/OgreD3D11Plugin.h>
 #include <RenderSystems/Direct3D11/OgreD3D11RenderSystem.h>
+#include <OgreBitwise.h>
+#include <Vao/OgreAsyncTicket.h>
 #pragma warning( pop )
 
 // ICU Headers

@@ -112,9 +112,9 @@ namespace Glacier {
     SceneNode* mNode;
     ManualObject* mManualObject;
     ManualObject* mGrid;
-    Ogre::MaterialPtr mMaterial;
     bool mDrawing;
     float mAlpha;
+    uint32_t index_;
   public:
     explicit NavigationDebugVisualizer( Engine* engine );
     virtual void depthMask( bool state );

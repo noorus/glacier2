@@ -15,7 +15,7 @@ namespace MeshHelpers {
 
   void getMesh2Information( const Ogre::MeshPtr mesh,
     size_t &vertex_count, Ogre::Vector3* &vertices,
-    size_t &index_count, unsigned long* &indices,
+    size_t &index_count, Ogre::uint32* &indices,
     const Ogre::Vector3 &position = Ogre::Vector3::ZERO,
     const Ogre::Quaternion &orientation = Ogre::Quaternion::IDENTITY,
     const Ogre::Vector3 &scale = Ogre::Vector3::UNIT_SCALE );

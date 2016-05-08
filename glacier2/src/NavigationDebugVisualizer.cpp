@@ -29,14 +29,11 @@ namespace Glacier {
     mNode = mScene->getRootSceneNode()->createChildSceneNode();
     mManualObject = mScene->createManualObject();
 
-    mMaterial = Ogre::MaterialManager::getSingleton().getByName(
-      "Debug/NavigationVisualization", "Bootload" );
-
     mNode->attachObject( mManualObject );
     // mManualObject->setRenderQueueGroup( Ogre::RENDER_QUEUE_SKIES_LATE );
     mManualObject->setCastShadows( false );
 
-    mAlpha = 0.4f;
+    mAlpha = 0.2f;
   }
 
   void NavigationDebugVisualizer::depthMask( bool state )
@@ -53,22 +50,23 @@ namespace Glacier {
   {
     if ( prim == DU_DRAW_LINES )
     {
-      mManualObject->begin( mMaterial->getName(),
+      mManualObject->begin( "Debug/NavigationVisualization",
         Ogre::OperationType::OT_LINE_LIST );
       mDrawing = true;
     }
     else if ( prim == DU_DRAW_POINTS )
     {
-      mManualObject->begin( mMaterial->getName(),
+      mManualObject->begin( "Debug/NavigationVisualization",
         Ogre::OperationType::OT_POINT_LIST );
       mDrawing = true;
     }
     else if ( prim == DU_DRAW_TRIS )
     {
-      mManualObject->begin( mMaterial->getName(),
+      mManualObject->begin( "Debug/NavigationVisualization",
         Ogre::OperationType::OT_TRIANGLE_LIST );
       mDrawing = true;
     }
+    index_ = 0;
   }
 
   void NavigationDebugVisualizer::vertex( const float* pos, unsigned int color )
@@ -81,6 +79,7 @@ namespace Glacier {
     colorToComponents( color, r, g, b );
     mManualObject->position( Math::floatArrayToOgreVec3( pos ) );
     mManualObject->colour( r, g, b, mAlpha );
+    mManualObject->index( index_++ );
   }
 
   void NavigationDebugVisualizer::vertex( const float x, const float y, const float z, unsigned int color )
@@ -93,6 +92,7 @@ namespace Glacier {
     colorToComponents( color, r, g, b );
     mManualObject->position( Vector3( x, y, z ) );
     mManualObject->colour( r, g, b, mAlpha );
+    mManualObject->index( index_++ );
   }
 
   void NavigationDebugVisualizer::vertex( const float* pos, unsigned int color, const float* uv )
@@ -105,6 +105,7 @@ namespace Glacier {
     colorToComponents( color, r, g, b );
     mManualObject->position( Math::floatArrayToOgreVec3( pos ) );
     mManualObject->colour( r, g, b, mAlpha );
+    mManualObject->index( index_++ );
   }
 
   void NavigationDebugVisualizer::vertex( const float x, const float y, const float z, unsigned int color, const float u, const float v )
@@ -117,6 +118,7 @@ namespace Glacier {
     colorToComponents( color, r, g, b );
     mManualObject->position( Vector3( x, y, z ) );
     mManualObject->colour( r, g, b, mAlpha );
+    mManualObject->index( index_++ );
   }
 
   void NavigationDebugVisualizer::end()

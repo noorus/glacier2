@@ -42,7 +42,7 @@ namespace Glacier {
     if ( !mEnabled )
       return;
 
-    mNamesText->setCaption( "AvgFPS:\r\AvgTime:" );
+    mNamesText->setCaption( "AvgFPS:\r\nAvgTime:" );
 
     auto stats = gEngine->getGraphics()->getRoot()->getFrameStats();
 
