@@ -425,6 +425,10 @@ namespace Glacier {
 
     manager.addResourceLocation( "data\\bootload", "FileSystem", "Bootload", true );
     manager.addResourceLocation( "data\\tindalos\\2.0\\scripts\\Compositors", "FileSystem", "Bootload", true );
+    manager.addResourceLocation( "data\\tindalos\\2.0\\scripts\\materials\\Common", "FileSystem", "Bootload", true );
+    manager.addResourceLocation( "data\\tindalos\\2.0\\scripts\\materials\\Common\\HLSL", "FileSystem", "Bootload", true );
+    manager.addResourceLocation( "data\\tindalos\\2.0\\scripts\\materials\\HDR", "FileSystem", "Bootload", true );
+    manager.addResourceLocation( "data\\tindalos\\2.0\\scripts\\materials\\HDR\\HLSL", "FileSystem", "Bootload", true );
     manager.addResourceLocation( "data\\tindalos\\2.0\\scripts\\materials\\PbsMaterials", "FileSystem", "Bootload", true );
     manager.addResourceLocation( "data\\tindalos\\models", "FileSystem", "Bootload", true );
     manager.addResourceLocation( "data\\tindalos\\materials\\textures", "FileSystem", "Bootload", true );

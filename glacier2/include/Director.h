@@ -10,6 +10,7 @@ namespace Glacier {
 
   class Graphics;
   class GameCamera;
+  class HDR;
 
   //! \class Director
   class Director: boost::noncopyable {
@@ -17,6 +18,7 @@ namespace Glacier {
     Graphics* mGraphics;        //!< The graphics engine
     Ogre::Light* mLight;
     CompositorWorkspace* mWorkspace;
+    HDR* mHDR;
   public:
     static GameCamera* mCamera; //!< My camera
     //! Constructor.

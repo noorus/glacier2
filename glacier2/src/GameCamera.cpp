@@ -14,12 +14,11 @@ namespace Glacier {
   const Real cMaxDistance = 15.0f;
   const Real cMinDistance = 2.0f;
   const Real cSensitivity = 0.5f;
-  const Radian cClampTop = Radian( 0.6f );
-  const Radian cClampBottom = Radian( 1.0f );
+
+  const Radian cMinAngle = Radian( Ogre::Math::DegreesToRadians( 10.0f ) );
+  const Radian cMaxAngle = Radian( Ogre::Math::DegreesToRadians( 150.0f ) );
 
   const Radian cAngle = Radian( Ogre::Math::DegreesToRadians( 10.0f ) );
-  const Radian cMinAngle = Radian( Ogre::Math::DegreesToRadians( 8.0f ) );
-  const Radian cMaxAngle = Radian( Ogre::Math::DegreesToRadians( 80.0f ) );
 
   GameCamera::GameCamera( SceneManager* scene,
     const Ogre::String& name, SceneNode* target ):
@@ -64,12 +63,12 @@ namespace Glacier {
       Radian radiansX = Radian( Ogre::Math::DegreesToRadians( mMovement.x ) );
       Radian radiansY = Radian( Ogre::Math::DegreesToRadians( mMovement.y ) );
       bool resetRotation = false;
-      if ( radiansY > mDirection.angleBetween( Vector3::UNIT_Y ) - cClampTop ) {
-        radiansY = mDirection.angleBetween( Vector3::UNIT_Y ) - cClampTop;
+      if ( radiansY > mDirection.angleBetween( Vector3::UNIT_Y ) - cMinAngle ) {
+        radiansY = mDirection.angleBetween( Vector3::UNIT_Y ) - cMinAngle;
         resetRotation = true;
       }
-      else if ( radiansY < mDirection.angleBetween( Vector3::UNIT_Y ) - cClampBottom ) {
-        radiansY = mDirection.angleBetween( Vector3::UNIT_Y ) - cClampBottom;
+      else if ( radiansY < mDirection.angleBetween( Vector3::UNIT_Y ) - cMaxAngle ) {
+        radiansY = mDirection.angleBetween( Vector3::UNIT_Y ) - cMaxAngle;
         resetRotation = true;
       }
       // Compose the rotation delta and add to existing velocity
