@@ -4,6 +4,7 @@
 #include "Console.h"
 #include "Exception.h"
 #include "Engine.h"
+#include <OgreFrameStats.h>
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
@@ -41,14 +42,14 @@ namespace Glacier {
     if ( !mEnabled )
       return;
 
-    mNamesText->setCaption( "Triangles:\r\nBatches:" );
+    mNamesText->setCaption( "AvgFPS:\r\AvgTime:" );
 
-    const Ogre::RenderTarget::FrameStats& stats = gEngine->getGraphics()->getWindow()->getStatistics();
+    auto stats = gEngine->getGraphics()->getRoot()->getFrameStats();
 
     static wchar_t values[64];
     swprintf_s( values, 64,
-      L"%I64u\r\n%I64u",
-      stats.triangleCount, stats.batchCount );
+      L"%0.2f\r\n%0.2f",
+      stats->getAvgFps(), stats->getAvgTime() );
 
     mValuesText->setCaption( Ogre::UTFString( values ) );
   }
