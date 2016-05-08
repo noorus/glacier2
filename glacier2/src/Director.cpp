@@ -34,7 +34,6 @@ namespace Glacier {
     sun->setDirection( Vector3( 0.0f, -1.0f, 0.0f ) );
     sun->setCastShadows( false );
     sun->setShadowFarClipDistance( 100.0f );
-    node->resetOrientation();
     node->setPosition( 0.0f, 20.0f, 0.0f );
 
     mHDR->setSkyColor( Ogre::ColourValue( 0.2f, 0.4f, 0.6f )  * 6.0f, 1.0f );
