@@ -109,6 +109,11 @@ namespace Glacier {
     Quaternion qt;
     qt.FromAngleAxis( Degree( 0.5f ), Vector3::UNIT_Y );
     mFacing = qt * mFacing;
+  }
+
+  void Dummy::visualize()
+  {
+    Character::visualize();
     mNode->setDirection( mFacing, Ogre::Node::TS_WORLD );
   }
 

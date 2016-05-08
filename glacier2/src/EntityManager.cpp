@@ -65,7 +65,9 @@ namespace Glacier {
 
   void EntityManager::componentPostUpdate( GameTime delta, GameTime time )
   {
-    //
+    // Run entity scene graph transforms
+    for ( auto entity : mEntities )
+      entity->visualize();
   }
 
   Entity* EntityManager::findByName( const string& name )

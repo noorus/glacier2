@@ -298,7 +298,8 @@ namespace Glacier {
     mEngine->getConsole()->printf( Console::srcGfx,
       L"Unregistering HLMS..." );
 
-    if ( mPbsMaterials )
+    // FIXME: not deleting nets us memory leaks; deleting excepts with "datablock still in use".
+    /*if ( mPbsMaterials )
     {
       mRoot->getHlmsManager()->unregisterHlms( mPbsMaterials->getType() );
       OGRE_DELETE mPbsMaterials;
@@ -310,7 +311,7 @@ namespace Glacier {
       mRoot->getHlmsManager()->unregisterHlms( mUnlitMaterials->getType() );
       OGRE_DELETE( mUnlitMaterials );
       mUnlitMaterials = nullptr;
-    }
+    }*/
   }
 
   void Graphics::applySettings( const Settings& settings )
@@ -386,7 +387,7 @@ namespace Glacier {
       //SAFE_DELETE( mOverlaySystem );
       unregisterHlms();
       mRoot->shutdown();
-      SAFE_DELETE( mRoot );
+      //SAFE_DELETE( mRoot ); FIXME: Crash? shouldn't happen, according to docs
       mRenderer = nullptr;
     }
   }

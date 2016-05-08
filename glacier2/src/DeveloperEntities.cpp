@@ -89,6 +89,11 @@ namespace Glacier {
 
     void DevCube::think( const GameTime delta )
     {
+      // No thinking for me
+    }
+
+    void DevCube::visualize()
+    {
       PxTransform& transform = mActor->getGlobalPose();
       mNode->setPosition( Math::pxVec3ToOgre( transform.p ) );
       mNode->setOrientation( Math::pxQtToOgre( transform.q ) );

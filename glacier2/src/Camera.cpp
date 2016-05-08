@@ -17,6 +17,7 @@ namespace Glacier {
     mCamera = mScene->createCamera( name );
     mCamera->detachFromParent();
 
+    mCamera->setQueryFlags( SceneQueryFlag_Camera );
     mCamera->setPosition( Vector3::ZERO );
     mCamera->setAutoAspectRatio( true );
     mCamera->setFOVy( fovy );

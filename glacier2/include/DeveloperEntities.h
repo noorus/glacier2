@@ -32,6 +32,7 @@ namespace Glacier {
       virtual void setType( const Type type );
       virtual void spawn( const Vector3& position, const Quaternion& orientation );
       virtual void think( const GameTime delta );
+      virtual void visualize();
     };
 
   }

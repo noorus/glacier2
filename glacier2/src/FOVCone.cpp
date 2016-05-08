@@ -3,6 +3,7 @@
 #include "ServiceLocator.h"
 #include "Graphics.h"
 #include "FOVCone.h"
+#include <OgreHlmsUnlitDatablock.h>
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
@@ -31,10 +32,11 @@ namespace Glacier {
     if ( !item )
       return;
 
-    /*ColourValue color = ( alert ? ColourValue::Red : ColourValue::Green );
-    item->getSubEntity( 0 )->getMaterial()->getTechnique( 0 )->getPass( 0 )->getTextureUnitState( 0 )->setColourOperationEx(
-      Ogre::LayerBlendOperationEx::LBX_SOURCE1,
-      Ogre::LayerBlendSource::LBS_MANUAL, Ogre::LayerBlendSource::LBS_CURRENT, color );*/
+    ColourValue color = ( alert ? ColourValue::Red : ColourValue::Green );
+    color.a = 0.2f;
+    
+    auto db = static_cast<Ogre::HlmsUnlitDatablock*>( item->getSubItem( 0 )->getDatablock() );
+    db->setColour( color );
   }
 
   void FOVCone::set( Real viewDistance, const Radian& fieldOfView )

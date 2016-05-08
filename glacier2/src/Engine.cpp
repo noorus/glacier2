@@ -300,11 +300,15 @@ namespace Glacier {
         fTimeAccumulator -= fLogicStep;
       }
 
+      // Run scene draw & entity visualize
+      mGame->componentPostUpdate( fTimeDelta, fTime );
+      mEntities->componentPostUpdate( fTimeDelta, fTime );
+
       // If any time has passed, draw
       if ( fTimeDelta > 0.0 && mSignal != Signal_Stop ) {
-        mGame->componentPostUpdate( fTimeDelta, fTime );
         mGraphics->componentPostUpdate( fTimeDelta, fTime );
       }
+
     }
   }
 

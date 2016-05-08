@@ -7,7 +7,8 @@ namespace Glacier {
 
   enum SceneQueryFlags {
     SceneQueryFlag_World = 1 << 0,
-    SceneQueryFlag_Character = 1 << 1
+    SceneQueryFlag_Character = 1 << 1,
+    SceneQueryFlag_Camera = 1 << 2
   };
 
 }

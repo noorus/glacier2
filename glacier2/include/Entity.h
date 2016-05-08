@@ -42,6 +42,7 @@ namespace Glacier {
     virtual Ogre::MovableObject* getMovable() = 0;
     virtual void spawn( const Vector3& position, const Quaternion& orientation );
     virtual void think( const GameTime delta ) = 0;
+    virtual void visualize() = 0; //!< Apply ALL VISUAL (e.g. Node) translations here, and not before!
     void remove();
   };
 

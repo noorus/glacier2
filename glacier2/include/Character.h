@@ -145,6 +145,7 @@ namespace Glacier {
     virtual void onHitGround();
     virtual void onLeaveGround();
     virtual const bool isOnGround();
+    virtual void visualize();
   };
 
   class PlayerCharacterInputComponent: public CharacterInputComponent {

@@ -74,15 +74,17 @@ namespace Glacier {
     {
       mMovement->generate( mMove, delta, mPhysics );
       mPhysics->update();
-
-      mNode->setPosition( mPhysics->getPosition() );
     }
+  }
+
+  void Character::visualize()
+  {
+    mNode->setPosition( mPhysics->getPosition() );
   }
 
   const bool Character::canSee( Entity* entity ) const
   {
-    // FIXME: Unfortunately the ray query keeps causing those fucking asserts in 2.1 regarding outdated scene graph. Investigate later.
-    /*auto scene = Locator::getGraphics().getScene();
+    auto scene = Locator::getGraphics().getScene();
     auto movable = entity->getMovable();
     auto worldEye = getWorldEyePosition();
     auto halfFov = Degree( mFieldOfView.valueDegrees() / 2.0f );
@@ -103,6 +105,13 @@ namespace Glacier {
           Ogre::Ray ray( worldEye, sample );
           auto query = scene->createRayQuery( ray );
           query->setSortByDistance( true );
+
+          // Mask out cameras, because 1) we don't care 2) their bounds will
+          // be out of date, causing an assert failure
+          uint32_t mask = 0xFFFFFFFF;
+          mask &= ~SceneQueryFlag_Camera;
+          query->setQueryMask( mask );
+
           auto results = query->execute();
           for ( auto result : results )
           {
@@ -111,7 +120,7 @@ namespace Glacier {
             auto flags = result.movable->getQueryFlags();
             if ( ( flags & SceneQueryFlag_World ) != 0 )
               break;
-            if ( result.movable == movable )
+            if ( result.movable->getId() == movable->getId() )
             {
               scene->destroyQuery( query );
               return true;
@@ -120,7 +129,7 @@ namespace Glacier {
           scene->destroyQuery( query );
         }
       }
-    }*/
+    }
     return false;
   }
 
