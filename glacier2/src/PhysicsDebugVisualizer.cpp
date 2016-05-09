@@ -33,14 +33,11 @@ namespace Glacier {
     mNode = mScene->getRootSceneNode()->createChildSceneNode();
     mManualObject = mScene->createManualObject();
 
-    mMaterial = Ogre::MaterialManager::getSingleton().getByName(
-      "Debug/PhysicsVisualization", "Bootload" );
-
     mNode->attachObject( mManualObject );
     // mManualObject->setRenderQueueGroup( Ogre::RENDER_QUEUE_SKIES_LATE );
     mManualObject->setCastShadows( false );
 
-    mAlpha = 0.8f;
+    mAlpha = 0.5f;
   }
 
   void PhysicsDebugVisualizer::clearDebugScene()
@@ -56,52 +53,58 @@ namespace Glacier {
     float r, g, b;
 
     // process points
+    uint32_t index = 0;
     auto count = renderable->getNbPoints();
     const PxDebugPoint* point = renderable->getPoints();
     mManualObject->estimateVertexCount( count );
-    mManualObject->begin( mMaterial->getName(),
-      Ogre::v1::RenderOperation::OT_POINT_LIST );
+    mManualObject->begin( "Debug/PhysicsVisualization", Ogre::OT_POINT_LIST );
     while ( count-- ) {
       colorToComponents( point->color, r, g, b );
       mManualObject->position( Math::pxVec3ToOgre( point->pos ) );
       mManualObject->colour( r, g, b, mAlpha );
+      mManualObject->index( index++ );
       point++;
     }
     mManualObject->end();
 
     // process lines
+    index = 0;
     count = renderable->getNbLines();
     const PxDebugLine* line = renderable->getLines();
     mManualObject->estimateVertexCount( count * 2 );
-    mManualObject->begin( mMaterial->getName(),
-      Ogre::v1::RenderOperation::OT_LINE_LIST );
+    mManualObject->begin( "Debug/PhysicsVisualization", Ogre::OT_LINE_LIST );
     while ( count-- ) {
       colorToComponents( line->color0, r, g, b );
       mManualObject->position( Math::pxVec3ToOgre( line->pos0 ) );
       mManualObject->colour( r, g, b, mAlpha );
+      mManualObject->index( index++ );
       colorToComponents( line->color1, r, g, b );
       mManualObject->position( Math::pxVec3ToOgre( line->pos1 ) );
       mManualObject->colour( r, g, b, mAlpha );
+      mManualObject->index( index++ );
       line++;
     }
     mManualObject->end();
 
     // process triangles
+    index = 0;
     count = renderable->getNbTriangles();
     const PxDebugTriangle* triangle = renderable->getTriangles();
     mManualObject->estimateVertexCount( count * 3 );
-    mManualObject->begin( mMaterial->getName(),
-      Ogre::v1::RenderOperation::OT_TRIANGLE_LIST );
+    mManualObject->begin( "Debug/PhysicsVisualization", Ogre::OT_TRIANGLE_LIST );
     while ( count-- ) {
       colorToComponents( triangle->color0, r, g, b );
       mManualObject->position( Math::pxVec3ToOgre( triangle->pos0 ) );
       mManualObject->colour( r, g, b, mAlpha );
+      mManualObject->index( index++ );
       colorToComponents( triangle->color1, r, g, b );
       mManualObject->position( Math::pxVec3ToOgre( triangle->pos1 ) );
       mManualObject->colour( r, g, b, mAlpha );
+      mManualObject->index( index++ );
       colorToComponents( triangle->color2, r, g, b );
       mManualObject->position( Math::pxVec3ToOgre( triangle->pos2 ) );
       mManualObject->colour( r, g, b, mAlpha );
+      mManualObject->index( index++ );
       triangle++;
     }
     mManualObject->end();

@@ -17,7 +17,6 @@ namespace Glacier {
     SceneNode* mNode;
     ManualObject* mManualObject;
     ManualObject* mGrid;
-    Ogre::MaterialPtr mMaterial;
     float mAlpha;
   public:
     explicit PhysicsDebugVisualizer( Engine* engine );

@@ -104,13 +104,13 @@ namespace Glacier {
         {
           Ogre::Ray ray( worldEye, sample );
           auto query = scene->createRayQuery( ray );
-          query->setSortByDistance( true );
 
           // Mask out cameras, because 1) we don't care 2) their bounds will
-          // be out of date, causing an assert failure
+          // be out of date, causing an assertion failure
           uint32_t mask = 0xFFFFFFFF;
           mask &= ~SceneQueryFlag_Camera;
           query->setQueryMask( mask );
+          query->setSortByDistance( true );
 
           auto results = query->execute();
           for ( auto result : results )
