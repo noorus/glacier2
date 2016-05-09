@@ -10,9 +10,9 @@ namespace Glacier {
   const Real cRotationDeceleration = 20.0f;
   const Real cZoomAcceleration = 0.25f;
   const Real cZoomDeceleration = 4.0f;
-  const Radian cFOVy = Radian( Ogre::Math::DegreesToRadians( 70.0f ) );
-  const Real cMaxDistance = 15.0f;
-  const Real cMinDistance = 2.0f;
+  const Radian cFOVy = Radian( Ogre::Math::DegreesToRadians( 90.0f ) );
+  const Real cMaxDistance = 5.25f;
+  const Real cMinDistance = 2.25f;
   const Real cSensitivity = 0.5f;
 
   const Radian cMinAngle = Radian( Ogre::Math::DegreesToRadians( 10.0f ) );
