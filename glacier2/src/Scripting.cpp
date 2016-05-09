@@ -89,6 +89,9 @@ namespace Glacier {
     v8::Handle<v8::Context> context = v8::Context::New( mIsolate,
       nullptr, global );
 
+    if ( !*context )
+      ENGINE_EXCEPT( "V8 context creation failed" );
+
     // Switch it in place
     mContext.Reset( mIsolate, context );
 
