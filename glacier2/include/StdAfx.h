@@ -103,6 +103,7 @@
 #include <OgreHlmsUnlit.h>
 #include <OgreHlmsPbs.h>
 #include <OgreHlmsManager.h>
+#include <OgreHlmsPbsDatablock.h>
 #include <OgreArchiveManager.h>
 #include <Compositor/OgreCompositorManager2.h>
 #include <Compositor/OgreCompositorWorkspace.h>

@@ -29,7 +29,7 @@ namespace Glacier {
     protected:
       Ogre::MeshPtr mMesh;
     public:
-      Plane( PhysicsScene* scene, const Ogre::Plane& plane, const Real width, const Real height, const Vector3& position );
+      Plane( PhysicsScene* scene, const Ogre::Plane& plane, const Real width, const Real height, const Vector3& position, const Real u = 1.0f, const Real v = 1.0f );
       virtual ~Plane();
     };
 

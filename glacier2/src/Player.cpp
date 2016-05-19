@@ -40,6 +40,11 @@ namespace Glacier {
     mItem->setDatablock( "Developer/Placeholder/Player" );
     mItem->setCastShadows( true );
     mNode->attachObject( mItem );
+
+    auto skull = Locator::getGraphics().getScene()->createEntity( "skull_02.mesh" );
+    auto snode = mNode->createChildSceneNode( Ogre::SCENE_DYNAMIC, Vector3( 0, 1.5f, 0 ) );
+    skull->setQueryFlags( SceneQueryFlag_Camera );
+    snode->attachObject( skull );
   }
 
   void Player::think( const GameTime delta )
