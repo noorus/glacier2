@@ -205,13 +205,8 @@ namespace Glacier {
 
     mInput = new InputManager( this, mInstance, mGraphics->getWindow() );
 
-    if ( !options.noPhysics )
-    {
-      mPhysics = new PhysXPhysics( this );
-      Locator::providePhysics( mPhysics );
-    }
-    else
-      mConsole->printf( Console::srcEngine, L"Init: Skipping physics" );
+    mPhysics = new PhysXPhysics( this );
+    Locator::providePhysics( mPhysics );
 
     if ( !options.noAudio )
     {

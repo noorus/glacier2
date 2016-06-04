@@ -13,7 +13,7 @@ namespace Glacier {
 
   class PhysicsScene;
 
-  class PhysXPhysics: public Physics, public EngineComponent, public physx::PxErrorCallback {
+  class PhysXPhysics: public EngineComponent, public physx::PxErrorCallback {
   protected:
     class Allocator: public physx::PxAllocatorCallback {
     public:
@@ -30,11 +30,12 @@ namespace Glacier {
       const char* message, const char* file, int line );
   public:
     PhysXPhysics( Engine* engine );
-    virtual void initialize();
-    virtual void shutdown();
-    virtual void restart();
+    void initialize();
+    void shutdown();
+    void restart();
     physx::PxPhysics* getPhysics();
     PhysicsScene* createScene();
+    physx::PxCooking* getCooking();
     void destroyScene( PhysicsScene* scene );
     virtual void componentPreUpdate( GameTime time );
     virtual void componentTick( GameTime tick, GameTime time );

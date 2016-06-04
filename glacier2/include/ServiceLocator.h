@@ -11,6 +11,7 @@ namespace Glacier {
   class EntityManager;
   class Music;
   class Colors;
+  class PhysXPhysics;
 
   //! \class Locator
   //! Central game services locator.
@@ -19,8 +20,7 @@ namespace Glacier {
     static Memory* memoryService; //!< Currently provided memory service
     static Audio* audioService; //!< Currently provided audio service
     static NullAudio nullAudioService; //!< Default null audio service
-    static Physics* physicsService; //!< Currently provided physics service
-    static NullPhysics nullPhysicsService; //!< Default null physics service
+    static PhysXPhysics* physicsService; //!< Currently provided physics service
     static Graphics* graphicsService; //!< Graphics component
     static EntityManager* entityManager; //!< World entities manager
     static NullMusic nullMusic; //!< Default null music service
@@ -43,11 +43,11 @@ namespace Glacier {
       audioService = audio ? audio : &nullAudioService;
     }
 
-    static Physics& getPhysics() { return *physicsService; }
+    static PhysXPhysics& getPhysics() { return *physicsService; }
 
-    static void providePhysics( Physics* physics )
+    static void providePhysics( PhysXPhysics* physics )
     {
-      physicsService = physics ? physics : &nullPhysicsService;
+      physicsService = physics;
     }
 
     static Graphics& getGraphics() { return *graphicsService; }

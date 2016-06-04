@@ -165,6 +165,11 @@ namespace Glacier {
     return scene;
   }
 
+  physx::PxCooking * PhysXPhysics::getCooking()
+  {
+    return mCooking;
+  }
+
   void PhysXPhysics::destroyScene( PhysicsScene* scene )
   {
     mScenes.remove( scene );

@@ -37,20 +37,6 @@ namespace Glacier {
     virtual void endScene() { /* Nothing */ }
   };
 
-  class Physics {
-  public:
-    virtual void initialize() = 0;
-    virtual void shutdown() = 0;
-    virtual void restart() = 0;
-  };
-
-  class NullPhysics: public Physics {
-  public:
-    virtual void initialize() { /* Nothing */ }
-    virtual void shutdown() { /* Nothing */ }
-    virtual void restart() { /* Nothing */ }
-  };
-
   class Memory {
   public:
     enum Sector {
