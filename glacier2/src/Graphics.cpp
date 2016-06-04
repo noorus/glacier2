@@ -286,10 +286,12 @@ namespace Glacier {
 
     auto archiveUnlit = mgr->load( "data\\tindalos\\Hlms\\Unlit\\HLSL", "FileSystem", true );
     mUnlitMaterials = OGRE_NEW Ogre::HlmsUnlit( archiveUnlit, &library );
+    mUnlitMaterials->setDebugOutputPath( false );
     mRoot->getHlmsManager()->registerHlms( mUnlitMaterials, false );
 
     auto archivePBS = mgr->load( "data\\tindalos\\Hlms\\Pbs\\HLSL", "FileSystem", true );
     mPbsMaterials = OGRE_NEW Ogre::HlmsPbs( archivePBS, &library );
+    mPbsMaterials->setDebugOutputPath( false );
     mRoot->getHlmsManager()->registerHlms( mPbsMaterials, false );
   }
 
