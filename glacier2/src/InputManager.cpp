@@ -14,9 +14,9 @@
 namespace Glacier {
 
   InputManager::InputManager( Engine* engine, HINSTANCE instance, Ogre::RenderWindow* window ):
-  EngineComponent( engine ), mSystem( nullptr ), mTakingInput( false ), mLocalController( nullptr )
+  EngineComponent( engine ), system_( nullptr ), takingInput_( false ), localController_( nullptr )
   {
-    mLocalController = new LocalController();
+    localController_ = new LocalController();
 
     // Greetings
     mEngine->getConsole()->printf( Console::srcInput,
@@ -29,37 +29,37 @@ namespace Glacier {
       ENGINE_EXCEPT( "Could not retrieve render window handle" );
 
     // Create input system
-    mSystem = new Nil::System( instance, windowHandle,
+    system_ = new Nil::System( instance, windowHandle,
       Nil::Cooperation_Foreground, this );
 
     // Enable all initially connected devices
-    for ( auto device : mSystem->getDevices() )
+    for ( auto device : system_->getDevices() )
       device->enable();
   }
 
   void InputManager::componentTick( GameTime tick, GameTime time )
   {
-    mLocalController->prepare();
+    localController_->prepare();
 
-    for ( auto mouse : mMice )
+    for ( auto mouse : mice_ )
       mouse.second->prepare();
-    for ( auto keyboard : mKeyboards )
+    for ( auto keyboard : keyboards_ )
       keyboard.second->prepare();
-    for ( auto gamepad : mGamepads )
+    for ( auto gamepad : gamepads_ )
       gamepad.second->prepare();
 
-    mSystem->update();
+    system_->update();
 
-    mLocalController->apply();
+    localController_->apply();
   }
 
   void InputManager::onInputFocus( const bool focus )
   {
-    mTakingInput = focus;
+    takingInput_ = focus;
 
-    for ( auto mouse : mMice )
+    for ( auto mouse : mice_ )
       mouse.second->onFocus( focus );
-    for ( auto keyboard : mKeyboards )
+    for ( auto keyboard : keyboards_ )
       keyboard.second->onFocus( focus );
     // for ( auto gamepad : mGamepads )
     //   gamepad.second->onFocus( focus );
@@ -67,7 +67,7 @@ namespace Glacier {
 
   LocalController* InputManager::getLocalController()
   {
-    return mLocalController;
+    return localController_;
   }
 
   void InputManager::onDeviceConnected( Nil::Device* device )
@@ -85,11 +85,11 @@ namespace Glacier {
     mEngine->getConsole()->printf( Console::srcInput,
       L"Enabled mouse: %S", device->getName().c_str() );
 
-    if ( mMice.find( device->getStaticID() ) != mMice.end() )
-      delete mMice[device->getStaticID()];
+    if ( mice_.find( device->getStaticID() ) != mice_.end() )
+      delete mice_[device->getStaticID()];
 
-    auto mouse = new Mouse::Device( mLocalController, instance );
-    mMice[device->getStaticID()] = mouse;
+    auto mouse = new Mouse::Device( localController_, instance );
+    mice_[device->getStaticID()] = mouse;
     instance->addListener( mouse );
   }
 
@@ -98,11 +98,11 @@ namespace Glacier {
     mEngine->getConsole()->printf( Console::srcInput,
       L"Enabled keyboard: %S", device->getName().c_str() );
 
-    if ( mKeyboards.find( device->getStaticID() ) != mKeyboards.end() )
-      delete mKeyboards[device->getStaticID()];
+    if ( keyboards_.find( device->getStaticID() ) != keyboards_.end() )
+      delete keyboards_[device->getStaticID()];
 
-    auto keyboard = new Keyboard::Device( mLocalController, instance );
-    mKeyboards[device->getStaticID()] = keyboard;
+    auto keyboard = new Keyboard::Device( localController_, instance );
+    keyboards_[device->getStaticID()] = keyboard;
     instance->addListener( keyboard );
   }
 
@@ -111,11 +111,11 @@ namespace Glacier {
     mEngine->getConsole()->printf( Console::srcInput,
       L"Enabled controller: %S", device->getName().c_str() );
 
-    if ( mGamepads.find( device->getStaticID() ) != mGamepads.end() )
-      delete mGamepads[device->getStaticID()];
+    if ( gamepads_.find( device->getStaticID() ) != gamepads_.end() )
+      delete gamepads_[device->getStaticID()];
 
-    auto gamepad = new Gamepad::Device( mLocalController, instance );
-    mGamepads[device->getStaticID()] = gamepad;
+    auto gamepad = new Gamepad::Device( localController_, instance );
+    gamepads_[device->getStaticID()] = gamepad;
     instance->addListener( gamepad );
   }
 
@@ -124,8 +124,8 @@ namespace Glacier {
     mEngine->getConsole()->printf( Console::srcInput,
       L"Disabled mouse: %S", device->getName().c_str() );
 
-    if ( mMice.find( device->getStaticID() ) != mMice.end() )
-      delete mMice[device->getStaticID()];
+    if ( mice_.find( device->getStaticID() ) != mice_.end() )
+      delete mice_[device->getStaticID()];
   }
 
   void InputManager::onKeyboardDisabled( Nil::Device* device, Nil::Keyboard* instance )
@@ -133,8 +133,8 @@ namespace Glacier {
     mEngine->getConsole()->printf( Console::srcInput,
       L"Disabled keyboard: %S", device->getName().c_str() );
 
-    if ( mKeyboards.find( device->getStaticID() ) != mKeyboards.end() )
-      delete mKeyboards[device->getStaticID()];
+    if ( keyboards_.find( device->getStaticID() ) != keyboards_.end() )
+      delete keyboards_[device->getStaticID()];
   }
 
   void InputManager::onControllerDisabled( Nil::Device* device, Nil::Controller* instance )
@@ -142,14 +142,14 @@ namespace Glacier {
     mEngine->getConsole()->printf( Console::srcInput,
       L"Disabled controller: %S", device->getName().c_str() );
 
-    if ( mGamepads.find( device->getStaticID() ) != mGamepads.end() )
-      delete mGamepads[device->getStaticID()];
+    if ( gamepads_.find( device->getStaticID() ) != gamepads_.end() )
+      delete gamepads_[device->getStaticID()];
   }
 
   InputManager::~InputManager()
   {
-    SAFE_DELETE( mSystem );
-    SAFE_DELETE( mLocalController );
+    SAFE_DELETE( system_ );
+    SAFE_DELETE( localController_ );
   }
 
 }

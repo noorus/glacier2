@@ -23,25 +23,25 @@ namespace Glacier {
   class GameController: virtual public BaseController {
   protected:
     Character* mCharacter;
-    ActionPacket mActions;
-    Vector2 mDirectional;
+    ActionPacket actions_;
+    Vector2 directional_;
   public:
     GameController();
     virtual void setCharacter( Character* character );
     virtual void resetActions();
     virtual void prepare();
     virtual void apply( CharacterMoveMode moveMode, const Vector3& direction );
-    virtual const ActionPacket& getActions() throw( ) { return mActions; }
+    virtual const ActionPacket& getActions() throw( ) { return actions_; }
   };
 
   class CameraController: virtual public BaseController {
   protected:
-    GameCamera* mCamera;
-    Vector3 mPersistentMovement;
-    Vector3 mImpulseMovement;
-    Vector3 mMovement;
-    bool mZooming;
-    bool mRotating;
+    GameCamera* camera_;
+    Vector3 persistentMovement_;
+    Vector3 impulseMovement_;
+    Vector3 movement_;
+    bool zooming_;
+    bool rotating_;
   public:
     CameraController();
     virtual void setCamera( GameCamera* camera );
@@ -59,7 +59,7 @@ namespace Glacier {
     };
   protected:
     InputDeviceList mDevices;
-    Mode mMode;
+    Mode mode_;
     void updateInputMode( InputDevice* device );
     bool shouldIgnoreInput( InputDevice* from );
   public:

@@ -15,10 +15,10 @@ namespace Glacier {
     public:
       typedef std::vector<BindAction> ButtonVector;
     protected:
-      Nil::Mouse* mMouse;
-      ButtonVector mButtons;
-      ActionPacket mActions;
-      bool mFocused;
+      Nil::Mouse* mouse_;
+      ButtonVector buttons_;
+      ActionPacket actions_;
+      bool focused_;
     protected:
       void onMouseMoved(
         Nil::Mouse* mouse, const Nil::MouseState& state );

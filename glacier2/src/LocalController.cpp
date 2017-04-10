@@ -18,7 +18,7 @@
 
 namespace Glacier {
 
-  LocalController::LocalController(): mMode( Mode_KeyboardAndMouse )
+  LocalController::LocalController(): mode_( Mode_KeyboardAndMouse )
   {
     //
   }
@@ -33,15 +33,15 @@ namespace Glacier {
     else
       checkMode = Mode_Gamepad;
 
-    if ( checkMode != mMode )
+    if ( checkMode != mode_ )
     {
-      mMode = checkMode;
+      mode_ = checkMode;
       resetActions();
-      mRotating = false;
-      mZooming = false;
+      rotating_ = false;
+      zooming_ = false;
       gEngine->getConsole()->printf( Console::srcInput,
         L"Switched input mode: %s",
-        mMode == Mode_KeyboardAndMouse ? L"Keyboard & Mouse" : L"Gamepad" );
+        mode_ == Mode_KeyboardAndMouse ? L"Keyboard & Mouse" : L"Gamepad" );
     }
   }
 
@@ -49,9 +49,9 @@ namespace Glacier {
   {
     if ( ( from->getType() == InputDevice::Type_Keyboard
       || from->getType() == InputDevice::Type_Mouse )
-      && mMode == Mode_KeyboardAndMouse )
+      && mode_ == Mode_KeyboardAndMouse )
       return false;
-    else if ( from->getType() == InputDevice::Type_Gamepad && mMode == Mode_Gamepad )
+    else if ( from->getType() == InputDevice::Type_Gamepad && mode_ == Mode_Gamepad )
       return false;
     else
       return true;
@@ -78,7 +78,7 @@ namespace Glacier {
       );
       if ( mousePos.x >= 0.0f && mousePos.x <= 1.0f && mousePos.y >= 0.0f && mousePos.y <= 1.0f )
       {
-        mCamera->castViewportRay( mousePos, mouseRay );
+        camera_->castViewportRay( mousePos, mouseRay );
         Ogre::Plane ground( Ogre::Vector3::UNIT_Y, 0 );
         auto intersect = mouseRay.intersects( ground );
         if ( intersect.first )
@@ -96,35 +96,35 @@ namespace Glacier {
     switch ( action )
     {
       case Action_Move_Forward:
-        if ( mActions.move == Character_Move_None )
-          mActions.move = Character_Move_Forward;
+        if ( actions_.move == Character_Move_None )
+          actions_.move = Character_Move_Forward;
         break;
       case Action_Move_Backward:
-        if ( mActions.move == Character_Move_None )
-          mActions.move = Character_Move_Backward;
+        if ( actions_.move == Character_Move_None )
+          actions_.move = Character_Move_Backward;
         break;
       case Action_Sidestep_Left:
-        if ( mActions.sidestep == Character_Sidestep_None )
-          mActions.sidestep = Character_Sidestep_Left;
+        if ( actions_.sidestep == Character_Sidestep_None )
+          actions_.sidestep = Character_Sidestep_Left;
         break;
       case Action_Sidestep_Right:
-        if ( mActions.sidestep == Character_Sidestep_None )
-          mActions.sidestep = Character_Sidestep_Right;
+        if ( actions_.sidestep == Character_Sidestep_None )
+          actions_.sidestep = Character_Sidestep_Right;
         break;
       case Action_Jump:
-        mActions.jump = Character_Jump_Keydown;
+        actions_.jump = Character_Jump_Keydown;
         break;
       case Action_Run:
-        mActions.run = Character_Run_Keydown;
+        actions_.run = Character_Run_Keydown;
         break;
       case Action_Crouch:
-        mActions.crouch = Character_Crouch_Keydown;
+        actions_.crouch = Character_Crouch_Keydown;
         break;
       case Action_Rotate:
-        mRotating = true;
+        rotating_ = true;
         break;
       case Action_Zoom:
-        mZooming = true;
+        zooming_ = true;
         break;
       case Action_FirstClick:
         gEngine->getConsole()->printf( Console::srcEngine, L"First button click" );
@@ -143,42 +143,42 @@ namespace Glacier {
     switch ( action )
     {
       case Action_Move_Forward:
-        if ( mActions.move == Character_Move_Forward )
-          mActions.move = Character_Move_None;
+        if ( actions_.move == Character_Move_Forward )
+          actions_.move = Character_Move_None;
         break;
       case Action_Move_Backward:
-        if ( mActions.move == Character_Move_Backward )
-          mActions.move = Character_Move_None;
+        if ( actions_.move == Character_Move_Backward )
+          actions_.move = Character_Move_None;
         break;
       case Action_Sidestep_Left:
-        if ( mActions.sidestep == Character_Sidestep_Left )
-          mActions.sidestep = Character_Sidestep_None;
+        if ( actions_.sidestep == Character_Sidestep_Left )
+          actions_.sidestep = Character_Sidestep_None;
         break;
       case Action_Sidestep_Right:
-        if ( mActions.sidestep == Character_Sidestep_Right )
-          mActions.sidestep = Character_Sidestep_None;
+        if ( actions_.sidestep == Character_Sidestep_Right )
+          actions_.sidestep = Character_Sidestep_None;
         break;
       case Action_Jump:
-        mActions.jump = Character_Jump_Keyup;
+        actions_.jump = Character_Jump_Keyup;
         break;
       case Action_Run:
-        mActions.run = Character_Run_Keyup;
+        actions_.run = Character_Run_Keyup;
         break;
       case Action_Crouch:
-        mActions.crouch = Character_Crouch_Keyup;
+        actions_.crouch = Character_Crouch_Keyup;
         break;
       case Action_Rotate:
-        mRotating = false;
+        rotating_ = false;
         break;
       case Action_Zoom:
-        mZooming = false;
+        zooming_ = false;
         break;
     }
   }
 
   const LocalController::Mode& LocalController::getMode()
   {
-    return mMode;
+    return mode_;
   }
 
   void LocalController::applyZoom( InputDevice* device, const Real zoom )
@@ -188,7 +188,7 @@ namespace Glacier {
     if ( shouldIgnoreInput( device ) )
       return;
 
-    mImpulseMovement.z += zoom;
+    impulseMovement_.z += zoom;
     updateMovement();
   }
 
@@ -200,12 +200,12 @@ namespace Glacier {
     if ( shouldIgnoreInput( device ) )
       return;
 
-    mDirectional = directional;
+    directional_ = directional;
 
-    if ( !mDirectional.isZeroLength() && mActions.move == Character_Move_None )
-      mActions.move = Character_Move_Forward;
-    else if ( mDirectional.isZeroLength() && mActions.move == Character_Move_Forward )
-      mActions.move = Character_Move_None;
+    if ( !directional_.isZeroLength() && actions_.move == Character_Move_None )
+      actions_.move = Character_Move_Forward;
+    else if ( directional_.isZeroLength() && actions_.move == Character_Move_Forward )
+      actions_.move = Character_Move_None;
   }
 
   void LocalController::cameraMouseMovement( InputDevice* device,
@@ -214,15 +214,15 @@ namespace Glacier {
     if ( shouldIgnoreInput( device ) )
       return;
 
-    if ( mRotating )
+    if ( rotating_ )
     {
-      mImpulseMovement.x += movement.x;
-      mImpulseMovement.y += movement.y;
+      impulseMovement_.x += movement.x;
+      impulseMovement_.y += movement.y;
       updateMovement();
     }
-    else if ( mZooming )
+    else if ( zooming_ )
     {
-      mImpulseMovement.z += movement.z;
+      impulseMovement_.z += movement.z;
       updateMovement();
     }
   }
@@ -235,8 +235,8 @@ namespace Glacier {
     if ( shouldIgnoreInput( device ) )
       return;
 
-    mPersistentMovement.x = -movement.x;
-    mPersistentMovement.y = movement.y;
+    persistentMovement_.x = -movement.x;
+    persistentMovement_.y = movement.y;
     updateMovement();
   }
 
@@ -251,11 +251,11 @@ namespace Glacier {
     CameraController::apply();
 
     CharacterMoveMode moveMode = (
-      mMode == Mode_KeyboardAndMouse
+      mode_ == Mode_KeyboardAndMouse
       ? CharacterMoveMode::Mode_Impulse
       : CharacterMoveMode::Mode_Directional );
 
-    GameController::apply( moveMode, -mCamera->getDirection() );
+    GameController::apply( moveMode, -camera_->getDirection() );
   }
 
 }

@@ -14,12 +14,12 @@ namespace Glacier {
   namespace Mouse {
 
     Device::Device( LocalController* local, Nil::Mouse* mouse ):
-    InputDevice( local ), mMouse( mouse ), mFocused( true )
+    InputDevice( local ), mouse_( mouse ), focused_( true )
     {
-      mButtons.resize( mMouse->getState().mButtons.size(), Action_None );
+      buttons_.resize( mouse_->getState().mButtons.size(), Action_None );
 
-      mButtons[0] = Action_FirstClick;
-      mButtons[1] = Action_SecondClick;
+      buttons_[0] = Action_FirstClick;
+      buttons_[1] = Action_SecondClick;
     }
 
     void Device::prepare()
@@ -29,38 +29,38 @@ namespace Glacier {
 
     void Device::onFocus( const bool focus )
     {
-      mFocused = focus;
+      focused_ = focus;
     }
 
     void Device::onMouseButtonPressed( Nil::Mouse* mouse, const Nil::MouseState& state, size_t button )
     {
-      if ( !mFocused )
+      if ( !focused_ )
         return;
 
       // if ( Locator::getGUI().injectMousePress( state, button ) )
       //   return;
 
-      const BindAction& action = mButtons[button];
+      const BindAction& action = buttons_[button];
       if ( action != Action_None )
-        mController->beginAction( this, action );
+        controller_->beginAction( this, action );
     }
 
     void Device::onMouseButtonReleased( Nil::Mouse* mouse, const Nil::MouseState& state, size_t button )
     {
-      if ( !mFocused )
+      if ( !focused_ )
         return;
 
       // if ( Locator::getGUI().injectMouseRelease( state, button ) )
       //   return;
 
-      const BindAction& action = mButtons[button];
+      const BindAction& action = buttons_[button];
       if ( action != Action_None )
-        mController->endAction( this, action );
+        controller_->endAction( this, action );
     }
 
     void Device::onMouseMoved( Nil::Mouse* mouse, const Nil::MouseState& state )
     {
-      if ( !mFocused )
+      if ( !focused_ )
         return;
 
       // if ( Locator::getGUI().injectMouseMove( state ) )
@@ -71,18 +71,18 @@ namespace Glacier {
         (Real)state.mMovement.relative.y,
         0.0f );
 
-      mController->cameraMouseMovement( this, movement );
+      controller_->cameraMouseMovement( this, movement );
     }
 
     void Device::onMouseWheelMoved( Nil::Mouse* mouse, const Nil::MouseState& state )
     {
-      if ( !mFocused )
+      if ( !focused_ )
         return;
 
       // if ( Locator::getGUI().injectMouseMove( state ) )
       //   return;
 
-      mController->applyZoom( this, Real( state.mWheel.relative / WHEEL_DELTA ) );
+      controller_->applyZoom( this, Real( state.mWheel.relative / WHEEL_DELTA ) );
     }
 
     Device::~Device()

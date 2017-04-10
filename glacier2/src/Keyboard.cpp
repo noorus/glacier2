@@ -13,48 +13,48 @@ namespace Glacier {
   namespace Keyboard {
 
     Device::Device( LocalController* local, Nil::Keyboard* keyboard ):
-    InputDevice( local ), mKeyboard( keyboard ), mFocused( true )
+    InputDevice( local ), keyboard_( keyboard ), focused_( true )
     {
       resetBinds();
 
-      mKeyBindTable[0x57] = Action_Move_Forward;
-      mKeyBindTable[0x53] = Action_Move_Backward;
-      mKeyBindTable[0x41] = Action_Sidestep_Left;
-      mKeyBindTable[0x44] = Action_Sidestep_Right;
-      mKeyBindTable[0x20] = Action_Jump;
-      mKeyBindTable[0xA0] = Action_Run;
-      mKeyBindTable[0xA2] = Action_Crouch;
-      mKeyBindTable[0xDC] = Action_Toggle_Console;
+      keyBindTable_[0x57] = Action_Move_Forward;
+      keyBindTable_[0x53] = Action_Move_Backward;
+      keyBindTable_[0x41] = Action_Sidestep_Left;
+      keyBindTable_[0x44] = Action_Sidestep_Right;
+      keyBindTable_[0x20] = Action_Jump;
+      keyBindTable_[0xA0] = Action_Run;
+      keyBindTable_[0xA2] = Action_Crouch;
+      keyBindTable_[0xDC] = Action_Toggle_Console;
     }
 
     void Device::onKeyPressed( Nil::Keyboard* keyboard, const Nil::VirtualKeyCode keycode )
     {
-      if ( !mFocused )
+      if ( !focused_ )
         return;
 
-      const BindAction& action = mKeyBindTable[keycode];
+      const BindAction& action = keyBindTable_[keycode];
 
       if ( action != Action_None )
-        mController->beginAction( this, action );
+        controller_->beginAction( this, action );
     }
 
     void Device::onKeyRepeat( Nil::Keyboard* keyboard, const Nil::VirtualKeyCode keycode )
     {
-      if ( !mFocused )
+      if ( !focused_ )
         return;
 
-      const BindAction& action = mKeyBindTable[keycode];
+      const BindAction& action = keyBindTable_[keycode];
     }
 
     void Device::onKeyReleased( Nil::Keyboard* keyboard, const Nil::VirtualKeyCode keycode )
     {
-      if ( !mFocused )
+      if ( !focused_ )
         return;
 
-      const BindAction& action = mKeyBindTable[keycode];
+      const BindAction& action = keyBindTable_[keycode];
 
       if ( action != Action_None )
-        mController->endAction( this, action );
+        controller_->endAction( this, action );
     }
 
     void Device::prepare()
@@ -64,7 +64,7 @@ namespace Glacier {
 
     void Device::onFocus( const bool focus )
     {
-      mFocused = focus;
+      focused_ = focus;
 
       /*if ( !focus )
       {
@@ -75,7 +75,7 @@ namespace Glacier {
 
     void Device::resetBinds()
     {
-      memset( mKeyBindTable, Action_None, 0xFF * sizeof( BindAction ) );
+      memset( keyBindTable_, Action_None, 0xFF * sizeof( BindAction ) );
     }
 
     Device::~Device()

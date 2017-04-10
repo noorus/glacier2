@@ -13,42 +13,42 @@
 
 namespace Glacier {
 
-  CameraController::CameraController(): mCamera( nullptr ),
-  mZooming( false ), mRotating( false )
+  CameraController::CameraController(): camera_( nullptr ),
+  zooming_( false ), rotating_( false )
   {
     resetMovement();
   }
 
   void CameraController::setCamera( GameCamera* camera )
   {
-    mCamera = camera;
+    camera_ = camera;
   }
 
   void CameraController::resetMovement()
   {
-    mPersistentMovement = Vector3::ZERO;
-    mImpulseMovement = Vector3::ZERO;
-    mMovement = Vector3::ZERO;
+    persistentMovement_ = Vector3::ZERO;
+    impulseMovement_ = Vector3::ZERO;
+    movement_ = Vector3::ZERO;
   }
 
   void CameraController::updateMovement()
   {
-    if ( !mZooming )
-      mMovement = mPersistentMovement + mImpulseMovement;
+    if ( !zooming_ )
+      movement_ = persistentMovement_ + impulseMovement_;
     else
-      mMovement = Vector3( mPersistentMovement.x, 0.0f, mPersistentMovement.y );
+      movement_ = Vector3( persistentMovement_.x, 0.0f, persistentMovement_.y );
   }
 
   void CameraController::prepare()
   {
-    mImpulseMovement = Vector3::ZERO;
+    impulseMovement_ = Vector3::ZERO;
     updateMovement();
   }
 
   void CameraController::apply()
   {
-    if ( mCamera )
-      mCamera->applyMovement( mMovement );
+    if ( camera_ )
+      camera_->applyMovement( movement_ );
   }
 
 }

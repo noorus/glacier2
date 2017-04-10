@@ -23,13 +23,13 @@ namespace Glacier {
       Type_Gamepad
     };
   protected:
-    LocalController* mController;
+    LocalController* controller_;
   public:
-    InputDevice( LocalController* controller ): mController( controller ) {}
+    InputDevice( LocalController* controller ): controller_( controller ) {}
     virtual void prepare() = 0;
     virtual void onFocus( const bool focus ) = 0;
     virtual const Type getType() = 0;
-    virtual LocalController* getController() { return mController; }
+    virtual LocalController* getController() { return controller_; }
   };
 
   typedef std::map<Nil::DeviceID, Mouse::Device*> MouseMap;
@@ -38,12 +38,12 @@ namespace Glacier {
 
   class InputManager: public EngineComponent, public Nil::SystemListener {
   protected:
-    Nil::System* mSystem;
-    MouseMap mMice;
-    KeyboardMap mKeyboards;
-    GamepadMap mGamepads;
-    bool mTakingInput;
-    LocalController* mLocalController;
+    Nil::System* system_;
+    MouseMap mice_;
+    KeyboardMap keyboards_;
+    GamepadMap gamepads_;
+    bool takingInput_;
+    LocalController* localController_;
   protected:
     virtual void onDeviceConnected(
       Nil::Device* device );

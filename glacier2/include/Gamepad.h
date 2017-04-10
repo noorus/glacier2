@@ -105,7 +105,7 @@ namespace Glacier {
       typedef std::map<size_t, AxisDefinition> AxisMap;
       typedef std::map<size_t, Directional*> PovMap;
     protected:
-      Nil::Controller* mGamepad;
+      Nil::Controller* gamepad_;
       ComponentList mComponents;
       ButtonMap mButtonMap;
       AxisMap mAxisMap;
@@ -115,7 +115,7 @@ namespace Glacier {
       size_t nPovs;
       size_t nSliders;
       size_t nVectors;
-      bool mFocused;
+      bool focused_;
     protected:
       Button* defineButton( size_t button, const BindAction& action );
       Thumbstick* defineThumbstick( size_t axisX, size_t axisY, const ThumbstickType& type, const Real multiplier );

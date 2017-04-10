@@ -80,12 +80,12 @@ namespace Glacier {
     // Device
 
     Device::Device( LocalController* local, Nil::Controller* controller ):
-    InputDevice( local ), mGamepad( controller ), mFocused( true )
+    InputDevice( local ), gamepad_( controller ), focused_( true )
     {
-      nButtons = mGamepad->getState().mButtons.size();
-      nAxes = mGamepad->getState().mAxes.size();
-      nPovs = mGamepad->getState().mPOVs.size();
-      nSliders = mGamepad->getState().mSliders.size();
+      nButtons = gamepad_->getState().mButtons.size();
+      nAxes = gamepad_->getState().mAxes.size();
+      nPovs = gamepad_->getState().mPOVs.size();
+      nSliders = gamepad_->getState().mSliders.size();
 
       // 360
       defineButton( 6, Action_Jump );
@@ -103,7 +103,7 @@ namespace Glacier {
 
     void Device::onFocus( const bool focus )
     {
-      mFocused = focus;
+      focused_ = focus;
     }
 
     Button* Device::defineButton( size_t button, const BindAction& action )
@@ -143,7 +143,7 @@ namespace Glacier {
     void Device::onControllerButtonPressed( Nil::Controller* controller,
     const Nil::ControllerState& state, size_t button )
     {
-      if ( !mFocused )
+      if ( !focused_ )
         return;
 
       auto it = mButtonMap.find( button );
@@ -154,7 +154,7 @@ namespace Glacier {
     void Device::onControllerButtonReleased( Nil::Controller* controller,
     const Nil::ControllerState& state, size_t button )
     {
-      if ( !mFocused )
+      if ( !focused_ )
         return;
 
       auto it = mButtonMap.find( button );
@@ -165,7 +165,7 @@ namespace Glacier {
     void Device::onControllerAxisMoved( Nil::Controller* controller,
     const Nil::ControllerState& state, size_t axis )
     {
-      if ( !mFocused )
+      if ( !focused_ )
         return;
 
       auto it = mAxisMap.find( axis );
@@ -176,14 +176,14 @@ namespace Glacier {
     void Device::onControllerSliderMoved( Nil::Controller* controller,
     const Nil::ControllerState& state, size_t slider )
     {
-      if ( !mFocused )
+      if ( !focused_ )
         return;
     }
 
     void Device::onControllerPOVMoved( Nil::Controller* controller,
     const Nil::ControllerState& state, size_t pov )
     {
-      if ( !mFocused )
+      if ( !focused_ )
         return;
 
       auto it = mPovMap.find( pov );
