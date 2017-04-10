@@ -11,6 +11,7 @@ namespace Glacier {
   Graphics* Locator::graphicsService = nullptr;
   EntityManager* Locator::entityManager = nullptr;
   PhysXPhysics* Locator::physicsService = nullptr;
+  HUD* Locator::hud = nullptr;
 
   NullAudio Locator::nullAudioService;
   Audio* Locator::audioService = &Locator::nullAudioService;

@@ -18,8 +18,8 @@ namespace Glacier {
     {
       mButtons.resize( mMouse->getState().mButtons.size(), Action_None );
 
-      mButtons[0] = Action_Rotate;
-      mButtons[1] = Action_Zoom;
+      mButtons[0] = Action_FirstClick;
+      mButtons[1] = Action_SecondClick;
     }
 
     void Device::prepare()

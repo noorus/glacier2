@@ -6,6 +6,9 @@
 #include "WindowHandler.h"
 #include "Win32.h"
 #include "Camera.h"
+#include "Gorilla.h"
+#include <Compositor/Pass/PassClear/OgreCompositorPassClearDef.h>
+#include <Compositor/Pass/PassScene/OgreCompositorPassSceneDef.h>
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
@@ -42,6 +45,9 @@ namespace Glacier {
 
   // Graphics engine constants ================================================
 
+  //const char* cRenderSystemName    = "OpenGL 3+ Rendering Subsystem";
+  //const char* cRenderSystemDebug   = "RenderSystem_GL3Plus_d";
+  //const char* cRenderSystemRelease = "RenderSystem_GL3Plus";
   const char* cRenderSystemName    = "Direct3D11 Rendering Subsystem";
   const char* cRenderSystemDebug   = "RenderSystem_Direct3D11_d";
   const char* cRenderSystemRelease = "RenderSystem_Direct3D11";
@@ -50,7 +56,7 @@ namespace Glacier {
   const char* cScreenshotPrefix    = "screenshot";
   const char* cScreenshotSuffix    = ".png";
   const char* cOgreLogFile         = "ogre.log";
-  const IdString cWorkspaceName    = "GcrMainWorkspace";
+  const Ogre::String cWorkspaceName    = "GcrMainWorkspace";
 
   // Graphics::VideoMode class ================================================
 
@@ -64,8 +70,9 @@ namespace Glacier {
 
   void Graphics::VideoMode::setConfigurations( Ogre::RenderSystem& renderer )
   {
-    renderer.setConfigOption( "Allow NVPerfHUD", "No" );
-    renderer.setConfigOption( "Floating-point mode", "Fastest" );
+    renderer.setConfigOption( "Allow NVPerfHUD", "No" ); // DX
+    renderer.setConfigOption( "Floating-point mode", "Fastest" ); // DX
+    // renderer.setConfigOption( "Colour Depth", "32" ); // GL
     renderer.setConfigOption( "VSync", optVSyncAsString() );
     renderer.setConfigOption( "Full Screen", optFSAsString() );
     renderer.setConfigOption( "Video Mode", getAsOptionString() );
@@ -123,7 +130,8 @@ namespace Glacier {
   EngineComponent( engine ),
   mRoot( nullptr ), mRenderer( nullptr ), mSceneManager( nullptr ),
   mOverlaySystem( nullptr ), mWindowHandler( windowHandler ),
-  mGameWorkspace( nullptr ), mUnlitMaterials( nullptr ), mPbsMaterials( nullptr )
+  mGameWorkspace( nullptr ), mUnlitMaterials( nullptr ), mPbsMaterials( nullptr ),
+  mSilverback( nullptr ), mGorillaScreen( nullptr )
   {
     preInitialize();
   }
@@ -155,6 +163,9 @@ namespace Glacier {
 
     // Select renderer
     mRenderer = mRoot->getRenderSystemByName( cRenderSystemName );
+    if ( !mRenderer )
+      ENGINE_EXCEPT( "Renderer not loaded!" );
+
     mRoot->setRenderSystem( mRenderer );
 
     // Setup video mode
@@ -209,8 +220,6 @@ namespace Glacier {
     // Add OverlaySystem as a global renderqueue listener
     mSceneManager->addRenderQueueListener( mOverlaySystem );
 
-    setupCompositors();
-
     // Just some defaults
     mSceneManager->setShadowDirectionalLightExtrusionDistance( 500.0f );
     mSceneManager->setShadowFarDistance( 500.0f );
@@ -235,6 +244,12 @@ namespace Glacier {
     // Register & initialize resource groups
     mEngine->registerResources( ResourceGroupManager::getSingleton() );
 
+    mSilverback = new Gorilla::Silverback();
+    mSilverback->loadAtlas( "dejavu", "Bootload" );
+    mGorillaScreen = mSilverback->createScreen( mSceneManager, mWindow, "dejavu" );
+
+    setupCompositors();
+
     // Initialize globals
     mGlobals.stats.init();
 
@@ -245,10 +260,26 @@ namespace Glacier {
   void Graphics::setupCompositors()
   {
     auto cmpMgr = mRoot->getCompositorManager2();
+    cmpMgr->setCompositorPassProvider( mSilverback->getPassProvider() );
     if ( !cmpMgr->hasWorkspaceDefinition( cWorkspaceName ) )
     {
       ColourValue bgColor( ColourValue::Black );
-      cmpMgr->createBasicWorkspaceDef( cWorkspaceName, bgColor );
+      auto nodeDef = cmpMgr->addNodeDefinition( "AutoGen " + IdString( cWorkspaceName + "/Node" ).getReleaseText() );
+      nodeDef->addTextureSourceName( "WindowRT", 0, Ogre::TextureDefinitionBase::TEXTURE_INPUT );
+      nodeDef->setNumTargetPass( 1 );
+      {
+        auto targetDef = nodeDef->addTargetPass( "WindowRT" );
+        targetDef->setNumPasses( 3 );
+        {
+          auto passClear = static_cast<Ogre::CompositorPassClearDef*>( targetDef->addPass( Ogre::PASS_CLEAR ) );
+          passClear->mColourValue = bgColor;
+          auto passScene = static_cast<Ogre::CompositorPassSceneDef*>( targetDef->addPass( Ogre::PASS_SCENE ) );
+          passScene->mShadowNode = IdString();
+          auto passGorilla = static_cast<Gorilla::GorillaPassDef*>( targetDef->addPass( Ogre::PASS_CUSTOM, Gorilla::GorillaPassProvider::mPassId ) );
+        }
+      }
+      auto workDef = cmpMgr->addWorkspaceDefinition( cWorkspaceName );
+      workDef->connectExternal( 0, nodeDef->getName(), 0 );
     }
   }
 
@@ -377,6 +408,13 @@ namespace Glacier {
           mSceneManager->removeRenderQueueListener( mOverlaySystem );
         mRoot->destroySceneManager( mSceneManager );
       }
+      
+      if ( mSilverback && mGorillaScreen ) {
+        mSilverback->destroyScreen( mGorillaScreen );
+        mGorillaScreen = nullptr;
+        //mGorillaLayer = nullptr;
+      }
+      SAFE_DELETE( mSilverback );
 
       mEngine->unregisterResources( ResourceGroupManager::getSingleton() );
       mEngine->unregisterUserLocations( ResourceGroupManager::getSingleton() );
@@ -426,6 +464,7 @@ namespace Glacier {
       L"Registering resources..." );
 
     manager.addResourceLocation( "data\\bootload", "FileSystem", "Bootload", true );
+    manager.addResourceLocation( "data\\bootload\\gorilla", "FileSystem", "Bootload", true );
     manager.addResourceLocation( "data\\tindalos\\2.0\\scripts\\Compositors", "FileSystem", "Bootload", true );
     manager.addResourceLocation( "data\\tindalos\\2.0\\scripts\\materials\\Common", "FileSystem", "Bootload", true );
     manager.addResourceLocation( "data\\tindalos\\2.0\\scripts\\materials\\Common\\HLSL", "FileSystem", "Bootload", true );

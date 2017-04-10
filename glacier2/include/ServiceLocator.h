@@ -12,6 +12,7 @@ namespace Glacier {
   class Music;
   class Colors;
   class PhysXPhysics;
+  class HUD;
 
   //! \class Locator
   //! Central game services locator.
@@ -26,6 +27,7 @@ namespace Glacier {
     static NullMusic nullMusic; //!< Default null music service
     static Music* musicPlayer; //!< Music player
     static Colors colors; //!< Colors
+    static HUD* hud; //!< HUD
   public:
     static const bool hasMemory() { return ( memoryService ? true : false ); }
 
@@ -55,6 +57,13 @@ namespace Glacier {
     static void provideGraphics( Graphics* graphics )
     {
       graphicsService = graphics;
+    }
+
+    static HUD& getHUD() { return *hud; }
+
+    static void provideHUD( HUD* hud_ )
+    {
+      hud = hud_;
     }
 
     static EntityManager& getEntities() { return *entityManager; }

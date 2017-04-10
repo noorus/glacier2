@@ -27,6 +27,8 @@ namespace Glacier {
   typedef std::list<wstring> StringList;
   typedef std::queue<wstring> StringQueue;
 
+  typedef std::vector<physx::PxShape*> PhysicsShapeVector;
+  typedef std::vector<Ogre::MeshPtr> MeshPtrVector;
   typedef std::vector<Ogre::Item*> OgreItemVector;
 
   enum CharacterConstants
@@ -76,6 +78,7 @@ namespace Glacier {
   using Ogre::CompositorManager2;
   using Ogre::HlmsUnlit;
   using Ogre::HlmsPbs;
+  using Ogre::Any;
 
   using physx::PxVec2;
   using physx::PxVec3;

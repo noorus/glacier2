@@ -2,9 +2,17 @@
 #include "Console.h"
 #include "EngineComponent.h"
 #include "GlobalStats.h"
+#include "GlacierCustomPass.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
+
+namespace Gorilla {
+  class Silverback;
+  class Screen;
+  class Layer;
+  class GorillaPassProvider;
+}
 
 namespace Glacier {
 
@@ -18,6 +26,49 @@ namespace Glacier {
 
   class WindowHandler;
   class Camera;
+  class HUD;
+
+  namespace Map {
+
+    typedef Vector2 Point;
+
+    struct Rect {
+      Point topLeft;
+      Point bottomRight;
+      Rect( const Real x, const Real y, const Real w, const Real h ): topLeft( x, y ), bottomRight( x + w, y + h ) {}
+      Rect( const Point& topLeft_, const Point& bottomRight_ ): topLeft( topLeft_ ), bottomRight( bottomRight_ ) {}
+    };
+
+    class Viewport {
+    public:
+      Point dimensions_;
+      Point position_;
+      Viewport( const Point& dimensions, const Point& position ): dimensions_( dimensions ), position_( position ) {}
+      const Rect getRect() const;
+      const Point relativeToRect( const Point& pt ) const; // 
+    };
+
+    class Map {
+    public:
+      Point dimensions_;
+      Point translateTo( Point& pt, Viewport& vp );
+      Rect translateTo( Rect& r, Viewport& vp );
+    };
+
+  }
+
+  class HUD: public EngineComponent {
+  protected:
+    Gorilla::Screen* gorillaScreen_;
+    Gorilla::Layer* gorillaLayer_;
+  public:
+    HUD( Engine* engine, Gorilla::Screen* screen );
+    void beginSelection();
+    void endSelection();
+    virtual void componentPreUpdate( GameTime time );
+    virtual void componentPostUpdate( GameTime delta, GameTime time );
+    virtual ~HUD();
+  };
 
   class Graphics: public EngineComponent {
   public:
@@ -40,7 +91,9 @@ namespace Glacier {
     Settings mSettings;
     HlmsUnlit* mUnlitMaterials;
     HlmsPbs* mPbsMaterials;
+    Gorilla::Silverback* mSilverback;
   public:
+    Gorilla::Screen* mGorillaScreen;
     struct VideoMode {
       uint32_t mWidth;
       uint32_t mHeight;

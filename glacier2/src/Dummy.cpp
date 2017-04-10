@@ -66,8 +66,8 @@ namespace Glacier {
     mFieldOfView = Radian( Ogre::Degree( 50.0f ) );
     mViewDistance = 8.0f;
     mStates.pushState( &dummyIdleState );
-    mHeight = 0.8f;
-    mRadius = 0.2f;
+    mHeight = 1.22f;
+    mRadius = 0.22f;
   }
 
   AICharacterInputComponent* Dummy::getInput()
@@ -88,7 +88,7 @@ namespace Glacier {
 
     mItem = Locator::getGraphics().getScene()->createItem( mMesh );
     mItem->setQueryFlags( SceneQueryFlag_Character );
-    mItem->setDatablock( "Developer/Placeholder/Dummy" );
+    mItem->setDatablock( "Debug/FOVVisualization" ); //"Developer/Placeholder/Dummy" );
     mItem->setCastShadows( true );
     mNode->attachObject( mItem );
 

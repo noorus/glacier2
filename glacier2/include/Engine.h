@@ -27,6 +27,7 @@ namespace Glacier {
   class EntityManager;
   class World;
   class Navigation;
+  class HUD;
 
   ENGINE_EXTERN_CONCMD( version );
   ENGINE_EXTERN_CONCMD( memstat );
@@ -81,6 +82,7 @@ namespace Glacier {
     EntityManager* mEntities;
     World* mWorld;
     Navigation* mNavigation;
+    HUD* mHUD;
     // Timing
     LARGE_INTEGER mHPCFrequency;        //!< HPC frequency
     static GameTime fTime;              //!< Game time

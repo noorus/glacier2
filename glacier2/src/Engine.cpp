@@ -70,7 +70,7 @@ namespace Glacier {
   mSignal( Signal_None ), mVersion( 0, 1, 1 ), mConsoleWindow( nullptr ),
   mGame( nullptr ), mWindowHandler( nullptr ), mInput( nullptr ),
   mAudio( nullptr ), mPhysics( nullptr ),
-  mEntities( nullptr ), mNavigation( nullptr )
+  mEntities( nullptr ), mNavigation( nullptr ), mHUD( nullptr )
   {
   }
 
@@ -199,6 +199,9 @@ namespace Glacier {
       mConsole->executeFile( exec );
 
     mGraphics->postInitialize();
+
+    mHUD = new HUD( this, mGraphics->mGorillaScreen );
+    Locator::provideHUD( mHUD );
 
     mScripting = new Scripting( this );
     mScripting->simpleExecute( L"initialization.js" );
@@ -374,6 +377,7 @@ namespace Glacier {
 
     SAFE_DELETE( mInput );
     SAFE_DELETE( mScripting );
+    SAFE_DELETE( mHUD );
     SAFE_DELETE( mGraphics );
     Locator::provideGraphics( nullptr );
     SAFE_DELETE( mWindowHandler );

@@ -3,9 +3,14 @@
 #include "Types.h"
 #include "Console.h"
 #include "Director.h"
+#include "GlacierCustomPass.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
+
+namespace Gorilla {
+  class Screen;
+}
 
 namespace Glacier {
 
@@ -25,9 +30,10 @@ namespace Glacier {
     Ogre::Camera* mCamera;
     SceneNode* mNode;
     CameraModifier* mModifier;
+    GlacierCustomPassInformation* mCustomPass;
   public:
     explicit Camera( SceneManager* scene, const Ogre::String& name,
-      const Vector3& position, const Radian& fovy );
+      const Vector3& position, const Radian& fovy, Gorilla::Screen* hud = nullptr );
     virtual void lookAt( const Vector3& position );
     virtual Ogre::Camera* getCamera() { return mCamera; }
     virtual SceneNode* getNode() { return mNode; }
@@ -47,19 +53,18 @@ namespace Glacier {
   class GameCamera: public Camera {
   friend class CameraModifier;
   protected:
-    SceneNode* mTarget;
+    SceneNode* anchor_;
     Vector3 mDirection;
-    Vector3 mMovement;
-    Quaternion mRotation;
+    Vector3 rotationInput_;
+    Quaternion rotation_;
     Real mZoomVelocity;
     Real mSensitivity;
-    Radian mAngle;
-    Real mDistance;
+    Radian angle_;
+    Real distance_;
     Real mZoom;
     bool mReverseAxes;
   public:
-    explicit GameCamera( SceneManager* scene,
-      const Ogre::String& name, SceneNode* target );
+    explicit GameCamera( SceneManager* scene, const Ogre::String& name, Gorilla::Screen* hud = nullptr );
     virtual void applyMovement( const Vector3& movement );
     virtual void update( const GameTime delta );
     virtual const Vector3& getDirection() const throw() { return mDirection; }

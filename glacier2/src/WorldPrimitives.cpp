@@ -31,7 +31,7 @@ namespace Glacier {
       //
     }
 
-    Plane::Plane( PhysicsScene* scene, const Ogre::Plane& plane,
+    Grid::Grid( PhysicsScene* scene, const Ogre::Plane& plane,
     const Real width, const Real height, const Vector3& position, const Real u, const Real v ):
     Primitive( scene )
     {
@@ -45,40 +45,57 @@ namespace Glacier {
 
       mScene->getScene()->addActor( *mActor );
 
-      Ogre::v1::MeshPtr planeMeshV1 = Ogre::v1::MeshManager::getSingleton().createPlane(
-        "",
-        Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
-        plane, width, height,
-        1, 1, true, 1, u, v, Ogre::Vector3::UNIT_Z,
-        Ogre::v1::HardwareBuffer::HBU_STATIC,
-        Ogre::v1::HardwareBuffer::HBU_STATIC );
-
-      mMesh = Ogre::MeshManager::getSingleton().createManual( "", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME );
-      mMesh->importV1( planeMeshV1.get(), true, true, true );
-
-      // mMesh = Procedural::PlaneGenerator().setEnableNormals( true ).setSize( Vector2( width, height ) ).setNormal( plane.normal ).setNumSegX( 8 ).setNumSegY( 8 ).setUTile( u ).setVTile( v ).realizeMesh();
-
       auto scm = Locator::getGraphics().getScene();
-      mNode = scm->getRootSceneNode()->createChildSceneNode();
 
-      mItem = scm->createItem( mMesh );
-      mItem->setQueryFlags( SceneQueryFlag_World );
-      mItem->setDatablock( "GameTextures/TileLargeHexagon" );
-      mItem->setCastShadows( false );
-      mNode->attachObject( mItem );
-      mNode->setPosition( position );
-      mNode->setOrientation( Quaternion::IDENTITY );
+      obj_ = scm->createManualObject();
+      node_ = scm->createSceneNode();
+      node_->attachObject( obj_ );
+      obj_->setCastShadows( false );
     }
 
-    Plane::~Plane()
+    void Grid::draw()
     {
-      if ( mItem )
-        Locator::getGraphics().getScene()->destroyItem( mItem );
-      if ( mNode )
+      obj_->clear();
+
+      auto segments = 128;
+      Vector2 dimensions( 128.0f, 128.0f );
+      obj_->estimateVertexCount( segments * 2 * 2 );
+      obj_->begin( "Debug/PhysicsVisualization", Ogre::OT_LINE_LIST );
+      uint32_t index = 0;
+      ColourValue color = ColourValue::White;
+      color.a = 0.4f;
+      for ( size_t i = 0; i < segments; i++ )
       {
-        mNode->removeAndDestroyAllChildren();
-        Locator::getGraphics().getScene()->destroySceneNode( mNode );
+        Real p = ( ( dimensions.x / segments ) * i );
+        Vector3 pos1( p - ( dimensions.x / 2 ), 0.0f, -( dimensions.y / 2 ) );
+        Vector3 pos2( pos1.x, 0.0f, ( dimensions.y / 2 ) );
+        obj_->position( pos1 );
+        obj_->colour( color );
+        obj_->index( index++ );
+        obj_->position( pos2 );
+        obj_->colour( color );
+        obj_->index( index++ );
       }
+      for ( size_t i = 0; i < segments; i++ )
+      {
+        Real p = ( ( dimensions.y / segments ) * i );
+        Vector3 pos1( -( dimensions.x / 2 ), 0.0f, p - ( dimensions.y / 2 ) );
+        Vector3 pos2( ( dimensions.x / 2 ), 0.0f, pos1.z );
+        obj_->position( pos1 );
+        obj_->colour( color );
+        obj_->index( index++ );
+        obj_->position( pos2 );
+        obj_->colour( color );
+        obj_->index( index++ );
+      }
+      obj_->end();
+    }
+
+    Grid::~Grid()
+    {
+      auto scm = Locator::getGraphics().getScene();
+      scm->destroyManualObject( obj_ );
+      scm->destroySceneNode( node_ );
       mScene->getScene()->removeActor( *mActor );
     }
 
@@ -105,11 +122,18 @@ namespace Glacier {
 
       mItem = Locator::getGraphics().getScene()->createItem( mMesh );
       mItem->setQueryFlags( SceneQueryFlag_World );
-      mItem->setDatablock( "Developer/Floor" );
+      mItem->setDatablock( "Debug/FOVVisualization" );
       mItem->setCastShadows( true );
       mNode->attachObject( mItem );
+      mNode->setPosition( Vector3::ZERO );
+      mNode->setDirection( Vector3::NEGATIVE_UNIT_Z, Ogre::Node::TS_WORLD );
       mNode->setPosition( position );
-      mNode->setOrientation( orientation );
+      //mNode->setOrientation( orientation );
+    }
+
+    void Box::draw()
+    {
+      //
     }
 
     Box::~Box()

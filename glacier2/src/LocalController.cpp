@@ -8,6 +8,10 @@
 #include "InputManager.h"
 #include "Character.h"
 #include "Camera.h"
+#include "Graphics.h"
+#include "DeveloperEntities.h"
+#include "EntityManager.h"
+#include "ServiceLocator.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
@@ -61,6 +65,34 @@ namespace Glacier {
     if ( shouldIgnoreInput( device ) )
       return;
 
+    if ( action == Action_SecondClick )
+    {
+      gEngine->getConsole()->printf( Console::srcEngine, L"Drop." );
+      Ogre::Ray mouseRay;
+      POINT pt;
+      GetCursorPos( &pt );
+      ScreenToClient( gEngine->getGraphics()->getRenderWindowHandle(), &pt );
+      Vector2 mousePos(
+        (Real)pt.x / (Real)gEngine->getGraphics()->getWindow()->getWidth(),
+        (Real)pt.y / (Real)gEngine->getGraphics()->getWindow()->getHeight()
+      );
+      if ( mousePos.x >= 0.0f && mousePos.x <= 1.0f && mousePos.y >= 0.0f && mousePos.y <= 1.0f )
+      {
+        mCamera->castViewportRay( mousePos, mouseRay );
+        Ogre::Plane ground( Ogre::Vector3::UNIT_Y, 0 );
+        auto intersect = mouseRay.intersects( ground );
+        if ( intersect.first )
+        {
+          auto dropPos = mouseRay.getPoint( intersect.second );
+          dropPos.y += 15.0f;
+          auto cube = ( Entities::DevCube* )Locator::getEntities().create( "dev_cube" );
+          cube->setType( Entities::DevCube::DevCube_050 );
+          cube->spawn( dropPos, Quaternion::IDENTITY );
+        }
+      }
+      return;
+    }
+
     switch ( action )
     {
       case Action_Move_Forward:
@@ -93,6 +125,9 @@ namespace Glacier {
         break;
       case Action_Zoom:
         mZooming = true;
+        break;
+      case Action_FirstClick:
+        gEngine->getConsole()->printf( Console::srcEngine, L"First button click" );
         break;
     }
   }

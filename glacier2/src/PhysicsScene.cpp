@@ -77,7 +77,7 @@ namespace Glacier {
       mScene->setVisualizationParameter( PxVisualizationParameter::eBODY_MASS_AXES, 1.0f );
       mScene->setVisualizationParameter( PxVisualizationParameter::eCOLLISION_EDGES, 1.0f );
       mScene->setVisualizationParameter( PxVisualizationParameter::eCOLLISION_AABBS, 0.0f );
-      mScene->setVisualizationParameter( PxVisualizationParameter::eCOLLISION_SHAPES, 0.0f );
+      mScene->setVisualizationParameter( PxVisualizationParameter::eCOLLISION_SHAPES, 1.0f );
       mScene->setVisualizationParameter( PxVisualizationParameter::eCONTACT_POINT, 1.0f );
       mScene->setVisualizationParameter( PxVisualizationParameter::eCONTACT_FORCE, 1.0f );
       mScene->setVisualizationParameter( PxVisualizationParameter::eBODY_LIN_VELOCITY, 1.0f );

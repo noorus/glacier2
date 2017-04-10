@@ -136,6 +136,9 @@
 
 // PhysX Headers
 #include <PxPhysicsAPI.h>
+#include <extensions/PxSerialization.h>
+#include <extensions/PxDefaultStreams.h>
+#include <extensions/PxRepXSerializer.h>
 
 // Nil Headers
 #include <nil.h>

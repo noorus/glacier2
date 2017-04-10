@@ -17,6 +17,8 @@ namespace Glacier {
     Action_Run,
     Action_Zoom,
     Action_Rotate,
+    Action_FirstClick,
+    Action_SecondClick,
     Action_Toggle_Console = 900
   };
 

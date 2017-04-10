@@ -1,5 +1,6 @@
 #include "StdAfx.h"
 #include "Camera.h"
+#include "Gorilla.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
@@ -7,8 +8,8 @@
 namespace Glacier {
 
   Camera::Camera( SceneManager* scene, const Ogre::String& name,
-  const Vector3& position, const Radian& fovy ):
-  mCamera( nullptr ), mNode( nullptr ),
+  const Vector3& position, const Radian& fovy, Gorilla::Screen* hud ):
+  mCamera( nullptr ), mNode( nullptr ), mCustomPass( nullptr ),
   mScene( scene ), mModifier( nullptr )
   {
     assert( scene );
@@ -21,6 +22,13 @@ namespace Glacier {
     mCamera->setPosition( Vector3::ZERO );
     mCamera->setAutoAspectRatio( true );
     mCamera->setFOVy( fovy );
+
+    mCustomPass = new GlacierCustomPassInformation();
+    mCustomPass->useGorilla = ( hud ? true : false );
+    if ( hud ) {
+      mCustomPass->gorillaInformation = Ogre::Any( hud );
+    }
+    mCamera->setUserAny( Ogre::Any( mCustomPass ) );
 
     // Create node, attach the camera
     mNode = mScene->getRootSceneNode()->createChildSceneNode();
@@ -64,6 +72,7 @@ namespace Glacier {
     }
     if ( mCamera )
       mScene->destroyCamera( mCamera );
+    SAFE_DELETE( mCustomPass );
   }
 
 }

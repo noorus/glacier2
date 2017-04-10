@@ -25,8 +25,8 @@ namespace Glacier {
   Character( world, &baseData, new PlayerCharacterInputComponent( this ) ),
   mItem( nullptr )
   {
-    mHeight = 1.0f;
-    mRadius = 0.25f;
+    mHeight = 1.62f;
+    mRadius = 0.32f;
   }
 
   void Player::spawn( const Vector3& position, const Quaternion& orientation )
@@ -37,14 +37,9 @@ namespace Glacier {
 
     mItem = Locator::getGraphics().getScene()->createItem( mMesh );
     mItem->setQueryFlags( SceneQueryFlag_Character );
-    mItem->setDatablock( "Developer/Placeholder/Player" );
+    mItem->setDatablock( "Debug/FOVVisualization" ); // "Developer/Placeholder/Player" );
     mItem->setCastShadows( true );
     mNode->attachObject( mItem );
-
-    auto skull = Locator::getGraphics().getScene()->createEntity( "skull_02.mesh" );
-    auto snode = mNode->createChildSceneNode( Ogre::SCENE_DYNAMIC, Vector3( 0, 1.5f, 0 ) );
-    skull->setQueryFlags( SceneQueryFlag_Camera );
-    snode->attachObject( skull );
   }
 
   void Player::think( const GameTime delta )

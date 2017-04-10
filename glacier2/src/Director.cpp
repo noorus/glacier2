@@ -16,7 +16,7 @@ namespace Glacier {
   Director::Director( Graphics* gfx, SceneNode* target ):
   mGraphics( gfx ), mLight( nullptr ), mWorkspace( nullptr ), mHDR( nullptr )
   {
-    mCamera = new GameCamera( mGraphics->getScene(), "defaultcamera", target );
+    mCamera = new GameCamera( mGraphics->getScene(), "defaultcamera", mGraphics->mGorillaScreen );
 
     gEngine->getInput()->getLocalController()->setCamera( mCamera );
 

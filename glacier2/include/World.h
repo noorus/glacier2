@@ -9,6 +9,18 @@ namespace Glacier {
   class EntityManager;
   class Scripting;
 
+  struct PropDefinition {
+    PhysicsShapeVector physical;
+    MeshPtrVector meshes;
+  };
+
+  struct StaticProp {
+    SceneNode* node;
+    physx::PxRigidStatic* physical;
+  };
+
+  typedef std::vector<StaticProp> StaticPropVector;
+
   class World {
   protected:
     EntityManager* mEntities;

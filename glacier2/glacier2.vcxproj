@@ -50,7 +50,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;ENABLE_LARGE_PAGES;ENABLE_USERMODEPAGEALLOCATOR;USE_LOCKS;USE_SPIN_LOCKS;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;DEBUG;_DEBUG;_WINDOWS;WIN64;_ALLOW_MSC_VER_MISMATCH;_ALLOW_ITERATOR_DEBUG_LEVEL_MISMATCH;PHYSX_PROFILE_SDK;PX_DEBUG;PX_CHECKED;PX_SUPPORT_VISUAL_DEBUGGER;PX_NVTX;V8_TARGET_ARCH_X64;V8_DEPRECATION_WARNINGS;V8_I18N_SUPPORT;U_USING_ICU_NAMESPACE=0;U_ENABLE_DYLOAD=0;U_STATIC_IMPLEMENTATION;U_CHARSET_IS_UTF8=1;ENABLE_HANDLE_ZAPPING;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;ENABLE_LARGE_PAGES;ENABLE_USERMODEPAGEALLOCATOR;USE_LOCKS;USE_SPIN_LOCKS;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;DEBUG;_DEBUG;_WINDOWS;WIN64;_ALLOW_MSC_VER_MISMATCH;_ALLOW_ITERATOR_DEBUG_LEVEL_MISMATCH;PHYSX_PROFILE_SDK;PX_DEBUG;PX_CHECKED;PX_SUPPORT_VISUAL_DEBUGGER;PX_NVTX;V8_TARGET_ARCH_X64;V8_DEPRECATION_WARNINGS;V8_I18N_SUPPORT;U_USING_ICU_NAMESPACE=0;U_ENABLE_DYLOAD=0;U_STATIC_IMPLEMENTATION;U_CHARSET_IS_UTF8=1;ENABLE_HANDLE_ZAPPING;GLACIER_NO_NAVIGATION_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(SolutionDir)include;$(ProjectDir)include;$(SolutionDir)..\SDK\Ogre\include\OGRE;$(SolutionDir)..\SDK\Ogre\include\OGRE\Overlay;$(SolutionDir)..\SDK\Ogre\include\OGRE\Threading;$(SolutionDir)..\SDK\FMOD SoundSystem\FMOD Programmers API Windows\api\inc;$(SolutionDir)..\SDK\FMOD SoundSystem\FMOD Programmers API Windows\fmoddesignerapi\api\inc;$(SolutionDir)..\v8\include;$(SolutionDir)..\v8;$(SolutionDir)nil\include;$(SolutionDir)nedmalloc;$(SolutionDir)..\SDK\PhysX\Include;$(SolutionDir)..\v8\third_party\icu\source\common;$(SolutionDir)..\v8\third_party\icu\source\i18n;$(SolutionDir)..\v8\third_party\icu\source\io;$(SolutionDir)recastnavigation\Recast\Include;$(SolutionDir)recastnavigation\Detour\Include;$(SolutionDir)recastnavigation\DebugUtils\Include;$(SolutionDir)recastnavigation\DetourCrowd\Include;$(SolutionDir)recastnavigation\DetourTileCache\Include;$(SolutionDir)..\SDK\OgreProcedural\include\OgreProcedural;$(SolutionDir)..\SDK\Ogre\include\OGRE\Hlms\Pbs;$(SolutionDir)..\SDK\Ogre\include\OGRE\Hlms\Unlit;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>StdAfx.h</PrecompiledHeaderFile>
       <AdditionalOptions>/Zm512 %(AdditionalOptions)</AdditionalOptions>
@@ -81,17 +81,17 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <Optimization>MaxSpeed</Optimization>
+      <Optimization>Disabled</Optimization>
       <FunctionLevelLinking>
       </FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;ENABLE_LARGE_PAGES;ENABLE_USERMODEPAGEALLOCATOR;USE_LOCKS;USE_SPIN_LOCKS;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;NDEBUG;_WINDOWS;_ALLOW_MSC_VER_MISMATCH;_ALLOW_ITERATOR_DEBUG_LEVEL_MISMATCH;PHYSX_PROFILE_SDK;_USING_V110_SDK71_;V8_TARGET_ARCH_X64;V8_I18N_SUPPORT;V8_USE_EXTERNAL_STARTUP_DATA;USING_V8_SHARED;V8_SHARED;U_USING_ICU_NAMESPACE=0;U_ENABLE_DYLOAD=0;U_STATIC_IMPLEMENTATION;U_CHARSET_IS_UTF8=1;VERIFY_HEAP;V8_ENABLE_CHECKS;ENABLE_HANDLE_ZAPPING;GLACIER_OVERRIDE_NEW;GLACIER_SHIPPING;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;ENABLE_LARGE_PAGES;ENABLE_USERMODEPAGEALLOCATOR;USE_LOCKS;USE_SPIN_LOCKS;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;NDEBUG;_WINDOWS;_ALLOW_MSC_VER_MISMATCH;_ALLOW_ITERATOR_DEBUG_LEVEL_MISMATCH;PHYSX_PROFILE_SDK;_USING_V110_SDK71_;V8_TARGET_ARCH_X64;V8_I18N_SUPPORT;V8_USE_EXTERNAL_STARTUP_DATA;USING_V8_SHARED;V8_SHARED;U_USING_ICU_NAMESPACE=0;U_ENABLE_DYLOAD=0;U_STATIC_IMPLEMENTATION;U_CHARSET_IS_UTF8=1;VERIFY_HEAP;V8_ENABLE_CHECKS;ENABLE_HANDLE_ZAPPING;GLACIER_OVERRIDE_NEW;GLACIER_NO_NAVIGATION_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(SolutionDir)include;$(ProjectDir)include;$(SolutionDir)..\SDK\Ogre\include\OGRE;$(SolutionDir)..\SDK\Ogre\include\OGRE\Overlay;$(SolutionDir)..\SDK\Ogre\include\OGRE\Threading;$(SolutionDir)..\SDK\FMOD SoundSystem\FMOD Programmers API Windows\api\inc;$(SolutionDir)..\SDK\FMOD SoundSystem\FMOD Programmers API Windows\fmoddesignerapi\api\inc;$(SolutionDir)..\v8\include;$(SolutionDir)..\v8;$(SolutionDir)nil\include;$(SolutionDir)nedmalloc;$(SolutionDir)..\SDK\PhysX\Include;$(SolutionDir)..\v8\third_party\icu\source\common;$(SolutionDir)..\v8\third_party\icu\source\i18n;$(SolutionDir)..\v8\third_party\icu\source\io;$(SolutionDir)recastnavigation\Recast\Include;$(SolutionDir)recastnavigation\Detour\Include;$(SolutionDir)recastnavigation\DebugUtils\Include;$(SolutionDir)recastnavigation\DetourCrowd\Include;$(SolutionDir)recastnavigation\DetourTileCache\Include;$(SolutionDir)..\SDK\OgreProcedural\include\OgreProcedural;$(SolutionDir)..\SDK\Ogre\include\OGRE\Hlms\Pbs;$(SolutionDir)..\SDK\Ogre\include\OGRE\Hlms\Unlit;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>StdAfx.h</PrecompiledHeaderFile>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <EnableEnhancedInstructionSet>AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
-      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <BufferSecurityCheck>true</BufferSecurityCheck>
       <AdditionalOptions>/Zm512 %(AdditionalOptions)</AdditionalOptions>
       <ShowIncludes>false</ShowIncludes>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
@@ -100,6 +100,8 @@
       <FloatingPointExceptions>
       </FloatingPointExceptions>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <ControlFlowGuard>Guard</ControlFlowGuard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -240,7 +242,10 @@
     <ClCompile Include="src\CameraController.cpp" />
     <ClCompile Include="src\Character.cpp" />
     <ClCompile Include="src\CharacterInputComponent.cpp" />
+    <ClCompile Include="src\Gorilla.cpp" />
     <ClCompile Include="src\HDR.cpp" />
+    <ClCompile Include="src\HUD.cpp" />
+    <ClCompile Include="src\Map.cpp" />
     <ClCompile Include="src\PlayerCharacterInputComponent.cpp" />
     <ClCompile Include="src\AICharacterInputComponent.cpp" />
     <ClCompile Include="src\CharacterMovementComponent.cpp" />
@@ -353,7 +358,9 @@
     <ClInclude Include="include\Dummy.h" />
     <ClInclude Include="include\FOVCone.h" />
     <ClInclude Include="include\Gamepad.h" />
+    <ClInclude Include="include\GlacierCustomPass.h" />
     <ClInclude Include="include\GlobalFlags.h" />
+    <ClInclude Include="include\Gorilla.h" />
     <ClInclude Include="include\HDR.h" />
     <ClInclude Include="include\Keyboard.h" />
     <ClInclude Include="include\MenuState.h" />
