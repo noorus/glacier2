@@ -48,7 +48,7 @@ namespace Glacier {
   void CameraController::apply()
   {
     if ( camera_ )
-      camera_->applyMovement( movement_ );
+      camera_->applyRotation( movement_ );
   }
 
 }

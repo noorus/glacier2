@@ -54,20 +54,21 @@ namespace Glacier {
   friend class CameraModifier;
   protected:
     SceneNode* anchor_;
-    Vector3 mDirection;
+    Vector3 direction_;
     Vector3 rotationInput_;
     Quaternion rotation_;
-    Real mZoomVelocity;
+    Real zoomVelocity_;
     Real mSensitivity;
     Radian angle_;
     Real distance_;
-    Real mZoom;
+    Real zoom_;
     bool mReverseAxes;
   public:
     explicit GameCamera( SceneManager* scene, const Ogre::String& name, Gorilla::Screen* hud = nullptr );
-    virtual void applyMovement( const Vector3& movement );
+    virtual void applyRotation( const Vector3& movement );
+    virtual void setEdgeScrolling( const Vector2& capped );
     virtual void update( const GameTime delta );
-    virtual const Vector3& getDirection() const throw() { return mDirection; }
+    virtual const Vector3& getDirection() const throw() { return direction_; }
     virtual Real getSensitivity() { return mSensitivity; }
     virtual void setSensitivity( const Real sensitivity );
     virtual bool hasAxisReversion() { return mReverseAxes; }

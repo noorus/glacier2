@@ -86,4 +86,14 @@ namespace Glacier {
   using physx::PxQuat;
   using physx::PxExtendedVec3;
 
+  // Don't ask
+  namespace Mouse {
+
+    struct MousePacket {
+      Vector2 absolute_;
+      Vector2 relative_;
+    };
+
+  }
+
 }

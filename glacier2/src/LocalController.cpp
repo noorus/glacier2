@@ -18,7 +18,7 @@
 
 namespace Glacier {
 
-  LocalController::LocalController(): mode_( Mode_KeyboardAndMouse )
+  LocalController::LocalController(): mode_( Mode_KeyboardAndMouse ), selecting_( false )
   {
     //
   }
@@ -65,7 +65,7 @@ namespace Glacier {
     if ( shouldIgnoreInput( device ) )
       return;
 
-    if ( action == Action_SecondClick )
+    if ( action == Action_Command )
     {
       gEngine->getConsole()->printf( Console::srcEngine, L"Drop." );
       Ogre::Ray mouseRay;
@@ -88,6 +88,21 @@ namespace Glacier {
           auto cube = ( Entities::DevCube* )Locator::getEntities().create( "dev_cube" );
           cube->setType( Entities::DevCube::DevCube_050 );
           cube->spawn( dropPos, Quaternion::IDENTITY );
+        }
+      }
+      return;
+    }
+
+    if ( action == Action_Select )
+    {
+      if ( !selecting_ )
+      {
+        selecting_ = true;
+        if ( device->getType() == InputDevice::Type_Mouse )
+        {
+          auto mouse = static_cast<Mouse::Device*>( device );
+          auto packet = mouse->getMousePacket();
+          Locator::getHUD().beginSelection( packet );
         }
       }
       return;
@@ -126,9 +141,6 @@ namespace Glacier {
       case Action_Zoom:
         zooming_ = true;
         break;
-      case Action_FirstClick:
-        gEngine->getConsole()->printf( Console::srcEngine, L"First button click" );
-        break;
     }
   }
 
@@ -139,6 +151,21 @@ namespace Glacier {
 
     if ( shouldIgnoreInput( device ) )
       return;
+
+    if ( action == Action_Select )
+    {
+      if ( selecting_ )
+      {
+        selecting_ = false;
+        if ( device->getType() == InputDevice::Type_Mouse )
+        {
+          auto mouse = static_cast<Mouse::Device*>( device );
+          auto packet = mouse->getMousePacket();
+          Locator::getHUD().endSelection( packet );
+        }
+      }
+      return;
+    }
 
     switch ( action )
     {
@@ -208,13 +235,15 @@ namespace Glacier {
       actions_.move = Character_Move_None;
   }
 
-  void LocalController::cameraMouseMovement( InputDevice* device,
-  const Vector3& movement )
+  void LocalController::mouseMovement( InputDevice* device, const Mouse::MousePacket& packet )
   {
     if ( shouldIgnoreInput( device ) )
       return;
 
-    if ( rotating_ )
+    if ( selecting_ )
+      Locator::getHUD().updateSelection( packet );
+
+    /*if ( rotating_ )
     {
       impulseMovement_.x += movement.x;
       impulseMovement_.y += movement.y;
@@ -224,7 +253,7 @@ namespace Glacier {
     {
       impulseMovement_.z += movement.z;
       updateMovement();
-    }
+    }*/
   }
 
   void LocalController::cameraPersistentMovement( InputDevice* device,

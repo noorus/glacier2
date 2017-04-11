@@ -2,6 +2,7 @@
 #include "Graphics.h"
 #include "Gorilla.h"
 #include "EngineComponent.h"
+#include "Engine.h"
 
 namespace Glacier {
 
@@ -11,24 +12,45 @@ namespace Glacier {
   EngineComponent( engine ), gorillaScreen_( screen ), gorillaLayer_( nullptr )
   {
     gorillaLayer_ = gorillaScreen_->createLayer();
-    auto rect = gorillaLayer_->createRectangle( Vector2( -50.0f, 100.0f ), Vector2( 100.0f, 100.0f ) );
+    auto window = gEngine->getGraphics()->getWindow();
+    viewport_.dimensions_ = Vector2( (Real)window->getWidth(), (Real)window->getHeight() );
+  }
+
+  void HUD::beginSelection( const Mouse::MousePacket& from )
+  {
+    if ( selection_.vis_ )
+      gorillaLayer_->destroyRectangle( selection_.vis_ );
+    Vector2 xy, wh;
+    selection_.rect_.getXYWH( xy, wh );
+    selection_.vis_ = gorillaLayer_->createRectangle( xy, wh );
+
+    selection_.from_ = from.absolute_;
+    updateSelection( from );
+
     ColourValue bgColor;
     bgColor.setAsRGBA( 0x59d60064 );
     ColourValue borderColor;
     borderColor.setAsRGBA( 0x90ff42dd );
-    rect->background_colour( bgColor );
-    rect->border_colour( borderColor );
-    rect->border_width( 1.0f );
+    selection_.vis_->background_colour( bgColor );
+    selection_.vis_->border_colour( borderColor );
+    selection_.vis_->border_width( 1.0f );
   }
 
-  void HUD::beginSelection()
+  void HUD::updateSelection( const Mouse::MousePacket& to )
   {
-    //
+    selection_.to_ = to.absolute_;
+    selection_.rect_.setFrom( selection_.from_, selection_.to_ );
+    if ( selection_.vis_ )
+      selection_.vis_->coords( selection_.rect_.topLeft, selection_.rect_.bottomRight );
   }
 
-  void HUD::endSelection()
+  void HUD::endSelection( const Mouse::MousePacket& to )
   {
-    //
+    if ( selection_.vis_ )
+    {
+      gorillaLayer_->destroyRectangle( selection_.vis_ );
+      selection_.vis_ = nullptr;
+    }
   }
 
   void HUD::componentPreUpdate( GameTime time )
@@ -43,7 +65,7 @@ namespace Glacier {
 
   HUD::~HUD()
   {
-    //
+    gorillaScreen_->destroy( gorillaLayer_ );
   }
 
 }

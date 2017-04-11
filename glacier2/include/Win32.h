@@ -63,7 +63,7 @@ namespace Glacier {
       void drawErrorDialog( Gdiplus::Graphics& gfx, RECT area, const ErrorDialog::Context& ctx );
       void drawConsole( Gdiplus::Graphics& gfx, RECT area, const wstring& title, const wstring& subtitle );
       void drawNiceBar( Gdiplus::Graphics& gfx, RECT area );
-      bool getCursorPosition( const HWND window, POINT& position );
+      static bool getCursorPosition( const HWND window, POINT& position );
       void shutdown();
     };
 

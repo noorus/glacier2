@@ -60,6 +60,7 @@ namespace Glacier {
   protected:
     InputDeviceList mDevices;
     Mode mode_;
+    bool selecting_;
     void updateInputMode( InputDevice* device );
     bool shouldIgnoreInput( InputDevice* from );
   public:
@@ -68,7 +69,7 @@ namespace Glacier {
     virtual void endAction( InputDevice* device, const BindAction& action );
     virtual void applyZoom( InputDevice* device, const Real zoom );
     virtual void directionalMovement( InputDevice* device, const Vector2& directional );
-    virtual void cameraMouseMovement( InputDevice* device, const Vector3& movement );
+    virtual void mouseMovement( InputDevice* device, const Mouse::MousePacket& packet );
     virtual void cameraPersistentMovement( InputDevice* device, const Vector2& movement );
     virtual const Mode& getMode();
     virtual void prepare();

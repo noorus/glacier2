@@ -1629,6 +1629,28 @@ namespace Gorilla
       mLayer->_markDirty();
     }
 
+    inline void size( const Ogre::Vector2& wh )
+    {
+      mRight = mLeft + wh.x;
+      mBottom = mTop + wh.y;
+      mDirty = true;
+      mLayer->_markDirty();
+    }
+
+    /*! function. coords
+    desc.
+    Directly set top, left, bottom & right coordinates
+    */
+    inline void coords( const Ogre::Vector2& topLeft, const Ogre::Vector2& bottomRight )
+    {
+      mLeft = topLeft.x;
+      mTop = topLeft.y;
+      mRight = bottomRight.x;
+      mBottom = bottomRight.y;
+      mDirty = true;
+      mLayer->_markDirty();
+    }
+
     /*! function. no_background
     desc.
     Don't draw the background.

@@ -29,8 +29,8 @@ namespace Glacier {
     mSensitivity( cSensitivity ),
     anchor_( nullptr ),
     rotation_( Quaternion::IDENTITY ), rotationInput_( Vector3::ZERO ),
-    mZoomVelocity( 0.0f ),
-    mZoom( 0.0f ), mDirection( Vector3::ZERO ), mReverseAxes( true )
+    zoomVelocity_( 0.0f ),
+    zoom_( 0.0f ), direction_( Vector3::ZERO ), mReverseAxes( true )
   {
     anchor_ = scene->createSceneNode( Ogre::SCENE_DYNAMIC );
     anchor_->setPosition( Vector3::ZERO );
@@ -38,27 +38,32 @@ namespace Glacier {
     mCamera->setAutoTracking( false );
     mCamera->setProjectionType( Ogre::PT_ORTHOGRAPHIC );
     angle_ = Radian( Ogre::Math::DegreesToRadians( g_CVar_cam_pitch.getFloat() ) );
-    mDirection = ( Quaternion( Ogre::Degree( g_CVar_cam_yaw.getFloat() ), Vector3::UNIT_Y ) * Quaternion( angle_, Vector3::UNIT_Z ) ) * Vector3::UNIT_X;
+    direction_ = ( Quaternion( Ogre::Degree( g_CVar_cam_yaw.getFloat() ), Vector3::UNIT_Y ) * Quaternion( angle_, Vector3::UNIT_Z ) ) * Vector3::UNIT_X;
     lookAt( anchor_->_getDerivedPositionUpdated() );
   }
 
-  void GameCamera::applyMovement( const Vector3& movement )
+  void GameCamera::applyRotation( const Vector3& rotation )
   {
     if ( mReverseAxes ) {
-      rotationInput_.x += movement.x * mSensitivity;
-      rotationInput_.y += movement.y * mSensitivity;
+      rotationInput_.x += rotation.x * mSensitivity;
+      rotationInput_.y += rotation.y * mSensitivity;
     }
     else {
-      rotationInput_.x += -movement.x * mSensitivity;
-      rotationInput_.y += -movement.y * mSensitivity;
+      rotationInput_.x += -rotation.x * mSensitivity;
+      rotationInput_.y += -rotation.y * mSensitivity;
     }
-    rotationInput_.z += movement.z;
+    rotationInput_.z += rotation.z;
+  }
+
+  void GameCamera::setEdgeScrolling( const Vector2& capped )
+  {
+    //
   }
 
   void GameCamera::update( const GameTime delta )
   {
     // Make up the local X axis, as it changes with rotation along world Y
-    Vector3 axis = Vector3( -mDirection.z, 0, mDirection.x );
+    Vector3 axis = Vector3( -direction_.z, 0, direction_.x );
     axis.normalise();
 
     auto window = g_CVar_cam_window.getFloat();
@@ -71,12 +76,12 @@ namespace Glacier {
       Radian radiansX = Radian( Ogre::Math::DegreesToRadians( rotationInput_.x ) );
       Radian radiansY = Radian( Ogre::Math::DegreesToRadians( rotationInput_.y ) );
       bool resetRotation = false;
-      if ( radiansY > mDirection.angleBetween( Vector3::UNIT_Y ) - cMinAngle ) {
-        radiansY = mDirection.angleBetween( Vector3::UNIT_Y ) - cMinAngle;
+      if ( radiansY > direction_.angleBetween( Vector3::UNIT_Y ) - cMinAngle ) {
+        radiansY = direction_.angleBetween( Vector3::UNIT_Y ) - cMinAngle;
         resetRotation = true;
       }
-      else if ( radiansY < mDirection.angleBetween( Vector3::UNIT_Y ) - cMaxAngle ) {
-        radiansY = mDirection.angleBetween( Vector3::UNIT_Y ) - cMaxAngle;
+      else if ( radiansY < direction_.angleBetween( Vector3::UNIT_Y ) - cMaxAngle ) {
+        radiansY = direction_.angleBetween( Vector3::UNIT_Y ) - cMaxAngle;
         resetRotation = true;
       }
       // Compose the rotation delta and add to existing velocity
@@ -93,37 +98,37 @@ namespace Glacier {
     {
       rotation_ = rotation_.Slerp( cRotationDeceleration * (Real)delta, rotation_,
         Quaternion::IDENTITY, true );
-      mDirection = rotation_ * mDirection;
+      direction_ = rotation_ * direction_;
     }
 
-    mDirection.normalise();
+    direction_.normalise();
 
     // Handle Z mouse scroll (zoom)
     if ( rotationInput_.z )
-      mZoomVelocity += rotationInput_.z;
-    if ( mZoomVelocity != 0.0f )
+      zoomVelocity_ += rotationInput_.z;
+    if ( zoomVelocity_ != 0.0f )
     {
-      mZoom += mZoomVelocity * cZoomAcceleration * (Real)delta;
+      zoom_ += zoomVelocity_ * cZoomAcceleration * (Real)delta;
       // TODO:MEDIUM - this could be softened a bit
-      if ( mZoom > 1.0f ) {
-        mZoom = 1.0f;
-        mZoomVelocity = 0.0f;
+      if ( zoom_ > 1.0f ) {
+        zoom_ = 1.0f;
+        zoomVelocity_ = 0.0f;
       }
-      else if ( mZoom < 0.0f ) {
-        mZoom = 0.0f;
-        mZoomVelocity = 0.0f;
+      else if ( zoom_ < 0.0f ) {
+        zoom_ = 0.0f;
+        zoomVelocity_ = 0.0f;
       }
       else {
-        if ( mZoomVelocity > 0.0f ) {
-          mZoomVelocity -= (Real)delta * cZoomDeceleration;
-          if ( mZoomVelocity < 0.0f ) mZoomVelocity = 0.0f;
+        if ( zoomVelocity_ > 0.0f ) {
+          zoomVelocity_ -= (Real)delta * cZoomDeceleration;
+          if ( zoomVelocity_ < 0.0f ) zoomVelocity_ = 0.0f;
         }
-        else if ( mZoomVelocity < 0.0f ) {
-          mZoomVelocity += (Real)delta * cZoomDeceleration;
-          if ( mZoomVelocity > 0.0f ) mZoomVelocity = 0.0f;
+        else if ( zoomVelocity_ < 0.0f ) {
+          zoomVelocity_ += (Real)delta * cZoomDeceleration;
+          if ( zoomVelocity_ > 0.0f ) zoomVelocity_ = 0.0f;
         }
       }
-      distance_ = Math::interpolateLinear( cMaxDistance, cMinDistance, mZoom );
+      distance_ = Math::interpolateLinear( cMaxDistance, cMinDistance, zoom_ );
     }
 
     // Reset movement for next frame
@@ -131,7 +136,7 @@ namespace Glacier {
 
     // Update camera position
     Vector3 target = anchor_->_getDerivedPositionUpdated();
-    Vector3 offset = mDirection * distance_;
+    Vector3 offset = direction_ * distance_;
     Vector3 position = target + offset;
     if ( mModifier )
       mModifier->updatePosition( this, target, offset, position );

@@ -18,8 +18,10 @@ namespace Glacier {
       Nil::Mouse* mouse_;
       ButtonVector buttons_;
       ActionPacket actions_;
+      MousePacket packet_;
       bool focused_;
     protected:
+      void updatePacket( const Nil::MouseState& state );
       void onMouseMoved(
         Nil::Mouse* mouse, const Nil::MouseState& state );
       void onMouseButtonPressed(
@@ -30,6 +32,7 @@ namespace Glacier {
         Nil::Mouse* mouse, const Nil::MouseState& state );
     public:
       Device( LocalController* local, Nil::Mouse* mouse );
+      const MousePacket& getMousePacket() const { return packet_; }
       virtual void prepare();
       virtual void onFocus( const bool focus );
       virtual const Type getType() { return Type_Mouse; }
