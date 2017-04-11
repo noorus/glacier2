@@ -11,6 +11,7 @@ namespace Glacier {
   const Real cRotationDeceleration = 20.0f;
   const Real cZoomAcceleration = 0.25f;
   const Real cZoomDeceleration = 4.0f;
+  const Vector2 cScrollSensitivity = Vector2( 0.5f, 0.4f );
   const Radian cFOVy = Radian( Ogre::Math::DegreesToRadians( 80.0f ) );
   const Real cMaxDistance = 128.0f;
   const Real cMinDistance = 32.0f;
@@ -22,6 +23,13 @@ namespace Glacier {
   ENGINE_DECLARE_CONVAR( cam_pitch, L"Camera pitch angle in degrees", 30.0f );
   ENGINE_DECLARE_CONVAR( cam_yaw, L"Camera yaw angle in degrees", -135.0f );
   ENGINE_DECLARE_CONVAR( cam_window, L"Camera orthogonal window", 22.0f );
+
+  inline Real fastEasing( Real value )
+  {
+    auto sqr = ( value * value );
+    auto ret = ( 3 * sqr - 2 * sqr );
+    return ( value < 0.0f ? -ret : ret );
+  }
 
   GameCamera::GameCamera( SceneManager* scene,
     const Ogre::String& name, Gorilla::Screen* hud ):
@@ -55,16 +63,16 @@ namespace Glacier {
     rotationInput_.z += rotation.z;
   }
 
-  void GameCamera::setEdgeScrolling( const Vector2& capped )
+  void GameCamera::applyEdgeScrolling( const Vector2& scroll )
   {
-    //
+    edgeScrollInput_ = scroll;
   }
 
   void GameCamera::update( const GameTime delta )
   {
     // Make up the local X axis, as it changes with rotation along world Y
-    Vector3 axis = Vector3( -direction_.z, 0, direction_.x );
-    axis.normalise();
+    Vector3 localX = Vector3( -direction_.z, 0, direction_.x );
+    localX.normalise();
 
     auto window = g_CVar_cam_window.getFloat();
     mCamera->setOrthoWindow( window, window );
@@ -85,7 +93,7 @@ namespace Glacier {
         resetRotation = true;
       }
       // Compose the rotation delta and add to existing velocity
-      Quaternion rotationX( radiansY, axis );
+      Quaternion rotationX( radiansY, localX );
       Quaternion rotationY( radiansX, Vector3::UNIT_Y );
       if ( resetRotation )
         rotation_ = rotationX * rotationY;
@@ -133,6 +141,20 @@ namespace Glacier {
 
     // Reset movement for next frame
     rotationInput_ = Vector3::ZERO;
+
+    anchor_->setDirection( direction_, Ogre::Node::TS_WORLD );
+
+    if ( edgeScrollInput_.x != 0.0f || edgeScrollInput_.y != 0.0f )
+    {
+      auto localZ = localX.crossProduct( direction_ );
+      Matrix3 localMat;
+      localMat.FromAxes( localX, Vector3::UNIT_Y, localZ );
+      anchor_->translate( localMat,
+        cScrollSensitivity.x * fastEasing( -edgeScrollInput_.x ),
+        0.0f,
+        cScrollSensitivity.y * fastEasing( -edgeScrollInput_.y ),
+        Ogre::Node::TS_WORLD );
+    }
 
     // Update camera position
     Vector3 target = anchor_->_getDerivedPositionUpdated();

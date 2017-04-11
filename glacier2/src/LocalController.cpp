@@ -18,9 +18,12 @@
 
 namespace Glacier {
 
+  const Real cEdgeZone = 25.0f;
+
   LocalController::LocalController(): mode_( Mode_KeyboardAndMouse ), selecting_( false )
   {
-    //
+    auto window = gEngine->getGraphics()->getWindow();
+    viewport_.dimensions_ = Vector2( (Real)window->getWidth(), (Real)window->getHeight() );
   }
 
   void LocalController::updateInputMode( InputDevice* device )
@@ -215,7 +218,7 @@ namespace Glacier {
     if ( shouldIgnoreInput( device ) )
       return;
 
-    impulseMovement_.z += zoom;
+    impulseRotation_.z += zoom;
     updateMovement();
   }
 
@@ -240,8 +243,20 @@ namespace Glacier {
     if ( shouldIgnoreInput( device ) )
       return;
 
+    cameraEdgeScroll_ = 0.0f;
     if ( selecting_ )
       Locator::getHUD().updateSelection( packet );
+    else {
+      auto pt = viewport_.cap( packet.absolute_ );
+      if ( pt.x <= cEdgeZone )
+        cameraEdgeScroll_.x = -( 1.0f - ( pt.x / cEdgeZone ) );
+      else if ( pt.x >= ( viewport_.dimensions_.x - cEdgeZone ) )
+        cameraEdgeScroll_.x = ( 1.0f - ( ( viewport_.dimensions_.x - pt.x ) / cEdgeZone ) );
+      if ( pt.y <= cEdgeZone )
+        cameraEdgeScroll_.y = -( 1.0f - ( pt.y / cEdgeZone ) );
+      else if ( pt.y >= ( viewport_.dimensions_.y - cEdgeZone ) )
+        cameraEdgeScroll_.y = ( 1.0f - ( ( viewport_.dimensions_.y - pt.y ) / cEdgeZone ) );
+    }
 
     /*if ( rotating_ )
     {
@@ -264,8 +279,8 @@ namespace Glacier {
     if ( shouldIgnoreInput( device ) )
       return;
 
-    persistentMovement_.x = -movement.x;
-    persistentMovement_.y = movement.y;
+    persistentRotation_.x = -movement.x;
+    persistentRotation_.y = movement.y;
     updateMovement();
   }
 

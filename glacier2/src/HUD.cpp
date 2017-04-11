@@ -12,8 +12,6 @@ namespace Glacier {
   EngineComponent( engine ), gorillaScreen_( screen ), gorillaLayer_( nullptr )
   {
     gorillaLayer_ = gorillaScreen_->createLayer();
-    auto window = gEngine->getGraphics()->getWindow();
-    viewport_.dimensions_ = Vector2( (Real)window->getWidth(), (Real)window->getHeight() );
   }
 
   void HUD::beginSelection( const Mouse::MousePacket& from )

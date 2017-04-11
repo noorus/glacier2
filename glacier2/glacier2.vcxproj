@@ -363,6 +363,7 @@
     <ClInclude Include="include\Gorilla.h" />
     <ClInclude Include="include\HDR.h" />
     <ClInclude Include="include\Keyboard.h" />
+    <ClInclude Include="include\Map.h" />
     <ClInclude Include="include\MenuState.h" />
     <ClInclude Include="include\MeshHelpers.h" />
     <ClInclude Include="include\ModelViewerState.h" />

@@ -2,6 +2,7 @@
 #include "Utilities.h"
 #include "Actions.h"
 #include "Character.h"
+#include "Map.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
@@ -37,11 +38,12 @@ namespace Glacier {
   class CameraController: virtual public BaseController {
   protected:
     GameCamera* camera_;
-    Vector3 persistentMovement_;
-    Vector3 impulseMovement_;
-    Vector3 movement_;
+    Vector3 persistentRotation_;
+    Vector3 impulseRotation_;
+    Vector3 rotation_;
     bool zooming_;
     bool rotating_;
+    Vector2 cameraEdgeScroll_; //!< X,Y mouse screen edge scrolling scalars (-1.0 - 1.0f)
   public:
     CameraController();
     virtual void setCamera( GameCamera* camera );
@@ -59,6 +61,7 @@ namespace Glacier {
     };
   protected:
     InputDeviceList mDevices;
+    Map::Viewport viewport_;
     Mode mode_;
     bool selecting_;
     void updateInputMode( InputDevice* device );

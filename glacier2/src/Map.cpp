@@ -1,5 +1,5 @@
 #include "StdAfx.h"
-#include "Graphics.h"
+#include "Map.h"
 
 namespace Glacier {
 
@@ -42,6 +42,20 @@ namespace Glacier {
     {
       auto half = dimensions_ / 2;
       return ( pt + half );
+    }
+
+    const Point Viewport::cap( const Point& pt )
+    {
+      auto ret = pt;
+      if ( ret.x < 0.0f )
+        ret.x = 0.0f;
+      else if ( ret.x > dimensions_.x )
+        ret.x = dimensions_.x;
+      if ( ret.y < 0.0f )
+        ret.y = 0.0f;
+      else if ( ret.y > dimensions_.y )
+        ret.y = dimensions_.y;
+      return ret;
     }
 
     Point Map::translateTo( Point& pt, Viewport& vp )
