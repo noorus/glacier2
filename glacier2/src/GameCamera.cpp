@@ -26,9 +26,7 @@ namespace Glacier {
 
   inline Real fastEasing( Real value )
   {
-    auto sqr = ( value * value );
-    auto ret = ( 3 * sqr - 2 * sqr );
-    return ( value < 0.0f ? -ret : ret );
+    return ( value * value * value );
   }
 
   GameCamera::GameCamera( SceneManager* scene,
