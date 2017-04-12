@@ -63,6 +63,7 @@ namespace Glacier {
     Real distance_;
     Real zoom_;
     Vector2 edgeScrollInput_;
+    Real window_;
     bool mReverseAxes;
   public:
     explicit GameCamera( SceneManager* scene, const Ogre::String& name, Gorilla::Screen* hud = nullptr );

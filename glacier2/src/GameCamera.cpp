@@ -9,12 +9,12 @@
 namespace Glacier {
 
   const Real cRotationDeceleration = 20.0f;
-  const Real cZoomAcceleration = 0.25f;
-  const Real cZoomDeceleration = 4.0f;
+  const Real cZoomAcceleration = 0.32f;
+  const Real cZoomDeceleration = 4.6f;
   const Vector2 cScrollSensitivity = Vector2( 0.5f, 0.4f );
   const Radian cFOVy = Radian( Ogre::Math::DegreesToRadians( 80.0f ) );
-  const Real cMaxDistance = 128.0f;
-  const Real cMinDistance = 32.0f;
+  const Real cMaxWindow = 16.0f;
+  const Real cMinWindow = 22.0f;
   const Real cSensitivity = 0.25f;
 
   const Radian cMinAngle = Radian( Ogre::Math::DegreesToRadians( 10.0f ) );
@@ -22,7 +22,7 @@ namespace Glacier {
 
   ENGINE_DECLARE_CONVAR( cam_pitch, L"Camera pitch angle in degrees", 30.0f );
   ENGINE_DECLARE_CONVAR( cam_yaw, L"Camera yaw angle in degrees", -135.0f );
-  ENGINE_DECLARE_CONVAR( cam_window, L"Camera orthogonal window", 22.0f );
+  // ENGINE_DECLARE_CONVAR( cam_window, L"Camera orthogonal window", 22.0f );
 
   inline Real fastEasing( Real value )
   {
@@ -37,14 +37,15 @@ namespace Glacier {
     mSensitivity( cSensitivity ),
     anchor_( nullptr ),
     rotation_( Quaternion::IDENTITY ), rotationInput_( Vector3::ZERO ),
-    zoomVelocity_( 0.0f ),
-    zoom_( 0.0f ), direction_( Vector3::ZERO ), mReverseAxes( true )
+    zoomVelocity_( 0.0f ), window_( cMaxWindow ),
+    zoom_( 1.0f ), direction_( Vector3::ZERO ), mReverseAxes( true )
   {
     anchor_ = scene->createSceneNode( Ogre::SCENE_DYNAMIC );
     anchor_->setPosition( Vector3::ZERO );
-    distance_ = cMaxDistance;
+    distance_ = 128.0f;
     mCamera->setAutoTracking( false );
     mCamera->setProjectionType( Ogre::PT_ORTHOGRAPHIC );
+    mCamera->setOrthoWindow( window_, window_ );
     angle_ = Radian( Ogre::Math::DegreesToRadians( g_CVar_cam_pitch.getFloat() ) );
     direction_ = ( Quaternion( Ogre::Degree( g_CVar_cam_yaw.getFloat() ), Vector3::UNIT_Y ) * Quaternion( angle_, Vector3::UNIT_Z ) ) * Vector3::UNIT_X;
     lookAt( anchor_->_getDerivedPositionUpdated() );
@@ -73,9 +74,6 @@ namespace Glacier {
     // Make up the local X axis, as it changes with rotation along world Y
     Vector3 localX = Vector3( -direction_.z, 0, direction_.x );
     localX.normalise();
-
-    auto window = g_CVar_cam_window.getFloat();
-    mCamera->setOrthoWindow( window, window );
 
     // Handle new X,Y movement
     if ( rotationInput_.x != 0.0f || rotationInput_.y != 0.0f )
@@ -136,7 +134,9 @@ namespace Glacier {
           if ( zoomVelocity_ > 0.0f ) zoomVelocity_ = 0.0f;
         }
       }
-      distance_ = Math::interpolateLinear( cMaxDistance, cMinDistance, zoom_ );
+      // distance_ = Math::interpolateLinear( cMaxWindow, cMinWindow, zoom_ );
+      window_ = Math::interpolateLinear( cMinWindow, cMaxWindow, zoom_ );
+      mCamera->setOrthoWindow( window_, window_ );
     }
 
     // Reset movement for next frame
