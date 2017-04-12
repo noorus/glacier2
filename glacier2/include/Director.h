@@ -22,7 +22,7 @@ namespace Glacier {
   public:
     static GameCamera* mCamera; //!< My camera
     //! Constructor.
-    Director( Graphics* gfx, SceneNode* target );
+    Director( Graphics* gfx );
     //! Gets the camera.
     GameCamera* getCamera() { return mCamera; }
     void update( const GameTime delta );

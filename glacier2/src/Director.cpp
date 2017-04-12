@@ -13,7 +13,7 @@ namespace Glacier {
 
   GameCamera* Director::mCamera = nullptr;
 
-  Director::Director( Graphics* gfx, SceneNode* target ):
+  Director::Director( Graphics* gfx ):
   mGraphics( gfx ), mLight( nullptr ), mWorkspace( nullptr ), mHDR( nullptr )
   {
     mCamera = new GameCamera( mGraphics->getScene(), "defaultcamera", mGraphics->mGorillaScreen );

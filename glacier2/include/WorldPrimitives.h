@@ -19,6 +19,7 @@ namespace Glacier {
       PhysicsScene* mScene;
       physx::PxRigidActor* mActor;
       SceneNode* mNode;
+      Ogre::MeshPtr mMesh;
       Primitive( PhysicsScene* scene );
     public:
       Ogre::Item* getItem() { return mItem; }
@@ -29,7 +30,6 @@ namespace Glacier {
     class Grid: public Primitive {
     protected:
       SceneManager* scene_;
-      SceneNode* node_;
       ManualObject* obj_;
     public:
       Grid( PhysicsScene* scene, const Ogre::Plane& plane, const Real width, const Real height, const Vector3& position, const Real u = 1.0f, const Real v = 1.0f );
@@ -38,8 +38,6 @@ namespace Glacier {
     };
 
     class Box: public Primitive {
-    protected:
-      Ogre::MeshPtr mMesh;
     public:
       Box( PhysicsScene* scene, const Vector3& size, const Vector3& position, const Quaternion& orientation );
       virtual void draw();

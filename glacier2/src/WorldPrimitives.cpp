@@ -47,10 +47,21 @@ namespace Glacier {
 
       auto scm = Locator::getGraphics().getScene();
 
-      obj_ = scm->createManualObject();
-      node_ = scm->createSceneNode();
-      node_->attachObject( obj_ );
+      obj_ = scm->createManualObject( Ogre::SCENE_STATIC );
+      mNode = scm->createSceneNode( Ogre::SCENE_STATIC );
+      mNode->attachObject( obj_ );
       obj_->setCastShadows( false );
+
+      mMesh = Procedural::PlaneGenerator().setSize( Vector2( width, height ) ).setNormal( plane.normal ).setNumSegX( 8 ).setNumSegY( 8 ).realizeMesh();
+
+      mItem = scm->createItem( mMesh, Ogre::SCENE_STATIC );
+      mItem->setQueryFlags( SceneQueryFlag_World );
+      mItem->setDatablock( "Debug/FOVVisualization" );
+      mItem->setCastShadows( false );
+      mNode->attachObject( mItem );
+
+      mNode->setPosition( position );
+      mNode->setOrientation( Quaternion::IDENTITY );
     }
 
     void Grid::draw()
@@ -95,7 +106,13 @@ namespace Glacier {
     {
       auto scm = Locator::getGraphics().getScene();
       scm->destroyManualObject( obj_ );
-      scm->destroySceneNode( node_ );
+      if ( mItem )
+        scm->destroyItem( mItem );
+      if ( mNode )
+      {
+        mNode->removeAndDestroyAllChildren();
+        scm->destroySceneNode( mNode );
+      }
       mScene->getScene()->removeActor( *mActor );
     }
 
