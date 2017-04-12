@@ -32,6 +32,11 @@ namespace Glacier {
       }
     }
 
+    const bool Rect::empty() const
+    {
+      return ( Ogre::Math::RealEqual( topLeft.x, bottomRight.x ) && Ogre::Math::RealEqual( topLeft.y, bottomRight.y ) );
+    }
+
     const Rect Viewport::getRect() const
     {
       auto half = dimensions_ / 2;

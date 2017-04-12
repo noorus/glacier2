@@ -44,6 +44,14 @@ namespace Glacier {
 
   void HUD::endSelection( const Mouse::MousePacket& to )
   {
+    if ( selection_.rect_.empty() )
+    {
+      gEngine->getConsole()->printf( Console::srcInput, L"Single selection" );
+    }
+    else
+    {
+      gEngine->getConsole()->printf( Console::srcInput, L"Multiple selection rectangle" );
+    }
     if ( selection_.vis_ )
     {
       gorillaLayer_->destroyRectangle( selection_.vis_ );

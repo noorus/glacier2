@@ -15,6 +15,7 @@ namespace Glacier {
       Rect( const Point& topLeft_, const Point& bottomRight_ ): topLeft( topLeft_ ), bottomRight( bottomRight_ ) {}
       const void getXYWH( Vector2& XY, Vector2& WH ) const;
       void setFrom( const Point& a, const Point& b ); //!< Using this, doesn't matter which coord is greater
+      const bool empty() const;
     };
 
     class Viewport {
