@@ -63,7 +63,7 @@ namespace Glacier {
     Real distance_;
     Real zoom_;
     Vector2 edgeScrollInput_;
-    Vector2 roamInput_;
+    Vector2 roamVelocity_;
     Real window_;
     bool mReverseAxes;
   public:

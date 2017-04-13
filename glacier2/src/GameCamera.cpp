@@ -12,11 +12,12 @@ namespace Glacier {
   const Real cZoomAcceleration = 0.32f;
   const Real cZoomDeceleration = 4.6f;
   const Vector2 cScrollSensitivity = Vector2( 0.5f, 0.4f );
-  const Vector2 cRoamSensitivity = Vector2( 0.25f, 0.2f );
+  const Vector2 cRoamSensitivity = Vector2( 1.5f, 1.35f );
   const Radian cFOVy = Radian( Ogre::Math::DegreesToRadians( 80.0f ) );
   const Real cMaxWindow = 16.0f;
   const Real cMinWindow = 22.0f;
   const Real cSensitivity = 0.25f;
+  const Real cRoamDeceleration = 0.9f;
 
   const Radian cMinAngle = Radian( Ogre::Math::DegreesToRadians( 10.0f ) );
   const Radian cMaxAngle = Radian( Ogre::Math::DegreesToRadians( 150.0f ) );
@@ -37,7 +38,7 @@ namespace Glacier {
     anchor_( nullptr ),
     rotation_( Quaternion::IDENTITY ), rotationInput_( Vector3::ZERO ),
     zoomVelocity_( 0.0f ), window_( cMaxWindow ),
-    zoom_( 1.0f ), direction_( Vector3::ZERO ), mReverseAxes( true )
+    zoom_( 1.0f ), direction_( Vector3::ZERO ), mReverseAxes( true ), roamVelocity_( Vector2::ZERO )
   {
     anchor_ = scene->createSceneNode( Ogre::SCENE_DYNAMIC );
     anchor_->setPosition( Vector3::ZERO );
@@ -70,7 +71,7 @@ namespace Glacier {
 
   void GameCamera::applyRoaming( const Vector2& input )
   {
-    roamInput_ = input;
+    roamVelocity_ += input;
   }
 
   void GameCamera::update( const GameTime delta )
@@ -149,28 +150,32 @@ namespace Glacier {
     anchor_->setDirection( direction_, Ogre::Node::TS_WORLD );
 
     // Make local translation matrix
-    auto localZ = localX.crossProduct( -direction_ );
+    auto localZ = localX.crossProduct( direction_ );
     Matrix3 localMat;
-    localMat.FromAxes( -localX, Vector3::UNIT_Y, localZ );
+    localMat.FromAxes( localX, Vector3::UNIT_Y, localZ );
 
     // Apply edge scrolling
     if ( edgeScrollInput_.x != 0.0f || edgeScrollInput_.y != 0.0f )
     {
       anchor_->translate( localMat,
-        cRoamSensitivity.x * fastEasing( edgeScrollInput_.x ),
+        cScrollSensitivity.x * fastEasing( -edgeScrollInput_.x ),
         0.0f,
-        cRoamSensitivity.y * fastEasing( edgeScrollInput_.y ),
+        cScrollSensitivity.y * fastEasing( -edgeScrollInput_.y ),
         Ogre::Node::TS_WORLD );
     }
 
     // Apply roaming
-    if ( roamInput_.x != 0.0f || roamInput_.y != 0.0f )
+    if ( !roamVelocity_.isZeroLength() )
     {
-      anchor_->translate( localMat,
-        cScrollSensitivity.x * roamInput_.x,
-        0.0f,
-        cScrollSensitivity.y * roamInput_.y,
-        Ogre::Node::TS_WORLD );
+      auto roam = roamVelocity_ * cRoamSensitivity * (Real)delta;
+      anchor_->translate( localMat, -roam.x, 0.0f, -roam.y, Ogre::Node::TS_WORLD );
+
+      roamVelocity_ *= cRoamDeceleration;
+
+      if ( Ogre::Math::RealEqual( roamVelocity_.x, 0.0f, 0.001f ) )
+        roamVelocity_.x = 0.0f;
+      if ( Ogre::Math::RealEqual( roamVelocity_.y, 0.0f, 0.001f ) )
+        roamVelocity_.y = 0.0f;
     }
 
     // Update camera position
