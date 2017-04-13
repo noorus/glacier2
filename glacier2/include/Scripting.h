@@ -1,6 +1,7 @@
 #pragma once
 #include "EngineComponent.h"
 #include "Script.h"
+#include "Console.h"
 #include <v8.h>
 
 // Glacier² Game Engine © 2014 noorus
@@ -31,6 +32,10 @@ namespace Glacier {
     virtual void* Allocate( size_t length );
     virtual void* AllocateUninitialized( size_t length );
     virtual void Free( void* data, size_t length );
+  public:
+    // Callbacks
+    static void callbackJSExecute( Console* console,
+      ConCmd* command, StringVector& arguments );
   public:
     Scripting( Engine* engine );
     virtual ~Scripting();

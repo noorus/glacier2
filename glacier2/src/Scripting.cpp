@@ -16,6 +16,8 @@ namespace Glacier {
 
   const Ogre::String cJSResourceGroup = "JavaScript";
 
+  ENGINE_DECLARE_CONCMD( js_exec, L"Execute a JavaScript file.", Scripting::callbackJSExecute );
+
   Scripting::Scripting( Engine* engine ): EngineComponent( engine ),
   mIsolate( nullptr )
   {
@@ -175,8 +177,21 @@ namespace Glacier {
     if ( !script->isSimple() )
       ENGINE_EXCEPT( "Script is registered as non-simple" );
 
+    mEngine->getConsole()->printf( Console::srcScripting, L"Executing %s", filename.c_str() );
+
     script->compile();
     script->execute();
+  }
+
+  void Scripting::callbackJSExecute( Console* console, ConCmd* command, StringVector& arguments )
+  {
+    if ( arguments.size() < 2 ) {
+      console->printf( Console::srcEngine, L"Format: %s <filename>", arguments[0].c_str() );
+      return;
+    }
+
+    if ( gEngine && gEngine->getScripting() )
+      gEngine->getScripting()->simpleExecute( arguments[1] );
   }
 
 }

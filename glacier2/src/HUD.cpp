@@ -2,6 +2,7 @@
 #include "Graphics.h"
 #include "Gorilla.h"
 #include "EngineComponent.h"
+#include "ServiceLocator.h"
 #include "Engine.h"
 
 namespace Glacier {
@@ -25,12 +26,8 @@ namespace Glacier {
     selection_.from_ = from.absolute_;
     updateSelection( from );
 
-    ColourValue bgColor;
-    bgColor.setAsRGBA( 0x59d60064 );
-    ColourValue borderColor;
-    borderColor.setAsRGBA( 0x90ff42dd );
-    selection_.vis_->background_colour( bgColor );
-    selection_.vis_->border_colour( borderColor );
+    selection_.vis_->background_colour( Locator::getColors().base( Colors::Color_HUD_Selection_Fill ) );
+    selection_.vis_->border_colour( Locator::getColors().base( Colors::Color_HUD_Selection_Border ) );
     selection_.vis_->border_width( 1.0f );
   }
 

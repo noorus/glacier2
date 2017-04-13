@@ -55,6 +55,8 @@ namespace Glacier {
 
   // Engine class =============================================================
 
+  static void callbackFQ( Console* console, ConCmd* command, StringVector& arguments );
+
   ENGINE_DECLARE_CONCMD( version,
     L"Print engine version.", Engine::callbackVersion );
   ENGINE_DECLARE_CONCMD( memstat,
@@ -63,6 +65,12 @@ namespace Glacier {
     L"Save a screenshot to working directory.", Engine::callbackScreenshot );
   ENGINE_DECLARE_CONCMD( quit,
     L"Quit.", Engine::callbackQuit );
+  ENGINE_DECLARE_CONCMD( fq, L"Force quit; Shorthand command for development", callbackFQ );
+
+  void callbackFQ( Console* console, ConCmd* command, StringVector& arguments )
+  {
+    ExitProcess( 0 );
+  }
 
   Engine::Engine( HINSTANCE instance ):
   mConsole( nullptr ), mScripting( nullptr ), mGraphics( nullptr ),

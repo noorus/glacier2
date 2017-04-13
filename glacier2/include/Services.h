@@ -59,6 +59,8 @@ namespace Glacier {
       Color_Text_Warning,
       Color_Text_Error,
       Color_Text_Success,
+      Color_HUD_Selection_Border,
+      Color_HUD_Selection_Fill,
       Color_MAX
     };
   protected:

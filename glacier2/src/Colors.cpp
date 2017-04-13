@@ -12,6 +12,8 @@ namespace Glacier {
     mColorTable[Color_Text_Warning] = ColourValue( 1.0f, 1.0f, 0.0f, 1.0f );
     mColorTable[Color_Text_Error] = ColourValue::Red;
     mColorTable[Color_Text_Success] = ColourValue::Green;
+    mColorTable[Color_HUD_Selection_Border] = ColourValue( 0.0f, 1.0f, 0.0f, 0.5f );
+    mColorTable[Color_HUD_Selection_Fill] = ColourValue( 0.0f, 1.0f, 0.0f, 0.2f );
   }
 
   const ColourValue& Colors::base( const Value index )
