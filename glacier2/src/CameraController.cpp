@@ -28,28 +28,30 @@ namespace Glacier {
   {
     persistentRotation_ = Vector3::ZERO;
     impulseRotation_ = Vector3::ZERO;
-    rotation_ = Vector3::ZERO;
+    cameraRotation_ = Vector3::ZERO;
   }
 
   void CameraController::updateMovement()
   {
     if ( !zooming_ )
-      rotation_ = persistentRotation_ + impulseRotation_;
+      cameraRotation_ = persistentRotation_ + impulseRotation_;
     else
-      rotation_ = Vector3( persistentRotation_.x, 0.0f, persistentRotation_.y );
+      cameraRotation_ = Vector3( persistentRotation_.x, 0.0f, persistentRotation_.y );
   }
 
   void CameraController::prepare()
   {
     impulseRotation_ = Vector3::ZERO;
+    cameraRoam_ = 0.0f;
     updateMovement();
   }
 
   void CameraController::apply()
   {
     if ( camera_ ) {
-      camera_->applyRotation( rotation_ );
+      camera_->applyRotation( cameraRotation_ );
       camera_->applyEdgeScrolling( cameraEdgeScroll_ );
+      camera_->applyRoaming( cameraRoam_ );
     }
   }
 

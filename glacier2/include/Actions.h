@@ -8,6 +8,7 @@ namespace Glacier {
 
   enum BindAction {
     Action_None = 0,
+    // FPS
     Action_Move_Forward,
     Action_Move_Backward,
     Action_Sidestep_Left,
@@ -17,8 +18,10 @@ namespace Glacier {
     Action_Run,
     Action_Zoom,
     Action_Rotate,
+    // RTS
     Action_Select,
     Action_Command,
+    Action_Roam,
     Action_Toggle_Console = 900
   };
 

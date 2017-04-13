@@ -12,13 +12,14 @@
 #include "DeveloperEntities.h"
 #include "EntityManager.h"
 #include "ServiceLocator.h"
+#include "Win32.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
 
 namespace Glacier {
 
-  const Real cEdgeZone = 25.0f;
+  const Real cEdgeZone = 10.0f;
 
   LocalController::LocalController(): mode_( Mode_KeyboardAndMouse ), selecting_( false )
   {
@@ -68,6 +69,10 @@ namespace Glacier {
     if ( shouldIgnoreInput( device ) )
       return;
 
+    Glacier::Mouse::Device* mouse = nullptr;
+    if ( device->getType() == InputDevice::Type_Mouse )
+      mouse = static_cast<Mouse::Device*>( device );
+
     if ( action == Action_Command )
     {
       gEngine->getConsole()->printf( Console::srcEngine, L"Drop." );
@@ -101,13 +106,18 @@ namespace Glacier {
       if ( !selecting_ )
       {
         selecting_ = true;
-        if ( device->getType() == InputDevice::Type_Mouse )
-        {
-          auto mouse = static_cast<Mouse::Device*>( device );
+        if ( mouse ) {
           auto packet = mouse->getMousePacket();
           Locator::getHUD().beginSelection( packet );
         }
       }
+      return;
+    }
+
+    if ( action == Action_Roam && mouse)
+    {
+      roaming_ = true;
+      Win32::Win32::freezeCursor( true );
       return;
     }
 
@@ -155,19 +165,29 @@ namespace Glacier {
     if ( shouldIgnoreInput( device ) )
       return;
 
+    Glacier::Mouse::Device* mouse = nullptr;
+    if ( device->getType() == InputDevice::Type_Mouse )
+      mouse = static_cast<Mouse::Device*>( device );
+
     if ( action == Action_Select )
     {
       if ( selecting_ )
       {
         selecting_ = false;
-        if ( device->getType() == InputDevice::Type_Mouse )
+        if ( mouse )
         {
-          auto mouse = static_cast<Mouse::Device*>( device );
           auto packet = mouse->getMousePacket();
           Locator::getHUD().endSelection( packet );
         }
       }
       return;
+    }
+
+
+    if ( action == Action_Roam && mouse )
+    {
+      roaming_ = false;
+      Win32::Win32::freezeCursor( false );
     }
 
     switch ( action )
@@ -246,7 +266,9 @@ namespace Glacier {
     cameraEdgeScroll_ = 0.0f;
     if ( selecting_ )
       Locator::getHUD().updateSelection( packet );
-    else {
+    else if ( roaming_ ) {
+      cameraRoam_ = packet.relative_;
+    } else {
       auto pt = viewport_.cap( packet.absolute_ );
       if ( pt.x <= cEdgeZone )
         cameraEdgeScroll_.x = -( 1.0f - ( pt.x / cEdgeZone ) );

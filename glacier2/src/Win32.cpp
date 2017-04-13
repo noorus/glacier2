@@ -165,6 +165,25 @@ namespace Glacier {
       return true;
     }
 
+    void Win32::freezeCursor( const bool freeze )
+    {
+      if ( freeze ) {
+        POINT pt;
+        GetCursorPos( &pt );
+        RECT rc;
+        rc.left = pt.x;
+        rc.right = pt.x;
+        rc.top = pt.y;
+        rc.bottom = pt.y;
+        ClipCursor( &rc );
+        ShowCursor( FALSE );
+      }
+      else {
+        ClipCursor( nullptr );
+        ShowCursor( TRUE );
+      }
+    }
+
     void Win32::drawErrorDialog( Gdiplus::Graphics& gfx, RECT area, const ErrorDialog::Context& ctx )
     {
       Gdiplus::SolidBrush gpbrText( Color( 255, 255, 255, 255 ) );

@@ -22,6 +22,7 @@ namespace Glacier {
 
       buttons_[0] = Action_Select;
       buttons_[1] = Action_Command;
+      buttons_[2] = Action_Roam;
     }
 
     void Device::prepare()

@@ -40,9 +40,11 @@ namespace Glacier {
     GameCamera* camera_;
     Vector3 persistentRotation_;
     Vector3 impulseRotation_;
-    Vector3 rotation_;
+    Vector3 cameraRotation_;
     bool zooming_;
     bool rotating_;
+    bool roaming_;
+    Vector2 cameraRoam_; //!< X,Y mouse roaming input
     Vector2 cameraEdgeScroll_; //!< X,Y mouse screen edge scrolling scalars (-1.0 - 1.0f)
   public:
     CameraController();

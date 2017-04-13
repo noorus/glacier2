@@ -12,6 +12,7 @@ namespace Glacier {
   const Real cZoomAcceleration = 0.32f;
   const Real cZoomDeceleration = 4.6f;
   const Vector2 cScrollSensitivity = Vector2( 0.5f, 0.4f );
+  const Vector2 cRoamSensitivity = Vector2( 0.25f, 0.2f );
   const Radian cFOVy = Radian( Ogre::Math::DegreesToRadians( 80.0f ) );
   const Real cMaxWindow = 16.0f;
   const Real cMinWindow = 22.0f;
@@ -65,6 +66,11 @@ namespace Glacier {
   void GameCamera::applyEdgeScrolling( const Vector2& scroll )
   {
     edgeScrollInput_ = scroll;
+  }
+
+  void GameCamera::applyRoaming( const Vector2& input )
+  {
+    roamInput_ = input;
   }
 
   void GameCamera::update( const GameTime delta )
@@ -142,15 +148,28 @@ namespace Glacier {
 
     anchor_->setDirection( direction_, Ogre::Node::TS_WORLD );
 
+    // Make local translation matrix
+    auto localZ = localX.crossProduct( -direction_ );
+    Matrix3 localMat;
+    localMat.FromAxes( -localX, Vector3::UNIT_Y, localZ );
+
+    // Apply edge scrolling
     if ( edgeScrollInput_.x != 0.0f || edgeScrollInput_.y != 0.0f )
     {
-      auto localZ = localX.crossProduct( direction_ );
-      Matrix3 localMat;
-      localMat.FromAxes( localX, Vector3::UNIT_Y, localZ );
       anchor_->translate( localMat,
-        cScrollSensitivity.x * fastEasing( -edgeScrollInput_.x ),
+        cRoamSensitivity.x * fastEasing( edgeScrollInput_.x ),
         0.0f,
-        cScrollSensitivity.y * fastEasing( -edgeScrollInput_.y ),
+        cRoamSensitivity.y * fastEasing( edgeScrollInput_.y ),
+        Ogre::Node::TS_WORLD );
+    }
+
+    // Apply roaming
+    if ( roamInput_.x != 0.0f || roamInput_.y != 0.0f )
+    {
+      anchor_->translate( localMat,
+        cScrollSensitivity.x * roamInput_.x,
+        0.0f,
+        cScrollSensitivity.y * roamInput_.y,
         Ogre::Node::TS_WORLD );
     }
 
