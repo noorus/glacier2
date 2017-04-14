@@ -245,7 +245,7 @@ namespace Glacier {
                 if ( itCmd == window->mAutocomplete.matches.end() )
                   break;
                 window->mAutocomplete.suggestion = (*itCmd);
-                window->setCmdline( window->mAutocomplete.suggestion->getName() );
+                window->setCmdline( window->mAutocomplete.suggestion->getName() + L" " );
                 SendMessageW( window->mCmdline, EM_EXSETSEL, 0, (LPARAM)&range );
                 return 0;
               }
@@ -253,7 +253,7 @@ namespace Glacier {
             }
           }
           window->mAutocomplete.suggestion = window->mAutocomplete.matches.front();
-          window->setCmdline( window->mAutocomplete.suggestion->getName() );
+          window->setCmdline( window->mAutocomplete.suggestion->getName() + L" " );
           SendMessageW( window->mCmdline, EM_EXSETSEL, 0, (LPARAM)&range );
           return 0;
         break;
@@ -462,6 +462,10 @@ namespace Glacier {
       break;
       case WM_DESTROY:
         PostQuitMessage( EXIT_SUCCESS );
+        return 0;
+      break;
+      case WM_SETFOCUS:
+        SetFocus( window->mCmdline );
         return 0;
       break;
     }
