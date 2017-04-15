@@ -132,7 +132,7 @@ namespace Glacier {
     gEngine->getConsole()->printf( Console::srcScripting,
       L"Registering resources..." );
 
-    manager.addResourceLocation( "data\\js", "FileSystem", cJSResourceGroup );
+    manager.addResourceLocation( "data/js", "FileSystem", cJSResourceGroup );
   }
 
   void Scripting::unregisterResources( ResourceGroupManager& manager )
@@ -140,7 +140,7 @@ namespace Glacier {
     gEngine->getConsole()->printf( Console::srcScripting,
       L"Unregistering resources..." );
 
-    manager.removeResourceLocation( "data\\js", cJSResourceGroup );
+    manager.removeResourceLocation( "data/js", cJSResourceGroup );
   }
 
   Scripting::~Scripting()

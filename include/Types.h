@@ -79,12 +79,14 @@ namespace Glacier {
   using Ogre::HlmsUnlit;
   using Ogre::HlmsPbs;
   using Ogre::Any;
+  using Ogre::HlmsDatablock;
 
   using physx::PxVec2;
   using physx::PxVec3;
   using physx::PxVec4;
   using physx::PxQuat;
   using physx::PxExtendedVec3;
+  using physx::PxMaterial;
 
   // Don't ask
   namespace Mouse {

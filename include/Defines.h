@@ -34,3 +34,5 @@
 #ifndef SAFE_CLOSE_HANDLE
 # define SAFE_CLOSE_HANDLE(p) {if(p){CloseHandle(p);(p)=NULL;}}
 #endif
+
+#define CACHE_ALIGN __declspec(align(64))

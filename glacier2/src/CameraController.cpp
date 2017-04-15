@@ -14,7 +14,7 @@
 namespace Glacier {
 
   CameraController::CameraController(): camera_( nullptr ),
-  zooming_( false ), rotating_( false )
+  zooming_( false ), rotating_( false ), roaming_( false )
   {
     resetMovement();
   }

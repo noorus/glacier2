@@ -35,11 +35,12 @@ namespace Glacier {
   protected:
     Gorilla::Screen* gorillaScreen_;
     Gorilla::Layer* gorillaLayer_;
-    struct {
+    struct Selection {
       Map::Rect rect_;
       Map::Point from_;
       Map::Point to_;
       Gorilla::Rectangle* vis_;
+      Selection(): vis_( nullptr )  {}
     } selection_;
   public:
     HUD( Engine* engine, Gorilla::Screen* screen );

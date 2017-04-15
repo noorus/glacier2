@@ -310,17 +310,17 @@ namespace Glacier {
 
     auto mgr = Ogre::ArchiveManager::getSingletonPtr();
 
-    auto archiveCommon = mgr->load( "data\\tindalos\\Hlms\\Common\\HLSL", "FileSystem", true );
+    auto archiveCommon = mgr->load( "data/hlms/Common/HLSL", "FileSystem", true );
 
     Ogre::ArchiveVec library;
     library.push_back( archiveCommon );
 
-    auto archiveUnlit = mgr->load( "data\\tindalos\\Hlms\\Unlit\\HLSL", "FileSystem", true );
+    auto archiveUnlit = mgr->load( "data/hlms/Unlit/HLSL", "FileSystem", true );
     mUnlitMaterials = OGRE_NEW Ogre::HlmsUnlit( archiveUnlit, &library );
     mUnlitMaterials->setDebugOutputPath( false );
     mRoot->getHlmsManager()->registerHlms( mUnlitMaterials, false );
 
-    auto archivePBS = mgr->load( "data\\tindalos\\Hlms\\Pbs\\HLSL", "FileSystem", true );
+    auto archivePBS = mgr->load( "data/hlms/Pbs/HLSL", "FileSystem", true );
     mPbsMaterials = OGRE_NEW Ogre::HlmsPbs( archivePBS, &library );
     mPbsMaterials->setDebugOutputPath( false );
     mRoot->getHlmsManager()->registerHlms( mPbsMaterials, false );
@@ -463,8 +463,21 @@ namespace Glacier {
     gEngine->getConsole()->printf( Console::srcGfx,
       L"Registering resources..." );
 
-    manager.addResourceLocation( "data\\bootload", "FileSystem", "Bootload", true );
-    manager.addResourceLocation( "data\\bootload\\gorilla", "FileSystem", "Bootload", true );
+    manager.addResourceLocation( "data/fonts", "FileSystem", "Bootload" );
+    manager.addResourceLocation( "data/gorilla", "FileSystem", "Bootload" );
+    manager.addResourceLocation( "data/overlays", "FileSystem", "Bootload" );
+    manager.addResourceLocation( "data/textures", "FileSystem", "Bootload" );
+    manager.addResourceLocation( "data/materials", "FileSystem", "Bootload" );
+    manager.addResourceLocation( "data/meshes", "FileSystem", "Bootload" );
+    manager.addResourceLocation( "data/tindalos/Common", "FileSystem", "Bootload" );
+    manager.addResourceLocation( "data/tindalos/Common/HLSL", "FileSystem", "Bootload" );
+    manager.addResourceLocation( "data/tindalos/HDR", "FileSystem", "Bootload" );
+    manager.addResourceLocation( "data/tindalos/HDR/HLSL", "FileSystem", "Bootload" );
+
+    /*manager.addResourceLocation( "data\\fonts", "FileSystem", "Bootload", true );
+    manager.addResourceLocation( "data\\textures", "FileSystem", "Bootload" );
+    manager.addResourceLocation( "data\\materials", "FileSystem", "Bootload" );
+    manager.addResourceLocation( "data\\gorilla", "FileSystem", "Bootload", true );
     manager.addResourceLocation( "data\\tindalos\\2.0\\scripts\\Compositors", "FileSystem", "Bootload", true );
     manager.addResourceLocation( "data\\tindalos\\2.0\\scripts\\materials\\Common", "FileSystem", "Bootload", true );
     manager.addResourceLocation( "data\\tindalos\\2.0\\scripts\\materials\\Common\\HLSL", "FileSystem", "Bootload", true );
@@ -473,7 +486,7 @@ namespace Glacier {
     manager.addResourceLocation( "data\\tindalos\\2.0\\scripts\\materials\\PbsMaterials", "FileSystem", "Bootload", true );
     manager.addResourceLocation( "data\\tindalos\\models", "FileSystem", "Bootload", true );
     manager.addResourceLocation( "data\\tindalos\\materials\\textures", "FileSystem", "Bootload", true );
-    manager.addResourceLocation( "data\\tindalos\\materials\\textures\\Cubemaps", "FileSystem", "Bootload", true );
+    manager.addResourceLocation( "data\\tindalos\\materials\\textures\\Cubemaps", "FileSystem", "Bootload", true );*/
     ResourceGroupManager::getSingleton().initialiseResourceGroup( "Bootload" );
   }
 
