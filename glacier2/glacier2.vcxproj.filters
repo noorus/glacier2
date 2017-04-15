@@ -145,6 +145,9 @@
     <Filter Include="Header Files\Recast &amp; Detour\Detour">
       <UniqueIdentifier>{23900d0a-5f6e-4b5e-b6ee-5703cecaee85}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Services\Materials">
+      <UniqueIdentifier>{23583e37-e459-444d-a102-b58f87837fb1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Main.cpp">
@@ -459,6 +462,12 @@
     <ClCompile Include="src\HUD.cpp">
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="src\Materials.cpp">
+      <Filter>Source Files\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="src\JSMaterial.cpp">
+      <Filter>Source Files\Scripting</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\CompilerDef.h">
@@ -739,6 +748,9 @@
     </ClInclude>
     <ClInclude Include="include\Map.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MaterialService.h">
+      <Filter>Header Files\Services\Materials</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -28,6 +28,7 @@ namespace Glacier {
     static Music* musicPlayer; //!< Music player
     static Colors colors; //!< Colors
     static HUD* hud; //!< HUD
+    static Materials materials; //!< Material service
   public:
     static const bool hasMemory() { return ( memoryService ? true : false ); }
 
@@ -81,6 +82,8 @@ namespace Glacier {
     }
 
     static Colors& getColors() { return colors; }
+
+    static Materials& getMaterials() { return materials; }
   };
 
 }

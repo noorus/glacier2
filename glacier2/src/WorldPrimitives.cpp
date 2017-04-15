@@ -52,11 +52,16 @@ namespace Glacier {
       mNode->attachObject( obj_ );
       obj_->setCastShadows( false );
 
-      mMesh = Procedural::PlaneGenerator().setSize( Vector2( width, height ) ).setNormal( plane.normal ).setNumSegX( 8 ).setNumSegY( 8 ).realizeMesh();
+      /*mMesh = Procedural::PlaneGenerator().setSize( Vector2( width, height ) ).setNormal( plane.normal ).setNumSegX( 8 ).setNumSegY( 8 ).setUTile( 32.0f ).setVTile( 32.0f ).setEnableNormals( true ).realizeMesh();
+      auto v1 = Ogre::v1::MeshManager::getSingleton().create( "", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME );
+      v1->importV2( mMesh.getPointer() );
+      v1->buildTangentVectors();
+      mMesh->importV1( v1.getPointer(), true, true, true );*/
+      mMesh = Ogre::MeshManager::getSingleton().load( "dev_ground_21.mesh", "Bootload" );
 
       mItem = scm->createItem( mMesh, Ogre::SCENE_STATIC );
       mItem->setQueryFlags( SceneQueryFlag_World );
-      mItem->setDatablock( "Debug/FOVVisualization" );
+      mItem->setDatablock( "Developer/Ground" );
       mItem->setCastShadows( false );
       mNode->attachObject( mItem );
 
@@ -73,8 +78,8 @@ namespace Glacier {
       obj_->estimateVertexCount( segments * 2 * 2 );
       obj_->begin( "Debug/PhysicsVisualization", Ogre::OT_LINE_LIST );
       uint32_t index = 0;
-      ColourValue color = ColourValue::White;
-      color.a = 0.4f;
+      ColourValue color = ColourValue::Black;
+      color.a = 0.075f;
       for ( size_t i = 0; i < segments; i++ )
       {
         Real p = ( ( dimensions.x / segments ) * i );

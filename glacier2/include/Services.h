@@ -1,5 +1,6 @@
 #pragma once
 #include "AudioService.h"
+#include "MaterialService.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.

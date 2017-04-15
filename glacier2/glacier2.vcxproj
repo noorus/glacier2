@@ -57,12 +57,14 @@
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <FloatingPointModel>Fast</FloatingPointModel>
-      <ShowIncludes>
-      </ShowIncludes>
+      <ShowIncludes>false</ShowIncludes>
       <EnableParallelCodeGeneration>true</EnableParallelCodeGeneration>
       <EnableEnhancedInstructionSet>AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <StringPooling>true</StringPooling>
+      <StructMemberAlignment>8Bytes</StructMemberAlignment>
+      <ControlFlowGuard>false</ControlFlowGuard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -102,6 +104,8 @@
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <ControlFlowGuard>false</ControlFlowGuard>
+      <StringPooling>true</StringPooling>
+      <StructMemberAlignment>8Bytes</StructMemberAlignment>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -245,7 +249,9 @@
     <ClCompile Include="src\Gorilla.cpp" />
     <ClCompile Include="src\HDR.cpp" />
     <ClCompile Include="src\HUD.cpp" />
+    <ClCompile Include="src\JSMaterial.cpp" />
     <ClCompile Include="src\Map.cpp" />
+    <ClCompile Include="src\Materials.cpp" />
     <ClCompile Include="src\PlayerCharacterInputComponent.cpp" />
     <ClCompile Include="src\AICharacterInputComponent.cpp" />
     <ClCompile Include="src\CharacterMovementComponent.cpp" />
@@ -364,6 +370,7 @@
     <ClInclude Include="include\HDR.h" />
     <ClInclude Include="include\Keyboard.h" />
     <ClInclude Include="include\Map.h" />
+    <ClInclude Include="include\MaterialService.h" />
     <ClInclude Include="include\MenuState.h" />
     <ClInclude Include="include\MeshHelpers.h" />
     <ClInclude Include="include\ModelViewerState.h" />
