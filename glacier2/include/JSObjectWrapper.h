@@ -31,7 +31,8 @@ namespace Glacier {
       Wrapped_Colors,
       Wrapped_Vector3,
       Wrapped_Quaternion,
-      Wrapped_Entity
+      Wrapped_Entity,
+      Wrapped_ColourValue
     };
 
     //! \class ObjectWrapper

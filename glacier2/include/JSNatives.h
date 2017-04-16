@@ -80,6 +80,69 @@ namespace Glacier {
       static void shutdown();
     };
 
+    //! \class Material
+    //! A JavaScript-wrapped material.
+    //! \sa Glacier::Materials
+    //! \sa ObjectWrapper
+    /*class Material: public ObjectWrapper<Material> {
+    protected:
+      //! Constructor.
+      //! \param source Source Ogre::Vector3 to initialize from.
+      explicit Material( const Ogre::Vector3& source );
+
+      //! Destructor.
+      ~Material();
+
+      //! My JavaScript-exported constructor function.
+      static void create( const FunctionCallbackInfo<v8::Value>& args );
+
+      //! Magic JavaScript toString method.
+      //! Returns a compact string representation of the object.
+      static void jsToString( const FunctionCallbackInfo<v8::Value>& args );
+    public:
+
+      //! Initializes my JavaScript object template in given object namespace.
+      static void initialize( Handle<ObjectTemplate> exports );
+
+      //! Creates a new JavaScript-compatible Vector3 from given source.
+      //! \param  vector The Ogre::Vector3 to copy from.
+      static Local<v8::Object> newFrom( const Ogre::Vector3& vector );
+    };*/
+
+    //! \class Color
+    //! A JavaScript-wrapped ColourValue.
+    //! \sa Ogre::ColourValue
+    //! \sa ObjectWrapper
+    class Color: public Ogre::ColourValue, public ObjectWrapper<Color> {
+    protected:
+      explicit Color( const Ogre::ColourValue& source );
+      ~Color();
+      static void create( const FunctionCallbackInfo<v8::Value>& args );
+      static void jsGetR( Local<v8::String> prop,
+        const PropertyCallbackInfo<v8::Value>& info );
+      static void jsSetR( Local<v8::String> prop, Local<v8::Value> value,
+        const PropertyCallbackInfo<void>& info );
+      static void jsGetG( Local<v8::String> prop,
+        const PropertyCallbackInfo<v8::Value>& info );
+      static void jsSetG( Local<v8::String> prop, Local<v8::Value> value,
+        const PropertyCallbackInfo<void>& info );
+      static void jsGetB( Local<v8::String> prop,
+        const PropertyCallbackInfo<v8::Value>& info );
+      static void jsSetB( Local<v8::String> prop, Local<v8::Value> value,
+        const PropertyCallbackInfo<void>& info );
+      static void jsGetA( Local<v8::String> prop,
+        const PropertyCallbackInfo<v8::Value>& info );
+      static void jsSetA( Local<v8::String> prop, Local<v8::Value> value,
+        const PropertyCallbackInfo<void>& info );
+      static void jsToString( const FunctionCallbackInfo<v8::Value>& args );
+      static void jsAdd( const FunctionCallbackInfo<v8::Value>& args );
+      static void jsSubtract( const FunctionCallbackInfo<v8::Value>& args );
+      static void jsMultiply( const FunctionCallbackInfo<v8::Value>& args );
+    public:
+      static void initialize( Handle<ObjectTemplate> exports );
+      static Local<v8::Object> newFrom( const Ogre::ColourValue& color );
+    };
+
     //! \class Vector3
     //! A JavaScript-wrapped Vector3.
     //! \sa Ogre::Vector3

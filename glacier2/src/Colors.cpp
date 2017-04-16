@@ -31,4 +31,11 @@ namespace Glacier {
     mColorTable[index].setAsRGBA( value );
   }
 
+  void Colors::set( const Value index, ColourValue& value )
+  {
+    assert( index >= 0 && index < Color_MAX );
+
+    mColorTable[index] = value;
+  }
+
 }

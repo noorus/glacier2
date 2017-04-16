@@ -54,6 +54,27 @@ namespace Glacier {
         return nullptr;
       }
 
+      //! Expect and extract a Color object as args[arg],
+      //! throw JS exception and return null on failure
+      Color* extractColor( int arg,
+      const FunctionCallbackInfo<v8::Value>& args )
+      {
+        char error[64];
+        if ( args.Length() >= ( arg + 1 ) && args[arg]->IsObject() )
+        {
+          Local<v8::Object> object = args[arg]->ToObject();
+          if ( Color::isWrappedType( object, Wrapped_ColourValue ) )
+          {
+            Color* unwrapped = Color::unwrap( object );
+            return unwrapped;
+          }
+        }
+        sprintf_s<64>( error, "Expected object Color as argument %d", arg );
+        args.GetIsolate()->ThrowException(
+          allocString( error, args.GetIsolate() ) );
+        return nullptr;
+      }
+
     }
 
   }

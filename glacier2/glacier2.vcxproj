@@ -249,6 +249,7 @@
     <ClCompile Include="src\Gorilla.cpp" />
     <ClCompile Include="src\HDR.cpp" />
     <ClCompile Include="src\HUD.cpp" />
+    <ClCompile Include="src\JSColor.cpp" />
     <ClCompile Include="src\JSMaterial.cpp" />
     <ClCompile Include="src\Map.cpp" />
     <ClCompile Include="src\Materials.cpp" />

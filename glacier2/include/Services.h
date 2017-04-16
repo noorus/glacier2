@@ -70,6 +70,7 @@ namespace Glacier {
     Colors();
     const ColourValue& base( const Value index );
     void set( const Value index, uint32_t value );
+    void set( const Value index, ColourValue& value );
   };
 
 }
