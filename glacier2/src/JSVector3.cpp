@@ -305,7 +305,7 @@ namespace Glacier {
     }
 
     //! \verbatim
-    //! Real Vector3.dotProduct( Vector3 )
+    //! Real Vector3.dotProduct( Vector3 other )
     //! \endverbatim
     void Vector3::jsDotProduct( const FunctionCallbackInfo<v8::Value>& args )
     {

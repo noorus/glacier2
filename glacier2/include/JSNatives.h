@@ -135,9 +135,20 @@ namespace Glacier {
       static void jsSetA( Local<v8::String> prop, Local<v8::Value> value,
         const PropertyCallbackInfo<void>& info );
       static void jsToString( const FunctionCallbackInfo<v8::Value>& args );
+      //! JavaScript "add" call.
       static void jsAdd( const FunctionCallbackInfo<v8::Value>& args );
+
+      //! JavaScript "subtract" call.
       static void jsSubtract( const FunctionCallbackInfo<v8::Value>& args );
+
+      //! JavaScript "multiply" call.
       static void jsMultiply( const FunctionCallbackInfo<v8::Value>& args );
+
+      //! JavaScript "saturate" call.
+      static void jsSaturate( const FunctionCallbackInfo<v8::Value>& args );
+
+      //! JavaScript "saturateCopy" call.
+      static void jsSaturateCopy( const FunctionCallbackInfo<v8::Value>& args );
     public:
       static void initialize( Handle<ObjectTemplate> exports );
       static Local<v8::Object> newFrom( const Ogre::ColourValue& color );

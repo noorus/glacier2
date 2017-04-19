@@ -44,6 +44,11 @@ namespace Glacier {
       JS_TEMPLATE_ACCESSOR( tpl, "a", jsGetA, jsSetA );
 
       JS_TEMPLATE_SET( tpl, "toString", jsToString );
+      JS_TEMPLATE_SET( tpl, "add", jsAdd );
+      JS_TEMPLATE_SET( tpl, "subtract", jsSubtract );
+      JS_TEMPLATE_SET( tpl, "multiply", jsMultiply );
+      JS_TEMPLATE_SET( tpl, "saturate", jsSaturate );
+      JS_TEMPLATE_SET( tpl, "saturateCopy", jsSaturateCopy );
 
       exports->Set( isolate, className.c_str(), tpl );
       constructor.Set( isolate, tpl );
@@ -206,6 +211,93 @@ namespace Glacier {
     {
       Color* ptr = unwrap( info.This() );
       ptr->a = value->NumberValue();
+    }
+
+    //! \verbatim
+    //! Color Color.add( value, ... )
+    //! Color Color.add( Color, ... )
+    //! \endverbatim
+    void Color::jsAdd( const FunctionCallbackInfo<v8::Value>& args )
+    {
+      auto ptr = unwrap( args.Holder() );
+      ColourValue val = *ptr;
+
+      for ( size_t i = 0; i < args.Length(); i++ )
+      {
+        if ( args[i]->IsNumber() ) {
+          auto otherval = (Real)args[i]->NumberValue();
+          ColourValue other( otherval, otherval, otherval, otherval );
+          val += other;
+        }
+        else {
+          auto other = Util::extractColor( i, args );
+          if ( !other )
+            return;
+          val += (ColourValue)*other;
+        }
+      }
+      args.GetReturnValue().Set( Color::newFrom( val ) );
+    }
+
+    //! \verbatim
+    //! Color Color.subtract( value, ... )
+    //! Color Color.subtract( Color, ... )
+    //! \endverbatim
+    void Color::jsSubtract( const FunctionCallbackInfo<v8::Value>& args )
+    {
+      auto ptr = unwrap( args.Holder() );
+      ColourValue val = *ptr;
+
+      for ( size_t i = 0; i < args.Length(); i++ )
+      {
+        if ( args[i]->IsNumber() ) {
+          auto otherval = (Real)args[i]->NumberValue();
+          ColourValue other( otherval, otherval, otherval, otherval );
+          val -= other;
+        }
+        else {
+          auto other = Util::extractColor( i, args );
+          if ( !other )
+            return;
+          val -= (ColourValue)*other;
+        }
+      }
+      args.GetReturnValue().Set( Color::newFrom( val ) );
+    }
+
+    //! \verbatim
+    //! Color Color.multiply( scalar )
+    //! \endverbatim
+    void Color::jsMultiply( const FunctionCallbackInfo<v8::Value>& args )
+    {
+      auto ptr = unwrap( args.Holder() );
+      ColourValue val = *ptr;
+
+      if ( !args[0]->IsNumber() ) {
+        args.GetIsolate()->ThrowException( JS::Util::allocString( "Expected scalar argument" ) );
+        return;
+      }
+
+      val *= (Real)args[0]->NumberValue();
+
+      args.GetReturnValue().Set( Color::newFrom( val ) );
+    }
+    //! \verbatim
+    //! Color.saturate()
+    //! \endverbatim
+    void Color::jsSaturate( const FunctionCallbackInfo<v8::Value>& args )
+    {
+      Color* ptr = unwrap( args.Holder() );
+      ptr->saturate();
+    }
+
+    //! \verbatim
+    //! Color Color.saturateCopy()
+    //! \endverbatim
+    void Color::jsSaturateCopy( const FunctionCallbackInfo<v8::Value>& args )
+    {
+      Color* ptr = unwrap( args.Holder() );
+      args.GetReturnValue().Set( Color::newFrom( ptr->saturateCopy() ) );
     }
 
     //! \verbatim
