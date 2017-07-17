@@ -32,9 +32,44 @@ namespace Glacier {
     ambientScale_ = scale;
   }
 
+  void Environment::setSunPower( Real power )
+  {
+    sun_.power_ = power;
+  }
+
+  void Environment::setSunDiffuse( const ColourValue& color )
+  {
+    sun_.diffuse_ = color;
+  }
+
+  void Environment::setSunSpecular( const ColourValue& color )
+  {
+    sun_.specular_ = color;
+  }
+
+  void Environment::setSunDirection( const Vector3& dir )
+  {
+    sun_.direction_ = dir;
+  }
+
+  void Environment::setSun( Real power, const ColourValue& diffuse, const ColourValue& specular, const Vector3& direction )
+  {
+    sun_.power_ = power;
+    sun_.diffuse_ = diffuse;
+    sun_.specular_ = specular;
+    sun_.direction_ = direction;
+  }
+
   void Environment::update( const GameTime delta )
   {
+    if ( !running_ )
+      return;
+
     scene_->setAmbientLight( upperHemisphere_, lowerHemisphere_, Vector3::UNIT_Y, ambientScale_ );
+    sunLight_->setPowerScale( sun_.power_ );
+    sunLight_->setDiffuseColour( sun_.diffuse_ );
+    sunLight_->setSpecularColour( sun_.specular_ );
+    sunLight_->setDirection( sun_.direction_ );
   }
 
   void Environment::initialize()

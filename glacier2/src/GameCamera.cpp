@@ -43,7 +43,7 @@ namespace Glacier {
   {
     anchor_ = scene->createSceneNode( Ogre::SCENE_DYNAMIC );
     anchor_->setPosition( Vector3::ZERO );
-    distance_ = 32.0f;
+    distance_ = 64.0f;
     mCamera->setAutoTracking( false );
     mCamera->setProjectionType( Ogre::PT_ORTHOGRAPHIC );
     mCamera->setOrthoWindow( window_, window_ );

@@ -80,6 +80,8 @@ namespace Glacier {
       explicit Environment( Glacier::Environment* environment );
       //! JavaScript Environment.setAmbience
       static void jsSetAmbience( const FunctionCallbackInfo<v8::Value>& args );
+      //! JavaScript Environment.setSun
+      static void jsSetSun( const FunctionCallbackInfo<v8::Value>& args );
     public:
       static void initialize( Glacier::Environment* environment, Handle<v8::Context> context );
       Glacier::Environment* getEnvironment();
