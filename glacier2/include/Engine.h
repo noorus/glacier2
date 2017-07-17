@@ -56,33 +56,32 @@ namespace Glacier {
       wstring compiler; //!< Compiler name
       wstring compiled; //!< Compilation date
       wstring profile;  //!< Compilation profile
-      wstring title;
-      wstring subtitle;
+      wstring title;    //!< Engine build title
+      wstring subtitle; //!< Engine build subtitle
       Version( uint32_t major, uint32_t minor, uint32_t build );
     };
-    //! Engine options structure
+    //! Engine startup options
     struct Options {
-      bool noAudio;
-      bool noPhysics;
-      StringList additionalExecs;
+      bool noAudio; //!< Run with a null audio service
+      StringList additionalExecs; //!< List of additional configuration files to execute
       Options();
     };
   protected:
     Version mVersion;
     // Subsystems
-    Console* mConsole;
-    ConsoleWindowThread* mConsoleWindow;
-    Scripting* mScripting;
-    Graphics* mGraphics;
-    PhysXPhysics* mPhysics;
-    FMODAudio* mAudio;
-    Game* mGame;
-    InputManager* mInput;
-    WindowHandler* mWindowHandler;
-    EntityManager* mEntities;
+    Console* mConsole; //!< Console subsystem
+    ConsoleWindowThread* mConsoleWindow; //!< Console window - TODO move elsewhere
+    Scripting* mScripting; //!< Scripting subsystem (JS/v8)
+    Graphics* mGraphics; //!< Graphics subsystem (OGRE)
+    PhysXPhysics* mPhysics; //!< Physics subsystem (PhysX)
+    FMODAudio* mAudio; //!< Audio subsystem (FMOD)
+    Game* mGame; //!< Game subsystem
+    InputManager* mInput; //!< Input subsystem (NIL)
+    WindowHandler* mWindowHandler; //!< Window events handler - TODO move elsewhere
+    EntityManager* mEntities; //!< Entity manager subsystem
     World* mWorld;
-    Navigation* mNavigation;
-    HUD* mHUD;
+    Navigation* mNavigation; //!< Navigation subsystem (Recast/Detour)
+    HUD* mHUD; //!< HUD subsystem
     // Timing
     LARGE_INTEGER mHPCFrequency;        //!< HPC frequency
     static GameTime fTime;              //!< Game time
@@ -97,16 +96,27 @@ namespace Glacier {
     void fixupThreadAffinity();
   public:
     // Getters
+    //! \copydoc Engine::Version
     const Version& getVersion() { return mVersion; }
+    //! \copydoc Engine::mConsole
     Console* getConsole() { return mConsole; }
+    //! \copydoc Engine::mScripting
     Scripting* getScripting() { return mScripting; }
+    //! \copydoc Engine::mGraphics
     Graphics* getGraphics() { return mGraphics; }
+    //! \copydoc Engine::mPhysics
     PhysXPhysics* getPhysics() { return mPhysics; }
+    //! \copydoc Engine::mAudio
     FMODAudio* getSound() { return mAudio; }
+    //! \copydoc Engine::mGame
     Game* getGame() { return mGame; }
+    //! \copydoc Engine::mInput
     InputManager* getInput() { return mInput; }
+    //! \copydoc Engine::mEntities
     EntityManager* getEntities() { return mEntities; }
+    //! \copydoc Engine::mWorld
     World* getWorld() { return mWorld; }
+    //! \copydoc Engine::mNavigation
     Navigation* getNavigation() { return mNavigation; }
     inline GameTime getTime() { return fTime; }
     // Callbacks

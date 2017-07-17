@@ -24,7 +24,7 @@ Glacier::Engine* gEngine = nullptr;
 namespace Glacier {
 
   Engine::Options::Options():
-  noAudio( false ), noPhysics( false )
+  noAudio( false )
   {
     //
   }
