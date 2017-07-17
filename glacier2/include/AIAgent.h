@@ -5,6 +5,12 @@
 
 namespace Glacier {
 
+  //! \addtogroup Glacier
+  //! @{
+
+  //! \addtogroup AI
+  //! @{
+
   namespace AI {
 
     class Agent {
@@ -14,5 +20,9 @@ namespace Glacier {
     };
 
   }
+
+  //! @}
+
+  //! @}
 
 }

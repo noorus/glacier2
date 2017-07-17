@@ -9,6 +9,12 @@
 
 namespace Glacier {
 
+  //! \addtogroup Glacier
+  //! @{
+
+  //! \addtogroup Input
+  //! @{
+
   class InputDevice;
   class GameCamera;
   class Character;
@@ -80,5 +86,9 @@ namespace Glacier {
     virtual void prepare();
     virtual void apply();
   };
+
+  //! @}
+
+  //! @}
 
 }

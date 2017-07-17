@@ -6,6 +6,12 @@
 
 namespace Glacier {
 
+  //! \addtogroup Glacier
+  //! @{
+
+  //! \addtogroup AI
+  //! @{
+
   namespace AI {
 
     class FiniteStateMachine;
@@ -24,5 +30,9 @@ namespace Glacier {
     typedef vector<State*> StateVector;
 
   }
+
+  //! @}
+
+  //! @}
 
 }

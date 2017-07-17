@@ -6,6 +6,12 @@
 
 namespace Glacier {
 
+  //! \addtogroup Glacier
+  //! @{
+
+  //! \addtogroup Input
+  //! @{
+
   enum BindAction {
     Action_None = 0,
     // FPS
@@ -68,5 +74,9 @@ namespace Glacier {
     CharacterRunAction run;
     CharacterCrouchAction crouch;
   };
+
+  //! @}
+
+  //! @}
 
 }

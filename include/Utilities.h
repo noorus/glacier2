@@ -10,6 +10,9 @@ namespace Glacier {
   //! \addtogroup Glacier
   //! @{
 
+  //! \addtogroup Utilities
+  //! @{
+
   //! \class Singleton
   //! Simple template for a Meyers singleton.
   template <class T>
@@ -251,6 +254,8 @@ namespace Glacier {
     }
 
   }
+
+  //! @}
 
   //! @}
 

@@ -9,6 +9,12 @@
 
 namespace Glacier {
 
+  //! \addtogroup Glacier
+  //! @{
+
+  //! \addtogroup Input
+  //! @{
+
   namespace Mouse {
 
     class Device: public InputDevice, public Nil::MouseListener {
@@ -40,5 +46,9 @@ namespace Glacier {
     };
 
   }
+
+  //! @}
+
+  //! @}
 
 }

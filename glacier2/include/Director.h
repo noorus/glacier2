@@ -15,7 +15,7 @@ namespace Glacier {
   //! \class Director
   class Director: boost::noncopyable {
   protected:
-    Graphics* mGraphics;        //!< The graphics engine
+    Graphics* mGraphics; //!< The graphics engine
     Ogre::Light* mLight;
     CompositorWorkspace* mWorkspace;
     HDR* mHDR;

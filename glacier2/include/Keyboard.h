@@ -9,6 +9,12 @@
 
 namespace Glacier {
 
+  //! \addtogroup Glacier
+  //! @{
+
+  //! \addtogroup Input
+  //! @{
+
   namespace Keyboard {
 
     class Device: public InputDevice, public Nil::KeyboardListener {
@@ -33,5 +39,9 @@ namespace Glacier {
     };
 
   }
+
+  //! @}
+
+  //! @}
 
 }

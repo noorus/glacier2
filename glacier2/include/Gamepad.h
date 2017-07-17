@@ -9,6 +9,12 @@
 
 namespace Glacier {
 
+  //! \addtogroup Glacier
+  //! @{
+
+  //! \addtogroup Input
+  //! @{
+
   namespace Gamepad {
 
     class Device;
@@ -141,5 +147,9 @@ namespace Glacier {
     };
 
   }
+
+  //! @}
+
+  //! @}
 
 }

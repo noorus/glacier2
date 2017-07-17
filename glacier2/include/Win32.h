@@ -6,6 +6,12 @@
 
 namespace Glacier {
 
+  //! \addtogroup Glacier
+  //! @{
+
+  //! \addtogroup Platform
+  //! @{
+
   namespace Win32 {
 
 #   define max(a,b) (((a) > (b)) ? (a) : (b))
@@ -129,5 +135,9 @@ namespace Glacier {
 #undef max
 
   }
+
+  //! @}
+
+  //! @}
 
 }
