@@ -36,6 +36,8 @@ namespace Glacier {
     // Callbacks
     static void callbackJSExecute( Console* console,
       ConCmd* command, StringVector& arguments );
+    static void callbackJSEvaluate( Console* console,
+      ConCmd* command, StringVector& arguments );
   public:
     Scripting( Engine* engine );
     virtual ~Scripting();

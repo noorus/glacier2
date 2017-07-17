@@ -28,7 +28,7 @@
 
 namespace Glacier {
 
-  const string cDemoStateTitle( "glacier² » demo" );
+  const string cDemoStateTitle( "demostate" );
 
   DemoState::DemoState(): State( L"Demo" ) {}
 
@@ -53,7 +53,7 @@ namespace Glacier {
     {
       navSources.push_back( primitive->getItem() );
     }
-    NavigationInputGeometry navGeometry( navSources );
+    /*NavigationInputGeometry navGeometry( navSources );
     NavigationMeshParameters navParams;
     navParams.cellSize = 0.2f;
     navParams.cellHeight = 0.2f;
@@ -69,7 +69,7 @@ namespace Glacier {
     navParams.detailSampleDist = 6;
     navParams.detailSampleMaxError = 1;
     mNavigationMesh = new NavigationMesh( navParams );
-    mNavigationMesh->buildFrom( &navGeometry );
+    mNavigationMesh->buildFrom( &navGeometry );*/
     // mNavigationMesh->loadFrom( "poop.navmesh" );
 
     /*mNavVis = new NavigationDebugVisualizer( gEngine );
@@ -120,7 +120,7 @@ namespace Glacier {
     Locator::getEntities().clear();
     Locator::getMusic().endScene();
     /* SAFE_DELETE( mNavVis ); */
-    SAFE_DELETE( mNavigationMesh );
+    //SAFE_DELETE( mNavigationMesh );
     for ( auto primitive : mPrimitives )
       delete primitive;
     SAFE_DELETE( mDirector );

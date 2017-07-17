@@ -20,4 +20,5 @@ namespace Glacier {
   Music* Locator::musicPlayer = &Locator::nullMusic;
 
   Colors Locator::colors;
+
 }

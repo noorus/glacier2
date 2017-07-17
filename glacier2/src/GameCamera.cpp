@@ -15,8 +15,8 @@ namespace Glacier {
   const Vector2 cScrollSensitivity = Vector2( 0.4f, 0.5f );
   const Vector2 cRoamSensitivity = Vector2( 1.35f, 1.5f );
   const Radian cFOVy = Radian( Ogre::Math::DegreesToRadians( 80.0f ) );
-  const Real cMaxWindow = 10.0f;
-  const Real cMinWindow = 22.0f;
+  const Real cMaxWindow = 14.0f;
+  const Real cMinWindow = 32.0f;
   const Real cSensitivity = 0.25f;
   const Real cRoamDeceleration = 0.9f;
 
@@ -43,7 +43,7 @@ namespace Glacier {
   {
     anchor_ = scene->createSceneNode( Ogre::SCENE_DYNAMIC );
     anchor_->setPosition( Vector3::ZERO );
-    distance_ = 128.0f;
+    distance_ = 32.0f;
     mCamera->setAutoTracking( false );
     mCamera->setProjectionType( Ogre::PT_ORTHOGRAPHIC );
     mCamera->setOrthoWindow( window_, window_ );

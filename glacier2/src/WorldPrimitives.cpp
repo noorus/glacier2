@@ -47,10 +47,10 @@ namespace Glacier {
 
       auto scm = Locator::getGraphics().getScene();
 
-      obj_ = scm->createManualObject( Ogre::SCENE_STATIC );
+      // obj_ = scm->createManualObject( Ogre::SCENE_STATIC );
       mNode = scm->createSceneNode( Ogre::SCENE_STATIC );
-      mNode->attachObject( obj_ );
-      obj_->setCastShadows( false );
+      /*mNode->attachObject( obj_ );
+      obj_->setCastShadows( false );*/
 
       /*mMesh = Procedural::PlaneGenerator().setSize( Vector2( width, height ) ).setNormal( plane.normal ).setNumSegX( 8 ).setNumSegY( 8 ).setUTile( 32.0f ).setVTile( 32.0f ).setEnableNormals( true ).realizeMesh();
       auto v1 = Ogre::v1::MeshManager::getSingleton().create( "", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME );
@@ -65,13 +65,23 @@ namespace Glacier {
       mItem->setCastShadows( false );
       mNode->attachObject( mItem );
 
+      auto x = Ogre::MeshManager::getSingleton().load( "heavytank_base_21.mesh", "Bootload" );
+      auto xi = scm->createItem( x, Ogre::SCENE_STATIC );
+      xi->setQueryFlags( SceneQueryFlag_Character );
+      xi->setDatablock( "Unit/HeavyTank" );
+      xi->setCastShadows( true );
+      auto xn = scm->createSceneNode( Ogre::SCENE_STATIC );
+      xn->attachObject( xi );
+      xn->setPosition( Vector3( 0, 10.0f, 0 ) );
+      xn->setOrientation( Quaternion::IDENTITY );
+
       mNode->setPosition( position );
       mNode->setOrientation( Quaternion::IDENTITY );
     }
 
     void Grid::draw()
     {
-      obj_->clear();
+      /*obj_->clear();
 
       auto segments = 128;
       Vector2 dimensions( 128.0f, 128.0f );
@@ -104,13 +114,13 @@ namespace Glacier {
         obj_->colour( color );
         obj_->index( index++ );
       }
-      obj_->end();
+      obj_->end();*/
     }
 
     Grid::~Grid()
     {
       auto scm = Locator::getGraphics().getScene();
-      scm->destroyManualObject( obj_ );
+      // scm->destroyManualObject( obj_ );
       if ( mItem )
         scm->destroyItem( mItem );
       if ( mNode )

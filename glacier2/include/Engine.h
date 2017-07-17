@@ -28,6 +28,7 @@ namespace Glacier {
   class World;
   class Navigation;
   class HUD;
+  class Environment;
 
   ENGINE_EXTERN_CONCMD( version );
   ENGINE_EXTERN_CONCMD( memstat );
@@ -82,6 +83,7 @@ namespace Glacier {
     World* mWorld;
     Navigation* mNavigation; //!< Navigation subsystem (Recast/Detour)
     HUD* mHUD; //!< HUD subsystem
+    Environment* mEnvironment; //!< Environment subsystem
     // Timing
     LARGE_INTEGER mHPCFrequency;        //!< HPC frequency
     static GameTime fTime;              //!< Game time
@@ -118,6 +120,8 @@ namespace Glacier {
     World* getWorld() { return mWorld; }
     //! \copydoc Engine::mNavigation
     Navigation* getNavigation() { return mNavigation; }
+    //! \copydoc Engine::mEnvironment
+    Environment* getEnvironment() { return mEnvironment; }
     inline GameTime getTime() { return fTime; }
     // Callbacks
     static void callbackVersion( Console* console,

@@ -45,9 +45,9 @@ namespace Glacier {
 
   // Graphics engine constants ================================================
 
-  //const char* cRenderSystemName    = "OpenGL 3+ Rendering Subsystem";
-  //const char* cRenderSystemDebug   = "RenderSystem_GL3Plus_d";
-  //const char* cRenderSystemRelease = "RenderSystem_GL3Plus";
+  // const char* cRenderSystemName    = "OpenGL 3+ Rendering Subsystem";
+  // const char* cRenderSystemDebug   = "RenderSystem_GL3Plus_d";
+  // const char* cRenderSystemRelease = "RenderSystem_GL3Plus";
   const char* cRenderSystemName    = "Direct3D11 Rendering Subsystem";
   const char* cRenderSystemDebug   = "RenderSystem_Direct3D11_d";
   const char* cRenderSystemRelease = "RenderSystem_Direct3D11";
@@ -424,10 +424,10 @@ namespace Glacier {
       Ogre::MeshManager::getSingleton().removeAll();
       Ogre::v1::MeshManager::getSingleton().removeAll();
 
-      //SAFE_DELETE( mOverlaySystem );
+      SAFE_DELETE( mOverlaySystem );
       unregisterHlms();
       mRoot->shutdown();
-      //SAFE_DELETE( mRoot ); FIXME: Crash? shouldn't happen, according to docs
+      SAFE_DELETE( mRoot ); // FIXME: Crash? shouldn't happen, according to docs
       mRenderer = nullptr;
     }
   }

@@ -148,6 +148,12 @@
     <Filter Include="Header Files\Services\Materials">
       <UniqueIdentifier>{23583e37-e459-444d-a102-b58f87837fb1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Scripting\Classes">
+      <UniqueIdentifier>{da1d001f-3614-47b8-a43e-6b26a5e2ba8a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Scripting\Services">
+      <UniqueIdentifier>{586262cb-6773-4d1d-adad-a768bb35ac6e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Main.cpp">
@@ -183,13 +189,7 @@
     <ClCompile Include="src\Scripting.cpp">
       <Filter>Source Files\Scripting</Filter>
     </ClCompile>
-    <ClCompile Include="src\JSVector3.cpp">
-      <Filter>Source Files\Scripting</Filter>
-    </ClCompile>
     <ClCompile Include="src\JSUtil.cpp">
-      <Filter>Source Files\Scripting</Filter>
-    </ClCompile>
-    <ClCompile Include="src\JSQuaternion.cpp">
       <Filter>Source Files\Scripting</Filter>
     </ClCompile>
     <ClCompile Include="src\Entity.cpp">
@@ -197,9 +197,6 @@
     </ClCompile>
     <ClCompile Include="src\EntityManager.cpp">
       <Filter>Source Files\Entities</Filter>
-    </ClCompile>
-    <ClCompile Include="src\JSConsole.cpp">
-      <Filter>Source Files\Scripting</Filter>
     </ClCompile>
     <ClCompile Include="src\ServiceLocator.cpp">
       <Filter>Source Files\Services</Filter>
@@ -381,9 +378,6 @@
     <ClCompile Include="src\Colors.cpp">
       <Filter>Source Files\Services</Filter>
     </ClCompile>
-    <ClCompile Include="src\JSColors.cpp">
-      <Filter>Source Files\Scripting</Filter>
-    </ClCompile>
     <ClCompile Include="src\NavigationMesh.cpp">
       <Filter>Source Files\Services\Navigation</Filter>
     </ClCompile>
@@ -419,9 +413,6 @@
     </ClCompile>
     <ClCompile Include="src\Player.cpp">
       <Filter>Source Files\Entities\Character</Filter>
-    </ClCompile>
-    <ClCompile Include="src\JSEntity.cpp">
-      <Filter>Source Files\Scripting</Filter>
     </ClCompile>
     <ClCompile Include="src\AIFiniteStateMachine.cpp">
       <Filter>Source Files\AI</Filter>
@@ -465,11 +456,32 @@
     <ClCompile Include="src\Materials.cpp">
       <Filter>Source Files\Services</Filter>
     </ClCompile>
-    <ClCompile Include="src\JSMaterial.cpp">
-      <Filter>Source Files\Scripting</Filter>
+    <ClCompile Include="src\Environment.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\JSColor.cpp">
-      <Filter>Source Files\Scripting</Filter>
+      <Filter>Source Files\Scripting\Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\JSEntity.cpp">
+      <Filter>Source Files\Scripting\Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\JSMaterial.cpp">
+      <Filter>Source Files\Scripting\Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\JSQuaternion.cpp">
+      <Filter>Source Files\Scripting\Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\JSVector3.cpp">
+      <Filter>Source Files\Scripting\Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\JSColors.cpp">
+      <Filter>Source Files\Scripting\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="src\JSConsole.cpp">
+      <Filter>Source Files\Scripting\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="src\JSEnvironment.cpp">
+      <Filter>Source Files\Scripting\Services</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -754,6 +766,9 @@
     </ClInclude>
     <ClInclude Include="include\MaterialService.h">
       <Filter>Header Files\Services\Materials</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Environment.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

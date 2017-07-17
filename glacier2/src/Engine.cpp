@@ -15,6 +15,7 @@
 #include "EntityManager.h"
 #include "World.h"
 #include "Navigation.h"
+#include "Environment.h"
 
 // Glacier² Game Engine © 2014 noorus
 // All rights reserved.
@@ -77,8 +78,8 @@ namespace Glacier {
   mProcess( NULL ), mThread( NULL ), mInstance( instance ),
   mSignal( Signal_None ), mVersion( 0, 1, 1 ), mConsoleWindow( nullptr ),
   mGame( nullptr ), mWindowHandler( nullptr ), mInput( nullptr ),
-  mAudio( nullptr ), mPhysics( nullptr ),
-  mEntities( nullptr ), mNavigation( nullptr ), mHUD( nullptr )
+  mAudio( nullptr ), mPhysics( nullptr ), mEntities( nullptr ),
+  mNavigation( nullptr ), mHUD( nullptr ), mEnvironment( nullptr )
   {
   }
 
@@ -208,6 +209,8 @@ namespace Glacier {
 
     mGraphics->postInitialize();
 
+    mEnvironment = new Environment( mGraphics );
+
     mHUD = new HUD( this, mGraphics->mGorillaScreen );
     Locator::provideHUD( mHUD );
 
@@ -312,6 +315,7 @@ namespace Glacier {
 
       // If any time has passed, draw
       if ( fTimeDelta > 0.0 && mSignal != Signal_Stop ) {
+        mEnvironment->update( fTimeDelta );
         mGraphics->componentPostUpdate( fTimeDelta, fTime );
       }
 
@@ -386,6 +390,7 @@ namespace Glacier {
     SAFE_DELETE( mInput );
     SAFE_DELETE( mScripting );
     SAFE_DELETE( mHUD );
+    SAFE_DELETE( mEnvironment );
     SAFE_DELETE( mGraphics );
     Locator::provideGraphics( nullptr );
     SAFE_DELETE( mWindowHandler );

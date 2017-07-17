@@ -17,6 +17,7 @@ namespace Glacier {
   const Ogre::String cJSResourceGroup = "JavaScript";
 
   ENGINE_DECLARE_CONCMD( js_exec, L"Execute a JavaScript file.", Scripting::callbackJSExecute );
+  ENGINE_DECLARE_CONCMD( js_eval, L"Evaluate a JavaScript script string.", Scripting::callbackJSEvaluate );
 
   Scripting::Scripting( Engine* engine ): EngineComponent( engine ),
   mIsolate( nullptr )
@@ -101,6 +102,7 @@ namespace Glacier {
     // Initialize native objects in the global namespace
     JS::Console::initialize( mEngine->getConsole(), context );
     JS::Colors::initialize( context );
+    JS::Environment::initialize( mEngine->getEnvironment(), context );
   }
 
   void Scripting::clearScripts()
@@ -114,6 +116,7 @@ namespace Glacier {
   void Scripting::shutdown()
   {
     clearScripts();
+    JS::Environment::shutdown();
     JS::Colors::shutdown();
     JS::Console::shutdown();
     mContext.Reset();
@@ -193,6 +196,11 @@ namespace Glacier {
 
     if ( gEngine && gEngine->getScripting() )
       gEngine->getScripting()->simpleExecute( arguments[1] );
+  }
+
+  void Scripting::callbackJSEvaluate( Console* console, ConCmd* command, StringVector& arguments )
+  {
+    console->printf( Console::srcEngine, L"TODO" );
   }
 
 }

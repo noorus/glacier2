@@ -15,6 +15,7 @@ namespace Glacier {
 
   class Console;
   class Entity;
+  class Environment;
 
   namespace JS {
 
@@ -53,18 +54,6 @@ namespace Glacier {
       static void shutdown();
     };
 
-    class Entity: public ObjectWrapper<Entity> {
-    protected:
-      Glacier::Entity* mEntity;
-      explicit Entity( Glacier::Entity* entity );
-      static void jsToString( const FunctionCallbackInfo<v8::Value>& args );
-      static void jsGetName( const FunctionCallbackInfo<v8::Value>& args );
-    public:
-      ~Entity();
-      Glacier::Entity* getEntity();
-      static Entity* create( Glacier::Entity* entity, Handle<v8::Context> context );
-    };
-
     //! \class Colors
     //! A JavaScript-wrapped color service.
     //! \sa Glacier::Colors
@@ -78,6 +67,35 @@ namespace Glacier {
     public:
       static void initialize( Handle<v8::Context> context );
       static void shutdown();
+    };
+
+    //! \class Environment
+    //! A JavaScript-wrapped Environment.
+    //! \sa Glacier::Environment
+    //! \sa ObjectWrapper
+    class Environment: public ObjectWrapper<Environment> {
+    protected:
+      static Environment* instance;
+      Glacier::Environment* mEnvironment;
+      explicit Environment( Glacier::Environment* environment );
+      //! JavaScript Environment.setAmbience
+      static void jsSetAmbience( const FunctionCallbackInfo<v8::Value>& args );
+    public:
+      static void initialize( Glacier::Environment* environment, Handle<v8::Context> context );
+      Glacier::Environment* getEnvironment();
+      static void shutdown();
+    };
+
+    class Entity: public ObjectWrapper<Entity> {
+    protected:
+      Glacier::Entity* mEntity;
+      explicit Entity( Glacier::Entity* entity );
+      static void jsToString( const FunctionCallbackInfo<v8::Value>& args );
+      static void jsGetName( const FunctionCallbackInfo<v8::Value>& args );
+    public:
+      ~Entity();
+      Glacier::Entity* getEntity();
+      static Entity* create( Glacier::Entity* entity, Handle<v8::Context> context );
     };
 
     //! \class Material
@@ -115,26 +133,50 @@ namespace Glacier {
     //! \sa ObjectWrapper
     class Color: public Ogre::ColourValue, public ObjectWrapper<Color> {
     protected:
+      //! Constructor.
+      //! \param source Source Ogre::ColourValue to initialize from.
       explicit Color( const Ogre::ColourValue& source );
+      //! Destructor.
       ~Color();
+      //! My JavaScript-exported constructor function.
       static void create( const FunctionCallbackInfo<v8::Value>& args );
+
+      //! JavaScript-exported get accessor for the "red" component.
       static void jsGetR( Local<v8::String> prop,
         const PropertyCallbackInfo<v8::Value>& info );
+
+      //! JavaScript-exported set accessor for the "red" component.
       static void jsSetR( Local<v8::String> prop, Local<v8::Value> value,
         const PropertyCallbackInfo<void>& info );
+
+      //! JavaScript-exported get accessor for the "green" component.
       static void jsGetG( Local<v8::String> prop,
         const PropertyCallbackInfo<v8::Value>& info );
+
+      //! JavaScript-exported set accessor for the "green" component.
       static void jsSetG( Local<v8::String> prop, Local<v8::Value> value,
         const PropertyCallbackInfo<void>& info );
+
+      //! JavaScript-exported get accessor for the "blue" component.
       static void jsGetB( Local<v8::String> prop,
         const PropertyCallbackInfo<v8::Value>& info );
+
+      //! JavaScript-exported set accessor for the "blue" component.
       static void jsSetB( Local<v8::String> prop, Local<v8::Value> value,
         const PropertyCallbackInfo<void>& info );
+
+      //! JavaScript-exported get accessor for the "alpha" component.
       static void jsGetA( Local<v8::String> prop,
         const PropertyCallbackInfo<v8::Value>& info );
+
+      //! JavaScript-exported set accessor for the "alpha" component.
       static void jsSetA( Local<v8::String> prop, Local<v8::Value> value,
         const PropertyCallbackInfo<void>& info );
+
+      //! Magic JavaScript toString method.
+      //! Returns a compact string representation of the object.
       static void jsToString( const FunctionCallbackInfo<v8::Value>& args );
+
       //! JavaScript "add" call.
       static void jsAdd( const FunctionCallbackInfo<v8::Value>& args );
 
@@ -150,7 +192,12 @@ namespace Glacier {
       //! JavaScript "saturateCopy" call.
       static void jsSaturateCopy( const FunctionCallbackInfo<v8::Value>& args );
     public:
+
+      //! Initializes my JavaScript object template in given object namespace.
       static void initialize( Handle<ObjectTemplate> exports );
+
+      //! Creates a new JavaScript-compatible Color from given source.
+      //! \param  color The Ogre::ColourValue to copy from.
       static Local<v8::Object> newFrom( const Ogre::ColourValue& color );
     };
 
