@@ -483,6 +483,12 @@
     <ClCompile Include="src\JSEnvironment.cpp">
       <Filter>Source Files\Scripting\Services</Filter>
     </ClCompile>
+    <ClCompile Include="..\recastnavigation\Detour\Source\DetourAssert.cpp">
+      <Filter>Source Files\Recast &amp; Detour\Detour</Filter>
+    </ClCompile>
+    <ClCompile Include="..\recastnavigation\Recast\Source\RecastAssert.cpp">
+      <Filter>Source Files\Recast &amp; Detour\Recast</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\CompilerDef.h">
