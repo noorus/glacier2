@@ -47,25 +47,25 @@ namespace Glacier {
 
       auto scm = Locator::getGraphics().getScene();
 
-      // obj_ = scm->createManualObject( Ogre::SCENE_STATIC );
+      obj_ = scm->createManualObject( Ogre::SCENE_STATIC );
       mNode = scm->createSceneNode( Ogre::SCENE_STATIC );
-      /*mNode->attachObject( obj_ );
-      obj_->setCastShadows( false );*/
+      mNode->attachObject( obj_ );
+      obj_->setCastShadows( false );
 
-      /*mMesh = Procedural::PlaneGenerator().setSize( Vector2( width, height ) ).setNormal( plane.normal ).setNumSegX( 8 ).setNumSegY( 8 ).setUTile( 32.0f ).setVTile( 32.0f ).setEnableNormals( true ).realizeMesh();
+      mMesh = Procedural::PlaneGenerator().setSize( Vector2( width, height ) ).setNormal( plane.normal ).setNumSegX( 8 ).setNumSegY( 8 ).setUTile( 32.0f ).setVTile( 32.0f ).setEnableNormals( true ).realizeMesh();
       auto v1 = Ogre::v1::MeshManager::getSingleton().create( "", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME );
       v1->importV2( mMesh.getPointer() );
       v1->buildTangentVectors();
-      mMesh->importV1( v1.getPointer(), true, true, true );*/
-      mMesh = Ogre::MeshManager::getSingleton().load( "dev_ground_21.mesh", "Bootload" );
+      mMesh->importV1( v1.getPointer(), true, true, true );
+      //mMesh = Ogre::MeshManager::getSingleton().load( "dev_ground_21.mesh", "Bootload" );
 
       mItem = scm->createItem( mMesh, Ogre::SCENE_STATIC );
       mItem->setQueryFlags( SceneQueryFlag_World );
-      mItem->setDatablock( "Developer/Ground" );
+      mItem->setDatablock( "Developer/Floor" );
       mItem->setCastShadows( false );
       mNode->attachObject( mItem );
 
-      auto x = Ogre::MeshManager::getSingleton().load( "heavytank_base_21.mesh", "Bootload" );
+      /*auto x = Ogre::MeshManager::getSingleton().load( "heavytank_base_21.mesh", "Bootload" );
       auto xi = scm->createItem( x, Ogre::SCENE_STATIC );
       xi->setQueryFlags( SceneQueryFlag_Character );
       xi->setDatablock( "Unit/HeavyTank" );
@@ -73,7 +73,7 @@ namespace Glacier {
       auto xn = scm->createSceneNode( Ogre::SCENE_STATIC );
       xn->attachObject( xi );
       xn->setPosition( Vector3( 0, 10.0f, 0 ) );
-      xn->setOrientation( Quaternion::IDENTITY );
+      xn->setOrientation( Quaternion::IDENTITY );*/
 
       mNode->setPosition( position );
       mNode->setOrientation( Quaternion::IDENTITY );
@@ -81,7 +81,7 @@ namespace Glacier {
 
     void Grid::draw()
     {
-      /*obj_->clear();
+      obj_->clear();
 
       auto segments = 128;
       Vector2 dimensions( 128.0f, 128.0f );
@@ -114,13 +114,12 @@ namespace Glacier {
         obj_->colour( color );
         obj_->index( index++ );
       }
-      obj_->end();*/
+      obj_->end();
     }
 
     Grid::~Grid()
     {
       auto scm = Locator::getGraphics().getScene();
-      // scm->destroyManualObject( obj_ );
       if ( mItem )
         scm->destroyItem( mItem );
       if ( mNode )
@@ -128,6 +127,7 @@ namespace Glacier {
         mNode->removeAndDestroyAllChildren();
         scm->destroySceneNode( mNode );
       }
+      scm->destroyManualObject( obj_ );
       mScene->getScene()->removeActor( *mActor );
     }
 
